@@ -136,15 +136,15 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           height: 130,
                           width: 130,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.pink,
-                              // image: imagePath!.path.isEmpty
-                              //     ? const DecorationImage(
-                              //         image: AssetImage(
-                              //             'assets/images/person.jpg'))
-                              //     : DecorationImage(
-                              //         image: FileImage(File(imagePath!.path)),
-                              //         fit: BoxFit.cover)
+                            shape: BoxShape.circle,
+                            color: Colors.pink,
+                            // image: imagePath!.path.isEmpty
+                            //     ? const DecorationImage(
+                            //         image: AssetImage(
+                            //             'assets/images/person.jpg'))
+                            //     : DecorationImage(
+                            //         image: FileImage(File(imagePath!.path)),
+                            //         fit: BoxFit.cover)
                           ),
                           child: Column(
                             children: [
@@ -174,9 +174,9 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Icon(Icons.edit),
                           SizedBox(width: 5),
                           Text('Edit Profile')
