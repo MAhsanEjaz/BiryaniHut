@@ -29,10 +29,16 @@ class SalesrepOrderWidget2 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ListTile(
-            leading: const CircleAvatar(
-              maxRadius: 28.0,
-              backgroundImage: AssetImage('assets/images/Profile Image.png'),
-            ),
+            leading: repOrders.customerImagePath != "" ||
+                    repOrders.customerImagePath != null
+                ? CircleAvatar(
+                    maxRadius: 28.0,
+                    backgroundImage: NetworkImage(repOrders.customerImagePath!))
+                : const CircleAvatar(
+                    maxRadius: 28.0,
+                    backgroundImage:
+                        AssetImage('assets/images/Profile Image.png'),
+                  ),
             title: Text(
               repOrders.salonName ?? "",
               style: nameStyle,

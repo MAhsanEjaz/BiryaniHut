@@ -1,16 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/helper/custom_loader.dart';
-import 'package:shop_app/sales%20rep/order_detail_page.dart';
 import 'package:shop_app/sales%20rep/timelines/widgets/orders_widget.dart';
 import 'package:shop_app/services/salesrep_orders_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import '../components/reseller_order_status_widget.dart';
-import '../components/reseller_order_time_calender_widget.dart';
-import '../constants.dart';
 import '../models/salesrep_orders_model.dart';
 import '../providers/sale_rep_orders_provider.dart';
-import 'sales_rep_reports/sale_rep_order_report_details_screen.dart';
 
 class SalesrepOrdersPage extends StatefulWidget {
   const SalesrepOrdersPage({Key? key}) : super(key: key);
@@ -33,7 +31,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
         Provider.of<SaleRepOrdersProvider>(context, listen: false).repOrder;
     getSaleOrders = searchOrders!;
     searchSaleOrders = getSaleOrders;
-    print('myOrders--->${searchOrders}');
+    log('myOrders--->$searchOrders');
 
     setState(() {});
 
@@ -124,10 +122,11 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
                 controller: searchController,
                 onChange: onSearchFunction,
                 hint: 'Search Orders',
-                prefixWidget: Icon(Icons.search),
+                prefixWidget: const Icon(Icons.search),
                 suffixWidget: searchController.text.isNotEmpty
-                    ? InkWell(onTap: onClearFunction, child: Icon(Icons.clear))
-                    : SizedBox(),
+                    ? InkWell(
+                        onTap: onClearFunction, child: const Icon(Icons.clear))
+                    : const SizedBox.shrink(),
               ),
               getSaleOrders.isNotEmpty
                   ? ListView.builder(
@@ -152,7 +151,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
                                   )
                                 : const SizedBox();
                       })
-                  : Center(
+                  : const Center(
                       child: Center(child: Text("No order found")),
                     )
             ],

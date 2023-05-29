@@ -147,17 +147,17 @@ class PdfInvoiceService {
             //         ))
             // ),
             pw.Container(
-                padding: pw.EdgeInsets.only(top: 10, bottom: 10),
+                padding: const pw.EdgeInsets.only(top: 10, bottom: 10),
                 width: double.infinity,
                 child: pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.start,
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text("Influence Invoice",
+                      pw.Text("Influance Invoice",
                           style: pw.TextStyle(
                             fontSize: 18,
                             fontWeight: pw.FontWeight.bold,
-                            color: PdfColor.fromInt(0x000000),
+                            color: const PdfColor.fromInt(0x000000),
                           )),
                       if (cartModel.orderPayment.isNotEmpty) pw.Divider(),
                       if (cartModel.orderPayment.isNotEmpty)

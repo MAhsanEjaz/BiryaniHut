@@ -38,7 +38,7 @@ class PdfOrdersInvoiceService {
       // for (int i = 0; i < view!.order!.length; i++)
       // for (int i = 0; i < 3; i++)
       //   CustomRow(
-      //     "Influence Antiseptic",
+      //     "Influance Antiseptic",
       //     getValue(1000),
       //     getValue(2535561),
       //   )
