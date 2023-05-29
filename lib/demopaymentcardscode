@@ -1,0 +1,113 @@
+
+//  Row(
+//               children: [
+//                 PaymenetCard(
+//                   image:
+//                       'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+//                   color: selectedPaymentIndex == 1 ? true : false,
+//                   onTap: () {
+//                       selectedPaymentIndex = 1;
+//                     setState(() {});
+//                   },
+//                   paymentName: 'Cash',
+//                 ),
+//                 PaymenetCard(
+//                   image:
+//                       'http://assets.stickpng.com/thumbs/62a382de6209494ec2b17086.png',
+//                   color: selectedPaymentIndex == 2 ? true : false,
+//                   onTap: () {
+//                       selectedPaymentIndex = 2;
+//                     if (amountCont.text.isEmpty) {
+//                       showToast("Please enter amount first");
+//                     } else {
+//                       makePayment(amountCont.text.toString());
+//                     }
+//                     // widget.selectedIndex = 2;
+//                     // setState(() {});
+//                   },
+//                   paymentName: 'Stripe',
+//                 ),
+
+//                 PaymenetCard(
+//                   image:
+//                       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
+//                   color: false,
+//                   onTap: () {
+//                     Navigator.of(context).push(MaterialPageRoute(
+//                       builder: (BuildContext context) => UsePaypal(
+//                           sandboxMode: true,
+//                           clientId:
+//                               "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+//                           secretKey:
+//                               "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+//                           returnURL: "https://samplesite.com/return",
+//                           cancelURL: "https://samplesite.com/cancel",
+//                           transactions: const [
+//                             {
+//                               "amount": {
+//                                 "total": '10.12',
+//                                 "currency": "USD",
+//                                 "details": {
+//                                   "subtotal": '10.12',
+//                                   "shipping": '0',
+//                                   "shipping_discount": 0
+//                                 }
+//                               },
+//                               "description":
+//                                   "The payment transaction description.",
+//                               // "payment_options": {
+//                               //   "allowed_payment_method":
+//                               //       "INSTANT_FUNDING_SOURCE"
+//                               // },
+//                               "item_list": {
+//                                 "items": [
+//                                   {
+//                                     "name": "A demo product",
+//                                     "quantity": 1,
+//                                     "price": '10.12',
+//                                     "currency": "USD"
+//                                   }
+//                                 ],
+
+//                                 // shipping address is not required though
+//                                 "shipping_address": {
+//                                   "recipient_name": "Jane Foster",
+//                                   "line1": "Travis County",
+//                                   "line2": "",
+//                                   "city": "Austin",
+//                                   "country_code": "US",
+//                                   "postal_code": "73301",
+//                                   "phone": "+00000000",
+//                                   "state": "Texas"
+//                                 },
+//                               }
+//                             }
+//                           ],
+//                           note: "Contact us for any questions on your order.",
+//                           onSuccess: (Map params) async {
+//                             print("onSuccess: $params");
+//                           },
+//                           onError: (error) {
+//                             print("onError: $error");
+//                           },
+//                           onCancel: (params) {
+//                             print('cancelled: $params');
+//                           }),
+//                     ));
+
+//                     // setState(() {});
+//                   },
+//                   paymentName: 'PayPal',
+//                 ),
+//                 if (Platform.isIOS) const AppleButtonCard(),
+//                 if (Platform.isAndroid) const GooglePlayButtonCard(),
+//               ],
+//             ),
+
+            
+
+//             // InkWell(
+//             //     onTap: () {
+//             //       makePayment("20");
+//             //     },
+//             //     child: Text("pay with stripe")),

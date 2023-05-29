@@ -1,0 +1,43 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:shop_app/constants.dart';
+import 'package:shop_app/helper/custom_post_request.dart';
+
+class UpdateCustomService {
+  Future updateCustomerService({
+    required BuildContext context,
+    isSaleREpProfile = false,
+    int? customerId,
+    String? firstName,
+    String? lastName,
+    String? address,
+    String? phone,
+  }) async {
+    try {
+      Map body = {
+        isSaleREpProfile == false ? "customerId" : "id": customerId,
+        "firstName": firstName,
+        "lastName": lastName,
+        "address": address,
+        "phone": phone,
+      };
+      log("update customer body = $body");
+      var res = await CustomPostRequestService().httpPostRequest(
+          context: context,
+          url: isSaleREpProfile == false
+              ? '$apiBaseUrl/Customer/UpdateCustomer'
+              : '$apiBaseUrl/SaleRep/UpdateSaleRep',
+          body: body);
+
+      if (res != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      print(err);
+      return false;
+    }
+  }
+}
