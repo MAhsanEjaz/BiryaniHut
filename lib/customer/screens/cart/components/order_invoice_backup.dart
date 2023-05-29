@@ -165,7 +165,7 @@
 //                     mainAxisAlignment: pw.MainAxisAlignment.start,
 //                     crossAxisAlignment: pw.CrossAxisAlignment.start,
 //                     children: [
-//                       pw.Text("Influence Invoice",
+//                       pw.Text("Influance Invoice",
 //                           style: pw.TextStyle(
 //                             fontSize: 18,
 //                             font: ttf,
