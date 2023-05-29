@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/services/customer_favourtes_products_service.dart';
+import 'package:shop_app/services/product_remove_favourite_service.dart';
 import 'package:shop_app/size_config.dart';
 
 import '../../../../helper/custom_loader.dart';
@@ -32,6 +35,8 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
+  LoginStorage loginStorage = LoginStorage();
+
   DateTime currentDate = DateTime.now();
   bool isFav = false;
   bool showAllText = false;
@@ -47,9 +52,21 @@ class _ProductDescriptionState extends State<ProductDescription> {
     CustomLoader.hideLoader(context);
   }
 
+  _getCustFavProdHandler() async {
+    CustomLoader.showLoader(context: context);
+    await CustFavProductsService().getCustFavProd(
+        context: context, customerId: LoginStorage().getUserId());
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   void initState() {
     log("Length ${widget.product.discription.length}");
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getCustFavProdHandler();
+    });
+
     super.initState();
   }
 
@@ -69,7 +86,21 @@ class _ProductDescriptionState extends State<ProductDescription> {
         if (!widget.isReseller)
           InkWell(
             onTap: widget.heartColor == true
-                ? null
+                ? () async {
+                    CustomLoader.showLoader(context: context);
+                    bool res = await DeleteFavouriteService()
+                        .deleteFavouriteService(
+                            context: context,
+                            customerId: loginStorage.getUserId(),
+                            productId: widget.product.productId);
+                    _getCustFavProdHandler();
+
+                    if (res == true) {
+                      showToast('Product remove from favourite');
+                    }
+
+                    CustomLoader.hideLoader(context);
+                  }
                 : () {
                     isFav = true;
                     isFav ? addToFavHandler() : null;
