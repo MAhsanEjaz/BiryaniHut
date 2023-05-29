@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -31,7 +33,7 @@ class CustomerProfileScreen extends StatefulWidget {
 class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   final image = ImagePicker();
 
-  String? imagePath;
+  File? imagePath;
 
   Future saveImagePath(String path) async {
     final prefs = await SharedPreferences.getInstance();
@@ -137,9 +139,22 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     });
     getImagePath().then((path) {
       setState(() {
-        imagePath = path;
+        imagePath = File(path!);
       });
     });
+  }
+
+  String? imagee;
+
+  void _convertImageToBase64() async {
+    if (imagePath != null) {
+      List<int> imageBytes = await imagePath!.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
+      setState(() {
+        imagee = base64Image;
+        log("selected image path = $imagee");
+      });
+    }
   }
 
   @override
@@ -154,195 +169,179 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
           ),
           backgroundColor: appColor,
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.pink,
-                          image: data.customerProfileModel!.data!
-                                      .customerImagePath ==
-                                  null
-                              ? DecorationImage(
-                                  image: NetworkImage(data.customerProfileModel!
-                                      .data!.customerImagePath
-                                      .toString()),
-                                  fit: BoxFit.cover)
-                              : imagePath == null
-                                  ? const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/person.jpg'))
-                                  : data.customerProfileModel!.data!
-                                              .customerImage ==
-                                          null
-                                      ? DecorationImage(
-                                          image: FileImage(File(imagePath!)),
-                                          fit: BoxFit.cover)
-                                      : DecorationImage(
-                                          image: NetworkImage(data
-                                              .customerProfileModel!
-                                              .data!
-                                              .customerImage
-                                              .toString()))),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          InkWell(
-                              onTap: () async {
-                                final myImage = await image.pickImage(
-                                    source: ImageSource.gallery);
-                                if (myImage != null) {
-                                  CroppedFile? crop = await ImageCropper
-                                      .platform
-                                      .cropImage(sourcePath: myImage.path);
-                                  if (crop != null) {
-                                    imagePath = crop.path;
+        body: data.customerProfileModel == null
+            ? const Center(child: CupertinoActivityIndicator())
+            : SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: imagePath == null
+                                    ? null
+                                    : data.customerProfileModel!.data!
+                                            .customerImagePath!.isEmpty
+                                        ? Colors.grey
+                                        : Colors.transparent,
+                                image: data.customerProfileModel!.data!
+                                        .customerImagePath!.isEmpty
+                                    ? const DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/person.jpg'))
+                                    : DecorationImage(
+                                        image: NetworkImage(data
+                                            .customerProfileModel!
+                                            .data!
+                                            .customerImagePath
+                                            .toString()),
+                                        fit: BoxFit.cover)),
+                            child: Column(
+                              children: [
+                                const Spacer(),
+                                InkWell(
+                                    onTap: () async {
+                                      final camImage = await image.pickImage(
+                                          source: ImageSource.gallery);
+                                      if (camImage != null) {
+                                        imagePath = File(camImage.path);
+                                        _convertImageToBase64();
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8.0),
+                                        child: Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.edit),
+                            SizedBox(width: 5),
+                            Text('Edit Profile')
+                          ],
+                        ),
+                        const SizedBox(height: 3),
+                        data.customerProfileModel == null
+                            ? const CupertinoActivityIndicator(radius: 10)
+                            : Text(
+                                "Hey there ${data.customerProfileModel!.data!.firstName}!",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                    color: Colors.black87),
+                              ),
+                        TextButton(
+                            onPressed: () {
+                              Hive.box("login_hive").clear();
+                              Hive.box("customer_cart_box").clear();
+                              // Navigator.pushReplacement(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   return LoginPage();
+                              // }));
 
-                                    saveImagePath(imagePath!);
-                                    setState(() {});
-                                  }
-                                }
-                                convertIntoBytes();
-                              },
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
+                                  (Route route) => false);
+                            },
+                            child: const Text("Sign out")),
+
+                        CustomTextField(
+                            headerText: "First Name",
+                            controller: firstNameCont,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        CustomTextField(
+                            headerText: "Last Name",
+                            controller: lastNameCont,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        CustomTextField(
+                            headerText: "Salon Name",
+                            controller: saloonControl,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Sale Rep Name",
+                            controller: salesRepCont,
+                            isEnabled: false,
+                            hint: 'Sales rep Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        // CustomTextField(
+                        //     isEnabled: true,
+                        //     hint: 'Saloon',
+                        //     hintTextStyle: TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Email",
+                            controller: emailCont,
+                            isEnabled: false,
+                            hint: 'Email',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Phone # ",
+                            isEnabled: true,
+                            inputFormats: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(12),
+                              PhoneInputFormatter()
+                            ],
+                            inputType: TextInputType.phone,
+                            controller: phoneCont,
+                            hint: 'Phone #',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Address",
+                            isEnabled: true,
+                            controller: addressCont,
+                            hint: "Address",
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        DefaultButton(
+                          verticalMargin: 10.0,
+                          text: "Update",
+                          width: getProportionateScreenWidth(200),
+                          press: () {
+                            updateCustomerHandler();
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.edit),
-                      SizedBox(width: 5),
-                      Text('Edit Profile')
-                    ],
-                  ),
-                  const SizedBox(height: 3),
-                  data.customerProfileModel == null
-                      ? const CupertinoActivityIndicator(radius: 10)
-                      : Text(
-                          "Hey there ${data.customerProfileModel!.data!.firstName}!",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.black87),
-                        ),
-                  TextButton(
-                      onPressed: () {
-                        Hive.box("login_hive").clear();
-                        Hive.box("customer_cart_box").clear();
-                        // Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return LoginPage();
-                        // }));
-
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
-                            (Route route) => false);
-                      },
-                      child: const Text("Sign out")),
-
-                  CustomTextField(
-                      headerText: "First Name",
-                      controller: firstNameCont,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-
-                  CustomTextField(
-                      headerText: "Last Name",
-                      controller: lastNameCont,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-
-                  CustomTextField(
-                      headerText: "Salon Name",
-                      controller: saloonControl,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Sale Rep Name",
-                      controller: salesRepCont,
-                      isEnabled: false,
-                      hint: 'Sales rep Name',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-                  // CustomTextField(
-                  //     isEnabled: true,
-                  //     hint: 'Saloon',
-                  //     hintTextStyle: TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Email",
-                      controller: emailCont,
-                      isEnabled: false,
-                      hint: 'Email',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Phone # ",
-                      isEnabled: true,
-                      inputFormats: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(12),
-                        PhoneInputFormatter()
-                      ],
-                      inputType: TextInputType.phone,
-                      controller: phoneCont,
-                      hint: 'Phone #',
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Address",
-                      isEnabled: true,
-                      controller: addressCont,
-                      hint: "Address",
-                      hintTextStyle:
-                          const TextStyle(fontWeight: FontWeight.bold)),
-                  DefaultButton(
-                    verticalMargin: 10.0,
-                    text: "Update",
-                    width: getProportionateScreenWidth(200),
-                    press: () {
-                      updateCustomerHandler();
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       );
     });
-  }
-
-  convertIntoBytes() {
-    final bytes = File(imagePath!).readAsBytesSync();
-    print(bytes);
   }
 }

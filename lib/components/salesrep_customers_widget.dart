@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/reseller_order_time_calender_widget.dart';
@@ -11,6 +12,7 @@ import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/models/resseller_customers_model.dart';
 import 'package:shop_app/sales%20rep/all_orders_screen.dart';
 import 'package:shop_app/sales%20rep/salesrep_products_page.dart';
+import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_custom_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:sumup/sumup.dart';
@@ -26,6 +28,7 @@ import 'default_button.dart';
 
 class SalesRepCustomersWidget extends StatefulWidget {
   SalesrepCustomerData customers;
+
   bool showDialogue;
   BuildContext context;
 
@@ -128,15 +131,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   void initState() {
     super.initState();
 
-    firstName = TextEditingController();
     firstName.text = widget.customers.firstName!;
-    lastName = TextEditingController();
     lastName.text = widget.customers.lastName!;
-    solonName = TextEditingController();
     solonName.text = widget.customers.salonName!;
-    phone = TextEditingController();
     phone.text = widget.customers.phone!;
-    address = TextEditingController();
     address.text = widget.customers.address!;
   }
 
@@ -209,8 +207,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -231,8 +229,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -252,8 +250,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -336,6 +334,13 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                     controller: solonName,
                                                     hint: 'Salon Name'),
                                                 CustomTextField(
+                                                    inputFormats: [
+                                                      FilteringTextInputFormatter
+                                                          .digitsOnly,
+                                                      LengthLimitingTextInputFormatter(
+                                                          12),
+                                                      PhoneInputFormatter(),
+                                                    ],
                                                     inputType:
                                                         TextInputType.number,
                                                     prefixWidget:
@@ -353,8 +358,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         ),
                                       ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -384,8 +389,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1097,8 +1102,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

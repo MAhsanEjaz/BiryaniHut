@@ -44,32 +44,21 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
   // String query = '';
 
-  void filterList(String query) {
+  void filterList(String query) async {
     final queryLower = query.toLowerCase();
+    await ResellerCustomerService()
+        .getCustomerList(context: context, isReport: false);
     setState(() {
       searchList = customerProvider.where((element) {
         final saloonName = element.salonName!.trim().toLowerCase();
         final firstName = element.firstName!.trim().toLowerCase();
         final lastName = element.lastName!.trim().toLowerCase();
         final fullName = '$firstName $lastName';
+
         return saloonName.contains(queryLower) || fullName.contains(queryLower);
       }).toList();
     });
   }
-
-  // List<ResellerCustomersList> get searchProduct {
-  //   final customerProvider =
-  //       Provider.of<ResellerCustomerProvider>(context, listen: false);
-  //   final queryLower = query.toLowerCase();
-  //   return customerProvider.custList!.where((element) {
-  //     final saloonName = element.firstName!.trim().toLowerCase();
-  //     final firstName = element.salonName!.trim().toLowerCase();
-  //     final lastName = element.lastName!.trim().toLowerCase();
-  //     return saloonName.contains(queryLower) ||
-  //         firstName.contains(queryLower) ||
-  //         lastName.contains(queryLower);
-  //   }).toList();
-  // }
 
   @override
   void initState() {
@@ -113,7 +102,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                             onPressed: () async {
                               searchCont.clear();
                               setState(() {
-                                searchList = customer.custList!;
+                                searchList = customerProvider;
                               });
                             },
                             icon: const Icon(Icons.close))

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -26,7 +27,7 @@ class SalesrepProfileScreen extends StatefulWidget {
 class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
   final image = ImagePicker();
 
-  String? imagePath;
+  String? imagePathh;
 
   TextEditingController firstNameCont = TextEditingController();
   TextEditingController lastNameCont = TextEditingController();
@@ -48,6 +49,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
         lastName: lastNameCont.text,
+        saleRepImage: imagePathh,
         phone: phoneCont.text);
 
     log(loginStorage.getSalesRepId().toString());
@@ -87,6 +89,19 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
     });
   }
 
+  File? imagePath;
+
+  void _convertImageToBase64() async {
+    if (imagePath != null) {
+      List<int> imageBytes = await imagePath!.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
+      setState(() {
+        imagePathh = base64Image;
+        log("selected image path = $imagePathh");
+      });
+    }
+  }
+
   // Uni bytes = [];
 
   @override
@@ -105,13 +120,13 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Consumer<SalesrepProfileProvider>(
-              builder: (context, value, child) {
-                if (value.repProfileModel != null) {
-                  emailCont.text = value.repProfileModel!.data.email;
-                  firstNameCont.text = value.repProfileModel!.data.firstName;
-                  lastNameCont.text = value.repProfileModel!.data.lastName;
-                  phoneCont.text = value.repProfileModel!.data.phone;
-                  addressCont.text = value.repProfileModel!.data.address;
+              builder: (context, data, _) {
+                if (data.repProfileModel != null) {
+                  emailCont.text = data.repProfileModel!.data.email;
+                  firstNameCont.text = data.repProfileModel!.data.firstName;
+                  lastNameCont.text = data.repProfileModel!.data.lastName;
+                  phoneCont.text = data.repProfileModel!.data.phone;
+                  addressCont.text = data.repProfileModel!.data.address;
                   return Column(
                     children: [
                       const SizedBox(height: 10),
@@ -123,26 +138,26 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.pink,
-                              image: DecorationImage(
-                                  image: FileImage(File(imagePath.toString())),
-                                  fit: BoxFit.cover)),
+                              // image: imagePath!.path.isEmpty
+                              //     ? const DecorationImage(
+                              //         image: AssetImage(
+                              //             'assets/images/person.jpg'))
+                              //     : DecorationImage(
+                              //         image: FileImage(File(imagePath!.path)),
+                              //         fit: BoxFit.cover)
+                          ),
                           child: Column(
                             children: [
                               const Spacer(),
                               InkWell(
                                   onTap: () async {
-                                    final myImage = await image.pickImage(
+                                    final camImage = await image.pickImage(
                                         source: ImageSource.gallery);
-                                    if (myImage != null) {
-                                      CroppedFile? crop = await ImageCropper
-                                          .platform
-                                          .cropImage(sourcePath: myImage.path);
-                                      if (crop != null) {
-                                        imagePath = crop.path;
-                                        setState(() {});
-                                      }
+                                    if (camImage != null) {
+                                      imagePath = File(camImage.path);
+                                      _convertImageToBase64();
+                                      setState(() {});
                                     }
-                                    convertIntoBytes();
                                   },
                                   child: Center(
                                     child: Padding(
@@ -159,9 +174,9 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.edit),
                           SizedBox(width: 5),
                           Text('Edit Profile')
@@ -238,11 +253,5 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         ),
       ),
     );
-  }
-
-  convertIntoBytes() {
-    final bytes = File(imagePath!).readAsBytesSync();
-
-    log("bytes = $bytes");
   }
 }

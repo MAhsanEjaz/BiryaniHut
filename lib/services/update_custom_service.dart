@@ -5,15 +5,15 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_post_request.dart';
 
 class UpdateCustomService {
-  Future updateCustomerService({
-    required BuildContext context,
-    isSaleREpProfile = false,
-    int? customerId,
-    String? firstName,
-    String? lastName,
-    String? address,
-    String? phone,
-  }) async {
+  Future updateCustomerService(
+      {required BuildContext context,
+      isSaleREpProfile = false,
+      int? customerId,
+      String? firstName,
+      String? lastName,
+      String? address,
+      String? phone,
+      String? saleRepImage}) async {
     try {
       Map body = {
         isSaleREpProfile == false ? "customerId" : "id": customerId,
@@ -21,6 +21,7 @@ class UpdateCustomService {
         "lastName": lastName,
         "address": address,
         "phone": phone,
+        "saleRepImageMobile": saleRepImage
       };
       log("update customer body = $body");
       var res = await CustomPostRequestService().httpPostRequest(
