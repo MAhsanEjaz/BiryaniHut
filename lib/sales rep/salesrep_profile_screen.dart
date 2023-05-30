@@ -136,16 +136,25 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           height: 130,
                           width: 130,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.pink,
-                            // image: imagePath!.path.isEmpty
-                            //     ? const DecorationImage(
-                            //         image: AssetImage(
-                            //             'assets/images/person.jpg'))
-                            //     : DecorationImage(
-                            //         image: FileImage(File(imagePath!.path)),
-                            //         fit: BoxFit.cover)
-                          ),
+                              shape: BoxShape.circle,
+                              color: Colors.pink,
+                              image:
+                                  data.repProfileModel!.data.saleRepImagePath ==
+                                          null
+                                      ? const DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/person.jpg'),
+                                          fit: BoxFit.cover)
+                                      : imagePath != null
+                                          ? DecorationImage(
+                                              image: FileImage(imagePath!),
+                                              fit: BoxFit.cover)
+                                          : DecorationImage(
+                                              image: NetworkImage(data
+                                                  .repProfileModel!
+                                                  .data
+                                                  .saleRepImagePath),
+                                              fit: BoxFit.cover)),
                           child: Column(
                             children: [
                               const Spacer(),
@@ -174,9 +183,9 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.edit),
                           SizedBox(width: 5),
                           Text('Edit Profile')
