@@ -21,7 +21,8 @@ class UpdateCustomService {
         "lastName": lastName,
         "address": address,
         "phone": phone,
-        "saleRepImageMobile": saleRepImage
+        isSaleREpProfile == false ? "customerImage" : "saleRepImageMobile":
+            saleRepImage
       };
       log("update customer body = $body");
       var res = await CustomPostRequestService().httpPostRequest(

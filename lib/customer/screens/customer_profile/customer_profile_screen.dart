@@ -108,6 +108,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     bool res = await UpdateCustomService().updateCustomerService(
         context: context,
         address: addressCont.text,
+        saleRepImage: imagee,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
         lastName: lastNameCont.text,
@@ -193,11 +194,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                                             .customerImagePath!.isEmpty
                                         ? Colors.grey
                                         : Colors.transparent,
-                                image: data.customerProfileModel!.data!
-                                        .customerImagePath!.isEmpty
-                                    ? const DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/person.jpg'))
+                                image: imagePath != null
+                                    ? DecorationImage(
+                                        image: FileImage(imagePath!),
+                                        fit: BoxFit.cover)
                                     : DecorationImage(
                                         image: NetworkImage(data
                                             .customerProfileModel!
@@ -210,6 +210,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                                 const Spacer(),
                                 InkWell(
                                     onTap: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.clear();
+
                                       final camImage = await image.pickImage(
                                           source: ImageSource.gallery);
                                       if (camImage != null) {
@@ -233,9 +237,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.edit),
                             SizedBox(width: 5),
                             Text('Edit Profile')
