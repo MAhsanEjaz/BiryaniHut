@@ -144,6 +144,17 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                         return;
                                                       }
 
+                                                      log("item.quantity = ${widget.productData.quantity}");
+                                                      log("quantity = $quantity");
+
+                                                      if (widget.productData
+                                                              .quantity <
+                                                          quantity) {
+                                                        showToast(
+                                                            "You can add upto ${widget.productData.quantity} items only");
+                                                        return;
+                                                      }
+
                                                       Navigator.pop(context);
 
                                                       List<CartItem> model = [];
@@ -182,7 +193,6 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                         } else {
                                                           showToast(
                                                               "Added to Cart");
-
                                                           addtoCart(
                                                             widget.productData,
                                                             context,
@@ -695,7 +705,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
       discount: item.discount,
       productDescription: item.discription,
       productImage: item.productImagePath!,
-      productImagePath: '',
+      productImagePath: item.productImagePath!,
       productName: item.productName,
       // totalCost: item.price * item.quantity,
       totalPrice: 0,
