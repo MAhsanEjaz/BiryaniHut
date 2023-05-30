@@ -94,172 +94,178 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     SizeConfig().init(context);
 
     return Consumer<ProductsProvider>(builder: (context, data, _) {
-      return WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: getProportionateScreenHeight(10)),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomTextField(
-                            controller: searchCont,
-                            hint: "Search Products",
-                            prefixWidget: const Icon(Icons.search),
-                            isEnabled: true,
-                            onChange: (value) {
-                              query = value;
-                              setState(() {});
-                            },
-
-                            // onSubmit: (value) {
-                            //   // productSearchHandler(
-                            //   //     context: context, searchText: searchCont.text);
-                            //   // showSearch = true;
-                            //   //
-                            //   // setState(() {
-                            //   //   print("Show Search $showSearch");
-                            //   // });
-                            // },
-                            // suffixWidget: showSearch
-                            //     ? IconButton(
-                            //         onPressed: () {
-                            //           showSearch = false;
-                            //
-                            //           setState(() {
-                            //             searchCont.clear();
-                            //           });
-                            //         },
-                            //         icon: const Icon(Icons.clear))
-                            //     : const SizedBox()
-                          ),
-                        ),
-                      ),
-                      Consumer<CartCounterProvider>(
-                          builder: (context, cart, _) {
-                        return IconBtnWithCounter(
-                            numOfitem: cart.count,
-                            svgSrc: "assets/icons/Cart Icon.svg",
-                            press: () {
-                              // if (list.length > 0) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CustomerCartPage()));
-                              // } else {
-                              //   showToast("Cart Empty yet !");
-                              // showSnackbar(
-                              //     context: context,
-                              //     title: "Cart Empty",
-                              //     desc: "Nothing yet in cart");
-                              // }
-                            });
-                      }),
-                      const SizedBox(
-                        width: 6,
-                      )
-                    ],
-                  ),
-
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: WillPopScope(
+          onWillPop: _onWillPop,
+          child: Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    Row(
                       children: [
-                        SizedBox(height: getProportionateScreenWidth(10)),
-                        const DiscountBanner(),
-                        // const Categories(),
-                        // SpecialOffers(),
-                        // SizedBox(height: getProportionateScreenWidth(10)),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomTextField(
+                              controller: searchCont,
+                              hint: "Search Products",
+                              prefixWidget: const Icon(Icons.search),
+                              isEnabled: true,
+                              onChange: (value) {
+                                query = value;
+                                setState(() {});
+                              },
 
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 18.0),
-                          child: Text(
-                            'All Products',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                              // onSubmit: (value) {
+                              //   // productSearchHandler(
+                              //   //     context: context, searchText: searchCont.text);
+                              //   // showSearch = true;
+                              //   //
+                              //   // setState(() {
+                              //   //   print("Show Search $showSearch");
+                              //   // });
+                              // },
+                              // suffixWidget: showSearch
+                              //     ? IconButton(
+                              //         onPressed: () {
+                              //           showSearch = false;
+                              //
+                              //           setState(() {
+                              //             searchCont.clear();
+                              //           });
+                              //         },
+                              //         icon: const Icon(Icons.clear))
+                              //     : const SizedBox()
+                            ),
                           ),
                         ),
-                      ]),
-
-                  // ListView.builder(
-                  //     shrinkWrap: true,
-                  //     itemCount: data.prod!.length,
-                  //     itemBuilder: (context, index) {
-                  //       return Text(data.prod![index].productName.toString());
-                  //     }),
-
-                  searchProduct.isNotEmpty
-                      ? Wrap(
-                          children: [
-                            for (var product in searchProduct)
-                              CustomerProductsWidget(
-                                isReseller: false,
-                                productData: product,
-                              )
-                          ],
+                        Consumer<CartCounterProvider>(
+                            builder: (context, cart, _) {
+                          return IconBtnWithCounter(
+                              numOfitem: cart.count,
+                              svgSrc: "assets/icons/Cart Icon.svg",
+                              press: () {
+                                FocusScope.of(context).unfocus();
+                                // if (list.length > 0) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CustomerCartPage()));
+                                // } else {
+                                //   showToast("Cart Empty yet !");
+                                // showSnackbar(
+                                //     context: context,
+                                //     title: "Cart Empty",
+                                //     desc: "Nothing yet in cart");
+                                // }
+                              });
+                        }),
+                        const SizedBox(
+                          width: 6,
                         )
-                      : const Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            'Product not found',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                      ],
+                    ),
+
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: getProportionateScreenWidth(10)),
+                          const DiscountBanner(),
+                          // const Categories(),
+                          // SpecialOffers(),
+                          // SizedBox(height: getProportionateScreenWidth(10)),
+
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 18.0),
+                            child: Text(
+                              'All Products',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        )
+                        ]),
 
-                  // Column(children: [
-                  //        Padding(
-                  //          padding: EdgeInsets.symmetric(
-                  //              horizontal: getProportionateScreenWidth(15)),
-                  //          child:
-                  //              SectionTitle(title: "All Products", press: () {}),
-                  //        ),
-                  //        if (widgets.isNotEmpty)
-                  //          Center(
-                  //            child: Wrap(
-                  //              alignment: WrapAlignment.start,
-                  //              crossAxisAlignment: WrapCrossAlignment.center,
-                  //              children: widgets.toList(),
-                  //            ),
-                  //          ),
-                  //        // : const CircularProgressIndicator(),
-                  //        SizedBox(height: getProportionateScreenWidth(30)),
-                  //      ]),
-                  //    Consumer<ProductSearchProvider>(
-                  //        builder: (context, search, _) {
-                  //        List<Widget> widgets = [];
-                  //        search.prodSearch!.isNotEmpty && search.prodSearch != null
-                  //            ? search.prodSearch!.forEach((element) {
-                  //                widgets.add(CustomerProductsWidget(
-                  //                  isReseller: false,
-                  //                  productData: element,
-                  //                )
-                  //                );
-                  //              })
-                  //            : Container(
-                  //                alignment: Alignment.center,
-                  //                child: const Text(
-                  //                  "No Product Available",
-                  //                  style: TextStyle(color: kPrimaryColor),
-                  //                ),
-                  //              );
-                  //        return Wrap(
-                  //          children: widgets,
-                  //        );
-                  //      }),
-                ],
+                    // ListView.builder(
+                    //     shrinkWrap: true,
+                    //     itemCount: data.prod!.length,
+                    //     itemBuilder: (context, index) {
+                    //       return Text(data.prod![index].productName.toString());
+                    //     }),
+
+                    searchProduct.isNotEmpty
+                        ? Wrap(
+                            children: [
+                              for (var product in searchProduct)
+                                CustomerProductsWidget(
+                                  isReseller: false,
+                                  productData: product,
+                                )
+                            ],
+                          )
+                        : const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              'Product not found',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+
+                    // Column(children: [
+                    //        Padding(
+                    //          padding: EdgeInsets.symmetric(
+                    //              horizontal: getProportionateScreenWidth(15)),
+                    //          child:
+                    //              SectionTitle(title: "All Products", press: () {}),
+                    //        ),
+                    //        if (widgets.isNotEmpty)
+                    //          Center(
+                    //            child: Wrap(
+                    //              alignment: WrapAlignment.start,
+                    //              crossAxisAlignment: WrapCrossAlignment.center,
+                    //              children: widgets.toList(),
+                    //            ),
+                    //          ),
+                    //        // : const CircularProgressIndicator(),
+                    //        SizedBox(height: getProportionateScreenWidth(30)),
+                    //      ]),
+                    //    Consumer<ProductSearchProvider>(
+                    //        builder: (context, search, _) {
+                    //        List<Widget> widgets = [];
+                    //        search.prodSearch!.isNotEmpty && search.prodSearch != null
+                    //            ? search.prodSearch!.forEach((element) {
+                    //                widgets.add(CustomerProductsWidget(
+                    //                  isReseller: false,
+                    //                  productData: element,
+                    //                )
+                    //                );
+                    //              })
+                    //            : Container(
+                    //                alignment: Alignment.center,
+                    //                child: const Text(
+                    //                  "No Product Available",
+                    //                  style: TextStyle(color: kPrimaryColor),
+                    //                ),
+                    //              );
+                    //        return Wrap(
+                    //          children: widgets,
+                    //        );
+                    //      }),
+                  ],
+                ),
               ),
             ),
+            bottomNavigationBar:
+                const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
           ),
-          bottomNavigationBar:
-              const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
         ),
       );
     });

@@ -49,6 +49,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -697,7 +698,8 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
       productImagePath: '',
       productName: item.productName,
       // totalCost: item.price * item.quantity,
-      totalPrice: 0, totalCost: 0,
+      totalPrice: 0,
+      totalCost: 0,
     );
     cartStorage.addCartItem(item: cartItem);
     Provider.of<CartCounterProvider>(context, listen: false).incrementCount();

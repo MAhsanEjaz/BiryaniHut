@@ -57,6 +57,7 @@ class CustomCustomBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   // showToast("under development");
 
                   Navigator.push(
@@ -74,6 +75,8 @@ class CustomCustomBottomNavBar extends StatelessWidget {
                   color: Colors.grey.withOpacity(.9),
                 ),
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
+
                   // showToast("under development");
                   Navigator.push(
                       context,
@@ -89,11 +92,14 @@ class CustomCustomBottomNavBar extends StatelessWidget {
                         ? kPrimaryColor
                         : inActiveIconColor,
                   ),
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const CustomerProfileScreen()))),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                            const CustomerProfileScreen()));
+                  }),
               // Navigator.pushNamed(context, ProfileScreen.routeName),
               // Navigator.push(
               //     context,

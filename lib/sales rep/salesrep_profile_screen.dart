@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
+import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_custom_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import '../../../storages/login_storage.dart';
@@ -138,14 +140,10 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.pink,
-                              // image: imagePath!.path.isEmpty
-                              //     ? const DecorationImage(
-                              //         image: AssetImage(
-                              //             'assets/images/person.jpg'))
-                              //     : DecorationImage(
-                              //         image: FileImage(File(imagePath!.path)),
-                              //         fit: BoxFit.cover)
-                          ),
+                              image: DecorationImage(
+                                  image: NetworkImage(data
+                                      .repProfileModel!.data.saleRepImagePath),
+                                  fit: BoxFit.cover)),
                           child: Column(
                             children: [
                               const Spacer(),
@@ -221,8 +219,14 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
                       CustomTextField(
+                          inputFormats:   [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(12),
+                            PhoneInputFormatter(),
+                          ],
                           headerText: "Phone #",
                           isEnabled: true,
+                          inputType: TextInputType.number,
                           controller: phoneCont,
                           hint: 'Phone #',
                           hintTextStyle:
