@@ -183,9 +183,9 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Icon(Icons.edit),
                           SizedBox(width: 5),
                           Text('Edit Profile')
