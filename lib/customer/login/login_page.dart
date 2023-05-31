@@ -286,7 +286,7 @@ class _LoginScreenState extends State<LoginPage> {
     }
 
     if (passCont.text.isEmpty) {
-      passErrorString = "Password not correct";
+      passErrorString = "Please enter password";
       isPassError = true;
       isValid = false;
     }

@@ -18,11 +18,13 @@ import '../storages/customer_cart_storage.dart';
 class CustomerProductsWidget extends StatefulWidget {
   final bool isReseller;
   bool heartColor;
+  Function()? favouriteTap;
   final ProductData productData;
 
   CustomerProductsWidget(
       {Key? key,
       required this.isReseller,
+      this.favouriteTap,
       required this.productData,
       this.heartColor = false})
       : super(key: key);
@@ -47,65 +49,67 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustomerProductDetailsPage(
-                heartColor: widget.heartColor,
-                data: widget.productData,
-              ),
-            ));
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14.0),
-          child: Container(
-            height: 220,
-            width: MediaQuery.of(context).size.width / 2.2,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(widget.productData.productImagePath ==
-                                "" ||
-                            widget.productData.productImagePath == null
-                        ? dummyImageUrl
-                        : getImageUrl(widget.productData.productImagePath!)),
-                    fit: BoxFit.cover)),
-            child: Container(
-              decoration: const BoxDecoration(
-                  gradient:
-                      LinearGradient(colors: [Colors.black26, Colors.white24])),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          child: Text(
-                            widget.productData.productName,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          width: 100,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            model.clear();
-                            totalPrice = 0;
-                            getCartItems();
+    return Stack(
+      children: [
+        InkWell(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustomerProductDetailsPage(
+                    heartColor: widget.heartColor,
+                    data: widget.productData,
+                  ),
+                ));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14.0),
+              child: Container(
+                height: 220,
+                width: MediaQuery.of(context).size.width / 2.2,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            widget.productData.productImagePath == "" ||
+                                    widget.productData.productImagePath == null
+                                ? dummyImageUrl
+                                : getImageUrl(
+                                    widget.productData.productImagePath!)),
+                        fit: BoxFit.cover)),
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.black26, Colors.white24])),
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              child: Text(
+                                widget.productData.productName,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              width: 100,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                model.clear();
+                                totalPrice = 0;
+                                getCartItems();
 
-                            showDialog(
-                                context: context,
-                                builder:
-                                    (context) => StatefulBuilder(
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => StatefulBuilder(
                                             builder: (context, setStatesss) {
                                           return CupertinoAlertDialog(
                                               // title: const Text(
@@ -654,28 +658,49 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                 ),
                                               ));
                                         }));
-                          },
-                          child: Card(
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              child: const Padding(
-                                padding: EdgeInsets.all(2.0),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.black54,
-                                ),
-                              )),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                              },
+                              child: Card(
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.0)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Colors.black54,
+                                    ),
+                                  )),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
+        widget.heartColor == true
+            ? Positioned(
+                right: 5,
+                top: 0,
+                child: InkWell(
+                  onTap: (widget.favouriteTap),
+                  child: const Icon(
+                    CupertinoIcons.heart_fill,
+                    fill: 1,
+                    shadows: [
+                      Shadow(color: Colors.black45),
+                      Shadow(color: Colors.red),
+                    ],
+                    color: Colors.red,
+                  ),
+                ),
+              )
+            : const SizedBox()
+      ],
     );
   }
 

@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/customer_products_widget.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/products_model.dart';
+import 'package:shop_app/models/resseller_customers_model.dart';
+import 'package:shop_app/services/product_remove_favourite_service.dart';
 
 import '../../helper/custom_loader.dart';
 import '../../models/favourites_products_model.dart';
@@ -27,6 +30,8 @@ class _FavouritesScreenState extends State<FavouritesPage> {
         context: context, customerId: LoginStorage().getUserId());
     CustomLoader.hideLoader(context);
   }
+
+  LoginStorage loginStorage = LoginStorage();
 
   @override
   void initState() {
@@ -52,6 +57,21 @@ class _FavouritesScreenState extends State<FavouritesPage> {
               ? product.favProd!.forEach((element) {
                   widgets.add(
                     CustomerProductsWidget(
+                      favouriteTap: () async {
+                        CustomLoader.showLoader(context: context);
+                        bool res = await DeleteFavouriteService()
+                            .deleteFavouriteService(
+                                context: context,
+                                customerId: loginStorage.getUserId(),
+                                productId: element.productId);
+                        _getCustFavProdHandler();
+
+                        if (res == true) {
+                          showToast('Product remove from favourite');
+                        }
+
+                        CustomLoader.hideLoader(context);
+                      },
                       heartColor: true,
                       isReseller: false,
                       productData: element,
@@ -59,9 +79,11 @@ class _FavouritesScreenState extends State<FavouritesPage> {
                   );
                 })
               : const SizedBox();
-          return Wrap(
-            children: widgets,
-          );
+          return product.favProd!.isEmpty
+              ? const Center(child: Text("No Favourite product"))
+              : Wrap(
+                  children: widgets,
+                );
         }),
       ),
     );

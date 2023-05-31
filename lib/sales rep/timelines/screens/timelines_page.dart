@@ -7,6 +7,7 @@ import 'package:shop_app/models/timelines_model.dart';
 import 'package:shop_app/providers/timelines_provider.dart';
 import 'package:shop_app/sales%20rep/timelines/widgets/post_container.dart';
 import 'package:shop_app/services/time_lines_services.dart';
+import 'package:shop_app/widgets/custom_textfield.dart';
 
 class TimelinesPage extends StatefulWidget {
   const TimelinesPage({Key? key}) : super(key: key);
@@ -19,6 +20,22 @@ class _TimelinesPageState extends State<TimelinesPage> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
 
+  List<TimeLines> getTimeLine = [];
+  List<TimeLines> searchTimeLine = [];
+
+  searchQuery(String query) {
+    final lowerString = query.toLowerCase();
+
+    setState(() {
+      getTimeLine = searchTimeLine.where((element) {
+        final title = element.title!.toLowerCase();
+        final description = element.description!.toLowerCase();
+
+        return title.contains(lowerString) || description.contains(lowerString);
+      }).toList();
+    });
+  }
+
   @override
   void dispose() {
     _trackingScrollController.dispose();
@@ -28,6 +45,18 @@ class _TimelinesPageState extends State<TimelinesPage> {
   timeLineHandler() async {
     CustomLoader.showLoader(context: context);
     await TimeLinesService().getTimeLines(context: context);
+
+    final timeLine =
+        Provider.of<TimeLinesProvider>(context, listen: false).timeLines!;
+
+    getTimeLine = timeLine;
+
+    searchTimeLine = getTimeLine;
+
+    setState(() {});
+
+    print(getTimeLine);
+
     CustomLoader.hideLoader(context);
   }
 
@@ -46,7 +75,7 @@ class _TimelinesPageState extends State<TimelinesPage> {
       child: Consumer<TimeLinesProvider>(builder: (context, data, _) {
         return Scaffold(
           // appBar: AppBar(title: Text("Timelines")),
-          body: TimelineScreen(time: data.timeLines),
+          body: TimelineScreen(time: getTimeLine, onChanged: searchQuery),
         );
       }),
     );
@@ -56,7 +85,9 @@ class _TimelinesPageState extends State<TimelinesPage> {
 class TimelineScreen extends StatefulWidget {
   List<TimeLines>? time = [];
 
-  TimelineScreen({Key? key, this.time}) : super(key: key);
+  Function(String query)? onChanged;
+
+  TimelineScreen({Key? key, this.time, this.onChanged}) : super(key: key);
 
   @override
   State<TimelineScreen> createState() => _TimelineScreenState();
@@ -75,6 +106,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           title: Text('Timeline', style: appbarTextStye),
           centerTitle: false,
           floating: true,
+          expandedHeight:  ,
           pinned: true,
 
           // actions: [
@@ -91,6 +123,15 @@ class _TimelineScreenState extends State<TimelineScreen> {
           // ],
           systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
+
+        SliverToBoxAdapter(
+          child: CustomTextField(
+            prefixWidget: const Icon(Icons.search),
+            hint: 'Search',
+            onChange: widget.onChanged,
+          ),
+        ),
+
         // SliverToBoxAdapter(
         //   child: CreatePostContainer(
         //     currentUser: currentUser,
