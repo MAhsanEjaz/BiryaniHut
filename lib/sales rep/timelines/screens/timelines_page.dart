@@ -106,7 +106,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           title: Text('Timeline', style: appbarTextStye),
           centerTitle: false,
           floating: true,
-          expandedHeight:  ,
+          // expandedHeight:  ,
           pinned: true,
 
           // actions: [
