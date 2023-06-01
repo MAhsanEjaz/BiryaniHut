@@ -179,6 +179,14 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
 
                                                         log("item.quantity = ${widget.data.quantity}");
                                                         log("quantity = $quantity");
+
+                                                        if (widget
+                                                                .data.quantity <
+                                                            quantity) {
+                                                          showToast(
+                                                              "You can add upto ${widget.data.quantity} items only");
+                                                          return;
+                                                        }
                                                         Navigator.pop(context);
 
                                                         List<CartItem> model =
