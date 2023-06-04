@@ -1350,6 +1350,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           " " +
           loginStorage.getUserLastName(),
       repName: loginStorage.getSalesRepName(),
+      isOrderCompleted: false,
     );
 
     pdfService.savePdfFile("invoice_$number", data);

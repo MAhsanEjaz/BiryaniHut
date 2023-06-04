@@ -85,14 +85,17 @@ class _OrdersDetailsPageState extends State<OrdersDetailsPage> {
               InkWell(
                 onTap: () async {
                   final data = await PdfOrdersInvoiceService().createInvoice(
-                      ctx: context,
-                      order: widget.orders,
-                      customerName: widget.orders.firstName! +
-                          " " +
-                          widget.orders.lastName!,
-                      repName: storage.getUserFirstName() +
-                          " " +
-                          storage.getUserLastName());
+                    ctx: context,
+                    order: widget.orders,
+                    customerName: widget.orders.firstName! +
+                        " " +
+                        widget.orders.lastName!,
+                    repName: storage.getUserFirstName() +
+                        " " +
+                        storage.getUserLastName(),
+                    isOrderCompleted:
+                        widget.orders.status == "Pending" ? false : true,
+                  );
 
                   PdfOrdersInvoiceService()
                       .savePdfFile("Influance Invoice", data);

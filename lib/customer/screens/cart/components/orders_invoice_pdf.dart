@@ -25,15 +25,22 @@ class CustomRow {
 
 class PdfOrdersInvoiceService {
   LoginStorage loginStorage = LoginStorage();
+  String orderStatus = '';
 
   Future<Uint8List> createInvoice(
       {required SaleRapOrdersList order,
       required String repName,
       required String customerName,
+      required bool isOrderCompleted,
+
       // PdfViewModel? view,
       required BuildContext ctx}) async {
     final pdf = pw.Document();
-
+    if (isOrderCompleted) {
+      orderStatus = "Completed";
+    } else {
+      orderStatus = "Pending";
+    }
     final List<CustomRow> elements = [
       // for (int i = 0; i < view!.order!.length; i++)
       // for (int i = 0; i < 3; i++)
@@ -98,6 +105,13 @@ class PdfOrdersInvoiceService {
                           "Order Id :"
                                   "  " +
                               order.orderId.toString(),
+                          // style: dealStyle
+                        ),
+                        pw.Text(
+                          // "Dealer Name :" + "  " + usermodels!.name!,
+                          "Order Status :"
+                                  "  " +
+                              orderStatus,
                           // style: dealStyle
                         ),
                         // pw.RichText(

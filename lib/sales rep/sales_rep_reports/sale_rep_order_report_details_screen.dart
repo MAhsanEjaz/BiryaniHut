@@ -110,14 +110,16 @@ class _SaleRepOrderReportDetailsScreenState
           ? InkWell(
               onTap: () async {
                 final data = await PdfOrdersInvoiceService().createInvoice(
-                    ctx: context,
-                    order: widget.orders,
-                    customerName: widget.orders.firstName! +
-                        " " +
-                        widget.orders.lastName!,
-                    repName: storage.getUserFirstName() +
-                        " " +
-                        storage.getUserLastName());
+                  ctx: context,
+                  order: widget.orders,
+                  customerName:
+                      widget.orders.firstName! + " " + widget.orders.lastName!,
+                  repName: storage.getUserFirstName() +
+                      " " +
+                      storage.getUserLastName(),
+                  isOrderCompleted:
+                      widget.orders.status == "Pending" ? false : true,
+                );
 
                 PdfOrdersInvoiceService()
                     .savePdfFile("Influance Invoice", data);
@@ -176,16 +178,20 @@ class _SaleRepOrderReportDetailsScreenState
                     children: [
                       InkWell(
                         onTap: () async {
-                          final data = await PdfOrdersInvoiceService()
-                              .createInvoice(
-                                  ctx: context,
-                                  order: widget.orders,
-                                  customerName: widget.orders.firstName! +
-                                      " " +
-                                      widget.orders.lastName!,
-                                  repName: storage.getUserFirstName() +
-                                      " " +
-                                      storage.getUserLastName());
+                          final data =
+                              await PdfOrdersInvoiceService().createInvoice(
+                            ctx: context,
+                            order: widget.orders,
+                            customerName: widget.orders.firstName! +
+                                " " +
+                                widget.orders.lastName!,
+                            repName: storage.getUserFirstName() +
+                                " " +
+                                storage.getUserLastName(),
+                            isOrderCompleted: widget.orders.status == "Pending"
+                                ? false
+                                : true,
+                          );
 
                           PdfOrdersInvoiceService()
                               .savePdfFile("Influance Invoice", data);
@@ -328,6 +334,10 @@ class _SaleRepOrderReportDetailsScreenState
                                               widget.orders.firstName! +
                                                   " " +
                                                   widget.orders.lastName!,
+                                          isOrderCompleted:
+                                              widget.orders.status == "Pending"
+                                                  ? false
+                                                  : true,
                                           repName: storage.getUserFirstName() +
                                               " " +
                                               storage.getUserLastName());
@@ -474,15 +484,19 @@ class _SaleRepOrderReportDetailsScreenState
                                 onTap: () async {
                                   final data = await PdfOrdersInvoiceService()
                                       .createInvoice(
-                                          ctx: context,
-                                          order: widget.orders,
-                                          customerName:
-                                              widget.orders.firstName! +
-                                                  " " +
-                                                  widget.orders.lastName!,
-                                          repName: storage.getUserFirstName() +
-                                              " " +
-                                              storage.getUserLastName());
+                                    ctx: context,
+                                    order: widget.orders,
+                                    customerName: widget.orders.firstName! +
+                                        " " +
+                                        widget.orders.lastName!,
+                                    repName: storage.getUserFirstName() +
+                                        " " +
+                                        storage.getUserLastName(),
+                                    isOrderCompleted:
+                                        widget.orders.status == "Pending"
+                                            ? false
+                                            : true,
+                                  );
 
                                   PdfOrdersInvoiceService()
                                       .savePdfFile("Influance Invoice", data);
@@ -629,13 +643,17 @@ class _SaleRepOrderReportDetailsScreenState
                               onTap: () async {
                                 final data = await PdfOrdersInvoiceService()
                                     .createInvoice(
-                                        ctx: context,
-                                        order: widget.orders,
-                                        customerName: widget.name,
-                                        repName:
-                                            loginStorage.getUserFirstName() +
-                                                " " +
-                                                loginStorage.getUserLastName());
+                                  ctx: context,
+                                  order: widget.orders,
+                                  customerName: widget.name,
+                                  repName: loginStorage.getUserFirstName() +
+                                      " " +
+                                      loginStorage.getUserLastName(),
+                                  isOrderCompleted:
+                                      widget.orders.status == "Pending"
+                                          ? false
+                                          : true,
+                                );
 
                                 PdfOrdersInvoiceService()
                                     .savePdfFile("Influance Invoice", data);
