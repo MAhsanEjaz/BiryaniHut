@@ -1239,6 +1239,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       cartModel: cartModel,
       customerName: widget.customerName,
       repName: storage.getUserFirstName() + " " + storage.getUserLastName(),
+      isOrderCompleted: false,
     );
 
     pdfService.savePdfFile("invoice_$number", data);
