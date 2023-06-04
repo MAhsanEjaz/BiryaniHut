@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginPage> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SalesrepDashboardPage(),
+              builder: (context) => SalesRepDashboardPage(),
             ));
         showToast("Login Successfully");
       }

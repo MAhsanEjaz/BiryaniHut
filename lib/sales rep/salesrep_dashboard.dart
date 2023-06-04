@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
@@ -7,14 +5,15 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/enums.dart';
 import 'package:shop_app/providers/timelines_provider.dart';
+import 'package:shop_app/providers/top_category_provider.dart';
 import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
 import 'package:shop_app/sales%20rep/salesrep_customers.dart';
 import 'package:shop_app/sales%20rep/salesrep_order_page.dart';
 import 'package:shop_app/sales%20rep/salesrep_products_page.dart';
 import 'package:shop_app/sales%20rep/salesrep_report_page.dart';
 import 'package:shop_app/sales%20rep/salesrep_reviews_page.dart';
-import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_order_report_page.dart';
 import 'package:shop_app/sales%20rep/timelines/screens/timelines_page.dart';
+import 'package:shop_app/services/top_category_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 
@@ -22,17 +21,14 @@ import '../components/custom_reseller_bottom_nav_bar.dart';
 import '../components/reseller_dashbord_vertical_card_widget.dart';
 import '../components/reseller_horizntal_dashboard_widget.dart';
 
-
-
-
-class SalesrepDashboardPage extends StatefulWidget {
-  const SalesrepDashboardPage({Key? key}) : super(key: key);
+class SalesRepDashboardPage extends StatefulWidget {
+  const SalesRepDashboardPage({Key? key}) : super(key: key);
 
   @override
-  State<SalesrepDashboardPage> createState() => _SalesrepDashboardPageState();
+  State<SalesRepDashboardPage> createState() => _SalesRepDashboardPageState();
 }
 
-class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
+class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
   LoginStorage storage = LoginStorage();
 
   DateTime? _lastPressedTime;
@@ -117,7 +113,7 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                const SalesrepOrdersPage()));
+                                    const SalesrepOrdersPage()));
                       },
                     ),
                     ResellerHorizontalDashboardWidget(
@@ -128,7 +124,7 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                const ResellerCustomersPage()));
+                                    const ResellerCustomersPage()));
                       },
                     ),
                   ],
@@ -144,8 +140,7 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                SalesRepProductsPage(
+                            builder: (context) => SalesRepProductsPage(
                                   customerId: 0,
                                   isReseller: false,
                                 )));
@@ -165,7 +160,7 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                   title: 'Review & Comments',
                   imageUrl: "assets/icons/review_comments_icon.svg",
                   subTitle:
-                  "Peruse the feedback and opinions shared by customers",
+                      "Peruse the feedback and opinions shared by customers",
                   onTap: () {
                     Navigator.push(
                         context,
@@ -174,7 +169,6 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                   },
                 ),
                 ResellerDashboardVerticalCardWidget(
-
                   imageUrl: "assets/icons/reposts.svg",
                   title: "Reports",
                   onTap: () {
@@ -246,10 +240,7 @@ class _SalesrepDashboardPageState extends State<SalesrepDashboardPage> {
                     DefaultButton(
                       text: "Send",
                       verticalMargin: 12.0,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width / 2,
+                      width: MediaQuery.of(context).size.width / 2,
                       press: () {},
                     )
                   ],

@@ -23,6 +23,7 @@ import 'package:shop_app/providers/salesrep_all_customer_payment_provider.dart';
 import 'package:shop_app/providers/salesrep_customer_payment_aging_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import 'package:shop_app/providers/timelines_provider.dart';
+import 'package:shop_app/providers/top_category_provider.dart';
 import 'package:shop_app/providers/user_data_provider.dart';
 import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
 import 'package:shop_app/storages/login_storage.dart';
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
+        ChangeNotifierProvider(create: (context) => TopCategoryProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
