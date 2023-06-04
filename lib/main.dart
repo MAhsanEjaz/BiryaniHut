@@ -31,6 +31,7 @@ import 'package:shop_app/theme.dart';
 
 import 'customer/provider/categories_provider.dart';
 import 'customer/screens/splash/password_screen.dart';
+import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
 
 String? myPublishKey;
@@ -104,6 +105,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
         ChangeNotifierProvider(create: (context) => TopCategoryProvider()),
+        ChangeNotifierProvider(create: (context) => CostOfGooddSaleProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -95,259 +95,265 @@ class _OrderReportPageState extends State<OrderReportPage> {
         complete.add(element);
       }
     });
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: iconTheme,
-        backgroundColor: appColor,
-        title: const Text(
-          'Customers Wise Order Status Report',
-          style: appbarTextStye,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        setState(() {});
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: iconTheme,
+          backgroundColor: appColor,
+          title: const Text(
+            'Customers Wise Order Status Report',
+            style: appbarTextStye,
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 18.0, vertical: 12.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButton(
-                            isExpanded: true,
-                            underline: const SizedBox(),
-                            value: selectedCustomerName,
-                            hint: const Text(
-                              "Select Customer",
-                            ),
-                            items: resellerList.map((item) {
-                              return DropdownMenuItem(
-                                child: Text(
-                                    item.firstName! + " " + item.lastName!),
-                                value: item.id,
-                              );
-                            }).toList(),
-                            onChanged: (int? value) {
-                              if (value == 1084) {
-                                selectedCustomerName = value;
-                                showList = false;
-                                print("Value $value");
-                                orderHandler();
-                              } else {
-                                selectedCustomerName = value;
-                                print("value1 $value");
-                                showList = true;
-                                getallOrdersOfCustomerHandler(
-                                    selectedCustomerName!);
-                              }
-                            }),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0, vertical: 12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DropdownButton(
+                              isExpanded: true,
+                              underline: const SizedBox(),
+                              value: selectedCustomerName,
+                              hint: const Text(
+                                "Select Customer",
+                              ),
+                              items: resellerList.map((item) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                      item.firstName! + " " + item.lastName!),
+                                  value: item.id,
+                                );
+                              }).toList(),
+                              onChanged: (int? value) {
+                                if (value == 1084) {
+                                  selectedCustomerName = value;
+                                  showList = false;
+                                  print("Value $value");
+                                  orderHandler();
+                                } else {
+                                  selectedCustomerName = value;
+                                  print("value1 $value");
+                                  showList = true;
+                                  getallOrdersOfCustomerHandler(
+                                      selectedCustomerName!);
+                                }
+                              }),
+                        ),
                       ),
-                    ),
-                    const Text(
-                      "Orders Report",
-                      style: detailsStyle,
-                    ),
-                    divider(),
-                    showList == false
-                        ? Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Total Orders",
-                                    style: orderStyle,
-                                  ),
-                                  Text(
-                                    "${repOrder.length}",
-                                    style: orderStyle,
-                                  )
-                                ],
-                              ),
-                              divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Pending Orders", //  "Total Paid",
-                                    style: orderStyle,
-                                  ),
-                                  Text(
-                                    "${pending.length}",
-                                    style: orderStyle,
-                                  )
-                                ],
-                              ),
-                              divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Complete Orders",
-                                    style: orderStyle,
-                                  ),
-                                  Text(
-                                    "${complete.length}",
-                                    style: orderStyle,
-                                  )
-                                ],
-                              ),
-                              divider()
-                            ],
-                          )
-                        : const SizedBox(),
-                    Table(
-                      border:
-                          TableBorder.all(color: Colors.black26, width: 1.5),
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      children: const [
-                        TableRow(children: [
-                          Text(
-                            'Sr #',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            'Customer Name',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            'Order Id',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            'Date',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            'Status',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        ]),
-                      ],
-                    ),
-                    !showList
-                        ? repOrder.isNotEmpty
-                            ? Container(
-                                alignment: Alignment.center,
-                                color: Colors.white,
-                                child: Table(
-                                  border: TableBorder.all(
-                                      color: Colors.black26, width: 1.5),
-                                  defaultVerticalAlignment:
-                                      TableCellVerticalAlignment.middle,
+                      const Text(
+                        "Orders Report",
+                        style: detailsStyle,
+                      ),
+                      divider(),
+                      showList == false
+                          ? Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TableRow(children: [
-                                      TableCell(
-                                          child: ListView.builder(
-                                              itemCount: repOrder.length,
-                                              shrinkWrap: true,
-                                              primary: false,
-                                              itemBuilder: (context, index) {
-                                                return OrderReportsWidget(
-                                                  order: repOrder[index],
-                                                  index: index,
-                                                );
-                                              }))
-                                    ])
+                                    const Text(
+                                      "Total Orders",
+                                      style: orderStyle,
+                                    ),
+                                    Text(
+                                      "${repOrder.length}",
+                                      style: orderStyle,
+                                    )
                                   ],
                                 ),
-                              )
-                            : const SizedBox()
-                        : Container(
-                            alignment: Alignment.center,
-                            color: Colors.white,
-                            child: Table(
-                              border: TableBorder.all(
-                                  color: Colors.black26, width: 1.5),
-                              defaultVerticalAlignment:
-                                  TableCellVerticalAlignment.middle,
-                              children: [
-                                TableRow(children: [
-                                  TableCell(
-                                      child: ListView.builder(
-                                          itemCount: orders.length,
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          itemBuilder: (context, index) {
-                                            return OrderReportsWidget(
-                                              order: orders[index],
-                                              index: index,
-                                            );
-                                          }))
-                                  // : TableCell(
-                                  //     child: ListView.builder(
-                                  //         itemCount: custList.length,
-                                  //         shrinkWrap: true,
-                                  //         primary: false,
-                                  //         itemBuilder: (context, index) {
-                                  //           return OrderReportsWidget(
-                                  //             order: custList[index],
-                                  //             index: index,
-                                  //           );
-                                  //         })),
-                                ])
+                                divider(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Pending Orders", //  "Total Paid",
+                                      style: orderStyle,
+                                    ),
+                                    Text(
+                                      "${pending.length}",
+                                      style: orderStyle,
+                                    )
+                                  ],
+                                ),
+                                divider(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Complete Orders",
+                                      style: orderStyle,
+                                    ),
+                                    Text(
+                                      "${complete.length}",
+                                      style: orderStyle,
+                                    )
+                                  ],
+                                ),
+                                divider()
                               ],
+                            )
+                          : const SizedBox(),
+                      Table(
+                        border:
+                            TableBorder.all(color: Colors.black26, width: 1.5),
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: const [
+                          TableRow(children: [
+                            Text(
+                              'Sr #',
+                              style: titleStyle,
+                              textAlign: TextAlign.center,
                             ),
-                          )
-                  ],
+                            Text(
+                              'Customer Name',
+                              style: titleStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Order Id',
+                              style: titleStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Date',
+                              style: titleStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Status',
+                              style: titleStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ]),
+                        ],
+                      ),
+                      !showList
+                          ? repOrder.isNotEmpty
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.white,
+                                  child: Table(
+                                    border: TableBorder.all(
+                                        color: Colors.black26, width: 1.5),
+                                    defaultVerticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    children: [
+                                      TableRow(children: [
+                                        TableCell(
+                                            child: ListView.builder(
+                                                itemCount: repOrder.length,
+                                                shrinkWrap: true,
+                                                primary: false,
+                                                itemBuilder: (context, index) {
+                                                  return OrderReportsWidget(
+                                                    order: repOrder[index],
+                                                    index: index,
+                                                  );
+                                                }))
+                                      ])
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox()
+                          : Container(
+                              alignment: Alignment.center,
+                              color: Colors.white,
+                              child: Table(
+                                border: TableBorder.all(
+                                    color: Colors.black26, width: 1.5),
+                                defaultVerticalAlignment:
+                                    TableCellVerticalAlignment.middle,
+                                children: [
+                                  TableRow(children: [
+                                    TableCell(
+                                        child: ListView.builder(
+                                            itemCount: orders.length,
+                                            shrinkWrap: true,
+                                            primary: false,
+                                            itemBuilder: (context, index) {
+                                              return OrderReportsWidget(
+                                                order: orders[index],
+                                                index: index,
+                                              );
+                                            }))
+                                    // : TableCell(
+                                    //     child: ListView.builder(
+                                    //         itemCount: custList.length,
+                                    //         shrinkWrap: true,
+                                    //         primary: false,
+                                    //         itemBuilder: (context, index) {
+                                    //           return OrderReportsWidget(
+                                    //             order: custList[index],
+                                    //             index: index,
+                                    //           );
+                                    //         })),
+                                  ])
+                                ],
+                              ),
+                            )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        height: kToolbarHeight * 1.0,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            border: Border.all(color: kSecondaryColor, width: 1.5)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            DefaultButton(
-              height: SizeConfig.screenHeight * 0.05,
-              width: SizeConfig.screenWidth * 0.5,
-              text: "Print Report",
-              press: () async {
-                if (showList ? orders.isEmpty : repOrder.isEmpty) {
-                  showAwesomeAlert(
-                    context: context,
-                    msg: "No Payments for this customer",
-                    onOkPress: () {},
-                  );
-                } else {
-                  final data = await pdfInvoice.createInvoice(
+        bottomNavigationBar: Container(
+          height: kToolbarHeight * 1.0,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              border: Border.all(color: kSecondaryColor, width: 1.5)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              DefaultButton(
+                height: SizeConfig.screenHeight * 0.05,
+                width: SizeConfig.screenWidth * 0.5,
+                text: "Print Report",
+                press: () async {
+                  if (showList ? orders.isEmpty : repOrder.isEmpty) {
+                    showAwesomeAlert(
                       context: context,
-                      tPending: pending.length,
-                      tComplete: complete.length,
-                      order: showList == false ? repOrder : orders,
-                      showCust: showList ? true : false);
-                  int number = 0;
-                  pdfInvoice.savePdfFile("invoice_$number", data);
-                  number++;
-                }
-              },
-            )
-          ],
+                      msg: "No Payments for this customer",
+                      onOkPress: () {},
+                    );
+                  } else {
+                    final data = await pdfInvoice.createInvoice(
+                        context: context,
+                        tPending: pending.length,
+                        tComplete: complete.length,
+                        order: showList == false ? repOrder : orders,
+                        showCust: showList ? true : false);
+                    int number = 0;
+                    pdfInvoice.savePdfFile("invoice_$number", data);
+                    number++;
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

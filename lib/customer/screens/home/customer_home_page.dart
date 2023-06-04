@@ -38,9 +38,31 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   List<ProductData>? productsList = [];
 
+  ////
+
+  List<ProductData> myProducts = [];
+  List<ProductData> callProducts = [];
+
+  searchProducts(String query) {
+    final myQuery = query.toLowerCase();
+
+    setState(() {
+      callProducts = myProducts.where((element) {
+        final name = element.productName.toLowerCase();
+        return name.contains(myQuery);
+      }).toList();
+    });
+  }
+
+  onClear() {
+    callProducts = myProducts;
+    searchCont.clear();
+    setState(() {});
+  }
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (cartStorage.getCartItems() != null) {
         list = cartStorage.getCartItems()!;
         log("list length = ${list.length}");
@@ -49,13 +71,20 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             .setCount(list.length);
       }
 
-      getProducts(context: context);
+      await getProducts(context: context);
+
+      final productProvider =
+          Provider.of<ProductsProvider>(context, listen: false);
+      myProducts = productProvider.prod!;
+      callProducts = myProducts;
     });
 
     super.initState();
   }
 
   List<Widget> widgets = [];
+
+  List<ProductData> clearProducts = [];
 
   // bool showSearch = false;
 
@@ -114,14 +143,15 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: CustomTextField(
+                              suffixWidget: searchCont.text.isNotEmpty
+                                  ? InkWell(
+                                      onTap: onClear, child: Icon(Icons.clear))
+                                  : SizedBox(),
                               controller: searchCont,
                               hint: "Search Products",
                               prefixWidget: const Icon(Icons.search),
                               isEnabled: true,
-                              onChange: (value) {
-                                query = value;
-                                setState(() {});
-                              },
+                              onChange: searchProducts,
 
                               // onSubmit: (value) {
                               //   // productSearchHandler(
@@ -194,17 +224,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                           ),
                         ]),
 
-                    // ListView.builder(
-                    //     shrinkWrap: true,
-                    //     itemCount: data.prod!.length,
-                    //     itemBuilder: (context, index) {
-                    //       return Text(data.prod![index].productName.toString());
-                    //     }),
-
-                    searchProduct.isNotEmpty
+                    callProducts.isNotEmpty
                         ? Wrap(
                             children: [
-                              for (var product in searchProduct)
+                              for (var product in callProducts)
                                 CustomerProductsWidget(
                                   isReseller: false,
                                   productData: product,

@@ -29,11 +29,22 @@ import 'default_button.dart';
 class SalesRepCustomersWidget extends StatefulWidget {
   SalesrepCustomerData customers;
 
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController solonName = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController address = TextEditingController();
+
   bool showDialogue;
   BuildContext context;
 
   SalesRepCustomersWidget(
       {Key? key,
+      required this.phone,
+      required this.lastName,
+      required this.solonName,
+      required this.address,
+      required this.firstName,
       required this.customers,
       this.showDialogue = true,
       required this.context})
@@ -89,32 +100,32 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(widget.context);
   }
 
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
-  TextEditingController solonName = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController address = TextEditingController();
+  // TextEditingController firstName = TextEditingController();
+  // TextEditingController lastName = TextEditingController();
+  // TextEditingController solonName = TextEditingController();
+  // TextEditingController phone = TextEditingController();
+  // TextEditingController address = TextEditingController();
 
   updateCustomerHandler() async {
     CustomLoader.showLoader(context: context);
 
     bool res = await UpdateCustomService().updateCustomerService(
         context: context,
-        address: address.text,
+        address: widget.address.text,
         customerId: widget.customers.id,
-        firstName: firstName.text,
-        lastName: lastName.text,
-        phone: phone.text);
+        firstName: widget.firstName.text,
+        lastName: widget.lastName.text,
+        phone: widget.phone.text);
 
     if (res == true) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Update Successfully'),
         backgroundColor: Colors.green[600],
       ));
-      widget.customers.address = address.text;
-      widget.customers.firstName = firstName.text;
-      widget.customers.lastName = lastName.text;
-      widget.customers.phone = phone.text;
+      widget.customers.address = widget.address.text;
+      widget.customers.firstName = widget.firstName.text;
+      widget.customers.lastName = widget.lastName.text;
+      widget.customers.phone = widget.phone.text;
 
       setState(() {});
     } else {
@@ -131,11 +142,11 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   void initState() {
     super.initState();
 
-    firstName.text = widget.customers.firstName!;
-    lastName.text = widget.customers.lastName!;
-    solonName.text = widget.customers.salonName!;
-    phone.text = widget.customers.phone!;
-    address.text = widget.customers.address!;
+    widget.firstName.text = widget.customers.firstName!;
+    widget.lastName.text = widget.customers.lastName!;
+    widget.solonName.text = widget.customers.salonName!;
+    widget.phone.text = widget.customers.phone!;
+    widget.address.text = widget.customers.address!;
   }
 
   deleteCustomerHandler(BuildContext context, int? id, int? selId) async {
@@ -207,8 +218,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -229,8 +240,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -250,8 +261,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -320,18 +331,19 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 CustomTextField(
                                                   prefixWidget:
                                                       const Icon(Icons.person),
-                                                  controller: firstName,
+                                                  controller: widget.firstName,
                                                   hint: 'First Name',
                                                 ),
                                                 CustomTextField(
                                                     prefixWidget: const Icon(
                                                         Icons.person),
-                                                    controller: lastName,
+                                                    controller: widget.lastName,
                                                     hint: 'Last Name'),
                                                 CustomTextField(
                                                     prefixWidget: const Icon(
                                                         Icons.home_work_sharp),
-                                                    controller: solonName,
+                                                    controller:
+                                                        widget.solonName,
                                                     hint: 'Salon Name'),
                                                 CustomTextField(
                                                     inputFormats: [
@@ -345,12 +357,12 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                         TextInputType.number,
                                                     prefixWidget:
                                                         const Icon(Icons.phone),
-                                                    controller: phone,
+                                                    controller: widget.phone,
                                                     hint: 'Phone'),
                                                 CustomTextField(
                                                     prefixWidget:
                                                         const Icon(Icons.home),
-                                                    controller: address,
+                                                    controller: widget.address,
                                                     hint: 'Address'),
                                               ],
                                             ),
@@ -358,8 +370,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         ),
                                       ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -389,8 +401,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1102,8 +1114,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

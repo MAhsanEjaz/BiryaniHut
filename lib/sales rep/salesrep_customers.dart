@@ -74,104 +74,106 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ResellerCustomerProvider>(builder: (context, customer, _) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: appColor,
-          iconTheme: iconTheme,
-          title: const Text(
-            "Customers",
-            style: appbarTextStye,
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          setState(() {});
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: appColor,
+            iconTheme: iconTheme,
+            title: const Text(
+              "Customers",
+              style: appbarTextStye,
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomTextField(
-                    onChange: filterList,
-                    controller: searchCont,
-                    focusNode: searchFocus,
-                    hint: "Search customer",
-                    prefixWidget: const Icon(Icons.search),
-                    isEnabled: true,
-                    suffixWidget: searchCont.text.isNotEmpty
-                        ? IconButton(
-                            onPressed: () async {
-                              searchCont.clear();
-                              setState(() {
-                                searchList = customerProvider;
-                              });
-                            },
-                            icon: const Icon(Icons.close))
-                        : const SizedBox()),
-              ),
-              if (searchList.isNotEmpty)
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: searchList.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return SalesRepCustomersWidget(
-                        customers: searchList[index],
-                        context: context,
-                      );
-                    })
-              else if (searchCont.text.isNotEmpty && searchList.isEmpty)
-                const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text("No Customer matched"))
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextField(
+                      onChange: filterList,
+                      controller: searchCont,
+                      focusNode: searchFocus,
+                      hint: "Search customer",
+                      prefixWidget: const Icon(Icons.search),
+                      isEnabled: true,
+                      suffixWidget: searchCont.text.isNotEmpty
+                          ? IconButton(
+                              onPressed: () async {
+                                searchCont.clear();
+                                setState(() {
+                                  searchList = customerProvider;
+                                });
+                              },
+                              icon: const Icon(Icons.close))
+                          : const SizedBox()),
+                ),
+                if (searchList.isNotEmpty)
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: searchList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final originalIndex = searchList[index];
+                        TextEditingController firstNameController =
+                            TextEditingController(
+                          text: originalIndex.firstName?.toString() ?? '',
+                        );
+                        TextEditingController lastNameController =
+                            TextEditingController(
+                          text: originalIndex.lastName?.toString() ?? '',
+                        );
 
-              // Center(
-              //     child: SizedBox(
-              //         width: SizeConfig.screenWidth * .8, child: SearchField())),
+                        TextEditingController saloonNameController =
+                            TextEditingController(
+                          text: originalIndex.salonName?.toString() ?? '',
+                        );
 
-              // showSearch == false
-              //     ? Consumer<ResellerCustomerProvider>(
-              //         builder: (context, cust, _) {
-              //         // if (cust != null && cust.custList!.isNotEmpty) {
-              //         // cust.custList!.removeAt(0);
-              //         // }
-              //         // customersList.clear();
-              //         customersList = cust.custList!;
-              //         // log("customersList[0].firstName = ${customersList[0].firstName}");
-              //         return
+                        TextEditingController addressController =
+                            TextEditingController(
+                          text: originalIndex.phone?.toString() ?? '',
+                        );
 
-              // })
-              // : Consumer<CustomersSearchProvider>(
-              //     builder: (context, search, _) {
-              //     return search.customerSearch!.isNotEmpty
-              //         ? ListView.builder(
-              //             shrinkWrap: true,
-              //             itemCount: search.customerSearch!.length,
-              //             primary: false,
-              //             scrollDirection: Axis.vertical,
-              //             physics: const NeverScrollableScrollPhysics(),
-              //             itemBuilder: (context, index) {
-              //               return SalesRepCustomersWidget(
-              //                 customers: search.customerSearch![index],
-              //                 context: context,
-              //               );
-              //             })
-              //         : const Center(child: Text("No Customer matched"));
-              //   })
-            ],
+                        TextEditingController phoneController =
+                            TextEditingController(
+                          text: originalIndex.address?.toString() ?? '',
+                        );
+
+                        return SalesRepCustomersWidget(
+                          address: addressController,
+                          firstName: firstNameController,
+                          customers: originalIndex,
+                          context: context,
+                          phone: phoneController,
+                          lastName: lastNameController,
+                          solonName: saloonNameController,
+                        );
+                      })
+                else if (searchCont.text.isNotEmpty && searchList.isEmpty)
+                  const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text("No Customer matched"))
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: appColor,
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const SignUpPage(
-                isReseller: true,
-              );
-            }));
-          },
-          child: const Icon(
-            Icons.add,
-            color: whiteColor,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: appColor,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const SignUpPage(
+                  isReseller: true,
+                );
+              }));
+            },
+            child: const Icon(
+              Icons.add,
+              color: whiteColor,
+            ),
           ),
         ),
       );
