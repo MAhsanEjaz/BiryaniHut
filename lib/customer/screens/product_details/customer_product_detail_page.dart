@@ -167,6 +167,14 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                             "Quantity can't be less than 1");
                                                         return;
                                                       }
+
+                                                      if (widget.data.quantity <
+                                                          quantity) {
+                                                        showToast(
+                                                            "You can add upto ${widget.data.quantity} items only");
+                                                        return;
+                                                      }
+
                                                       Navigator.pop(context);
 
                                                       // List<CartItem> model =

@@ -4,6 +4,7 @@ import 'package:shop_app/constants.dart';
 import '../../../components/reseller_order_time_calender_widget.dart';
 import '../../../models/salesrep_orders_model.dart';
 import '../../order_detail_page.dart';
+import '../../sales_rep_reports/sale_rep_order_report_details_screen.dart';
 
 class SalesrepOrderWidget2 extends StatelessWidget {
   SalesrepOrderWidget2({
@@ -56,10 +57,16 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => OrdersDetailsPage(
+                            builder: (context) =>
+                                SaleRepOrderReportDetailsScreen(
+                                  isInvoices: false,
                                   isCustomer: isCustomer!,
-                                  orders: repOrders,
-                                  showScaffold: true,
+                                  orders: repOrders, date: repOrders.dateTime!,
+                                  name: repOrders.firstName! +
+                                      repOrders.lastName!,
+                                  orderId: repOrders.orderId!,
+                                  key: key,
+                                  // showScaffold: true,
                                 )));
                   },
                   child: Container(

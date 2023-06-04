@@ -45,13 +45,18 @@ class _TimelinesPageState extends State<TimelinesPage> {
   timeLineHandler() async {
     CustomLoader.showLoader(context: context);
     await TimeLinesService().getTimeLines(context: context);
+
     final timeLine =
         Provider.of<TimeLinesProvider>(context, listen: false).timeLines!;
 
     getTimeLine = timeLine;
+
     searchTimeLine = getTimeLine;
+
     setState(() {});
+
     print(getTimeLine);
+
     CustomLoader.hideLoader(context);
   }
 
@@ -101,6 +106,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           title: Text('Timeline', style: appbarTextStye),
           centerTitle: false,
           floating: true,
+          // expandedHeight:  ,
           pinned: true,
 
           // actions: [

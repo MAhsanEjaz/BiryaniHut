@@ -700,7 +700,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                   onTap: (widget.favouriteTap),
                   child: const Icon(
                     CupertinoIcons.heart_fill,
-                    fill: 1,
+                    // fill: 1,
                     shadows: [
                       Shadow(color: Colors.black45),
                       Shadow(color: Colors.red),

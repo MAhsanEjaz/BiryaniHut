@@ -2,12 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
-import 'package:shop_app/components/rounded_icon_btn.dart';
 import 'package:shop_app/constants.dart';
-import 'package:shop_app/customer/screens/product_details/customer_product_detail_page.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/products_model.dart';
@@ -168,6 +165,14 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                     } else if (quantity < 1) {
                                                       showToast(
                                                           "Quantity can't be less than 1");
+                                                      return;
+                                                    }
+
+                                                    if (widget.productData
+                                                            .quantity <
+                                                        quantity) {
+                                                      showToast(
+                                                          "You can add upto ${widget.productData.quantity} items only");
                                                       return;
                                                     }
 
