@@ -48,7 +48,7 @@ class _SalesRepPaymentAgingReportState
       appBar: AppBar(
         iconTheme: iconTheme,
         backgroundColor: appColor,
-        title: Text(
+        title: const Text(
           "Customer Payment Aging Report",
           style: appbarTextStye,
         ),
@@ -118,14 +118,14 @@ class _SalesRepPaymentAgingReportState
                                 shrinkWrap: true,
                                 primary: false,
                                 scrollDirection: Axis.vertical,
-                                itemBuilder: (BuildContext, index) {
+                                itemBuilder: (build, index) {
                                   return CustomerPaymentsAgingWidget(
                                     payments: agingList[index],
                                     index: index,
                                     listLength: agingList.length,
                                   );
                                 })
-                            : SizedBox()
+                            : const SizedBox()
                       ])
                     ],
                   ),
@@ -182,14 +182,14 @@ class CustomerPaymentsAgingWidget extends StatelessWidget {
             Expanded(
                 // flex:2,
                 child: Text(
-              '${(payments.first! < 0 ? 0 : payments.first!).toStringAsFixed(2)}',
+              (payments.first! < 0 ? 0 : payments.first!).toStringAsFixed(2),
               style: tableStyle,
               textAlign: TextAlign.center,
             )),
             Expanded(
                 // flex:2,
                 child: Text(
-              '${(payments.second! < 0 ? 0 : payments.second!).toStringAsFixed(2)}',
+              (payments.second! < 0 ? 0 : payments.second!).toStringAsFixed(2),
               // getDate(order.dateTime),
               style: tableStyle,
               textAlign: TextAlign.center,
@@ -197,7 +197,7 @@ class CustomerPaymentsAgingWidget extends StatelessWidget {
             Expanded(
                 // flex:3,
                 child: Text(
-              '${(payments.third! < 0 ? 0 : payments.third!).toStringAsFixed(2)}',
+              (payments.third! < 0 ? 0 : payments.third!).toStringAsFixed(2),
               // order.status,
               style: tableStyle,
               textAlign: TextAlign.center,
@@ -205,7 +205,7 @@ class CustomerPaymentsAgingWidget extends StatelessWidget {
           ],
         ),
         index == listLength - 1
-            ? SizedBox(
+            ? const SizedBox(
                 height: 5.0,
               )
             : divider(),
