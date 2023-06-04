@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shop_app/sales%20rep/sales_rep_reports/categories_report_page.dart';
 import 'package:shop_app/sales%20rep/sales_rep_reports/sales_rep_payment_aging_report.dart';
 import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_orders_aging_report.dart';
 import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_payments_report_page.dart';
@@ -67,7 +68,7 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                   SalesrepOrderAgingReportPage()));
+                                  const SalesrepOrderAgingReportPage()));
                     },
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -78,9 +79,19 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const SalesRepPaymentAgingReport()));
+                                  const SalesRepPaymentAgingReport()));
                     },
                   ),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const CategoriesReportsPage()));
+                      },
+                      child: const Text("Categories report")),
                 ],
               ),
             ),

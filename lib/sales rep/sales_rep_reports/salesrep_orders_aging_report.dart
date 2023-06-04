@@ -5,16 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/models/salrrep_customer_order_aging_model.dart';
 import 'package:shop_app/providers/salerep_customer_order_aging_provider.dart';
-import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_order_report_page.dart';
-import 'package:shop_app/services/salesrep_orders_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import '../../constants.dart';
-import '../../models/resseller_customers_model.dart';
-import '../../models/salesrep_orders_model.dart';
-import '../../providers/all_orders_provider.dart';
-import '../../providers/reseller_customer_provider.dart';
-import '../../services/all_orders_service.dart';
-import '../../services/reseller_customers_service.dart';
 import '../../services/sale_rep_customer_order_aging_service.dart';
 import 'order_aging_report_pdf_screen.dart';
 
@@ -96,10 +88,11 @@ class _OrderReportPageState extends State<SalesrepOrderAgingReportPage> {
                         ),
                         orderAging != null
                             ? Text(
-                                "${orderAging!.saleRepTotalOrders!.toStringAsFixed(2)}",
+                                orderAging!.saleRepTotalOrders!
+                                    .toStringAsFixed(2),
                                 style: orderStyle,
                               )
-                            : SizedBox()
+                            : const SizedBox.shrink()
                       ]),
                   const SizedBox(height: 10),
                   Table(
@@ -166,7 +159,7 @@ class _OrderReportPageState extends State<SalesrepOrderAgingReportPage> {
                             ],
                           ),
                         )
-                      : Text("No record available")
+                      : const Text("No record available")
                 ],
               ),
             ),
@@ -176,7 +169,7 @@ class _OrderReportPageState extends State<SalesrepOrderAgingReportPage> {
           final data = await pdfInvoiceService.createOrderAgingReport(
             context: context,
             payments: orderAging!.orderPayment!,
-            totalOrders: '${orderAging!.saleRepTotalOrders.toString()}',
+            totalOrders: orderAging!.saleRepTotalOrders.toString(),
           );
           int number = 0;
           pdfInvoiceService.savePdfFile("invoice_$number", data);

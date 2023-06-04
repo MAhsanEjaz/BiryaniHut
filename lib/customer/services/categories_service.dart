@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
-import 'package:shop_app/helper/custom_post_request.dart';
 
 import '../models/categories_model.dart';
 import '../provider/categories_provider.dart';
