@@ -84,25 +84,35 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                     },
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
-                  InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CategoriesReportsPage()));
-                      },
-                      child: const Text("Categories report")),
-                  SizedBox(height: SizeConfig.screenHeight * 0.02),
-                  InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const TopFiveProductsPage()));
-                      },
-                      child: const Text("Top five products report")),
+                  SalesRepReportCustomWidget(
+                    reportImage: 'assets/svg/topfive.svg',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const TopFiveProductsPage()));
+                    },
+                  ),
+                  // InkWell(
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const CategoriesReportsPage()));
+                  //     },
+                  //     child: const Text("Categories report")),
+                  // SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  // InkWell(
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const TopFiveProductsPage()));
+                  //     },
+                  //     child: const Text("Top five products report")),
                 ],
               ),
             ),

@@ -9,7 +9,7 @@ class SaleRepOrdersModel {
     if (json['data'] != null) {
       data = <SaleRapOrdersList>[];
       json['data'].forEach((v) {
-        data!.add(new SaleRapOrdersList.fromJson(v));
+        data!.add(SaleRapOrdersList.fromJson(v));
       });
     }
     statusCode = json['statusCode'];
@@ -17,7 +17,7 @@ class SaleRepOrdersModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -95,13 +95,13 @@ class SaleRapOrdersList {
     if (json['orderProducts'] != null) {
       orderProducts = <OrderProducts>[];
       json['orderProducts'].forEach((v) {
-        orderProducts!.add(new OrderProducts.fromJson(v));
+        orderProducts!.add(OrderProducts.fromJson(v));
       });
     }
     if (json['orderPayment'] != null) {
       orderPayment = <OrderPayment>[];
       json['orderPayment'].forEach((v) {
-        orderPayment!.add(new OrderPayment.fromJson(v));
+        orderPayment!.add(OrderPayment.fromJson(v));
       });
     }
     orderId = json['orderId'];
@@ -120,7 +120,7 @@ class SaleRapOrdersList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['firstName'] = this.firstName;
     data['lastName'] = this.lastName;
     data['salon_Name'] = this.salonName;
@@ -193,7 +193,7 @@ class OrderProducts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['productId'] = this.productId;
     data['price'] = this.price;
     data['quantity'] = this.quantity;
@@ -225,7 +225,7 @@ class OrderPayment {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['paymentMethod'] = this.paymentMethod;
     data['paymentAmount'] = this.paymentAmount;
