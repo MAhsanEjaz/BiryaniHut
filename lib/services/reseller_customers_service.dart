@@ -22,7 +22,7 @@ class ResellerCustomerService {
 
     try {
       // String resellerCustomerUrl = "$baseUrl/SaleRep/SaleRepCustomers/1}";
-      String resellerCustomerUrl = "$apiBaseUrl/SaleRep/SaleRepCustomers/$id";
+      String resellerCustomerUrl = "$apiBaseUrl/SaleRep/SaleRepCustomers2/$id";
 
       var res = await CustomGetRequestService()
           .httpGetRequest(context: context, url: resellerCustomerUrl);
