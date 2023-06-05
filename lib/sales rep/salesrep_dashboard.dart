@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
@@ -106,11 +107,13 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                   //   style: welStyle,
                   // ),
 
-                  Text(
-                    "Welcome ${data.repProfileModel!.data.firstName} " +
-                        data.repProfileModel!.data.lastName,
-                    style: welStyle,
-                  ),
+                  data.repProfileModel == null
+                      ? const CupertinoActivityIndicator()
+                      : Text(
+                          "Welcome ${data.repProfileModel!.data.firstName} " +
+                              data.repProfileModel!.data.lastName,
+                          style: welStyle,
+                        ),
 
                   const Text(
                     "Today is perfect day for beginning",
