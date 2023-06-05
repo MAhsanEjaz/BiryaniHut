@@ -135,4 +135,6 @@ class LoginStorage {
   String? getStripeKey() {
     return box.get("stripeKey");
   }
+
+
 }

@@ -10,6 +10,7 @@ import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_order_report_pag
 import '../components/salesrep_report_custom_widget.dart';
 import '../constants.dart';
 import '../size_config.dart';
+import 'timelines/top_five_products_screen.dart';
 
 class SaleRepReportPage extends StatefulWidget {
   const SaleRepReportPage({Key? key}) : super(key: key);
@@ -92,6 +93,16 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                                     const CategoriesReportsPage()));
                       },
                       child: const Text("Categories report")),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TopFiveProductsPage()));
+                      },
+                      child: const Text("Top five products report")),
                 ],
               ),
             ),

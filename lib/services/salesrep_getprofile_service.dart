@@ -30,6 +30,10 @@ class SalesrepProfileDataService {
       if (res["data"] != null) {
         SalesrepProfileModel model = SalesrepProfileModel.fromJson(res);
 
+        storage.setUserFirstName(
+            fName: model.data.firstName);
+        storage.setUserLastName(lName: model.data.lastName);
+
         Provider.of<SalesrepProfileProvider>(context, listen: false)
             .updateRepProfileProvider(model: model);
 

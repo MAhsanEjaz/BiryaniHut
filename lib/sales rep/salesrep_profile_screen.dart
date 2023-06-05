@@ -52,6 +52,8 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         saleRepImage: imagePathh,
         phone: phoneCont.text);
 
+    getSalesrepProfileDataHandler();
+
     log(loginStorage.getSalesRepId().toString());
 
     if (res == true) {

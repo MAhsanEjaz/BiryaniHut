@@ -301,8 +301,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   right: 20.0),
                                               child: ElevatedButton(
                                                 onPressed: () async {
-                                                  await updateCustomerHandler();
-                                                  Navigator.pop(context);
+                                                  if (customUpdateValidation()) {
+                                                    await updateCustomerHandler();
+                                                    Navigator.pop(context);
+                                                  }
                                                 },
                                                 child: const Text('Update'),
                                                 style: ElevatedButton.styleFrom(
@@ -485,6 +487,28 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         ),
       ),
     );
+  }
+
+  bool customUpdateValidation() {
+    if (widget.firstName.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Enter first name');
+      return false;
+    } else if (widget.lastName.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Enter last name');
+      return false;
+    } else if (widget.phone.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Enter phone number');
+      return false;
+    } else if (widget.address.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Enter you address');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   showAddPaymentDialog(BuildContext context) {
