@@ -4,7 +4,9 @@
    <application
         android:label="Influance Hair Care"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        >
 
        <activity
            android:name="com.yalantis.ucrop.UCropActivity"

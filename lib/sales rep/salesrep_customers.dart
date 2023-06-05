@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/salesrep_customers_widget.dart';
 import 'package:shop_app/customer/register/register_page.dart';
-import 'package:shop_app/customer/services/customer_delete_service.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
