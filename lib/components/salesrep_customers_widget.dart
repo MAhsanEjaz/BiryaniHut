@@ -38,16 +38,15 @@ class SalesRepCustomersWidget extends StatefulWidget {
   bool showDialogue;
   BuildContext context;
 
-  SalesRepCustomersWidget(
-      {Key? key,
-      required this.phone,
-      required this.lastName,
-      required this.solonName,
-      required this.address,
-      required this.firstName,
-      required this.customers,
-      this.showDialogue = true,
-      required this.context})
+  SalesRepCustomersWidget({Key? key,
+    required this.phone,
+    required this.lastName,
+    required this.solonName,
+    required this.address,
+    required this.firstName,
+    required this.customers,
+    this.showDialogue = true,
+    required this.context})
       : super(key: key);
 
   @override
@@ -158,7 +157,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.pink,
           content:
-              Text('Request to delete customer send to admin for approval')));
+          Text('Request to delete customer send to admin for approval')));
     }
   }
 
@@ -186,13 +185,15 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                         text: "Customer Id:" " ",
                         style: custStyle,
                         children: [
-                      TextSpan(text: "${widget.customers.id}", style: idStyle)
-                    ])),
+                          TextSpan(
+                              text: "${widget.customers.id}", style: idStyle)
+                        ])),
                 PopupMenuButton<int>(
                   // onSelected: (value) {
                   //
                   // },
-                  itemBuilder: (context) => [
+                  itemBuilder: (context) =>
+                  [
                     PopupMenuItem(
                       value: popupMenuValue + 1,
                       onTap: () {},
@@ -206,16 +207,17 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SalesRepProductsPage(
-                                      isReseller: true,
-                                      //! using false here to show cart option with all products
-                                      //! if sales rep wants to order for any of its customer.
-                                      customerName:
+                                    builder: (context) =>
+                                        SalesRepProductsPage(
+                                          isReseller: true,
+                                          //! using false here to show cart option with all products
+                                          //! if sales rep wants to order for any of its customer.
+                                          customerName:
                                           widget.customers.firstName! +
                                               " " +
                                               widget.customers.lastName!,
-                                      customerId: widget.customers.id!,
-                                    ),
+                                          customerId: widget.customers.id!,
+                                        ),
                                   ));
                             },
                             child: Row(
@@ -235,9 +237,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllOrdersScreen(
+                                      builder: (context) =>
+                                          AllOrdersScreen(
                                             customerId:
-                                                widget.customers.id ?? 0,
+                                            widget.customers.id ?? 0,
                                           )));
                             },
                             child: Row(
@@ -277,14 +280,15 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
-                                  builder: (context) => BackdropFilter(
+                                  builder: (context) =>
+                                      BackdropFilter(
                                         filter: ImageFilter.blur(
                                             sigmaY: 10, sigmaX: 10),
                                         child: AlertDialog(
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(15)),
+                                              BorderRadius.circular(15)),
                                           icon: Align(
                                               alignment: Alignment.topRight,
                                               child: InkWell(
@@ -294,7 +298,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   child: const Card(
                                                       elevation: 5.0,
                                                       child:
-                                                          Icon(Icons.close)))),
+                                                      Icon(Icons.close)))),
                                           actions: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -319,20 +323,20 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 style: TextStyle(
                                                     color: appColor,
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                    FontWeight.bold),
                                               )),
                                           content: SingleChildScrollView(
                                             child: Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 const Divider(),
                                                 CustomTextField(
                                                   prefixWidget:
-                                                      const Icon(Icons.person),
+                                                  const Icon(Icons.person),
                                                   controller: widget.firstName,
                                                   hint: 'First Name',
                                                 ),
@@ -345,7 +349,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                     prefixWidget: const Icon(
                                                         Icons.home_work_sharp),
                                                     controller:
-                                                        widget.solonName,
+                                                    widget.solonName,
                                                     hint: 'Salon Name'),
                                                 CustomTextField(
                                                     inputFormats: [
@@ -356,14 +360,14 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       PhoneInputFormatter(),
                                                     ],
                                                     inputType:
-                                                        TextInputType.number,
+                                                    TextInputType.number,
                                                     prefixWidget:
-                                                        const Icon(Icons.phone),
+                                                    const Icon(Icons.phone),
                                                     controller: widget.phone,
                                                     hint: 'Phone'),
                                                 CustomTextField(
                                                     prefixWidget:
-                                                        const Icon(Icons.home),
+                                                    const Icon(Icons.home),
                                                     controller: widget.address,
                                                     hint: 'Address'),
                                               ],
@@ -444,10 +448,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
             ListTile(
               leading: CircleAvatar(
                 maxRadius: 25.0,
-                backgroundImage: widget.customers.customerImagePath == "" ||
-                        widget.customers.customerImagePath == null
+                backgroundImage: widget.customers.customerImage == "" ||
+                    widget.customers.customerImage == null
                     ? NetworkImage(userDummyUrl)
-                    : NetworkImage(widget.customers.customerImagePath!),
+                    : NetworkImage('http://38.17.51.206:8070/${widget.customers.customerImage!}'),
               ),
               title: ResellerOrderTimeDateWidget(
                   icon: Icons.home_filled,
@@ -543,21 +547,24 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                         ),
                         Consumer<AccountBalanceProvider>(
                             builder: (context, data, _) {
-                          if (data.accountBalanceModel!.data!.accountBalance !=
-                              null) {
-                            return Padding(
-                              padding:
+                              if (data.accountBalanceModel!.data!
+                                  .accountBalance !=
+                                  null) {
+                                return Padding(
+                                  padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                "Previous Balance : \$ ${data.accountBalanceModel!.data!.accountBalance!}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
+                                  child: Text(
+                                    "Previous Balance : \$ ${data
+                                        .accountBalanceModel!.data!
+                                        .accountBalance!}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
 
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -581,7 +588,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+                                'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
                                 color: selectedPaymentIndex == 2 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 2;
@@ -595,7 +602,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
+                                'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
                                 color: selectedPaymentIndex == 3 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 3;
@@ -609,7 +616,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
                                 color: selectedPaymentIndex == 4 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 4;
@@ -643,7 +650,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 4.0, bottom: 4),
+                                const EdgeInsets.only(top: 4.0, bottom: 4),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -713,7 +720,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     print(init);
     var login = await Sumup.login();
     var loginToken =
-        await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
+    await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
 
     var settings = await Sumup.openSettings();
     var prepare = await Sumup.wakeUpTerminal();
@@ -820,7 +827,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
               showAwesomeAlert(
                   context: widget.context, msg: "Cheque No can't be empty");
               return;
-            } else if (amountCont.text.trim().isEmpty) {
+            } else if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -902,7 +911,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -969,7 +980,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -1112,29 +1125,32 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                         text: "Customer Id:" " ",
                         style: custStyle,
                         children: [
-                      TextSpan(text: "${customerSearchData.id}", style: idStyle)
-                    ])),
+                          TextSpan(
+                              text: "${customerSearchData.id}", style: idStyle)
+                        ])),
                 PopupMenuButton<int>(
                   onSelected: (value) {
                     if (value == 1) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SalesRepProductsPage(
-                              isReseller: false,
-                              //! using false here to show cart option with all products
-                              //! if sales rep wants to order for any of its customer.
-                              customerName: customerSearchData.firstName! +
-                                  " " +
-                                  customerSearchData.lastName!,
-                              customerId: customerSearchData.id!,
-                            ),
+                            builder: (context) =>
+                                SalesRepProductsPage(
+                                  isReseller: false,
+                                  //! using false here to show cart option with all products
+                                  //! if sales rep wants to order for any of its customer.
+                                  customerName: customerSearchData.firstName! +
+                                      " " +
+                                      customerSearchData.lastName!,
+                                  customerId: customerSearchData.id!,
+                                ),
                           ));
                     } else {
                       log("nothing to do here");
                     }
                   },
-                  itemBuilder: (context) => [
+                  itemBuilder: (context) =>
+                  [
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
