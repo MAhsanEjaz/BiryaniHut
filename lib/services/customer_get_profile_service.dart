@@ -4,8 +4,10 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
 import 'package:shop_app/models/customer_profile_model.dart';
 import 'package:shop_app/providers/customer_profile_provider.dart';
+import 'package:shop_app/storages/login_storage.dart';
 
 class CustomerGetService {
+  LoginStorage storage = LoginStorage();
   Future customerGetService(
       {required BuildContext context, required int id}) async {
     try {
@@ -19,6 +21,13 @@ class CustomerGetService {
 
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .getProfileData(newcCustomerProfileModel: customerProfileModel);
+
+        if (customerProfileModel.data != null) {
+          storage.setSalesRepId(repId: customerProfileModel.data!.saleRepID!);
+          storage.setSalesRepName(
+              repName: customerProfileModel.data!.salonName!);
+        }
+
         return true;
       } else {
         return false;

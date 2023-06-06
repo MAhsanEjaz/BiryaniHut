@@ -25,6 +25,7 @@ import '../../../constants.dart';
 import '../../../providers/account_balance_provider.dart';
 import '../../../providers/counter_provider.dart';
 import '../../../services/account_balance_service.dart';
+import '../../../services/customer_get_profile_service.dart';
 import '../../../services/update_customer_balance_service.dart';
 import '../../../size_config.dart';
 
@@ -52,6 +53,12 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
   @override
   void initState() {
+    log("loginStorage.getSalesRepId()= ${loginStorage.getSalesRepId()}");
+    if (loginStorage.getSalesRepId() == null ||
+        loginStorage.getSalesRepId() == 0) {
+      customerGetDataHandler();
+    }
+
     if (cartStorage.getCartItems() != null) {
       var list = cartStorage.getCartItems();
       log("listlist = $list");
@@ -1282,6 +1289,14 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
     num price = previousBalance - totalPrice;
 
     return price.toStringAsFixed(2);
+  }
+
+  customerGetDataHandler() async {
+    log("customerGetDataHandler fired");
+    // CustomLoader.showLoader(context: context);
+    await CustomerGetService()
+        .customerGetService(context: context, id: loginStorage.getUserId());
+    // CustomLoader.hideLoader(context);
   }
 
   num getPreviousBalance() {

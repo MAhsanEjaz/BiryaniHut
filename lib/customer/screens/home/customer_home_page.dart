@@ -64,13 +64,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   LoginStorage loginStorage = LoginStorage();
 
-  customerGetDataHandler() async {
-    CustomLoader.showLoader(context: context);
-    await CustomerGetService()
-        .customerGetService(context: context, id: loginStorage.getUserId());
-    CustomLoader.hideLoader(context);
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -88,7 +81,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           Provider.of<ProductsProvider>(context, listen: false);
       myProducts = productProvider.prod!;
       callProducts = myProducts;
-      customerGetDataHandler();
     });
 
     super.initState();
