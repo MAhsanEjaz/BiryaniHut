@@ -27,7 +27,6 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       topFiveProductHandler();
@@ -137,12 +136,13 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
                   SfCartesianChart(
                     primaryXAxis: CategoryAxis(
                       arrangeByIndex: true,
-                      autoScrollingMode: AutoScrollingMode.start,
+                      autoScrollingMode: AutoScrollingMode.end,
                       majorGridLines: const MajorGridLines(),
                     ),
                     series: <ChartSeries>[
                       LineSeries<TopFiveProductsModel, String>(
                         dataSource: data.topProducts!,
+                        animationDelay: 15,
                         xValueMapper: (TopFiveProductsModel sales, _) =>
                             sales.productName,
                         yValueMapper: (TopFiveProductsModel sales, _) =>

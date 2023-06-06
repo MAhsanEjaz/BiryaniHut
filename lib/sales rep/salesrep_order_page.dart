@@ -165,13 +165,13 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
 class SaleRepOrderWidget extends StatelessWidget {
   SaleRapOrdersList repOrders;
   bool showBanner;
-  bool? isCustomer;
+  bool isCustomer;
 
   SaleRepOrderWidget(
       {Key? key,
       required this.repOrders,
       required this.showBanner,
-      this.isCustomer})
+     required this.isCustomer})
       : super(key: key);
 
   @override
