@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 
@@ -10,11 +12,11 @@ class SalesrepOrderWidget2 extends StatelessWidget {
   SalesrepOrderWidget2({
     Key? key,
     required this.repOrders,
-    this.isCustomer,
+    required this.isCustomer,
   }) : super(key: key);
 
   final SaleRapOrdersList repOrders;
-  bool? isCustomer;
+  bool isCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +56,18 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
+                    log("isCustomer = $isCustomer");
+                    log("repOrders.dateTime = ${repOrders.dateTime}");
+                    log("repOrders.firstName! = ${repOrders.firstName!}");
+                    log("repOrders.lastName! = ${repOrders.lastName!}");
+                    log("repOrders.orderId = ${repOrders.orderId}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 SaleRepOrderReportDetailsScreen(
                                   isInvoices: false,
-                                  isCustomer: isCustomer!,
+                                  isCustomer: isCustomer,
                                   orders: repOrders, date: repOrders.dateTime!,
                                   name: repOrders.firstName! +
                                       repOrders.lastName!,

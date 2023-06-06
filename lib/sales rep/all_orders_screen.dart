@@ -145,6 +145,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                           return SaleRepOrderWidget(
                             repOrders: finalList[index],
                             showBanner: true,
+                            isCustomer: true,
                           );
                         });
                   } else {

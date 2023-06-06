@@ -27,7 +27,6 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       topFiveProductHandler();
@@ -41,133 +40,124 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
     return Consumer<TopFiveProductProvider>(builder: (context, data, _) {
       return Scaffold(
         appBar: AppBar(backgroundColor: appColor),
-        body: data.topProducts!.isEmpty
-            ? Center(child: Text("No product found"))
-            : SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Table(
+                    border: TableBorder.all(width: 1.5),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: const [
+                      TableRow(children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: Text("Sr")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: Text("Product Name")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: Text("Total Orders")),
+                        ),
+                      ]),
+                    ],
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    child: Table(
+                      border:
+                          TableBorder.all(color: Colors.black26, width: 1.5),
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
                       children: [
-                        Table(
-                          border: TableBorder.all(width: 1.5),
-                          defaultVerticalAlignment:
-                              TableCellVerticalAlignment.middle,
-                          children: const [
-                            TableRow(children: [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(child: Text("Sr")),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(child: Text("Product Name")),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(child: Text("Total Orders")),
-                              ),
-                            ]),
-                          ],
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          color: Colors.white,
-                          child: Table(
-                            border: TableBorder.all(
-                                color: Colors.black26, width: 1.5),
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            children: [
-                              TableRow(children: [
-                                // custList.isEmpty
-                                // ?
-                                if (data.topProducts!.isEmpty)
-                                  const Text("Category report empty")
-                                else
-                                  TableCell(
-                                      child: ListView.builder(
-                                          itemCount: data.topProducts!.length,
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          itemBuilder: (context, index) {
-                                            return Column(
-                                              children: [
-                                                const SizedBox(height: 5),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                        // flex:2,
-                                                        child: Text(
-                                                      '${index + 1}',
-                                                      style: tableStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )),
-                                                    Expanded(
-                                                        // flex:2,
-                                                        child: Text(
-                                                      '${data.topProducts![index].productName}',
-                                                      style: tableStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )),
-                                                    Expanded(
-                                                        // flex:3,
-                                                        child: Text(
-                                                      data.topProducts![index]
-                                                          .totalOrders
-                                                          .toString(),
-                                                      style: tableStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 5),
-                                                if (data.topProducts != null &&
-                                                    data.topProducts!
-                                                        .isNotEmpty &&
-                                                    index !=
-                                                        data.topProducts!
-                                                                .length -
-                                                            1)
-                                                  const Divider()
-                                              ],
-                                            );
-                                          }))
-                              ])
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SfCartesianChart(
-                          primaryXAxis: CategoryAxis(
-                            arrangeByIndex: true,
-                            autoScrollingMode: AutoScrollingMode.start,
-                            majorGridLines: const MajorGridLines(),
-                          ),
-                          series: <ChartSeries>[
-                            LineSeries<TopFiveProductsModel, String>(
-                              dataSource: data.topProducts!,
-                              xValueMapper: (TopFiveProductsModel sales, _) =>
-                                  sales.productName,
-                              yValueMapper: (TopFiveProductsModel sales, _) =>
-                                  sales.totalOrders,
-                            )
-                          ],
-                          annotations: [],
-                          enableAxisAnimation: true,
-                          enableMultiSelection: true,
-                        ),
+                        TableRow(children: [
+                          // custList.isEmpty
+                          // ?
+                          if (data.topProducts!.isEmpty)
+                            const Text("Category report empty")
+                          else
+                            TableCell(
+                                child: ListView.builder(
+                                    itemCount: data.topProducts!.length,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          const SizedBox(height: 5),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                  // flex:2,
+                                                  child: Text(
+                                                '${index + 1}',
+                                                style: tableStyle,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                              Expanded(
+                                                  // flex:2,
+                                                  child: Text(
+                                                '${data.topProducts![index].productName}',
+                                                style: tableStyle,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                              Expanded(
+                                                  // flex:3,
+                                                  child: Text(
+                                                data.topProducts![index]
+                                                    .totalOrders
+                                                    .toString(),
+                                                style: tableStyle,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5),
+                                          if (data.topProducts != null &&
+                                              data.topProducts!.isNotEmpty &&
+                                              index !=
+                                                  data.topProducts!.length - 1)
+                                            const Divider()
+                                        ],
+                                      );
+                                    }))
+                        ])
                       ],
                     ),
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  SfCartesianChart(
+                    primaryXAxis: CategoryAxis(
+                      arrangeByIndex: true,
+                      autoScrollingMode: AutoScrollingMode.end,
+                      majorGridLines: const MajorGridLines(),
+                    ),
+                    series: <ChartSeries>[
+                      LineSeries<TopFiveProductsModel, String>(
+                        dataSource: data.topProducts!,
+                        animationDelay: 15,
+                        xValueMapper: (TopFiveProductsModel sales, _) =>
+                            sales.productName,
+                        yValueMapper: (TopFiveProductsModel sales, _) =>
+                            sales.totalOrders,
+                      )
+                    ],
+                    annotations: [],
+                    enableAxisAnimation: true,
+                    enableMultiSelection: true,
+                  ),
+                ],
               ),
+            ),
+          ),
+        ),
         bottomNavigationBar: Container(
           height: kToolbarHeight * 1.0,
           width: double.infinity,
