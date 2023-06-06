@@ -9,8 +9,10 @@ import 'package:shop_app/enums.dart';
 import 'package:shop_app/components/customer_products_widget.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/services/customer_get_profile_service.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/storages/customer_cart_storage.dart';
+import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import '../../../constants.dart';
 import '../../../helper/custom_loader.dart';
@@ -60,6 +62,15 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     setState(() {});
   }
 
+  LoginStorage loginStorage = LoginStorage();
+
+  customerGetDataHandler() async {
+    CustomLoader.showLoader(context: context);
+    await CustomerGetService()
+        .customerGetService(context: context, id: loginStorage.getUserId());
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -77,6 +88,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           Provider.of<ProductsProvider>(context, listen: false);
       myProducts = productProvider.prod!;
       callProducts = myProducts;
+      customerGetDataHandler();
     });
 
     super.initState();
