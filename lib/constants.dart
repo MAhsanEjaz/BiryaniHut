@@ -25,6 +25,9 @@ const kAnimationDuration = Duration(milliseconds: 200);
 
 // String customerUrl = "http://173.208.142.67:8060/api/Customer";
 const String apiBaseUrl = "http://38.17.51.206:8070/api";
+String baseUrlWithoutApi =
+    apiBaseUrl.substring(0, apiBaseUrl.lastIndexOf("/api"));
+
 // const String apiBaseUrl = "https://192.168.18.207:45456/api";
 // const String apiBaseUrl = "http://192.168.18.8:45455/api";
 const String imageBaseUrl = "http://38.17.51.206:8070/api";
@@ -51,6 +54,7 @@ final pdfStyle = pw.TextStyle(
 String dummyImageUrl = "https://picsum.photos/200/300";
 String userDummyUrl =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz-bjByJY1rNIa6Yn8Et3RwlOuOMklKNM5cA&usqp=CAU";
+
 String getImageUrl(String url) {
   log("url to split = $url");
   List<String> list = url.split("\\");
