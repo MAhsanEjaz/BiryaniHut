@@ -49,7 +49,7 @@ class Data {
   String location;
   String phone;
   num rating;
-  num discount;
+  num? discount;
   dynamic status;
   String saleRepImagePath;
   String saleRepImage;
@@ -88,7 +88,7 @@ class Data {
         location: json["location"],
         phone: json["phone"],
         rating: json["rating"],
-        discount: json["discount"],
+        discount: json["discount"] ?? 0,
         status: json["status"],
         saleRepImagePath: json["saleRepImagePath"],
         saleRepImage: json["saleRepImage"],

@@ -6,18 +6,18 @@ class UserModel {
   UserModel({this.data, this.statusCode, this.message});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
+    data = json['data'] != null ? LoginData.fromJson(json['data']) : null;
     statusCode = json['statusCode'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['statusCode'] = this.statusCode;
-    data['message'] = this.message;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
     return data;
   }
 }
@@ -35,7 +35,7 @@ class LoginData {
   String? location;
   String? phone;
   double? rating;
-  num? discount;
+  num? discount = 0;
   int? saleRepId;
   String? saleRepName;
   String? token;
@@ -47,26 +47,26 @@ class LoginData {
 
   LoginData(
       {this.imagePath,
-        this.imageName,
-        this.id,
-        this.firstName,
-        this.lastName,
-        this.salonName,
-        this.state,
-        this.city,
-        this.address,
-        this.location,
-        this.phone,
-        this.rating,
-        this.discount,
-        this.saleRepId,
-        this.saleRepName,
-        this.token,
-        this.loginId,
-        this.roleId,
-        this.email,
-        this.password,
-        this.isActive});
+      this.imageName,
+      this.id,
+      this.firstName,
+      this.lastName,
+      this.salonName,
+      this.state,
+      this.city,
+      this.address,
+      this.location,
+      this.phone,
+      this.rating,
+      this.discount,
+      this.saleRepId,
+      this.saleRepName,
+      this.token,
+      this.loginId,
+      this.roleId,
+      this.email,
+      this.password,
+      this.isActive});
 
   LoginData.fromJson(Map<String, dynamic> json) {
     imagePath = json['imagePath'];
@@ -81,7 +81,7 @@ class LoginData {
     location = json['location'];
     phone = json['phone'];
     rating = json['rating'];
-    discount = json['discount'];
+    discount = json['discount'] ?? 0;
     saleRepId = json['saleRepId'];
     saleRepName = json['saleRepName'];
     token = json['token'];
@@ -93,28 +93,28 @@ class LoginData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['imagePath'] = this.imagePath;
-    data['imageName'] = this.imageName;
-    data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['salon_Name'] = this.salonName;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['address'] = this.address;
-    data['location'] = this.location;
-    data['phone'] = this.phone;
-    data['rating'] = this.rating;
-    data['discount'] = this.discount;
-    data['saleRepId'] = this.saleRepId;
-    data['saleRepName'] = this.saleRepName;
-    data['token'] = this.token;
-    data['loginId'] = this.loginId;
-    data['roleId'] = this.roleId;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['isActive'] = this.isActive;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['imagePath'] = imagePath;
+    data['imageName'] = imageName;
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['salon_Name'] = salonName;
+    data['state'] = state;
+    data['city'] = city;
+    data['address'] = address;
+    data['location'] = location;
+    data['phone'] = phone;
+    data['rating'] = rating;
+    data['discount'] = discount;
+    data['saleRepId'] = saleRepId;
+    data['saleRepName'] = saleRepName;
+    data['token'] = token;
+    data['loginId'] = loginId;
+    data['roleId'] = roleId;
+    data['email'] = email;
+    data['password'] = password;
+    data['isActive'] = isActive;
     return data;
   }
 }
