@@ -85,7 +85,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
-            .salonName
+            .saleRep
             .toString();
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
@@ -239,7 +239,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Icon(Icons.edit),
                             SizedBox(width: 5),
                             Text('Edit Profile')
