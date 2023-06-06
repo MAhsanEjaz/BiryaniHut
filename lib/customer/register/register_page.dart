@@ -119,6 +119,8 @@ class _SignUpScreenState extends State<SignUpPage> {
     });
   }
 
+  LoginStorage loginStorage = LoginStorage();
+
   // String _formatPhone(String phone) {
   //   phone = phone.replaceAll('-', '');
   //   if (phone.length <= 3) {
@@ -502,7 +504,9 @@ class _SignUpScreenState extends State<SignUpPage> {
                             "customerImage":
                                 imagePath == null ? null : imagePath!,
                             "phone": phoneCont.text.trim(),
-                            "saleRepID": widget.isReseller == true ? 1 : 1,
+                            "saleRepID": widget.isReseller == true
+                                ? loginStorage.getUserId()
+                                : 1,
                             "email": emailCont.text.trim(),
                             "password": passCont.text.trim(),
                             "roleId": 0

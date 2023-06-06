@@ -3,6 +3,7 @@ import 'package:shop_app/sales%20rep/sales_rep_reports/sales_rep_payment_aging_r
 import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_orders_aging_report.dart';
 import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_payments_report_page.dart';
 import 'package:shop_app/sales%20rep/sales_rep_reports/salesrep_order_report_page.dart';
+import 'package:shop_app/sales%20rep/sales_rep_reports/top_five_customers_report_screen.dart';
 
 import '../components/salesrep_report_custom_widget.dart';
 import '../constants.dart';
@@ -91,6 +92,20 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                                   const TopFiveProductsPage()));
                     },
                   ),
+
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  SalesRepReportCustomWidget(
+                    reportImage: 'assets/svg/topfivecustomers.svg',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const TopFiveCustomersReportScreen()));
+                    },
+                  ),
+
+
                   // InkWell(
                   //     onTap: () {
                   //       Navigator.push(
