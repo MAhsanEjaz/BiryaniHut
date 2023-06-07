@@ -26,7 +26,6 @@ class _TopFiveCustomersReportScreenState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       topFiveCustomersHandler();
@@ -41,7 +40,7 @@ class _TopFiveCustomersReportScreenState
           backgroundColor: appColor,
         ),
         body: data.fiveCustomers!.isEmpty
-            ? Center(child: Text("No customer found "))
+            ? const Center(child: Text("No customer found "))
             : SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -65,6 +64,11 @@ class _TopFiveCustomersReportScreenState
                               Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Center(child: Text('Total orders')),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child:
+                                    Center(child: Text('Total Purchases(\$)')),
                               ),
                             ])
                           ],
@@ -104,6 +108,17 @@ class _TopFiveCustomersReportScreenState
                                                     child: Text(data
                                                         .fiveCustomers![index]
                                                         .totalOrders
+                                                        .toString()),
+                                                  ),
+                                                )),
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Center(
+                                                    child: Text(data
+                                                        .fiveCustomers![index]
+                                                        .totalGrandTotal
                                                         .toString()),
                                                   ),
                                                 )),

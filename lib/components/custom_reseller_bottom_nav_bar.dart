@@ -4,9 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:shop_app/customer/login/login_page.dart';
 import 'package:shop_app/enums.dart';
-
 import '../constants.dart';
-import '../customer/screens/customer_profile/customer_profile_screen.dart';
 import '../sales rep/salesrep_profile_screen.dart';
 
 class CustomResellerBottomNavBar extends StatelessWidget {

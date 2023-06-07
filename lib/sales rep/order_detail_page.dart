@@ -84,15 +84,21 @@ class _OrdersDetailsPageState extends State<OrdersDetailsPage> {
             children: [
               InkWell(
                 onTap: () async {
+                  String repName = '';
+                  if (storage.getUsertype() == "customer") {
+                    repName = storage.getSalesRepName();
+                  } else {
+                    repName = storage.getUserFirstName() +
+                        " " +
+                        storage.getUserLastName();
+                  }
                   final data = await PdfOrdersInvoiceService().createInvoice(
                     ctx: context,
                     order: widget.orders,
                     customerName: widget.orders.firstName! +
                         " " +
                         widget.orders.lastName!,
-                    repName: storage.getUserFirstName() +
-                        " " +
-                        storage.getUserLastName(),
+                    repName: repName,
                     isOrderCompleted:
                         widget.orders.status == "Pending" ? false : true,
                   );

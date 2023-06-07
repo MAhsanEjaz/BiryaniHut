@@ -54,10 +54,10 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   @override
   void initState() {
     log("loginStorage.getSalesRepId()= ${loginStorage.getSalesRepId()}");
-    if (loginStorage.getSalesRepId() == null ||
-        loginStorage.getSalesRepId() == 0) {
-      customerGetDataHandler();
-    }
+    // if (loginStorage.getSalesRepId() == null ||
+    //     loginStorage.getSalesRepId() == 0) {
+    customerGetDataHandler();
+    // }
 
     if (cartStorage.getCartItems() != null) {
       var list = cartStorage.getCartItems();

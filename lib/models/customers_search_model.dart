@@ -11,15 +11,15 @@ class CustomersSearchModel {
     if (json['data'] != null) {
       data = <CustomersSearchList>[];
       json['data'].forEach((v) {
-        data!.add(new CustomersSearchList.fromJson(v));
+        data!.add(CustomersSearchList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -47,21 +47,21 @@ class CustomersSearchList {
 
   CustomersSearchList(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.salonName,
-        this.state,
-        this.city,
-        this.address,
-        this.location,
-        this.customerImagePath,
-        this.customerImage,
-        this.phone,
-        this.saleRepID,
-        this.saleRep,
-        this.loginId,
-        this.login,
-        this.customerOrders});
+      this.firstName,
+      this.lastName,
+      this.salonName,
+      this.state,
+      this.city,
+      this.address,
+      this.location,
+      this.customerImagePath,
+      this.customerImage,
+      this.phone,
+      this.saleRepID,
+      this.saleRep,
+      this.loginId,
+      this.login,
+      this.customerOrders});
 
   CustomersSearchList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -83,23 +83,23 @@ class CustomersSearchList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['salon_Name'] = this.salonName;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['address'] = this.address;
-    data['location'] = this.location;
-    data['customerImagePath'] = this.customerImagePath;
-    data['customerImage'] = this.customerImage;
-    data['phone'] = this.phone;
-    data['saleRepID'] = this.saleRepID;
-    data['saleRep'] = this.saleRep;
-    data['loginId'] = this.loginId;
-    data['login'] = this.login;
-    data['customerOrders'] = this.customerOrders;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['salon_Name'] = salonName;
+    data['state'] = state;
+    data['city'] = city;
+    data['address'] = address;
+    data['location'] = location;
+    data['customerImagePath'] = customerImagePath;
+    data['customerImage'] = customerImage;
+    data['phone'] = phone;
+    data['saleRepID'] = saleRepID;
+    data['saleRep'] = saleRep;
+    data['loginId'] = loginId;
+    data['login'] = login;
+    data['customerOrders'] = customerOrders;
     return data;
   }
 }

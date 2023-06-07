@@ -22,8 +22,8 @@ class ColorDots extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Row(
         children: [
-          SizedBox(height: 10),
-          Text.rich(
+          const SizedBox(height: 10),
+          const Text.rich(
             TextSpan(
               text: "\$235",
               style: TextStyle(
@@ -36,7 +36,7 @@ class ColorDots extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           RoundedIconBtn(
             icon: Icons.remove,
             press: () {},

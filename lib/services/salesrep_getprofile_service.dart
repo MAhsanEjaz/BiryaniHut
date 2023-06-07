@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
-import 'package:shop_app/helper/custom_post_request.dart';
 import 'package:shop_app/models/salesrep_profile_model.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
-import 'package:shop_app/providers/user_data_provider.dart';
-import '../models/user_model.dart';
 import '../storages/login_storage.dart';
 
 class SalesrepProfileDataService {
@@ -30,8 +26,7 @@ class SalesrepProfileDataService {
       if (res["data"] != null) {
         SalesrepProfileModel model = SalesrepProfileModel.fromJson(res);
 
-        storage.setUserFirstName(
-            fName: model.data.firstName);
+        storage.setUserFirstName(fName: model.data.firstName);
         storage.setUserLastName(lName: model.data.lastName);
 
         Provider.of<SalesrepProfileProvider>(context, listen: false)

@@ -28,9 +28,7 @@ import 'package:shop_app/providers/top_five_customers_provider.dart';
 import 'package:shop_app/providers/top_five_products_provider.dart';
 import 'package:shop_app/providers/user_data_provider.dart';
 import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
-import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/theme.dart';
-
 import 'customer/provider/categories_provider.dart';
 import 'customer/screens/splash/password_screen.dart';
 import 'providers/cost_of_good_sale_provider.dart';

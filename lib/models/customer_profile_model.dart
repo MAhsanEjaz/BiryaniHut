@@ -6,18 +6,18 @@ class CustomerProfileModel {
   CustomerProfileModel({this.data, this.statusCode, this.message});
 
   CustomerProfileModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     statusCode = json['statusCode'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['statusCode'] = this.statusCode;
-    data['message'] = this.message;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
     return data;
   }
 }
@@ -44,23 +44,23 @@ class Data {
 
   Data(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.salonName,
-        this.state,
-        this.city,
-        this.address,
-        this.location,
-        this.customerImagePath,
-        this.customerImage,
-        this.phone,
-        this.accountBalance,
-        this.saleRepID,
-        this.saleRep,
-        this.loginId,
-        this.login,
-        this.customerOrders,
-        this.favoriteProducts});
+      this.firstName,
+      this.lastName,
+      this.salonName,
+      this.state,
+      this.city,
+      this.address,
+      this.location,
+      this.customerImagePath,
+      this.customerImage,
+      this.phone,
+      this.accountBalance,
+      this.saleRepID,
+      this.saleRep,
+      this.loginId,
+      this.login,
+      this.customerOrders,
+      this.favoriteProducts});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -84,25 +84,25 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['salon_Name'] = this.salonName;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['address'] = this.address;
-    data['location'] = this.location;
-    data['customerImagePath'] = this.customerImagePath;
-    data['customerImage'] = this.customerImage;
-    data['phone'] = this.phone;
-    data['accountBalance'] = this.accountBalance;
-    data['saleRepID'] = this.saleRepID;
-    data['saleRep'] = this.saleRep;
-    data['loginId'] = this.loginId;
-    data['login'] = this.login;
-    data['customerOrders'] = this.customerOrders;
-    data['favoriteProducts'] = this.favoriteProducts;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['salon_Name'] = salonName;
+    data['state'] = state;
+    data['city'] = city;
+    data['address'] = address;
+    data['location'] = location;
+    data['customerImagePath'] = customerImagePath;
+    data['customerImage'] = customerImage;
+    data['phone'] = phone;
+    data['accountBalance'] = accountBalance;
+    data['saleRepID'] = saleRepID;
+    data['saleRep'] = saleRep;
+    data['loginId'] = loginId;
+    data['login'] = login;
+    data['customerOrders'] = customerOrders;
+    data['favoriteProducts'] = favoriteProducts;
     return data;
   }
 }

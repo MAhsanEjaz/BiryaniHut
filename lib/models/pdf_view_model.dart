@@ -8,11 +8,11 @@ class PdfViewModel {
 
   PdfViewModel(
       {this.customerId,
-        this.salesrepId,
-        this.totalPrice,
-        this.totalDiscount,
-        this.salePrice,
-        this.order});
+      this.salesrepId,
+      this.totalPrice,
+      this.totalDiscount,
+      this.salePrice,
+      this.order});
 
   PdfViewModel.fromJson(Map<String, dynamic> json) {
     customerId = json['customer_id'];
@@ -23,20 +23,20 @@ class PdfViewModel {
     if (json['order'] != null) {
       order = <Order>[];
       json['order'].forEach((v) {
-        order!.add(new Order.fromJson(v));
+        order!.add(Order.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['customer_id'] = this.customerId;
-    data['salesrep_id'] = this.salesrepId;
-    data['total_price'] = this.totalPrice;
-    data['total_discount'] = this.totalDiscount;
-    data['sale_price'] = this.salePrice;
-    if (this.order != null) {
-      data['order'] = this.order!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['customer_id'] = customerId;
+    data['salesrep_id'] = salesrepId;
+    data['total_price'] = totalPrice;
+    data['total_discount'] = totalDiscount;
+    data['sale_price'] = salePrice;
+    if (order != null) {
+      data['order'] = order!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -62,21 +62,21 @@ class Order {
 
   Order(
       {this.productId,
-        this.productName,
-        this.price,
-        this.quantity,
-        this.lowStockthreshold,
-        this.regularPrice,
-        this.productWaight,
-        this.productCode,
-        this.productTrackingNo,
-        this.stockStatus,
-        this.visibility,
-        this.productImagePath,
-        this.productTags,
-        this.productImage,
-        this.discount,
-        this.discription});
+      this.productName,
+      this.price,
+      this.quantity,
+      this.lowStockthreshold,
+      this.regularPrice,
+      this.productWaight,
+      this.productCode,
+      this.productTrackingNo,
+      this.stockStatus,
+      this.visibility,
+      this.productImagePath,
+      this.productTags,
+      this.productImage,
+      this.discount,
+      this.discription});
 
   Order.fromJson(Map<String, dynamic> json) {
     productId = json['productId'];
@@ -98,23 +98,23 @@ class Order {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['productId'] = this.productId;
-    data['productName'] = this.productName;
-    data['price'] = this.price;
-    data['quantity'] = this.quantity;
-    data['lowStockthreshold'] = this.lowStockthreshold;
-    data['regularPrice'] = this.regularPrice;
-    data['productWaight'] = this.productWaight;
-    data['productCode'] = this.productCode;
-    data['productTrackingNo'] = this.productTrackingNo;
-    data['stockStatus'] = this.stockStatus;
-    data['visibility'] = this.visibility;
-    data['productImagePath'] = this.productImagePath;
-    data['productTags'] = this.productTags;
-    data['productImage'] = this.productImage;
-    data['discount'] = this.discount;
-    data['discription'] = this.discription;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['productId'] = productId;
+    data['productName'] = productName;
+    data['price'] = price;
+    data['quantity'] = quantity;
+    data['lowStockthreshold'] = lowStockthreshold;
+    data['regularPrice'] = regularPrice;
+    data['productWaight'] = productWaight;
+    data['productCode'] = productCode;
+    data['productTrackingNo'] = productTrackingNo;
+    data['stockStatus'] = stockStatus;
+    data['visibility'] = visibility;
+    data['productImagePath'] = productImagePath;
+    data['productTags'] = productTags;
+    data['productImage'] = productImage;
+    data['discount'] = discount;
+    data['discription'] = discription;
     return data;
   }
 }

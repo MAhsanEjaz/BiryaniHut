@@ -7,23 +7,23 @@ import 'package:shop_app/providers/products_provider.dart';
 
 class ProductsService {
   Future getProducts({required BuildContext context}) async {
-    // try {
-    const String prodUrl = "$apiBaseUrl/Product/ProductGet";
-    var res = await CustomGetRequestService()
-        .httpGetRequest(context: context, url: prodUrl);
-    if (res != null) {
-      ProductsModel prod = ProductsModel.fromJson(res);
+    try {
+      const String prodUrl = "$apiBaseUrl/Product/ProductGet";
+      var res = await CustomGetRequestService()
+          .httpGetRequest(context: context, url: prodUrl);
+      if (res != null) {
+        ProductsModel prod = ProductsModel.fromJson(res);
 
-      Provider.of<ProductsProvider>(context, listen: false)
-          .updateProd(newProd: prod.data);
+        Provider.of<ProductsProvider>(context, listen: false)
+            .updateProd(newProd: prod.data);
 
-      return true;
-    } else {
-      return null;
+        return true;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      print("Exception in get products service $err");
+      return ProductsModel(status: 0, message: "Something went wrong");
     }
-    // } catch (err) {
-    //   print("Exception in get products service $err");
-    //   return ProductsModel(status: 0, message: "Something went wrong");
-    // }
   }
 }

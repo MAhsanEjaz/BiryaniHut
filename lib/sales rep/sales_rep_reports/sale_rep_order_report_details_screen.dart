@@ -109,14 +109,20 @@ class _SaleRepOrderReportDetailsScreenState
       bottomNavigationBar: widget.isInvoices == true
           ? InkWell(
               onTap: () async {
+                String repName = '';
+                if (storage.getUsertype() == "customer") {
+                  repName = storage.getSalesRepName();
+                } else {
+                  repName = storage.getUserFirstName() +
+                      " " +
+                      storage.getUserLastName();
+                }
                 final data = await PdfOrdersInvoiceService().createInvoice(
                   ctx: context,
                   order: widget.orders,
                   customerName:
                       widget.orders.firstName! + " " + widget.orders.lastName!,
-                  repName: storage.getUserFirstName() +
-                      " " +
-                      storage.getUserLastName(),
+                  repName: repName,
                   isOrderCompleted:
                       widget.orders.status == "Pending" ? false : true,
                 );
@@ -178,6 +184,14 @@ class _SaleRepOrderReportDetailsScreenState
                     children: [
                       InkWell(
                         onTap: () async {
+                          String repName = '';
+                          if (storage.getUsertype() == "customer") {
+                            repName = storage.getSalesRepName();
+                          } else {
+                            repName = storage.getUserFirstName() +
+                                " " +
+                                storage.getUserLastName();
+                          }
                           final data =
                               await PdfOrdersInvoiceService().createInvoice(
                             ctx: context,
@@ -185,9 +199,7 @@ class _SaleRepOrderReportDetailsScreenState
                             customerName: widget.orders.firstName! +
                                 " " +
                                 widget.orders.lastName!,
-                            repName: storage.getUserFirstName() +
-                                " " +
-                                storage.getUserLastName(),
+                            repName: repName,
                             isOrderCompleted: widget.orders.status == "Pending"
                                 ? false
                                 : true,

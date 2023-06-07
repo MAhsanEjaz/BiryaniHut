@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/components/common_widgets.dart';
@@ -8,7 +6,6 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/services/customer_favourtes_products_service.dart';
 import 'package:shop_app/services/product_remove_favourite_service.dart';
 import 'package:shop_app/size_config.dart';
-
 import '../../../../helper/custom_loader.dart';
 import '../../../../models/products_model.dart';
 import '../../../../services/add_to_favourite_service.dart';
@@ -104,7 +101,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 : () {
                     isFav = true;
                     isFav ? addToFavHandler() : null;
-                    print("Is Fav $isFav");
+                    log("Is Fav $isFav");
                     setState(() {});
                   },
             child: Align(
