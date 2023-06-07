@@ -67,7 +67,7 @@ class _FavouritesScreenState extends State<FavouritesPage> {
                         _getCustFavProdHandler();
 
                         if (res == true) {
-                          showToast('Product remove from favourite');
+                          showToast('Product removed from Favourites');
                         }
 
                         CustomLoader.hideLoader(context);

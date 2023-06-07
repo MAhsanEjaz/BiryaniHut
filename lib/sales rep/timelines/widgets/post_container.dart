@@ -87,17 +87,17 @@ class _PostContainerState extends State<PostContainer> {
     );
   }
 
-  String getBroascastImageUrl(String url) {
-    List<String> list = url.split("\\");
-    print("My List ${list[6]}");
+  // String getBroascastImageUrl(String url) {
+  //   List<String> list = url.split("\\");
+  //   log("My List ${list[6]}");
 
-    url = "http://45.35.85.135:5955/influance/BroadcastImages/" + list.last;
+  //   url = imageBaseUrl + list.last;
 
-    log("post new url = $url");
-    // http://192.168.18.37:5955/influanceweb/productImages
+  //   log("post new url = $url");
+  //   // http://192.168.18.37:5955/influanceweb/productImages
 
-    return url;
-  }
+  //   return url;
+  // }
 }
 
 class _PostHeader extends StatelessWidget {
