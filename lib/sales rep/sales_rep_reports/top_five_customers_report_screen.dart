@@ -37,6 +37,10 @@ class _TopFiveCustomersReportScreenState
     return Consumer<TopFiveCustomerProvider>(builder: (context, data, _) {
       return Scaffold(
         appBar: AppBar(
+          title: const Text(
+            "Top Five Customers",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: appColor,
         ),
         body: data.fiveCustomers!.isEmpty
@@ -140,7 +144,8 @@ class _TopFiveCustomersReportScreenState
                         for (int i = 0; i < data.fiveCustomers!.length; i++)
                           const SizedBox(height: 10),
                         SfCartesianChart(
-                          title: ChartTitle(text: 'Top Five Customers Sale'),
+                          title:
+                              ChartTitle(text: 'Top Five Customers Purchase'),
                           legend: Legend(isVisible: true),
                           primaryXAxis: CategoryAxis(),
                           series: <ChartSeries>[

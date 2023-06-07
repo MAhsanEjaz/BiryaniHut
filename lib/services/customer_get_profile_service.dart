@@ -23,9 +23,10 @@ class CustomerGetService {
             .getProfileData(newcCustomerProfileModel: customerProfileModel);
 
         if (customerProfileModel.data != null) {
-          storage.setSalesRepId(repId: customerProfileModel.data!.saleRepID!);
+          storage.setSalesRepId(repId: customerProfileModel.data!.saleRep!.id);
           storage.setSalesRepName(
-              repName: customerProfileModel.data!.salonName!);
+              repName: customerProfileModel.data!.saleRep!.firstName +
+                  customerProfileModel.data!.saleRep!.lastName);
         }
 
         return true;
