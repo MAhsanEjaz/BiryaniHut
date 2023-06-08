@@ -68,7 +68,7 @@ class _PostContainerState extends State<PostContainer> {
                 child: CachedNetworkImage(
                   // imageUrl: dummyImageUrl,
                   //widget.post.imagePath!
-                  imageUrl: imageBaseUrl + widget.post.imagePath!,
+                  imageUrl: widget.post.imagePath!,
                   errorWidget: (context, url, error) {
                     return const SizedBox();
                   },
