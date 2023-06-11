@@ -215,7 +215,7 @@ class _SaleRepOrderReportDetailsScreenState
                                           ],
                                         ))));
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.share),
@@ -985,7 +985,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(

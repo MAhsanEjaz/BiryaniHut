@@ -169,24 +169,24 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
                                                           showToast(
                                                               "Quantity can't be less than 1");
                                                           return;
-                                                        } else if (widget
-                                                                .data.quantity <
-                                                            quantity) {
-                                                          showToast(
-                                                              "You can add upto ${widget.data.quantity} items only");
-                                                          return;
                                                         }
+                                                        // else if (widget
+                                                        //         .data.quantity <
+                                                        //     quantity) {
+                                                        //   showToast(
+                                                        //       "You can add upto ${widget.data.quantity} items only");
+                                                        //   return;
+                                                        // }
+                                                        // log("item.quantity = ${widget.data.quantity}");
+                                                        // log("quantity = $quantity");
 
-                                                        log("item.quantity = ${widget.data.quantity}");
-                                                        log("quantity = $quantity");
-
-                                                        if (widget
-                                                                .data.quantity <
-                                                            quantity) {
-                                                          showToast(
-                                                              "You can add upto ${widget.data.quantity} items only");
-                                                          return;
-                                                        }
+                                                        // if (widget
+                                                        //         .data.quantity <
+                                                        //     quantity) {
+                                                        //   showToast(
+                                                        //       "You can add upto ${widget.data.quantity} items only");
+                                                        //   return;
+                                                        // }
                                                         Navigator.pop(context);
 
                                                         List<CartItem> model =
