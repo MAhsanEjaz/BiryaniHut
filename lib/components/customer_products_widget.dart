@@ -148,16 +148,16 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                         return;
                                                       }
 
-                                                      log("item.quantity = ${widget.productData.quantity}");
-                                                      log("quantity = $quantity");
+                                                      // log("item.quantity = ${widget.productData.quantity}");
+                                                      // log("quantity = $quantity");
 
-                                                      if (widget.productData
-                                                              .quantity <
-                                                          quantity) {
-                                                        showToast(
-                                                            "You can add upto ${widget.productData.quantity} items only");
-                                                        return;
-                                                      }
+                                                      // if (widget.productData
+                                                      //         .quantity <
+                                                      //     quantity) {
+                                                      //   showToast(
+                                                      //       "You can add upto ${widget.productData.quantity} items only");
+                                                      //   return;
+                                                      // }
 
                                                       Navigator.pop(context);
 

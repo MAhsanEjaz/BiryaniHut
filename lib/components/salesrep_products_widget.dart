@@ -168,13 +168,13 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                       return;
                                                     }
 
-                                                    if (widget.productData
-                                                            .quantity <
-                                                        quantity) {
-                                                      showToast(
-                                                          "You can add upto ${widget.productData.quantity} items only");
-                                                      return;
-                                                    }
+                                                    // if (widget.productData
+                                                    //         .quantity <
+                                                    //     quantity) {
+                                                    //   showToast(
+                                                    //       "You can add upto ${widget.productData.quantity} items only");
+                                                    //   return;
+                                                    // }
 
                                                     Navigator.pop(context);
 
