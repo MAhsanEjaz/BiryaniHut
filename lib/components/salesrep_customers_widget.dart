@@ -16,6 +16,7 @@ import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_custom_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:sumup/sumup.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants.dart';
 import '../customer/screens/cart/components/payment_card.dart';
 import '../models/cart_model.dart';
@@ -159,6 +160,15 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
           backgroundColor: Colors.pink,
           content:
               Text('Request to delete customer send to admin for approval')));
+    }
+  }
+
+  void launchPhoneDialer(String phoneNumber) async {
+    String url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
@@ -461,8 +471,14 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                       text: widget.customers.firstName! +
                           " " +
                           widget.customers.lastName!),
-                  ResellerOrderTimeDateWidget(
-                      icon: Icons.call, text: "${widget.customers.phone}")
+                  InkWell(
+                    onTap: () {
+                      launchPhoneDialer(widget.customers.phone!);
+                      setState(() {});
+                    },
+                    child: ResellerOrderTimeDateWidget(
+                        icon: Icons.call, text: "${widget.customers.phone}"),
+                  )
                 ],
               ),
               // trailing:,

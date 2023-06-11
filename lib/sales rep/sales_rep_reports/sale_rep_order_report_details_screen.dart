@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/helper/custom_loader.dart';
@@ -14,6 +17,7 @@ import 'package:shop_app/services/salerep_order_report_details_service.dart';
 import 'package:shop_app/services/update_order_by_salesrep.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/multiline_custom_textfield.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants.dart';
 import '../../customer/screens/cart/components/orders_invoice_pdf.dart';
@@ -69,6 +73,11 @@ class _SaleRepOrderReportDetailsScreenState
     super.initState();
   }
 
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +110,73 @@ class _SaleRepOrderReportDetailsScreenState
                         orders: order.reportDetailsModel!,
                       )
                     : const SizedBox();
-              })
+              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: appColor),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () async {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                content: StatefulBuilder(
+                                    builder: (context, Setstate) =>  Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListTile(
+
+                                                leading: const Icon(Icons.sms),
+                                                onTap: (){
+
+
+
+                                                },
+                                                title: const Text('Message')),
+                                            ListTile(
+                                                leading: const Icon(Icons.mail),
+                                                onTap: () async {
+                                                  final data = await PdfOrdersInvoiceService().createInvoice(
+                                                    ctx: context,
+                                                    order: widget.orders,
+                                                    customerName:
+                                                    widget.orders.firstName! + " " + widget.orders.lastName!,
+                                                    isOrderCompleted: widget.orders.status == "Pending" ? false : true,
+                                                    repName: storage.getUserFirstName() + " " + storage.getUserLastName(),
+                                                  );
+
+                                                  final filePath = await _savePDF("Influance Invoice", data);
+
+                                                  final recipient = 'example@gmail.com'; // Replace with the recipient's email
+                                                  final subject = "Influance Invoice";
+                                                  final emailUrl = 'mailto:$recipient?subject=${Uri.encodeFull(subject)}&attachment=$filePath';
+
+                                                  if (await canLaunch(emailUrl)) {
+                                                  await launch(emailUrl);
+                                                  } else {
+                                                  throw 'Could not launch $emailUrl';
+                                                  }
+                                                },
+                                                title: const Text('Gmail')),
+                                          ],
+                                        ))));
+                      },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.share),
+                          SizedBox(width: 10),
+                          Text("Share")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -860,9 +935,9 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
                   "Details",
                   style: detailsStyle,

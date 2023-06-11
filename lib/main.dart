@@ -31,6 +31,7 @@ import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
 import 'package:shop_app/theme.dart';
 import 'customer/provider/categories_provider.dart';
 import 'customer/screens/splash/password_screen.dart';
+import 'pdf_example_screen.dart';
 import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
 
@@ -114,6 +115,7 @@ class MyApp extends StatelessWidget {
         theme: theme(),
         // home: SplashScreen(),
         home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+        // home: PdfEmailPage(),
         // home: MyNewPracticeScreen(),
         // home: ImagePickerPage(),
         // home: MyPracticeProductScreen(),
