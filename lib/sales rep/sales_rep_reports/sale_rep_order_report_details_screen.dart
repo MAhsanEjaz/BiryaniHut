@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
@@ -73,10 +74,45 @@ class _SaleRepOrderReportDetailsScreenState
     super.initState();
   }
 
+  Future<String> _savePDF(String fileName, List<int> data) async {
+    final Directory tempDir = await getTemporaryDirectory();
+    final String tempPath = tempDir.path;
+    final String filePath = '$tempPath/$fileName.pdf';
 
+    final File file = File(filePath);
+    await file.writeAsBytes(data);
 
+    return filePath;
+  }
 
+  void sendSms(String message) async {
+    // const message = 'Hello from!';
+    final url = 'sms:"03214963967"?body=${Uri.encodeComponent(message)}';
 
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> _sendEmail(List<String> path) async {
+    final Email email = Email(
+      body: 'Hello, this is the body of the email',
+      subject: 'Influence',
+      recipients: ['recipient1@example.com', 'recipient2@example.com'],
+      cc: ['cc@example.com'],
+      bcc: ['bcc@example.com'],
+      attachmentPaths: path,
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (error) {
+      print('Error sending email: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,41 +161,56 @@ class _SaleRepOrderReportDetailsScreenState
                             context: context,
                             builder: (context) => AlertDialog(
                                 content: StatefulBuilder(
-                                    builder: (context, Setstate) =>  Column(
+                                    builder: (context, Setstate) => Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            ListTile(
-
-                                                leading: const Icon(Icons.sms),
-                                                onTap: (){
-
-
-
-                                                },
-                                                title: const Text('Message')),
+                                            for (int i = 0;
+                                                i <
+                                                    widget.orders.orderPayment!
+                                                        .length;
+                                                i++)
+                                              ListTile(
+                                                  leading:
+                                                      const Icon(Icons.sms),
+                                                  onTap: () {
+                                                    sendSms(widget
+                                                        .orders
+                                                        .orderProducts![i]
+                                                        .productName
+                                                        .toString());
+                                                    Setstate;
+                                                  },
+                                                  title: const Text('Message')),
                                             ListTile(
                                                 leading: const Icon(Icons.mail),
                                                 onTap: () async {
-                                                  final data = await PdfOrdersInvoiceService().createInvoice(
+                                                  final data =
+                                                      await PdfOrdersInvoiceService()
+                                                          .createInvoice(
                                                     ctx: context,
                                                     order: widget.orders,
-                                                    customerName:
-                                                    widget.orders.firstName! + " " + widget.orders.lastName!,
-                                                    isOrderCompleted: widget.orders.status == "Pending" ? false : true,
-                                                    repName: storage.getUserFirstName() + " " + storage.getUserLastName(),
+                                                    customerName: widget
+                                                            .orders.firstName! +
+                                                        " " +
+                                                        widget.orders.lastName!,
+                                                    isOrderCompleted:
+                                                        widget.orders.status ==
+                                                                "Pending"
+                                                            ? false
+                                                            : true,
+                                                    repName: storage
+                                                            .getUserFirstName() +
+                                                        " " +
+                                                        storage
+                                                            .getUserLastName(),
                                                   );
 
-                                                  final filePath = await _savePDF("Influance Invoice", data);
+                                                  final filePath =
+                                                      await _savePDF(
+                                                          "Influance Invoice",
+                                                          data);
 
-                                                  final recipient = 'example@gmail.com'; // Replace with the recipient's email
-                                                  final subject = "Influance Invoice";
-                                                  final emailUrl = 'mailto:$recipient?subject=${Uri.encodeFull(subject)}&attachment=$filePath';
-
-                                                  if (await canLaunch(emailUrl)) {
-                                                  await launch(emailUrl);
-                                                  } else {
-                                                  throw 'Could not launch $emailUrl';
-                                                  }
+                                                  _sendEmail([filePath]);
                                                 },
                                                 title: const Text('Gmail')),
                                           ],

@@ -1,6 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.influance_hair_care">
     <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
    <application
         android:label="Influance Hair Care"
         android:name="${applicationName}"

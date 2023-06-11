@@ -55,6 +55,7 @@ dependencies:
   local_auth: ^2.1.6
   shared_preferences: ^2.1.1
   url_launcher: ^6.1.11
+  flutter_email_sender: ^6.0.0
   # dropdown_search: ^5.0.6
   
 
