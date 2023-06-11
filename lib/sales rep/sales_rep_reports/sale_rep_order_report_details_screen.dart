@@ -98,7 +98,7 @@ class _SaleRepOrderReportDetailsScreenState
 
   Future<void> _sendEmail(List<String> path) async {
     final Email email = Email(
-      body: 'Hello, this is the body of the email',
+      body: 'Influence Hair Care',
       subject: 'Influence',
       recipients: ['recipient1@example.com', 'recipient2@example.com'],
       cc: ['cc@example.com'],
@@ -170,20 +170,19 @@ class _SaleRepOrderReportDetailsScreenState
                                                         .length;
                                                 i++)
                                               ListTile(
-                                                  leading:
-                                                      const Icon(Icons.sms),
-                                                  onTap: () {
-                                                    sendSms(widget
-                                                        .orders
-                                                        .orderProducts![i]
-                                                        .productName
-                                                        .toString());
-                                                    Setstate;
-                                                  },
-                                                  title: const Text('Message')),
+                                                leading: const Icon(Icons.sms),
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  sendSms(
+                                                      'Product Name: ${widget.orders.orderProducts![i].productName!}\n Product Price: ${widget.orders.orderProducts![i].price!}\n Qty: ${widget.orders.orderProducts![i].quantity!}\n Total Price: ${widget.orders.orderProducts![i].totalPrice!}');
+                                                  Setstate;
+                                                },
+                                                title: const Text('Message'),
+                                              ),
                                             ListTile(
                                                 leading: const Icon(Icons.mail),
                                                 onTap: () async {
+                                                  Navigator.pop(context);
                                                   final data =
                                                       await PdfOrdersInvoiceService()
                                                           .createInvoice(
