@@ -85,26 +85,23 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         Provider.of<CustomerProfileProvider>(context, listen: false)
                 .customerProfileModel!
                 .data!
-                .saleRep!
-                .firstName +
-            " " +
-            Provider.of<CustomerProfileProvider>(context, listen: false)
-                .customerProfileModel!
-                .data!
-                .saleRep!
-                .lastName;
+                .saleRep ??
+            '';
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
-            .phone
-            .toString();
+            .phone!;
+    phoneCont.text =
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .phone!;
     addressCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
-            .address
-            .toString();
+            .address!;
 
     CustomLoader.hideLoader(context);
   }
@@ -114,6 +111,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     bool res = await UpdateCustomService().updateCustomerService(
         context: context,
         address: addressCont.text,
+        salonName: saloonControl.text,
+        email: emailCont.text,
         saleRepImage: imagee,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
@@ -143,11 +142,6 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       customerGetDataHandler();
-    });
-    getImagePath().then((path) {
-      setState(() {
-        imagePath = File(path!);
-      });
     });
   }
 
@@ -243,9 +237,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.edit),
                             SizedBox(width: 5),
                             Text('Edit Profile')
@@ -314,7 +308,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         CustomTextField(
                             headerText: "Email",
                             controller: emailCont,
-                            isEnabled: false,
+                            // isEnabled: false,
                             hint: 'Email',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),

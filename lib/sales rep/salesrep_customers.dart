@@ -149,7 +149,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           context: context,
                           phone: phoneController,
                           lastName: lastNameController,
-                          solonName: saloonNameController,
+                          solonName: saloonNameController, email: firstNameController,saloonName: firstNameController,
                         );
                       })
                 else if (searchCont.text.isNotEmpty && searchList.isEmpty)

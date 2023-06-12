@@ -35,6 +35,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
   TextEditingController solonName = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController saloonName = TextEditingController();
 
   bool showDialogue;
   BuildContext context;
@@ -43,6 +45,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
       {Key? key,
       required this.phone,
       required this.lastName,
+        required this.email,
+        required this.saloonName,
       required this.solonName,
       required this.address,
       required this.firstName,
@@ -113,6 +117,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     bool res = await UpdateCustomService().updateCustomerService(
         context: context,
         address: widget.address.text,
+        email: widget.email.text,
+        salonName: widget.saloonName.text,
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,

@@ -12,12 +12,16 @@ class UpdateCustomService {
       String? firstName,
       String? lastName,
       String? address,
+      String? email,
+      String? salonName,
       String? phone,
       String? saleRepImage}) async {
     try {
       Map body = {
         isSaleREpProfile == false ? "customerId" : "id": customerId,
         "firstName": firstName,
+        "email": email,
+        "salonName": salonName,
         "lastName": lastName,
         "address": address,
         "phone": phone,
