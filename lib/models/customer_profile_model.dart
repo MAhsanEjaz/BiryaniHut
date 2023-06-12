@@ -101,7 +101,6 @@
 //       );
 // }
 
-
 class CustomerProfileModel {
   Data? data;
   int? statusCode;
@@ -134,6 +133,7 @@ class Data {
   String? state;
   String? city;
   String? address;
+  String? email;
   String? location;
   String? customerImagePath;
   Null? customerImage;
@@ -148,23 +148,24 @@ class Data {
 
   Data(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.salonName,
-        this.state,
-        this.city,
-        this.address,
-        this.location,
-        this.customerImagePath,
-        this.customerImage,
-        this.phone,
-        this.accountBalance,
-        this.saleRepID,
-        this.saleRep,
-        this.loginId,
-        this.deleteStatus,
-        this.deletedDate,
-        this.deletedBy});
+      this.firstName,
+      this.lastName,
+      this.salonName,
+      this.state,
+      this.city,
+      this.address,
+      this.email,
+      this.location,
+      this.customerImagePath,
+      this.customerImage,
+      this.phone,
+      this.accountBalance,
+      this.saleRepID,
+      this.saleRep,
+      this.loginId,
+      this.deleteStatus,
+      this.deletedDate,
+      this.deletedBy});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -174,6 +175,7 @@ class Data {
     state = json['state'];
     city = json['city'];
     address = json['address'];
+    email = json['email'];
     location = json['location'];
     customerImagePath = json['customerImagePath'];
     customerImage = json['customerImage'];
@@ -196,6 +198,7 @@ class Data {
     data['state'] = state;
     data['city'] = city;
     data['address'] = address;
+    data['email'] = email;
     data['location'] = location;
     data['customerImagePath'] = customerImagePath;
     data['customerImage'] = customerImage;

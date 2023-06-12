@@ -45,8 +45,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
       {Key? key,
       required this.phone,
       required this.lastName,
-        required this.email,
-        required this.saloonName,
+      required this.email,
+      required this.saloonName,
       required this.solonName,
       required this.address,
       required this.firstName,
@@ -234,8 +234,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -256,8 +256,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -277,8 +277,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -388,8 +388,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         ),
                                       ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -419,8 +419,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1161,8 +1161,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

@@ -67,6 +67,12 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .data!
             .firstName
             .toString();
+    emailCont.text =
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .email
+            .toString();
 
     saloonControl.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
@@ -138,7 +144,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   void initState() {
     super.initState();
 
-    emailCont.text = loginStorage.getUserEmail();
+    // emailCont.text = loginStorage.getUserEmail();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       customerGetDataHandler();

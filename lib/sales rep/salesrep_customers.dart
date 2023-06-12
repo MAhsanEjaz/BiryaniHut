@@ -139,8 +139,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
                         TextEditingController phoneController =
                             TextEditingController(
-                          text: originalIndex.address?.toString() ?? '',
-                        );
+                          text: originalIndex.address?.toString() ?? '',);
 
                         return SalesRepCustomersWidget(
                           address: addressController,
@@ -149,7 +148,9 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           context: context,
                           phone: phoneController,
                           lastName: lastNameController,
-                          solonName: saloonNameController, email: firstNameController,saloonName: firstNameController,
+                          solonName: saloonNameController,
+                          email: firstNameController,
+                          saloonName: firstNameController,
                         );
                       })
                 else if (searchCont.text.isNotEmpty && searchList.isEmpty)
