@@ -666,7 +666,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                             .productName),
                                                     const SizedBox(height: 5),
                                                     Text(
-                                                        '\$${widget.productData.price.toString()}'),
+                                                        '\$${widget.productData.salePrice.toString()}'),
                                                     const SizedBox(height: 10),
                                                     CupertinoTextField(
                                                       placeholder:
@@ -720,15 +720,15 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 
     CartItem cartItem = CartItem(
       productId: item.productId,
-      price: item.price,
+      price: item.salePrice,
       quantity: quantity,
       discount: item.discount,
       productDescription: item.discription,
       productImage: item.productImagePath!,
       productImagePath: item.productImagePath!,
       productName: item.productName,
-      totalCost: item.price * item.quantity,
-      totalPrice: item.price,
+      totalCost: item.salePrice * item.quantity,
+      totalPrice: item.salePrice,
     );
     cartStorage.addCartItem(item: cartItem, customerId: widget.customerId);
     Provider.of<CartCounterProvider>(context, listen: false).incrementCount();

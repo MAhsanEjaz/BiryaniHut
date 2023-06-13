@@ -423,19 +423,19 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      SizedBox(
-                        child: PaymentCard(
-                          image: getSumupImageUrl(),
-                          color: selectedPaymentIndex == 1 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 1;
-
-                            handleSumupClick();
-                            setState(() {});
-                          },
-                          paymentName: 'SumUp',
-                        ),
-                      ),
+                      // SizedBox(
+                      //   child: PaymentCard(
+                      //     image: getSumupImageUrl(),
+                      //     color: selectedPaymentIndex == 1 ? true : false,
+                      //     onTap: () {
+                      //       selectedPaymentIndex = 1;
+                      //
+                      //       handleSumupClick();
+                      //       setState(() {});
+                      //     },
+                      //     paymentName: 'SumUp',
+                      //   ),
+                      // ),
                       //! payment by cash
                       PaymentCard(
                         image:

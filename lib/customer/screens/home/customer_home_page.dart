@@ -318,7 +318,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
         if (productsList!.isNotEmpty) {
           productsList!.forEach((element) {
-            log(" element price = ${element.price}");
+            log(" element price = ${element.salePrice}");
             widgets.add(CustomerProductsWidget(
               isReseller: false,
               productData: element,

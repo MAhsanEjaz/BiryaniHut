@@ -661,7 +661,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                           const SizedBox(
                                                               height: 5),
                                                           Text(
-                                                              '\$${widget.productData.price.toString()}'),
+                                                              '\$${widget.productData.salePrice.toString()}'),
                                                           const SizedBox(
                                                               height: 10),
                                                           CupertinoTextField(
@@ -748,7 +748,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
 
     CartItem cartItem = CartItem(
       productId: item.productId,
-      price: item.price,
+      price: item.salePrice,
       quantity: quantity,
       discount: item.discount,
       productDescription: item.discription,
