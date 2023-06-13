@@ -5,12 +5,17 @@ import 'package:shop_app/components/salesrep_customers_widget.dart';
 import 'package:shop_app/customer/register/register_page.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
+import 'package:shop_app/models/salesrep_get_discount_model.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
+import 'package:shop_app/providers/salesrep_discount_provider.dart';
+import 'package:shop_app/services/get_salesrep_discount_service.dart';
 import 'package:shop_app/services/reseller_customers_service.dart';
+import 'package:shop_app/services/salesrep_getprofile_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../constants.dart';
 import '../models/resseller_customers_model.dart';
+import '../providers/salesrep_profile_provider.dart';
 
 class ResellerCustomersPage extends StatefulWidget {
   const ResellerCustomersPage({Key? key}) : super(key: key);
@@ -69,6 +74,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
     super.initState();
   }
 
+  SalesrepDiscountModel? discountModel;
+
   bool showSellerList = false;
 
   @override
@@ -85,28 +92,36 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    String discount = "not assigned";
+                    await getRepDiscountHandler();
+                    //  Provider.of<CartCounterProvider>(context, listen: false)
+
                     showDialog(
                       context: context,
                       builder: (context) =>
                           StatefulBuilder(builder: (context, setState) {
                         return AlertDialog(
-                          title: Text('Discounts'),
+                          title: const Text('Discounts'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              Text("Discount is = $discount"),
                               Row(
                                 children: [
                                   ToggleSwitch(
                                     animate: true,
-                                    activeBgColor: [appColor, appColor],
+                                    activeBgColor: const [appColor, appColor],
                                     changeOnTap: true,
                                     initialLabelIndex: selectedIndex,
                                     totalSwitches: 2,
                                     centerText: true,
                                     minWidth:
                                         MediaQuery.of(context).size.width / 3.2,
-                                    labels: ['\$', '%'],
+                                    labels: const [
+                                      'Discount in Dollers',
+                                      'Percentage'
+                                    ],
                                     onToggle: (val) {
                                       setState(() {
                                         selectedIndex = val!;
@@ -116,22 +131,23 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               if (selectedIndex == 0)
                                 CustomTextField(
                                   prefixWidget:
-                                      Icon(CupertinoIcons.money_dollar),
+                                      const Icon(CupertinoIcons.money_dollar),
                                   inputType: TextInputType.number,
                                 ),
                               if (selectedIndex == 1)
                                 CustomTextField(
-                                  prefixWidget: Icon(CupertinoIcons.percent),
+                                  prefixWidget:
+                                      const Icon(CupertinoIcons.percent),
                                   inputType: TextInputType.number,
                                 ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () {},
-                                child: Text('Save'),
+                                child: const Text('Save'),
                                 style:
                                     ElevatedButton.styleFrom(primary: appColor),
                               )
@@ -146,9 +162,9 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: appColor,
+                    backgroundColor: appColor,
                     elevation: 10,
-                    side: BorderSide(color: Colors.white),
+                    side: const BorderSide(color: Colors.white),
                   ),
                 ),
               )
@@ -266,11 +282,20 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
   validateSearch() {
     if (searchCont.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
-          context: context, message: "Search Field is Empty");
+          context: context, message: "Write something to search");
       searchFocus.requestFocus();
       return false;
     } else {
       return true;
     }
+  }
+
+  Future<void> getRepDiscountHandler() async {
+    CustomLoader.showLoader(context: context);
+    await SalesrepGetDiscountService().getRepDiscount(context: context);
+    discountModel =
+        Provider.of<SalesrepDiscountProvider>(context, listen: false)
+            .repDiscountModel!;
+    CustomLoader.hideLoader(context);
   }
 }
