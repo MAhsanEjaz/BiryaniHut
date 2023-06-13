@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/salesrep_customers_widget.dart';
@@ -7,6 +8,7 @@ import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
 import 'package:shop_app/services/reseller_customers_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import '../constants.dart';
 import '../models/resseller_customers_model.dart';
 
@@ -79,6 +81,78 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
         },
         child: Scaffold(
           appBar: AppBar(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) =>
+                          StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          title: Text('Discounts'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  ToggleSwitch(
+                                    animate: true,
+                                    activeBgColor: [appColor, appColor],
+                                    changeOnTap: true,
+                                    initialLabelIndex: selectedIndex,
+                                    totalSwitches: 2,
+                                    centerText: true,
+                                    minWidth:
+                                        MediaQuery.of(context).size.width / 3.2,
+                                    labels: ['\$', '%'],
+                                    onToggle: (val) {
+                                      setState(() {
+                                        selectedIndex = val!;
+                                      });
+                                      print(selectedIndex);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              if (selectedIndex == 0)
+                                CustomTextField(
+                                  prefixWidget:
+                                      Icon(CupertinoIcons.money_dollar),
+                                  inputType: TextInputType.number,
+                                ),
+                              if (selectedIndex == 1)
+                                CustomTextField(
+                                  prefixWidget: Icon(CupertinoIcons.percent),
+                                  inputType: TextInputType.number,
+                                ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: () {},
+                                child: Text('Save'),
+                                style:
+                                    ElevatedButton.styleFrom(primary: appColor),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                    );
+                  },
+                  child: const Text(
+                    'Add Discounts',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: appColor,
+                    elevation: 10,
+                    side: BorderSide(color: Colors.white),
+                  ),
+                ),
+              )
+            ],
             backgroundColor: appColor,
             iconTheme: iconTheme,
             title: const Text(
@@ -139,7 +213,17 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
                         TextEditingController phoneController =
                             TextEditingController(
-                          text: originalIndex.address?.toString() ?? '',);
+                          text: originalIndex.address?.toString() ?? '',
+                        );
+                        TextEditingController emailController =
+                            TextEditingController(
+                          text: originalIndex.email?.toString() ?? '',
+                        );
+
+                        TextEditingController saloonController =
+                            TextEditingController(
+                          text: originalIndex.salonName?.toString() ?? '',
+                        );
 
                         return SalesRepCustomersWidget(
                           address: addressController,
@@ -149,8 +233,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           phone: phoneController,
                           lastName: lastNameController,
                           solonName: saloonNameController,
-                          email: firstNameController,
-                          saloonName: firstNameController,
+                          email: emailController,
+                          saloonName: saloonController,
                         );
                       })
                 else if (searchCont.text.isNotEmpty && searchList.isEmpty)

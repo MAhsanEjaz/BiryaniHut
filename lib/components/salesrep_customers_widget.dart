@@ -353,6 +353,17 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   hint: 'First Name',
                                                 ),
                                                 CustomTextField(
+                                                    prefixWidget:
+                                                        const Icon(Icons.email),
+                                                    controller: widget.email,
+                                                    hint: 'Email'),
+                                                CustomTextField(
+                                                    prefixWidget:
+                                                        const Icon(Icons.home),
+                                                    controller:
+                                                        widget.saloonName,
+                                                    hint: 'Salon'),
+                                                CustomTextField(
                                                     prefixWidget: const Icon(
                                                         Icons.person),
                                                     controller: widget.lastName,

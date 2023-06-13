@@ -35,6 +35,7 @@ class SalesrepCustomerData {
   String? state;
   String? city;
   String? address;
+  String? email;
   String? location;
   String? customerImagePath;
   String? customerImage;
@@ -52,6 +53,7 @@ class SalesrepCustomerData {
       this.salonName,
       this.state,
       this.city,
+        this.email,
       this.address,
       this.location,
       this.customerImagePath,
@@ -66,6 +68,7 @@ class SalesrepCustomerData {
   SalesrepCustomerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstName = json['firstName'];
+    email = json['email'];
     lastName = json['lastName'];
     salonName = json['salon_Name'];
     state = json['state'];
@@ -86,6 +89,7 @@ class SalesrepCustomerData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['firstName'] = firstName;
+    data['email'] = email;
     data['lastName'] = lastName;
     data['salon_Name'] = salonName;
     data['state'] = state;
@@ -105,6 +109,12 @@ class SalesrepCustomerData {
     return data;
   }
 }
+
+
+
+
+
+
 
 class Login {
   int? loginId;
