@@ -5,6 +5,11 @@ import 'components/body.dart';
 
 class OtpScreen extends StatelessWidget {
   static String routeName = "/otp";
+
+  String? email;
+
+  OtpScreen({this.email});
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -12,7 +17,7 @@ class OtpScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("OTP Verification"),
       ),
-      body: Body(),
+      body: Body(email: email),
     );
   }
 }

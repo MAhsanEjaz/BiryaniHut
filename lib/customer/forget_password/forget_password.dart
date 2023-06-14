@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/helper/custom_loader.dart';
+import 'package:shop_app/helper/custom_snackbar.dart';
+import 'package:shop_app/services/forget_password_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 
 import '../../size_config.dart';
+import '../screens/otp/otp_screen.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({Key? key}) : super(key: key);
@@ -20,6 +25,27 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   bool isEmailError = false;
 
   String emailErrorString = '';
+
+  forgetPasswordHandler() async {
+    CustomLoader.showLoader(context: context);
+
+    bool res = await ForgetPasswordService()
+        .forgetPasswordService(context: context, email: emailCont.text);
+
+    CustomLoader.hideLoader(context);
+
+    if (res) {
+      CustomSnackBar.showSnackBar(
+          context: context, message: 'Otp send to email');
+
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => OtpScreen(
+                    email: emailCont.text,
+                  )));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +130,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       buttonColor: appColor,
                       press: () {
                         if (isValid()) {
-                          showToast("Code sent");
+                          forgetPasswordHandler();
                         }
                       },
                     )
