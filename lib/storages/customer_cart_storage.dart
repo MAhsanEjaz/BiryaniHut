@@ -88,15 +88,15 @@ class CustomerCartStorage {
 
     CartItem cartItem = CartItem(
       productId: item.productId,
-      price: item.price,
+      price: item.salePrice,
       quantity: 1,
       discount: item.discount,
       productDescription: item.discription,
       productImage: item.productImagePath!,
       productImagePath: '',
       productName: item.productName,
-      totalCost: item.price * item.quantity,
-      totalPrice: item.price,
+      totalCost: item.salePrice * item.quantity,
+      totalPrice: item.salePrice,
     );
 
     return json.encode(cartItem);

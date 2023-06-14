@@ -81,7 +81,8 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                               const SizedBox(height: 10),
                               Text.rich(
                                 TextSpan(
-                                  text: "\$ ${widget.data.price.toString()}",
+                                  text:
+                                      "\$ ${widget.data.salePrice.toString()}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
@@ -660,7 +661,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                               .productName),
                                                       const SizedBox(height: 5),
                                                       Text(
-                                                          '\$${widget.data.price.toString()}'),
+                                                          '\$${widget.data.salePrice.toString()}'),
                                                       const SizedBox(
                                                           height: 10),
                                                       CupertinoTextField(
@@ -700,15 +701,15 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
 
     CartItem cartItem = CartItem(
         discount: item.discount,
-        price: item.price,
+        price: item.salePrice,
         productDescription: item.discription,
         productId: item.productId,
         productImage: item.productImagePath!,
         productImagePath: item.productImagePath!,
         productName: item.productName,
         quantity: quantity,
-        totalCost: item.price * item.quantity,
-        totalPrice: item.price);
+        totalCost: item.salePrice * item.quantity,
+        totalPrice: item.salePrice);
 
     cartStorage.addCartItem(item: cartItem);
     Provider.of<CartCounterProvider>(context, listen: false).incrementCount();

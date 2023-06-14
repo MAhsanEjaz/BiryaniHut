@@ -38,7 +38,7 @@ class ProductData {
   ProductData({
     required this.productId,
     required this.productName,
-    required this.price,
+    required this.salePrice,
     required this.quantity,
     this.lowStockthreshold,
     this.regularPrice,
@@ -56,7 +56,7 @@ class ProductData {
 
   int productId;
   String productName;
-  num price;
+  num salePrice;
   int quantity;
   int? lowStockthreshold;
   num? regularPrice;
@@ -74,7 +74,7 @@ class ProductData {
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         productId: json["productId"],
         productName: json["productName"],
-        price: json["price"]?.toDouble() ?? 0,
+        salePrice: json["salePrice"]?.toDouble() ?? 0,
         // quantity: json["quantity"],
         quantity: json["quantity"] ?? 0,
         lowStockthreshold: json["lowStockthreshold"],
@@ -94,7 +94,7 @@ class ProductData {
   Map<String, dynamic> toJson() => {
         "productId": productId,
         "productName": productName,
-        "price": price,
+        "salePrice": salePrice,
         "quantity": quantity,
         "lowStockthreshold": lowStockthreshold,
         "regularPrice": regularPrice,
