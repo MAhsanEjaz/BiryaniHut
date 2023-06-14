@@ -23,6 +23,7 @@ import '../../../components/rounded_icon_btn.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import '../customer/screens/cart/components/payment_card.dart';
+import '../models/salesrep_get_discount_model.dart';
 import '../providers/counter_provider.dart';
 import '../services/account_balance_service.dart';
 import '../services/add_to_cart_service.dart';
@@ -68,8 +69,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     CustomLoader.hideLoader(context);
   }
 
+  int cartItemsCount = 0;
+  SalesrepDiscountModel? repDiscountModel;
+  bool isDiscountInPercent = false;
+  bool isDiscountApplicable = false;
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getRepDiscountHandler();
     });
@@ -89,12 +96,18 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
           totalDiscount + element.discount * element.quantity; //! needs testing
       totalPrice = totalPrice + element.price * element.quantity;
       log("totalPrice /// = $totalPrice");
+
+      cartItemsCount = cartItemsCount + element.quantity;
+
+      log("new items count = $cartItemsCount");
     });
-    super.initState();
     if (model.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         accountHandler();
       });
+    }
+    if (cartItemsCount >= 20) {
+      isDiscountApplicable = true;
     }
   }
 
@@ -173,7 +186,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
         // }
         return Future.value(true);
       },
-      child: Consumer<SalesrepDiscountProvider>(builder: (context, data, _) {
+      child: Consumer<SalesrepDiscountProvider>(
+          builder: (context, discountData, _) {
+        repDiscountModel = discountData.repDiscountModel;
+        if (repDiscountModel!.data.discountType == "By Percentage") {
+          isDiscountInPercent = true;
+        } else {
+          isDiscountInPercent = false;
+        }
         return Scaffold(
           appBar: AppBar(
             title: Column(
@@ -588,12 +608,18 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //     "Previous Payable : \$ ${totalPayable.toStringAsFixed(2)}",
                                       //     style: TextStyle(
                                       //         fontWeight: FontWeight.bold),
-                                      //   ),
+                                      //   ),di
                                       Text(
                                         "Today's Order Amount : \$ ${totalPrice.toStringAsFixed(2)}",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
+                                      if (isDiscountApplicable)
+                                        Text(
+                                          "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       Text(
                                         "Total Balance: \$ " +
                                             getTotalBalance(),
@@ -1243,6 +1269,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     remainigBalance = double.parse(getTotalBalance()) - totalPaid;
 
     return remainigBalance.toStringAsFixed(2);
+  }
+
+  String getDiscountedPrice() {
+    return "";
   }
 
   Future<void> openInvoice() async {

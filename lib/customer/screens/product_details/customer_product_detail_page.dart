@@ -81,7 +81,8 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                               const SizedBox(height: 10),
                               Text.rich(
                                 TextSpan(
-                                  text: "\$ ${widget.data.salePrice.toString()}",
+                                  text:
+                                      "\$ ${widget.data.salePrice.toString()}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,

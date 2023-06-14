@@ -146,10 +146,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                     centerText: true,
                                     minWidth:
                                         MediaQuery.of(context).size.width / 3.2,
-                                    labels: const [
-                                      'Discount in Dollers',
-                                      'Percentage'
-                                    ],
+                                    labels: const ['Dollars', 'Percent'],
                                     onToggle: (val) {
                                       setState(() {
                                         selectedIndex = val!;
@@ -178,8 +175,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                               ElevatedButton(
                                 onPressed: () {
                                   addDiscountHandler(selectedIndex == 0
-                                      ? 'Discount in Dollar'
-                                      : 'Discount in Percent');
+                                      ? 'By Value'
+                                      : 'By Percentage');
                                   convertDiscountController.clear();
                                   selectedIndex == 0;
                                 },
