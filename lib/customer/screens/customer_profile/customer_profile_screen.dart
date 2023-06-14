@@ -91,7 +91,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         Provider.of<CustomerProfileProvider>(context, listen: false)
                 .customerProfileModel!
                 .data!
-                .saleRep ??
+                .saleRep!
+                .firstName! ??
             '';
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)

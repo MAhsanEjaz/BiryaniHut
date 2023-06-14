@@ -62,6 +62,18 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   SalesrepCartStorage cartStorage = SalesrepCartStorage();
   LoginStorage storage = LoginStorage();
 
+  String getOrderAmount (){
+    if(isDiscountApplicable){
+      if(isDiscountInPercent){
+        return (totalPrice - (totalPrice* repDiscountModel!.data.discount/100)).toStringAsFixed(2);
+      }else{
+        return (totalPrice-repDiscountModel!.data.discount).toStringAsFixed(2);
+      }
+    }else{
+      return totalPrice.toStringAsFixed(2);
+    }
+  }
+
   Future<void> getRepDiscountHandler() async {
     CustomLoader.showLoader(context: context);
     await SalesrepGetDiscountService().getRepDiscount(context: context);
@@ -109,6 +121,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     if (cartItemsCount >= 20) {
       isDiscountApplicable = true;
     }
+
+    log('isDiscountApplicable = $isDiscountApplicable');
+    log('cartItemsCount = $cartItemsCount');
+
+
+
   }
 
   accountHandler() async {
@@ -610,11 +628,11 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //         fontWeight: FontWeight.bold),
                                       //   ),di
                                       Text(
-                                        "Today's Order Amount : \$ ${totalPrice.toStringAsFixed(2)}",
+                                        "Today's Order Amount : \$ "+getOrderAmount(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      if (isDiscountApplicable)
+                                      if (repDiscountModel!=null &&  isDiscountApplicable)
                                         Text(
                                           "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
                                           style: const TextStyle(
@@ -1252,7 +1270,17 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     num totalBalance = 0;
 
     // totalBalance = previousBalance + totalPaid; //! before
-    totalBalance = previousBalance + totalPrice;
+    if(isDiscountApplicable){
+      if(isDiscountInPercent){
+        totalBalance = previousBalance + (totalPrice* repDiscountModel!.data.discount/100);
+      }else{
+        totalBalance = previousBalance + (totalPrice-repDiscountModel!.data.discount);
+      }
+
+    }else{
+      totalBalance = previousBalance + totalPrice;
+    }
+
 
     return totalBalance.toStringAsFixed(2);
   }

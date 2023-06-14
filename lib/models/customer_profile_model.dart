@@ -109,18 +109,18 @@ class CustomerProfileModel {
   CustomerProfileModel({this.data, this.statusCode, this.message});
 
   CustomerProfileModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     statusCode = json['statusCode'];
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['statusCode'] = statusCode;
-    data['message'] = message;
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
     return data;
   }
 }
@@ -136,11 +136,11 @@ class Data {
   String? email;
   String? location;
   String? customerImagePath;
-  Null? customerImage;
+  String? customerImage;
   String? phone;
   double? accountBalance;
-  Null? saleRepID;
-  Null? saleRep;
+  int? saleRepID;
+  SaleRep? saleRep;
   int? loginId;
   Null? deleteStatus;
   Null? deletedDate;
@@ -148,24 +148,24 @@ class Data {
 
   Data(
       {this.id,
-      this.firstName,
-      this.lastName,
-      this.salonName,
-      this.state,
-      this.city,
-      this.address,
-      this.email,
-      this.location,
-      this.customerImagePath,
-      this.customerImage,
-      this.phone,
-      this.accountBalance,
-      this.saleRepID,
-      this.saleRep,
-      this.loginId,
-      this.deleteStatus,
-      this.deletedDate,
-      this.deletedBy});
+        this.firstName,
+        this.lastName,
+        this.salonName,
+        this.state,
+        this.city,
+        this.address,
+        this.email,
+        this.location,
+        this.customerImagePath,
+        this.customerImage,
+        this.phone,
+        this.accountBalance,
+        this.saleRepID,
+        this.saleRep,
+        this.loginId,
+        this.deleteStatus,
+        this.deletedDate,
+        this.deletedBy});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -182,7 +182,8 @@ class Data {
     phone = json['phone'];
     accountBalance = json['accountBalance'];
     saleRepID = json['saleRepID'];
-    saleRep = json['saleRep'];
+    saleRep =
+    json['saleRep'] != null ? new SaleRep.fromJson(json['saleRep']) : null;
     loginId = json['loginId'];
     deleteStatus = json['deleteStatus'];
     deletedDate = json['deletedDate'];
@@ -190,26 +191,54 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['salon_Name'] = salonName;
-    data['state'] = state;
-    data['city'] = city;
-    data['address'] = address;
-    data['email'] = email;
-    data['location'] = location;
-    data['customerImagePath'] = customerImagePath;
-    data['customerImage'] = customerImage;
-    data['phone'] = phone;
-    data['accountBalance'] = accountBalance;
-    data['saleRepID'] = saleRepID;
-    data['saleRep'] = saleRep;
-    data['loginId'] = loginId;
-    data['deleteStatus'] = deleteStatus;
-    data['deletedDate'] = deletedDate;
-    data['deletedBy'] = deletedBy;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['firstName'] = this.firstName;
+    data['lastName'] = this.lastName;
+    data['salon_Name'] = this.salonName;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['address'] = this.address;
+    data['email'] = this.email;
+    data['location'] = this.location;
+    data['customerImagePath'] = this.customerImagePath;
+    data['customerImage'] = this.customerImage;
+    data['phone'] = this.phone;
+    data['accountBalance'] = this.accountBalance;
+    data['saleRepID'] = this.saleRepID;
+    if (this.saleRep != null) {
+      data['saleRep'] = this.saleRep!.toJson();
+    }
+    data['loginId'] = this.loginId;
+    data['deleteStatus'] = this.deleteStatus;
+    data['deletedDate'] = this.deletedDate;
+    data['deletedBy'] = this.deletedBy;
     return data;
   }
 }
+
+class SaleRep {
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? saleRepImagePath;
+
+  SaleRep({this.id, this.firstName, this.lastName, this.saleRepImagePath});
+
+  SaleRep.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    saleRepImagePath = json['saleRepImagePath'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['firstName'] = this.firstName;
+    data['lastName'] = this.lastName;
+    data['saleRepImagePath'] = this.saleRepImagePath;
+    return data;
+  }
+}
+

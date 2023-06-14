@@ -8,6 +8,7 @@ import 'package:shop_app/storages/login_storage.dart';
 
 class CustomerGetService {
   LoginStorage storage = LoginStorage();
+
   Future customerGetService(
       {required BuildContext context, required int id}) async {
     try {
@@ -23,10 +24,10 @@ class CustomerGetService {
             .getProfileData(newcCustomerProfileModel: customerProfileModel);
 
         if (customerProfileModel.data != null) {
-          storage.setSalesRepId(repId: customerProfileModel.data!.saleRep!.id);
+          storage.setSalesRepId(repId: customerProfileModel.data!.saleRep!.id!);
           storage.setSalesRepName(
-              repName: customerProfileModel.data!.saleRep!.firstName +
-                  customerProfileModel.data!.saleRep!.lastName);
+              repName: '${customerProfileModel.data!.saleRep!.firstName}' +
+                  '${customerProfileModel.data!.saleRep!.lastName}');
         }
 
         return true;
