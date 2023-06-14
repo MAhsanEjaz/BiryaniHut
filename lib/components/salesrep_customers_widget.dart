@@ -170,9 +170,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   }
 
   void launchPhoneDialer(String phoneNumber) async {
-    String url = 'tel:$phoneNumber';
-    if (await canLaunch(url)) {
-      await launch(url);
+    var url = Uri.parse('tel:$phoneNumber');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -234,8 +234,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -256,8 +256,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -277,8 +277,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -399,8 +399,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         ),
                                       ));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -430,8 +430,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1172,8 +1172,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: const Row(
-                        children: [
+                      child: Row(
+                        children: const [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

@@ -109,6 +109,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CostOfGooddSaleProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveProductProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
+        ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
