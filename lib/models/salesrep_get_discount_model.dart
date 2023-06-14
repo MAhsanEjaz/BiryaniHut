@@ -25,7 +25,7 @@ class SalesrepDiscountModel {
 
 class Data {
   int id;
-  int discount;
+  double discount;
   String discountType;
 
   Data({

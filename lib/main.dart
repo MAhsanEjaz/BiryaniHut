@@ -34,6 +34,7 @@ import 'customer/screens/splash/password_screen.dart';
 import 'pdf_example_screen.dart';
 import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
+import 'providers/salesrep_discount_provider.dart';
 
 String? myPublishKey;
 
@@ -109,7 +110,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CostOfGooddSaleProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveProductProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
-        ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
+        ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
