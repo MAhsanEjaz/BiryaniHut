@@ -9,8 +9,10 @@ import 'package:shop_app/models/salesrep_get_discount_model.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
 import 'package:shop_app/providers/salesrep_discount_provider.dart';
 import 'package:shop_app/services/get_salesrep_discount_service.dart';
+import 'package:shop_app/services/put_sale_rep_discount.dart';
 import 'package:shop_app/services/reseller_customers_service.dart';
 import 'package:shop_app/services/salesrep_getprofile_service.dart';
+import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../constants.dart';
@@ -78,9 +80,31 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
   bool showSellerList = false;
 
+  TextEditingController convertDiscountController = TextEditingController();
+
+  LoginStorage loginStorage = LoginStorage();
+
+  addDiscountHandler(String discountType) async {
+    CustomLoader.showLoader(context: context);
+    var res = await PutSaleRepDiscountService().putSaleRepDiscountService(
+        context: context,
+        userId: loginStorage.getUserId(),
+        discount: convertDiscountController.text,
+        discountType: discountType);
+    CustomLoader.hideLoader(context);
+
+    getRepDiscountHandler();
+
+    if (res) {
+      CustomSnackBar.showSnackBar(
+          context: context, message: 'Discount added successfully');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<ResellerCustomerProvider>(builder: (context, customer, _) {
+    return Consumer2<ResellerCustomerProvider, SalesrepDiscountProvider>(
+        builder: (context, customer, data, _) {
       return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -93,7 +117,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    String discount = "not assigned";
+                    // String discount = "not assigned";
                     await getRepDiscountHandler();
                     //  Provider.of<CartCounterProvider>(context, listen: false)
 
@@ -106,7 +130,11 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("Discount is = $discount"),
+                              data.repDiscountModel!.data == null
+                                  ? const CircularProgressIndicator()
+                                  : Text(
+                                      '${data.repDiscountModel!.data.discountType} = ${data.repDiscountModel!.data.discount}'),
+                              const SizedBox(height: 10),
                               Row(
                                 children: [
                                   ToggleSwitch(
@@ -118,10 +146,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                     centerText: true,
                                     minWidth:
                                         MediaQuery.of(context).size.width / 3.2,
-                                    labels: const [
-                                      'Discount in Dollers',
-                                      'Percentage'
-                                    ],
+                                    labels: const ['Dollars', 'Percent'],
                                     onToggle: (val) {
                                       setState(() {
                                         selectedIndex = val!;
@@ -137,16 +162,24 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                   prefixWidget:
                                       const Icon(CupertinoIcons.money_dollar),
                                   inputType: TextInputType.number,
+                                  controller: convertDiscountController,
                                 ),
                               if (selectedIndex == 1)
                                 CustomTextField(
                                   prefixWidget:
                                       const Icon(CupertinoIcons.percent),
                                   inputType: TextInputType.number,
+                                  controller: convertDiscountController,
                                 ),
                               const SizedBox(height: 10),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  addDiscountHandler(selectedIndex == 0
+                                      ? 'By Value'
+                                      : 'By Percentage');
+                                  convertDiscountController.clear();
+                                  selectedIndex == 0;
+                                },
                                 child: const Text('Save'),
                                 style:
                                     ElevatedButton.styleFrom(primary: appColor),
@@ -293,9 +326,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
   Future<void> getRepDiscountHandler() async {
     CustomLoader.showLoader(context: context);
     await SalesrepGetDiscountService().getRepDiscount(context: context);
-    discountModel =
-        Provider.of<SalesrepDiscountProvider>(context, listen: false)
-            .repDiscountModel!;
+
     CustomLoader.hideLoader(context);
   }
 }
