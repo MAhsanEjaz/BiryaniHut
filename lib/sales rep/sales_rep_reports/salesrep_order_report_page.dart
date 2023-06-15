@@ -397,6 +397,8 @@ class OrderReportsWidget extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SaleRepOrderReportDetailsScreen(
+                              phone: order.phone!,
+                              email: order.email!,
                               isInvoices: true,
                               orderId: order.orderId!,
                               name: "${order.firstName!}" " " + order.lastName!,

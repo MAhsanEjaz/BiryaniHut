@@ -34,8 +34,9 @@ class SaleRepOrderReportDetailsScreen extends StatefulWidget {
 
   bool? isInvoices;
   bool? isCustomer;
-
   final String name;
+  final String email;
+  String phone;
   final String date;
   final SaleRapOrdersList orders;
 
@@ -43,7 +44,9 @@ class SaleRepOrderReportDetailsScreen extends StatefulWidget {
       {Key? key,
       required this.orderId,
       required this.name,
+      required this.email,
       this.isInvoices,
+      required this.phone,
       this.isCustomer,
       required this.date,
       required this.orders})
@@ -87,7 +90,7 @@ class _SaleRepOrderReportDetailsScreenState
 
   void sendSms(String message) async {
     // const message = 'Hello from!';
-    final url = 'sms:"03214963967"?body=${Uri.encodeComponent(message)}';
+    final url = 'sms:"${widget.phone}"?body=${Uri.encodeComponent(message)}';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -98,11 +101,11 @@ class _SaleRepOrderReportDetailsScreenState
 
   Future<void> _sendEmail(List<String> path) async {
     final Email email = Email(
-      body: 'Influence Hair Care',
+      body: 'A new order has been placed ',
       subject: 'Influence',
-      recipients: ['recipient1@example.com', 'recipient2@example.com'],
-      cc: ['cc@example.com'],
-      bcc: ['bcc@example.com'],
+      recipients: [widget.email],
+      // cc: [widget.email],
+      // bcc: [widget.email],
       attachmentPaths: path,
       isHTML: false,
     );
@@ -116,506 +119,675 @@ class _SaleRepOrderReportDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.name,
-          style: nameStyle,
+    return Consumer<OrderReportDetailsProvider>(builder: (context, data, _) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.name,
+            style: nameStyle,
+          ),
+          actions: [
+            Text(
+              getDate(widget.date) + " " + getTime(widget.date),
+              style: timeStyle,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+          ],
         ),
-        actions: [
-          Text(
-            getDate(widget.date) + " " + getTime(widget.date),
-            style: timeStyle,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Consumer<OrderReportDetailsProvider>(
-                  builder: (context, order, _) {
-                return order.reportDetailsModel != null
-                    ? OrderReportDetailsWidget(
-                        orders: order.reportDetailsModel!,
-                      )
-                    : const SizedBox();
-              }),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: appColor),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () async {
-                        showCupertinoDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                content: StatefulBuilder(
-                                    builder: (context, Setstate) => Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            for (int i = 0;
-                                                i <
-                                                    widget.orders.orderPayment!
-                                                        .length;
-                                                i++)
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer<OrderReportDetailsProvider>(
+                    builder: (context, order, _) {
+                  return order.reportDetailsModel != null
+                      ? OrderReportDetailsWidget(
+                          orders: order.reportDetailsModel!,
+                        )
+                      : const SizedBox();
+                }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: appColor),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () async {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  content: StatefulBuilder(
+                                      builder: (context, Setstate) => Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
                                               ListTile(
                                                 leading: const Icon(Icons.sms),
                                                 onTap: () {
-                                                  Navigator.pop(context);
-                                                  sendSms(
-                                                      'Product Name: ${widget.orders.orderProducts![i].productName!}\n Product Price: ${widget.orders.orderProducts![i].price!}\n Qty: ${widget.orders.orderProducts![i].quantity!}\n Total Price: ${widget.orders.orderProducts![i].totalPrice!}');
-                                                  Setstate;
+                                                  for (var element in data
+                                                      .reportDetailsModel!
+                                                      .data!
+                                                      .orderProducts) {
+                                                    sendSms(
+                                                      'Order Id : ${element.productId}\nProduct Name: ${element.productName}\nTotal Price: ${element.totalPrice}\nQuantity: ${element.quantity}\n',
+                                                    );
+                                                  }
                                                 },
                                                 title: const Text('Message'),
                                               ),
-                                            ListTile(
-                                                leading: const Icon(Icons.mail),
-                                                onTap: () async {
-                                                  Navigator.pop(context);
-                                                  final data =
-                                                      await PdfOrdersInvoiceService()
-                                                          .createInvoice(
-                                                    ctx: context,
-                                                    order: widget.orders,
-                                                    customerName: widget
-                                                            .orders.firstName! +
-                                                        " " +
-                                                        widget.orders.lastName!,
-                                                    isOrderCompleted:
-                                                        widget.orders.status ==
-                                                                "Pending"
-                                                            ? false
-                                                            : true,
-                                                    repName: storage
-                                                            .getUserFirstName() +
-                                                        " " +
-                                                        storage
-                                                            .getUserLastName(),
-                                                  );
+                                              ListTile(
+                                                  leading:
+                                                      const Icon(Icons.mail),
+                                                  onTap: () async {
+                                                    Navigator.pop(context);
+                                                    final data =
+                                                        await PdfOrdersInvoiceService()
+                                                            .createInvoice(
+                                                      ctx: context,
+                                                      order: widget.orders,
+                                                      customerName: widget
+                                                              .orders
+                                                              .firstName! +
+                                                          " " +
+                                                          widget
+                                                              .orders.lastName!,
+                                                      isOrderCompleted: widget
+                                                                  .orders
+                                                                  .status ==
+                                                              "Pending"
+                                                          ? false
+                                                          : true,
+                                                      repName: storage
+                                                              .getUserFirstName() +
+                                                          " " +
+                                                          storage
+                                                              .getUserLastName(),
+                                                    );
 
-                                                  final filePath =
-                                                      await _savePDF(
-                                                          "Influance Invoice",
-                                                          data);
+                                                    final filePath =
+                                                        await _savePDF(
+                                                            "Influance Invoice",
+                                                            data);
 
-                                                  _sendEmail([filePath]);
-                                                },
-                                                title: const Text('Gmail')),
-                                          ],
-                                        ))));
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.share),
-                          SizedBox(width: 10),
-                          Text("Share")
-                        ],
+                                                    _sendEmail([filePath]);
+                                                  },
+                                                  title: const Text('Gmail')),
+                                            ],
+                                          ))));
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.share),
+                            SizedBox(width: 10),
+                            Text("Share")
+                          ],
+                        ),
                       ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: widget.isInvoices == true
+            ? InkWell(
+                onTap: () async {
+                  String repName = '';
+                  if (storage.getUsertype() == "customer") {
+                    repName = storage.getSalesRepName();
+                  } else {
+                    repName = storage.getUserFirstName() +
+                        " " +
+                        storage.getUserLastName();
+                  }
+                  final data = await PdfOrdersInvoiceService().createInvoice(
+                    ctx: context,
+                    order: widget.orders,
+                    customerName: widget.orders.firstName! +
+                        " " +
+                        widget.orders.lastName!,
+                    repName: repName,
+                    isOrderCompleted:
+                        widget.orders.status == "Pending" ? false : true,
+                  );
+
+                  PdfOrdersInvoiceService()
+                      .savePdfFile("Influance Invoice", data);
+                  // number++;
+
+                  //test
+
+                  // final file = await PdfService().generatePdf();
+
+                  // Open the PDF file
+                  // await OpenFilex.open(file.path);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    height: getProportionateScreenWidth(40),
+                    width: getProportionateScreenWidth(120),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: appColor),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/receipt.svg",
+                          color: appColor,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          "Invoice",
+                          style: TextStyle(
+                            color: appColor,
+                            // fontSize: 14.0,
+                            // fontWeight: FontWeight.w600
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
               )
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: widget.isInvoices == true
-          ? InkWell(
-              onTap: () async {
-                String repName = '';
-                if (storage.getUsertype() == "customer") {
-                  repName = storage.getSalesRepName();
-                } else {
-                  repName = storage.getUserFirstName() +
-                      " " +
-                      storage.getUserLastName();
-                }
-                final data = await PdfOrdersInvoiceService().createInvoice(
-                  ctx: context,
-                  order: widget.orders,
-                  customerName:
-                      widget.orders.firstName! + " " + widget.orders.lastName!,
-                  repName: repName,
-                  isOrderCompleted:
-                      widget.orders.status == "Pending" ? false : true,
-                );
+            : widget.isCustomer == true
+                ? Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: lightBlackColor, width: 1.5)),
+                    height: kToolbarHeight * 1.0,
+                    width: SizeConfig.screenWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            String repName = '';
+                            if (storage.getUsertype() == "customer") {
+                              repName = storage.getSalesRepName();
+                            } else {
+                              repName = storage.getUserFirstName() +
+                                  " " +
+                                  storage.getUserLastName();
+                            }
+                            final data =
+                                await PdfOrdersInvoiceService().createInvoice(
+                              ctx: context,
+                              order: widget.orders,
+                              customerName: widget.orders.firstName! +
+                                  " " +
+                                  widget.orders.lastName!,
+                              repName: repName,
+                              isOrderCompleted:
+                                  widget.orders.status == "Pending"
+                                      ? false
+                                      : true,
+                            );
 
-                PdfOrdersInvoiceService()
-                    .savePdfFile("Influance Invoice", data);
-                // number++;
+                            PdfOrdersInvoiceService()
+                                .savePdfFile("Influance Invoice", data);
+                            // number++;
 
-                //test
+                            //test
 
-                // final file = await PdfService().generatePdf();
+                            // final file = await PdfService().generatePdf();
 
-                // Open the PDF file
-                // await OpenFilex.open(file.path);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  height: getProportionateScreenWidth(40),
-                  width: getProportionateScreenWidth(120),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: appColor),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/receipt.svg",
-                        color: appColor,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "Invoice",
-                        style: TextStyle(
-                          color: appColor,
-                          // fontSize: 14.0,
-                          // fontWeight: FontWeight.w600
+                            // Open the PDF file
+                            // await OpenFilex.open(file.path);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            height: getProportionateScreenWidth(40),
+                            width: getProportionateScreenWidth(120),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: appColor),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/receipt.svg",
+                                  color: appColor,
+                                ),
+                                const Text(
+                                  "Invoice",
+                                  style: TextStyle(
+                                    color: appColor,
+                                    // fontSize: 14.0,
+                                    // fontWeight: FontWeight.w600
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
+                        if (widget.isCustomer! &&
+                            widget.orders.status != "Pending")
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            height: getProportionateScreenWidth(42),
+                            width: getProportionateScreenWidth(120),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.redAccent),
+                            child: InkWell(
+                              onTap: () {
+                                showSheetForReview();
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  widget.orders.status != "Pending"
+                                      ? const Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                        )
+                                      : const SizedBox(),
+                                  const Text("Add Review",
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        if (!widget.isCustomer!)
+                          Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            height: getProportionateScreenWidth(42),
+                            width: getProportionateScreenWidth(120),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: widget.orders.status == "Pending"
+                                    ? Colors.redAccent
+                                    : Colors.greenAccent),
+                            child: InkWell(
+                              onTap: () {
+                                if (widget.orders.status == "Pending") {
+                                  showAwesomeAlert(
+                                    context: context,
+                                    msg: "Is the order delivery completed?",
+                                    animType: AnimType.bottomSlide,
+                                    dialogType: DialogType.info,
+                                    onOkPress: () {
+                                      updateOrderHandler();
+                                    },
+                                  );
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  widget.orders.status != "Pending"
+                                      ? const Icon(
+                                          Icons.check_circle_outline_sharp,
+                                          color: whiteColor,
+                                        )
+                                      : const SizedBox(),
+                                  Text(
+                                      widget.orders.status == "Pending"
+                                          ? "Order Pending"
+                                          : widget.orders.status!,
+                                      style: const TextStyle(
+                                          // height: 0.9,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                : widget.isCustomer == false
+                    ? Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: lightBlackColor, width: 1.5)),
+                            height: kToolbarHeight * 1.0,
+                            width: SizeConfig.screenWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    final data = await PdfOrdersInvoiceService()
+                                        .createInvoice(
+                                            ctx: context,
+                                            order: widget.orders,
+                                            customerName:
+                                                widget.orders.firstName! +
+                                                    " " +
+                                                    widget.orders.lastName!,
+                                            isOrderCompleted:
+                                                widget.orders.status ==
+                                                        "Pending"
+                                                    ? false
+                                                    : true,
+                                            repName:
+                                                storage.getUserFirstName() +
+                                                    " " +
+                                                    storage.getUserLastName());
+
+                                    PdfOrdersInvoiceService()
+                                        .savePdfFile("Influance Invoice", data);
+                                    // number++;
+
+                                    //test
+
+                                    // final file = await PdfService().generatePdf();
+
+                                    // Open the PDF file
+                                    // await OpenFilex.open(file.path);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: getProportionateScreenWidth(40),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: appColor),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/receipt.svg",
+                                          color: appColor,
+                                        ),
+                                        const Text(
+                                          "Invoice",
+                                          style: TextStyle(
+                                            color: appColor,
+                                            // fontSize: 14.0,
+                                            // fontWeight: FontWeight.w600
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                if (widget.isCustomer! &&
+                                    widget.orders.status != "Pending")
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    height: getProportionateScreenWidth(42),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.redAccent),
+                                    child: InkWell(
+                                      onTap: () {
+                                        showSheetForReview();
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          widget.orders.status != "Pending"
+                                              ? const Icon(
+                                                  Icons.edit,
+                                                  color: whiteColor,
+                                                )
+                                              : const SizedBox(),
+                                          const Text("Add Review",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                if (!widget.isCustomer!)
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    height: getProportionateScreenWidth(42),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: widget.orders.status == "Pending"
+                                            ? Colors.redAccent
+                                            : Colors.greenAccent),
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (widget.orders.status == "Pending") {
+                                          showAwesomeAlert(
+                                            context: context,
+                                            msg:
+                                                "Is the order delivery completed?",
+                                            animType: AnimType.bottomSlide,
+                                            dialogType: DialogType.info,
+                                            onOkPress: () {
+                                              updateOrderHandler();
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          widget.orders.status != "Pending"
+                                              ? const Icon(
+                                                  Icons
+                                                      .check_circle_outline_sharp,
+                                                  color: whiteColor,
+                                                )
+                                              : const SizedBox(),
+                                          Text(
+                                              widget.orders.status == "Pending"
+                                                  ? "Order Pending"
+                                                  : widget.orders.status!,
+                                              style: const TextStyle(
+                                                  // height: 0.9,
+                                                  // fontWeight: FontWeight.bold,
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: lightBlackColor, width: 1.5)),
+                            height: kToolbarHeight * 1.0,
+                            width: SizeConfig.screenWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    final data = await PdfOrdersInvoiceService()
+                                        .createInvoice(
+                                      ctx: context,
+                                      order: widget.orders,
+                                      customerName: widget.orders.firstName! +
+                                          " " +
+                                          widget.orders.lastName!,
+                                      repName: storage.getUserFirstName() +
+                                          " " +
+                                          storage.getUserLastName(),
+                                      isOrderCompleted:
+                                          widget.orders.status == "Pending"
+                                              ? false
+                                              : true,
+                                    );
+
+                                    PdfOrdersInvoiceService()
+                                        .savePdfFile("Influance Invoice", data);
+                                    // number++;
+
+                                    //test
+
+                                    // final file = await PdfService().generatePdf();
+
+                                    // Open the PDF file
+                                    // await OpenFilex.open(file.path);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: getProportionateScreenWidth(40),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: appColor),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/receipt.svg",
+                                          color: appColor,
+                                        ),
+                                        const Text(
+                                          "Invoice",
+                                          style: TextStyle(
+                                            color: appColor,
+                                            // fontSize: 14.0,
+                                            // fontWeight: FontWeight.w600
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                if (widget.isCustomer! &&
+                                    widget.orders.status != "Pending")
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    height: getProportionateScreenWidth(42),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.redAccent),
+                                    child: InkWell(
+                                      onTap: () {
+                                        showSheetForReview();
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          widget.orders.status != "Pending"
+                                              ? const Icon(
+                                                  Icons.edit,
+                                                  color: whiteColor,
+                                                )
+                                              : const SizedBox(),
+                                          const Text("Add Review",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                if (!widget.isCustomer!)
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    height: getProportionateScreenWidth(42),
+                                    width: getProportionateScreenWidth(120),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: widget.orders.status == "Pending"
+                                            ? Colors.redAccent
+                                            : Colors.greenAccent),
+                                    child: InkWell(
+                                      onTap: () {
+                                        if (widget.orders.status == "Pending") {
+                                          showAwesomeAlert(
+                                            context: context,
+                                            msg:
+                                                "Is the order delivery completed?",
+                                            animType: AnimType.bottomSlide,
+                                            dialogType: DialogType.info,
+                                            onOkPress: () {
+                                              updateOrderHandler();
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          widget.orders.status != "Pending"
+                                              ? const Icon(
+                                                  Icons
+                                                      .check_circle_outline_sharp,
+                                                  color: whiteColor,
+                                                )
+                                              : const SizedBox(),
+                                          Text(
+                                              widget.orders.status == "Pending"
+                                                  ? "Order Pending"
+                                                  : widget.orders.status!,
+                                              style: const TextStyle(
+                                                  // height: 0.9,
+                                                  // fontWeight: FontWeight.bold,
+                                                  color: Colors.white)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
                       )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : widget.isCustomer == true
-              ? Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: lightBlackColor, width: 1.5)),
-                  height: kToolbarHeight * 1.0,
-                  width: SizeConfig.screenWidth,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          String repName = '';
-                          if (storage.getUsertype() == "customer") {
-                            repName = storage.getSalesRepName();
-                          } else {
-                            repName = storage.getUserFirstName() +
-                                " " +
-                                storage.getUserLastName();
-                          }
-                          final data =
-                              await PdfOrdersInvoiceService().createInvoice(
-                            ctx: context,
-                            order: widget.orders,
-                            customerName: widget.orders.firstName! +
-                                " " +
-                                widget.orders.lastName!,
-                            repName: repName,
-                            isOrderCompleted: widget.orders.status == "Pending"
-                                ? false
-                                : true,
-                          );
-
-                          PdfOrdersInvoiceService()
-                              .savePdfFile("Influance Invoice", data);
-                          // number++;
-
-                          //test
-
-                          // final file = await PdfService().generatePdf();
-
-                          // Open the PDF file
-                          // await OpenFilex.open(file.path);
-                        },
+                    : SizedBox(
+                        height: kToolbarHeight * 1.0,
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           height: getProportionateScreenWidth(40),
-                          width: getProportionateScreenWidth(120),
                           decoration: BoxDecoration(
                             border: Border.all(color: appColor),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/receipt.svg",
-                                color: appColor,
-                              ),
-                              const Text(
-                                "Invoice",
-                                style: TextStyle(
-                                  color: appColor,
-                                  // fontSize: 14.0,
-                                  // fontWeight: FontWeight.w600
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (widget.isCustomer! &&
-                          widget.orders.status != "Pending")
-                        Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          height: getProportionateScreenWidth(42),
-                          width: getProportionateScreenWidth(120),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.redAccent),
-                          child: InkWell(
-                            onTap: () {
-                              showSheetForReview();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                widget.orders.status != "Pending"
-                                    ? const Icon(
-                                        Icons.edit,
-                                        color: whiteColor,
-                                      )
-                                    : const SizedBox(),
-                                const Text("Add Review",
-                                    style: TextStyle(color: Colors.white)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      if (!widget.isCustomer!)
-                        Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          height: getProportionateScreenWidth(42),
-                          width: getProportionateScreenWidth(120),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: widget.orders.status == "Pending"
-                                  ? Colors.redAccent
-                                  : Colors.greenAccent),
-                          child: InkWell(
-                            onTap: () {
-                              if (widget.orders.status == "Pending") {
-                                showAwesomeAlert(
-                                  context: context,
-                                  msg: "Is the order delivery completed?",
-                                  animType: AnimType.bottomSlide,
-                                  dialogType: DialogType.info,
-                                  onOkPress: () {
-                                    updateOrderHandler();
-                                  },
-                                );
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                widget.orders.status != "Pending"
-                                    ? const Icon(
-                                        Icons.check_circle_outline_sharp,
-                                        color: whiteColor,
-                                      )
-                                    : const SizedBox(),
-                                Text(
-                                    widget.orders.status == "Pending"
-                                        ? "Order Pending"
-                                        : widget.orders.status!,
-                                    style: const TextStyle(
-                                        // height: 0.9,
-                                        // fontWeight: FontWeight.bold,
-                                        color: Colors.white)),
-                              ],
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                )
-              : widget.isCustomer == false
-                  ? Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: lightBlackColor, width: 1.5)),
-                          height: kToolbarHeight * 1.0,
-                          width: SizeConfig.screenWidth,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  final data = await PdfOrdersInvoiceService()
-                                      .createInvoice(
-                                          ctx: context,
-                                          order: widget.orders,
-                                          customerName:
-                                              widget.orders.firstName! +
-                                                  " " +
-                                                  widget.orders.lastName!,
-                                          isOrderCompleted:
-                                              widget.orders.status == "Pending"
-                                                  ? false
-                                                  : true,
-                                          repName: storage.getUserFirstName() +
-                                              " " +
-                                              storage.getUserLastName());
-
-                                  PdfOrdersInvoiceService()
-                                      .savePdfFile("Influance Invoice", data);
-                                  // number++;
-
-                                  //test
-
-                                  // final file = await PdfService().generatePdf();
-
-                                  // Open the PDF file
-                                  // await OpenFilex.open(file.path);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  height: getProportionateScreenWidth(40),
-                                  width: getProportionateScreenWidth(120),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: appColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/receipt.svg",
-                                        color: appColor,
-                                      ),
-                                      const Text(
-                                        "Invoice",
-                                        style: TextStyle(
-                                          color: appColor,
-                                          // fontSize: 14.0,
-                                          // fontWeight: FontWeight.w600
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              if (widget.isCustomer! &&
-                                  widget.orders.status != "Pending")
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  height: getProportionateScreenWidth(42),
-                                  width: getProportionateScreenWidth(120),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.redAccent),
-                                  child: InkWell(
-                                    onTap: () {
-                                      showSheetForReview();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        widget.orders.status != "Pending"
-                                            ? const Icon(
-                                                Icons.edit,
-                                                color: whiteColor,
-                                              )
-                                            : const SizedBox(),
-                                        const Text("Add Review",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              if (!widget.isCustomer!)
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  height: getProportionateScreenWidth(42),
-                                  width: getProportionateScreenWidth(120),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: widget.orders.status == "Pending"
-                                          ? Colors.redAccent
-                                          : Colors.greenAccent),
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (widget.orders.status == "Pending") {
-                                        showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              "Is the order delivery completed?",
-                                          animType: AnimType.bottomSlide,
-                                          dialogType: DialogType.info,
-                                          onOkPress: () {
-                                            updateOrderHandler();
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        widget.orders.status != "Pending"
-                                            ? const Icon(
-                                                Icons
-                                                    .check_circle_outline_sharp,
-                                                color: whiteColor,
-                                              )
-                                            : const SizedBox(),
-                                        Text(
-                                            widget.orders.status == "Pending"
-                                                ? "Order Pending"
-                                                : widget.orders.status!,
-                                            style: const TextStyle(
-                                                // height: 0.9,
-                                                // fontWeight: FontWeight.bold,
-                                                color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: lightBlackColor, width: 1.5)),
-                          height: kToolbarHeight * 1.0,
-                          width: SizeConfig.screenWidth,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Column(
                             children: [
                               InkWell(
                                 onTap: () async {
@@ -623,12 +795,10 @@ class _SaleRepOrderReportDetailsScreenState
                                       .createInvoice(
                                     ctx: context,
                                     order: widget.orders,
-                                    customerName: widget.orders.firstName! +
+                                    customerName: widget.name,
+                                    repName: loginStorage.getUserFirstName() +
                                         " " +
-                                        widget.orders.lastName!,
-                                    repName: storage.getUserFirstName() +
-                                        " " +
-                                        storage.getUserLastName(),
+                                        loginStorage.getUserLastName(),
                                     isOrderCompleted:
                                         widget.orders.status == "Pending"
                                             ? false
@@ -637,23 +807,15 @@ class _SaleRepOrderReportDetailsScreenState
 
                                   PdfOrdersInvoiceService()
                                       .savePdfFile("Influance Invoice", data);
-                                  // number++;
-
-                                  //test
-
-                                  // final file = await PdfService().generatePdf();
-
-                                  // Open the PDF file
-                                  // await OpenFilex.open(file.path);
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  height: getProportionateScreenWidth(40),
-                                  width: getProportionateScreenWidth(120),
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: getProportionateScreenHeight(35.0),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: appColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                                      border: Border.all(
+                                          color: appColor, width: 1.5),
+                                      borderRadius:
+                                          BorderRadius.circular(15.0)),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -663,7 +825,7 @@ class _SaleRepOrderReportDetailsScreenState
                                         color: appColor,
                                       ),
                                       const Text(
-                                        "Invoice",
+                                        "Generate Invoice",
                                         style: TextStyle(
                                           color: appColor,
                                           // fontSize: 14.0,
@@ -674,159 +836,12 @@ class _SaleRepOrderReportDetailsScreenState
                                   ),
                                 ),
                               ),
-                              if (widget.isCustomer! &&
-                                  widget.orders.status != "Pending")
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  height: getProportionateScreenWidth(42),
-                                  width: getProportionateScreenWidth(120),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.redAccent),
-                                  child: InkWell(
-                                    onTap: () {
-                                      showSheetForReview();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        widget.orders.status != "Pending"
-                                            ? const Icon(
-                                                Icons.edit,
-                                                color: whiteColor,
-                                              )
-                                            : const SizedBox(),
-                                        const Text("Add Review",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              if (!widget.isCustomer!)
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  height: getProportionateScreenWidth(42),
-                                  width: getProportionateScreenWidth(120),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: widget.orders.status == "Pending"
-                                          ? Colors.redAccent
-                                          : Colors.greenAccent),
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (widget.orders.status == "Pending") {
-                                        showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              "Is the order delivery completed?",
-                                          animType: AnimType.bottomSlide,
-                                          dialogType: DialogType.info,
-                                          onOkPress: () {
-                                            updateOrderHandler();
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        widget.orders.status != "Pending"
-                                            ? const Icon(
-                                                Icons
-                                                    .check_circle_outline_sharp,
-                                                color: whiteColor,
-                                              )
-                                            : const SizedBox(),
-                                        Text(
-                                            widget.orders.status == "Pending"
-                                                ? "Order Pending"
-                                                : widget.orders.status!,
-                                            style: const TextStyle(
-                                                // height: 0.9,
-                                                // fontWeight: FontWeight.bold,
-                                                color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
                             ],
                           ),
                         ),
-                      ],
-                    )
-                  : SizedBox(
-                      height: kToolbarHeight * 1.0,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        height: getProportionateScreenWidth(40),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: appColor),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                final data = await PdfOrdersInvoiceService()
-                                    .createInvoice(
-                                  ctx: context,
-                                  order: widget.orders,
-                                  customerName: widget.name,
-                                  repName: loginStorage.getUserFirstName() +
-                                      " " +
-                                      loginStorage.getUserLastName(),
-                                  isOrderCompleted:
-                                      widget.orders.status == "Pending"
-                                          ? false
-                                          : true,
-                                );
-
-                                PdfOrdersInvoiceService()
-                                    .savePdfFile("Influance Invoice", data);
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: getProportionateScreenHeight(35.0),
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: appColor, width: 1.5),
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/receipt.svg",
-                                      color: appColor,
-                                    ),
-                                    const Text(
-                                      "Generate Invoice",
-                                      style: TextStyle(
-                                        color: appColor,
-                                        // fontSize: 14.0,
-                                        // fontWeight: FontWeight.w600
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                    ),
-    );
+      );
+    });
   }
 
   Future<void> updateOrderHandler() async {
@@ -1021,8 +1036,8 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 0.0),
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(getImageUrl(widget.orders
-                            .data!.orderProducts[index].productImagePath!)),
+                        backgroundImage: NetworkImage(widget.orders.data!
+                            .orderProducts[index].productImagePath!),
                       ),
                       title: Text(
                           widget.orders.data!.orderProducts[index].productName),

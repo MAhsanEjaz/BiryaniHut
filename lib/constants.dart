@@ -31,7 +31,7 @@ String baseUrlWithoutApi =
 
 // const String apiBaseUrl = "https://192.168.18.207:45456/api";
 // const String apiBaseUrl = "http://192.168.18.8:45455/api";
-const String imageBaseUrl = "http://38.17.51.206:8070/api";
+const String imageBaseUrl = "http://38.17.51.206:8073/api";
 // http://38.17.51.206:8070/
 
 final headingStyle = TextStyle(

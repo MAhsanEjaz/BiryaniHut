@@ -39,7 +39,13 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
   Widget build(BuildContext context) {
     return Consumer<TopFiveProductProvider>(builder: (context, data, _) {
       return Scaffold(
-        appBar: AppBar(backgroundColor: appColor),
+        appBar: AppBar(
+          backgroundColor: appColor,
+          title: Text(
+            'Top Five Products',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -135,14 +141,15 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
                   const SizedBox(height: 10),
                   SfCartesianChart(
                     primaryXAxis: CategoryAxis(
-                      arrangeByIndex: true,
-                      autoScrollingMode: AutoScrollingMode.end,
+                      // arrangeByIndex: true,
+                      // autoScrollingMode: AutoScrollingMode.end,
                       majorGridLines: const MajorGridLines(),
                     ),
                     series: <ChartSeries>[
                       LineSeries<TopFiveProductsModel, String>(
+                        enableTooltip: true,
                         dataSource: data.topProducts!,
-                        animationDelay: 15,
+                        // animationDelay: 15,
                         xValueMapper: (TopFiveProductsModel sales, _) =>
                             sales.productName,
                         yValueMapper: (TopFiveProductsModel sales, _) =>
@@ -150,8 +157,8 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
                       )
                     ],
                     annotations: [],
-                    enableAxisAnimation: true,
-                    enableMultiSelection: true,
+                    // enableAxisAnimation: true,
+                    // enableMultiSelection: true,
                   ),
                 ],
               ),

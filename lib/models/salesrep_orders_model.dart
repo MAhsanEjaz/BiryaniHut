@@ -31,6 +31,8 @@ class SaleRapOrdersList {
   String? firstName;
   String? lastName;
   String? salonName;
+  String? email;
+  String? phone;
   String? address;
   String? location;
   String? customerImagePath;
@@ -59,6 +61,8 @@ class SaleRapOrdersList {
       this.lastName,
       this.salonName,
       this.address,
+      this.phone,
+      this.email,
       this.location,
       this.customerImagePath,
       this.customerImage,
@@ -85,6 +89,8 @@ class SaleRapOrdersList {
     firstName = json['firstName'];
     lastName = json['lastName'];
     salonName = json['salon_Name'];
+    email = json['email'];
+    phone = json['phone'];
     address = json['address'];
     location = json['location'];
     customerImagePath = json['customerImagePath'];
@@ -107,6 +113,7 @@ class SaleRapOrdersList {
     orderId = json['orderId'];
     totalPrice = json['totalPrice'];
     discount = json['discount'];
+
     grandTotal = json['grandTotal'];
     dateTime = json['dateTime'];
     status = json['status'];
@@ -124,6 +131,8 @@ class SaleRapOrdersList {
     data['firstName'] = firstName;
     data['lastName'] = lastName;
     data['salon_Name'] = salonName;
+    data['email'] = email;
+    data['phone'] = phone;
     data['address'] = address;
     data['location'] = location;
     data['customerImagePath'] = customerImagePath;

@@ -31,7 +31,6 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
 
   TextEditingController firstNameCont = TextEditingController();
   TextEditingController lastNameCont = TextEditingController();
-
   TextEditingController saloonControl = TextEditingController();
   TextEditingController emailCont = TextEditingController();
   TextEditingController phoneCont = TextEditingController();
@@ -45,6 +44,8 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
     bool res = await UpdateCustomService().updateCustomerService(
         isSaleREpProfile: true,
         context: context,
+        email: emailCont.text,
+        salonName: 'saloonControl.text',
         address: addressCont.text,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
@@ -227,7 +228,6 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                       CustomTextField(
                           headerText: "Email",
                           controller: emailCont,
-                          isEnabled: false,
                           hint: 'Email',
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
@@ -245,6 +245,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           hint: "Address",
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
+
                       DefaultButton(
                         width: MediaQuery.of(context).size.width / 2,
                         verticalMargin: 10.0,

@@ -96,13 +96,13 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            // iconTheme: iconTheme,
-            // backgroundColor: appColor,
+            iconTheme: iconTheme,
+            backgroundColor: appColor,
             // leading: Icon(Icons.back),
             title: const Text(
               "Products",
               // style: custStyle,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white),
             ),
             actions: [
               if (widget.customerName != null)

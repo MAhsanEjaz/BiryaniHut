@@ -5,7 +5,6 @@ import 'package:otp_text_field/style.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/customer/login/change_password_screen.dart';
 import 'package:shop_app/helper/custom_loader.dart';
-import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/services/otp_verify_service.dart';
 import 'package:shop_app/size_config.dart';
 

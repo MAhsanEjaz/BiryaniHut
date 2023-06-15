@@ -175,7 +175,7 @@ class OrderProduct {
   num totalPrice;
   String productName;
   String? productDescription;
-  String? productImagePath = "";
+  String? productImagePath;
   String? productImage;
 
   factory OrderProduct.fromJson(Map<String, dynamic> json) => OrderProduct(

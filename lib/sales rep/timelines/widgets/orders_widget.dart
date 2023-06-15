@@ -66,9 +66,12 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) =>
                                 SaleRepOrderReportDetailsScreen(
+                                  phone: repOrders.phone!,
                                   isInvoices: false,
                                   isCustomer: isCustomer,
-                                  orders: repOrders, date: repOrders.dateTime!,
+                                  email: repOrders.email!,
+                                  orders: repOrders,
+                                  date: repOrders.dateTime!,
                                   name: repOrders.firstName! +
                                       repOrders.lastName!,
                                   orderId: repOrders.orderId!,
