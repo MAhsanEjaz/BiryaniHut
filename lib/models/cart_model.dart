@@ -21,11 +21,13 @@ class CartModel {
     required this.remainingBalance,
     required this.totalBalance,
     required this.previousBalance,
+    this.discountType,
   });
 
   num orderId;
   num totalPrice;
   num discount;
+  String? discountType;
   num grandTotal;
   num orderPaidAmount;
   num orderPendingAmount;
@@ -58,6 +60,7 @@ class CartModel {
         remainingBalance: json["orderRemainingPayment"],
         totalBalance: json["totalBalance"],
         previousBalance: json["previousBalance"],
+        discountType: json["DiscountType"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -76,7 +79,8 @@ class CartModel {
         "orderPendingPayment": orderPendingAmount,
         "orderRemainingPayment": remainingBalance,
         "totalBalance": totalBalance,
-        "previousBalance": previousBalance
+        "previousBalance": previousBalance,
+        "DiscountType": discountType
       };
 }
 

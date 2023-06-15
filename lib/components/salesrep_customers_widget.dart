@@ -722,11 +722,12 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                             //! because -ve sign shows amount for customer
 
                             log("body in addCustomerBalance = $body");
+
+                            addCustomerBalance(body);
+
                             paymentsList.clear();
                             paymentStringList.clear();
                             totalPaid = 0;
-
-                            addCustomerBalance(body);
                           },
                         )
                       ],
@@ -1099,7 +1100,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   //       });
   // }
 
-  Future<void> addCustomerBalance(body) async {
+  Future<void> addCustomerBalance(Map body) async {
+    log("AddCustomerBalance body = $body");
     bool isBalanceAdded = false;
     CustomLoader.showLoader(context: widget.context);
     isBalanceAdded = await AddCustomerBalanceService()
