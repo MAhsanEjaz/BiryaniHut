@@ -36,6 +36,7 @@ class SalesrepCustomerData {
   String? city;
   String? address;
   String? email;
+  String? customerImageFile;
   String? location;
   String? customerImagePath;
   String? customerImage;
@@ -51,6 +52,7 @@ class SalesrepCustomerData {
       this.firstName,
       this.lastName,
       this.salonName,
+      this.customerImageFile,
       this.state,
       this.city,
         this.email,
@@ -70,6 +72,7 @@ class SalesrepCustomerData {
     firstName = json['firstName'];
     email = json['email'];
     lastName = json['lastName'];
+    customerImageFile = json['customerImageFile'];
     salonName = json['salon_Name'];
     state = json['state'];
     city = json['city'];
@@ -93,6 +96,7 @@ class SalesrepCustomerData {
     data['lastName'] = lastName;
     data['salon_Name'] = salonName;
     data['state'] = state;
+    data['customerImageFile'] = customerImageFile;
     data['city'] = city;
     data['address'] = address;
     data['location'] = location;

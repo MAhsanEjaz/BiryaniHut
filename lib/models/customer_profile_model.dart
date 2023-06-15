@@ -137,6 +137,8 @@ class Data {
   String? location;
   String? customerImagePath;
   String? customerImage;
+  String? customerImageFile;
+
   String? phone;
   double? accountBalance;
   int? saleRepID;
