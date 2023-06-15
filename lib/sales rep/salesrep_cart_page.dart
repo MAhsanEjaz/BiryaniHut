@@ -641,12 +641,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //     style: TextStyle(
                                       //         fontWeight: FontWeight.bold),
                                       //   ),di
-                                      Text(
-                                        "Today's Order Amount : \$ " +
-                                            getOrderAmount(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+
+                                      if (repDiscountModel != null &&
+                                          isDiscountApplicable)
+                                        Text(
+                                          "Today's Order Amount : \$ " +
+                                              totalPrice.toStringAsFixed(2),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       if (repDiscountModel != null &&
                                           isDiscountApplicable)
                                         Text(
@@ -654,6 +657,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
+                                      Text(
+                                        "Order Payable Amount : \$ " +
+                                            getOrderAmount(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       Text(
                                         "Total Balance: \$ " +
                                             getTotalBalance(),
@@ -787,7 +796,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         orderBy: 2,
                                         orderId: 0,
                                         orderProducts: model,
-                                        discount: 0,
+                                        discount: isDiscountApplicable
+                                            ? repDiscountModel!.data.discount
+                                            : 0,
                                         grandTotal: totalPrice,
                                         status: 'Pending',
                                         totalPrice: totalPrice,
@@ -801,6 +812,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         totalBalance:
                                             double.parse(getTotalBalance()),
                                         previousBalance: previousBalance,
+                                        discountType: isDiscountApplicable &&
+                                                isDiscountInPercent
+                                            ? "By Percentage"
+                                            : "By Value",
                                       );
 
                                       String jsonnn =

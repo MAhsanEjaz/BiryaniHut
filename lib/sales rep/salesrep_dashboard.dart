@@ -213,17 +213,17 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                     subTitle: 'View Your Reports',
                   ),
 
-                  ResellerDashboardVerticalCardWidget(
-                    imageUrl: "assets/icons/reposts.svg",
-                    title: "Payment Setup",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SalesrepPanelPage()));
-                    },
-                    subTitle: 'Setup your payment methods',
-                  ),
+                  // ResellerDashboardVerticalCardWidget(
+                  //   imageUrl: "assets/icons/reposts.svg",
+                  //   title: "Payment Setup",
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => const SalesrepPanelPage()));
+                  //   },
+                  //   subTitle: 'Setup your payment methods',
+                  // ),
                 ],
               ),
             ),

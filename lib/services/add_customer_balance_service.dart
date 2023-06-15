@@ -8,7 +8,7 @@ import 'package:shop_app/models/common_model.dart';
 
 class AddCustomerBalanceService {
   Future<bool> addCustomerBalace(
-      {required BuildContext context, required var body}) async {
+      {required BuildContext context, required Map body}) async {
     try {
       var headers = {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ class AddCustomerBalanceService {
 
       Map<String, dynamic> jsonn = jsonDecode(response.body);
 
-      log("json in addCustomerBalace = $jsonn");
+      log("json responce in addCustomerBalace = $jsonn");
 
       CommonRespnceModel model = CommonRespnceModel.fromJson(jsonn);
 
