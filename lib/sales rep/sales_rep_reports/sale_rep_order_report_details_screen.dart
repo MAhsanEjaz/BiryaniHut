@@ -1002,6 +1002,8 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1148,7 +1150,43 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                   style: orderStyle,
                 )
               ],
+            ),Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Discount",
+                  style: orderStyle,
+                ),
+                Text(
+                  widget.orders.data!.discount.toStringAsFixed(2),
+                  style: orderStyle,
+                ),
+
+              ],
             ),
+
+            Divider(),
+
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Discount",
+                  style: orderStyle,
+                ),
+                Text(
+                  widget.orders.data!.netTotal.toStringAsFixed(2),
+                  style: orderStyle,
+                ),
+
+              ],
+            ),
+
+
           ],
         ),
       ),
