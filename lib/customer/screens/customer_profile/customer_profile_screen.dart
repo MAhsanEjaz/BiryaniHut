@@ -89,11 +89,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .toString();
     salesRepCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
-                .customerProfileModel!
-                .data!
-                .saleRep!
-                .firstName! ??
-            '';
+            .customerProfileModel!
+            .data!
+            .saleRep!
+            .firstName!;
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
@@ -104,6 +103,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .customerProfileModel!
             .data!
             .phone!;
+            
     addressCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!

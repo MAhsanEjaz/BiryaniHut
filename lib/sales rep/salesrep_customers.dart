@@ -126,7 +126,11 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                       builder: (context) =>
                           StatefulBuilder(builder: (context, setState) {
                         return AlertDialog(
-                          title: const Text('Discounts'),
+                          title: const ListTile(
+                            title: Text("Add Discounts"),
+                            subtitle: Text(
+                                "You can give discount by percent or dollars"),
+                          ),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -174,15 +178,19 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                               const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () {
+                                  if (convertDiscountController.text.isEmpty) {
+                                    return;
+                                  }
                                   addDiscountHandler(selectedIndex == 0
                                       ? 'By Value'
                                       : 'By Percentage');
                                   convertDiscountController.clear();
+                                  Navigator.of(context).pop();
                                   selectedIndex == 0;
                                 },
                                 child: const Text('Save'),
-                                style:
-                                    ElevatedButton.styleFrom(primary: appColor),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: appColor),
                               )
                             ],
                           ),

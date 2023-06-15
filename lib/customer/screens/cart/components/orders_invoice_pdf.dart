@@ -86,7 +86,7 @@ class PdfOrdersInvoiceService {
                       children: [
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
-                          " Sales Rep Name :"
+                          "Sales Rep Name :"
                                   "  " +
                               repName,
                           // style: dealStyle
@@ -94,7 +94,7 @@ class PdfOrdersInvoiceService {
 
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
-                          " Customer Name :"
+                          "Customer Name :"
                                   "  " +
                               customerName,
                           // style: dealStyle

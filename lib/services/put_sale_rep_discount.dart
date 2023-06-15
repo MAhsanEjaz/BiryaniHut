@@ -10,9 +10,7 @@ class PutSaleRepDiscountService {
       int? userId,
       String? discount,
       String? discountType}) async {
-
-
-    var myDiscount = int.parse(discount!);
+    var myDiscount = double.parse(discount!);
 
     try {
       var headers = {
@@ -25,7 +23,8 @@ class PutSaleRepDiscountService {
       };
 
       http.Response response = await http.put(
-          Uri.parse('http://38.17.51.206:8073/api/SaleRep/ÜpdateSaleRepDicount'),
+          Uri.parse(
+              'http://38.17.51.206:8073/api/SaleRep/ÜpdateSaleRepDicount'),
           body: json.encode(body),
           headers: headers);
 
