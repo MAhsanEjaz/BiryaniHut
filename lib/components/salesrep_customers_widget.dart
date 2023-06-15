@@ -472,11 +472,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
             ListTile(
               leading: CircleAvatar(
                 maxRadius: 25.0,
-                backgroundImage: widget.customers.customerImage == "" ||
-                        widget.customers.customerImage == null
+                backgroundImage: widget.customers.customerImageFile == "" ||
+                        widget.customers.customerImageFile == null
                     ? NetworkImage(userDummyUrl)
-                    : NetworkImage(
-                        '$baseUrlWithoutApi${widget.customers.customerImage!}'),
+                    : NetworkImage(widget.customers.customerImageFile!),
               ),
               title: ResellerOrderTimeDateWidget(
                   icon: Icons.home_filled,

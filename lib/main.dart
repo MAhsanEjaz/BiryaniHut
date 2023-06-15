@@ -102,8 +102,7 @@ class MyApp extends StatelessWidget {
             create: (context) => SaleRepCustomOrderAgingProvider()),
         ChangeNotifierProvider(
             create: (context) => SalesRepCustomerPaymentAgingProvider()),
-        ChangeNotifierProvider(
-            create: (context) => OrderReportDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => OrderReportDetailsProvider()),
         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),

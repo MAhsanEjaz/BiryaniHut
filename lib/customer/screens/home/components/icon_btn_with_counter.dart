@@ -30,9 +30,9 @@ class _IconBtnWithCounterState extends State<IconBtnWithCounter> {
         clipBehavior: Clip.none,
         children: [
           Container(
-            padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-            height: getProportionateScreenWidth(46),
-            width: getProportionateScreenWidth(46),
+            // padding: EdgeInsets.all(getProportionateScreenWidth(12)),
+            // height: getProportionateScreenWidth(46),
+            // width: getProportionateScreenWidth(46),
             decoration: BoxDecoration(
               color: kSecondaryColor.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -44,7 +44,7 @@ class _IconBtnWithCounterState extends State<IconBtnWithCounter> {
           ),
           if (widget.numOfitem != 0)
             Positioned(
-              top: -3,
+              top: -13,
               right: 0,
               child: Container(
                 height: getProportionateScreenWidth(16),
@@ -52,7 +52,7 @@ class _IconBtnWithCounterState extends State<IconBtnWithCounter> {
                 decoration: BoxDecoration(
                   color: const Color(0xFFFF4848),
                   shape: BoxShape.circle,
-                  border: Border.all(width: 1.5, color: Colors.white),
+                  border: Border.all(width: 1, color: Colors.white),
                 ),
                 child: Center(
                   child: Text(
