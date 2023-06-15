@@ -53,34 +53,42 @@ class _FavouritesScreenState extends State<FavouritesPage> {
         child: Consumer<CustFavouritesProductsProvider>(
             builder: (context, product, _) {
           List<Widget> widgets = [];
-          product.favProd != null
+          product.favProd!.isNotEmpty && product.favProd != null
               ? product.favProd!.forEach((element) {
-                  widgets.add(
-                    CustomerProductsWidget(
-                      favouriteTap: () async {
-                        CustomLoader.showLoader(context: context);
-                        bool res = await DeleteFavouriteService()
-                            .deleteFavouriteService(
-                                context: context,
-                                customerId: loginStorage.getUserId(),
-                                productId: element.productId);
-                        _getCustFavProdHandler();
+                  widgets.add(CustomerProductsWidget(
+                    favouriteTap: () async {
+                      CustomLoader.showLoader(context: context);
 
-                        if (res == true) {
-                          showToast('Product removed from Favourites');
-                        }
+                      bool res = await DeleteFavouriteService()
+                          .deleteFavouriteService(
+                              context: context,
+                              customerId: loginStorage.getUserId(),
+                              productId: element.productId);
 
-                        CustomLoader.hideLoader(context);
-                      },
-                      heartColor: true,
-                      isReseller: false,
-                      productData: element,
-                    ),
-                  );
+                      if (res == true) {
+                        showToast('Product removed from Favourites');
+                      }
+
+                      await _getCustFavProdHandler();
+                      product.favProd!
+                          .removeAt(product.favProd!.indexOf(element));
+                      setState(() {});
+
+                      CustomLoader.hideLoader(context);
+                    },
+                    heartColor: true,
+                    isReseller: false,
+                    productData: element,
+                  ));
                 })
               : const SizedBox();
+
           return product.favProd!.isEmpty
-              ? const Center(child: Text("No Favourite product"))
+              ? Center(
+                  child: Text(
+                  "Favorite Product Not Found",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
               : Wrap(
                   children: widgets,
                 );

@@ -23,8 +23,7 @@ class PutSaleRepDiscountService {
       };
 
       http.Response response = await http.put(
-          Uri.parse(
-              'http://38.17.51.206:8073/api/SaleRep/ÜpdateSaleRepDicount'),
+          Uri.parse('$apiBaseUrl/SaleRep/ÜpdateSaleRepDicount'),
           body: json.encode(body),
           headers: headers);
 

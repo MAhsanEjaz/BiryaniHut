@@ -6,7 +6,11 @@ class DeleteFavouriteService {
   Future deleteFavouriteService(
       {required BuildContext context, int? customerId, int? productId}) async {
     try {
-      Map body = {"customerId": customerId, "productId": productId};
+      Map body = {
+        "customerId": customerId,
+        "productId": productId,
+        "status": true
+      };
 
       var res = await CustomPostRequestService().httpPostRequest(
           context: context,
