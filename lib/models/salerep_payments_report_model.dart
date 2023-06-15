@@ -10,16 +10,6 @@ class SaleRepPaymentsReportModel {
     statusCode = json['statusCode'];
     message = json['message'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    return data;
-  }
 }
 
 class PaymentsReport {
@@ -39,16 +29,6 @@ class PaymentsReport {
     }
     totalAmountPaid = json['totalAmountPaid'];
     totalOrderPurchase = json['totalOrderPurchase'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (payments != null) {
-      data['payments'] = payments!.map((v) => v.toJson()).toList();
-    }
-    data['totalAmountPaid'] = totalAmountPaid;
-    data['totalOrderPurchase'] = totalOrderPurchase;
-    return data;
   }
 }
 

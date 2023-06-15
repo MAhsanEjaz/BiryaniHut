@@ -1351,7 +1351,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       }
     }
 
-    log("discountString before inoice = $discountString");
+    log("discountString before invoice = $discountString");
 
     final data = await pdfService.createInvoice(
       discountValue: repDiscountModel != null && isDiscountApplicable

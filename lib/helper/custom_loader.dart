@@ -16,9 +16,10 @@ class CustomLoader {
     log('loader started ..');
 
     showDialog(
+        barrierDismissible: false,
         context: context,
-        barrierColor: Color(0x00ffffff),
-        builder: (_) => Dialog(
+        barrierColor: const Color(0x00ffffff),
+        builder: (_) => const Dialog(
               elevation: 0,
               backgroundColor: Colors.transparent,
               child: SpinKitChasingDots(
@@ -48,7 +49,7 @@ class LoaderContentWidget extends StatelessWidget {
         print('will pop executed -->');
         return false;
       },
-      child: SpinKitChasingDots(
+      child: const SpinKitChasingDots(
         color: appColor,
         size: 50.0,
       ),
