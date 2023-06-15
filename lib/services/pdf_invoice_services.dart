@@ -35,6 +35,8 @@ class PdfInvoiceService {
       required String repName,
       required String customerName,
       required bool isOrderCompleted,
+      String? discountValue,
+      bool? isDiscountInPercent,
       // PdfViewModel? view,
       required BuildContext ctx}) async {
     final pdf = pw.Document();
@@ -326,7 +328,7 @@ class PdfInvoiceService {
                                   pw.MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text("Today's Order Amount :" + " ",
+                                pw.Text("Today's Order Amount :" " ",
                                     style: pdfHeaderStyle),
                                 pw.Text(
                                     // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
@@ -334,6 +336,21 @@ class PdfInvoiceService {
                                     cartModel.totalPrice.toStringAsFixed(2),
                                     style: pdfStyle),
                               ]),
+                          if (isDiscountInPercent != null &&
+                              discountValue != null)
+                            pw.Row(
+                                mainAxisAlignment:
+                                    pw.MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Text("Discount on Order :" " ",
+                                      style: pdfHeaderStyle),
+                                  pw.Text(
+                                      isDiscountInPercent
+                                          ? "$discountValue %"
+                                          : "$discountValue Dollars",
+                                      style: pdfStyle),
+                                ]),
                           pw.Row(
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -354,7 +371,7 @@ class PdfInvoiceService {
                                   pw.MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text("Today's Payments :" + " ",
+                                pw.Text("Today's Payments :" " ",
                                     style: pdfHeaderStyle),
                                 pw.Text(
                                     // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
@@ -368,7 +385,7 @@ class PdfInvoiceService {
                                   pw.MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text("Remaining Balance :" + " ",
+                                pw.Text("Remaining Balance :" " ",
                                     style: pdfHeaderStyle),
                                 pw.Text(
                                     // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),

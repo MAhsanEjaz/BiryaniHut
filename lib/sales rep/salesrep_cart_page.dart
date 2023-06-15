@@ -280,9 +280,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   cartItemsCount - model[index].quantity;
 
                               updateIsDiscountApplicable();
-                              setState(() {
-                                // updatePrices();
-                              });
+                              setState(() {});
                             },
                             background: Container(
                               padding:
@@ -558,14 +556,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                       null
               ? Consumer<AccountBalanceProvider>(builder: (context, data, _) {
                   if (data.accountBalanceModel!.data!.creditLimit != null) {
-                    print("Here Error");
+                    log("Here Error");
                     // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
                   }
 
                   ///Creating Issue
                   previousBalance =
                       data.accountBalanceModel!.data!.accountBalance!;
-                  print("Previous Balance $previousBalance");
+                  log("Previous Balance $previousBalance");
 
                   // if (data.accountBalanceModel!.data!.accountBalance! < 0) {
                   //   totalPayable =
@@ -604,21 +602,27 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                 const EdgeInsets.symmetric(horizontal: 4.0),
                             child: Row(
                               children: [
-                                InkWell(
-                                  onTap: () async {
-                                    openInvoice();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    height: getProportionateScreenWidth(40),
-                                    width: getProportionateScreenWidth(40),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFF5F6F9),
-                                      borderRadius: BorderRadius.circular(10),
+                                Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        openInvoice();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        height: getProportionateScreenWidth(40),
+                                        width: getProportionateScreenWidth(40),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF5F6F9),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: SvgPicture.asset(
+                                            "assets/icons/receipt.svg"),
+                                      ),
                                     ),
-                                    child: SvgPicture.asset(
-                                        "assets/icons/receipt.svg"),
-                                  ),
+                                    const Text("Invoice")
+                                  ],
                                 ),
                                 const Spacer(),
                                 if (data.accountBalanceModel != null)
@@ -950,7 +954,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   Future<void> handleSumupClick() async {
     var init = await Sumup.init("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
-    print(init);
+    log(init.toString());
     var login = await Sumup.login();
     var loginToken =
         await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
@@ -976,15 +980,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     var isInProgress = await Sumup.isCheckoutInProgress;
     var merchant = await Sumup.merchant;
     // var logout = await Sumup.logout();
-    // print(logout);
-    print(merchant);
-    print(isInProgress);
-    print(isLogged);
-    print(checkout);
-    print(prepare);
-    print(settings);
-    print(login);
-    print(loginToken);
+    // log(logout);
+    log(merchant.toString());
+    log(isInProgress.toString());
+    log(isLogged.toString());
+    log(checkout.toString());
+    log(prepare.toString());
+    log(settings.toString());
+    log(login.toString());
+    log(loginToken.toString());
     setState(() {});
   }
 
@@ -1280,12 +1284,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   String getTotalBalance() {
     num totalBalance = 0;
-
+    log("getTotalBalance fired with isDiscountApplicable = $isDiscountApplicable");
+    log("getTotalBalance fired with isDiscountInPercent = $isDiscountInPercent");
     // totalBalance = previousBalance + totalPaid; //! before
     if (isDiscountApplicable) {
       if (isDiscountInPercent) {
+        log("totalPrice * repDiscountModel!.data.discount / 100 = ${totalPrice * repDiscountModel!.data.discount / 100}");
         totalBalance = previousBalance +
-            (totalPrice * repDiscountModel!.data.discount / 100);
+            (totalPrice - totalPrice * repDiscountModel!.data.discount / 100);
       } else {
         totalBalance =
             previousBalance + (totalPrice - repDiscountModel!.data.discount);
@@ -1334,7 +1340,24 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       previousBalance: previousBalance,
     );
 
+    String discountString = '';
+    if (isDiscountApplicable) {
+      if (isDiscountInPercent) {
+        discountString =
+            "Discount in Percent = ${repDiscountModel!.data.discount}";
+      } else {
+        discountString =
+            "Discount in Dollars = ${repDiscountModel!.data.discount}";
+      }
+    }
+
+    log("discountString before inoice = $discountString");
+
     final data = await pdfService.createInvoice(
+      discountValue: repDiscountModel != null && isDiscountApplicable
+          ? repDiscountModel!.data.discount.toStringAsFixed(2)
+          : null,
+      isDiscountInPercent: isDiscountApplicable ? isDiscountInPercent : null,
       ctx: context,
       cartModel: cartModel,
       customerName: widget.customerName,
@@ -1347,6 +1370,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   }
 
   void updateIsDiscountApplicable() {
+    log("cartItemsCount in updateIsDiscountApplicable= $cartItemsCount");
+
     if (cartItemsCount >= 20) {
       isDiscountApplicable = true;
     } else {

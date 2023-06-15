@@ -9,7 +9,7 @@ import 'package:shop_app/models/salesrep_get_discount_model.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
 import 'package:shop_app/providers/salesrep_discount_provider.dart';
 import 'package:shop_app/services/get_salesrep_discount_service.dart';
-import 'package:shop_app/services/put_sale_rep_discount.dart';
+import 'package:shop_app/services/sale_rep_discount_add_service.dart';
 import 'package:shop_app/services/reseller_customers_service.dart';
 import 'package:shop_app/services/salesrep_getprofile_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
