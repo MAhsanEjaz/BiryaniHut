@@ -253,7 +253,7 @@ class SaleRepOrdersModel {
     if (json['data'] != null) {
       data = <SaleRapOrdersList>[];
       json['data'].forEach((v) {
-        data!.add(new SaleRapOrdersList.fromJson(v));
+        data!.add(SaleRapOrdersList.fromJson(v));
       });
     }
     statusCode = json['statusCode'];
@@ -261,12 +261,12 @@ class SaleRepOrdersModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['statusCode'] = this.statusCode;
-    data['message'] = this.message;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
     return data;
   }
 }
@@ -349,13 +349,13 @@ class SaleRapOrdersList {
     if (json['orderProducts'] != null) {
       orderProducts = <OrderProducts>[];
       json['orderProducts'].forEach((v) {
-        orderProducts!.add(new OrderProducts.fromJson(v));
+        orderProducts!.add(OrderProducts.fromJson(v));
       });
     }
     if (json['orderPayment'] != null) {
       orderPayment = <OrderPayment>[];
       json['orderPayment'].forEach((v) {
-        orderPayment!.add(new OrderPayment.fromJson(v));
+        orderPayment!.add(OrderPayment.fromJson(v));
       });
     }
     orderId = json['orderId'];
@@ -376,41 +376,41 @@ class SaleRapOrdersList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['salon_Name'] = this.salonName;
-    data['address'] = this.address;
-    data['location'] = this.location;
-    data['customerImagePath'] = this.customerImagePath;
-    data['customerImage'] = this.customerImage;
-    data['saleRepName'] = this.saleRepName;
-    data['saleRepId'] = this.saleRepId;
-    data['rating'] = this.rating;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    if (this.orderProducts != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['salon_Name'] = salonName;
+    data['address'] = address;
+    data['location'] = location;
+    data['customerImagePath'] = customerImagePath;
+    data['customerImage'] = customerImage;
+    data['saleRepName'] = saleRepName;
+    data['saleRepId'] = saleRepId;
+    data['rating'] = rating;
+    data['email'] = email;
+    data['phone'] = phone;
+    if (orderProducts != null) {
       data['orderProducts'] =
-          this.orderProducts!.map((v) => v.toJson()).toList();
+          orderProducts!.map((v) => v.toJson()).toList();
     }
-    if (this.orderPayment != null) {
-      data['orderPayment'] = this.orderPayment!.map((v) => v.toJson()).toList();
+    if (orderPayment != null) {
+      data['orderPayment'] = orderPayment!.map((v) => v.toJson()).toList();
     }
-    data['orderId'] = this.orderId;
-    data['totalPrice'] = this.totalPrice;
-    data['discount'] = this.discount;
-    data['discountType'] = this.discountType;
-    data['grandTotal'] = this.grandTotal;
-    data['netTotal'] = this.netTotal;
-    data['dateTime'] = this.dateTime;
-    data['status'] = this.status;
-    data['orderPendingPayment'] = this.orderPendingPayment;
-    data['orderPaidAmount'] = this.orderPaidAmount;
-    data['previousBalance'] = this.previousBalance;
-    data['totalBalance'] = this.totalBalance;
-    data['completeOrderDateTime'] = this.completeOrderDateTime;
-    data['orderBy'] = this.orderBy;
-    data['customerId'] = this.customerId;
+    data['orderId'] = orderId;
+    data['totalPrice'] = totalPrice;
+    data['discount'] = discount;
+    data['discountType'] = discountType;
+    data['grandTotal'] = grandTotal;
+    data['netTotal'] = netTotal;
+    data['dateTime'] = dateTime;
+    data['status'] = status;
+    data['orderPendingPayment'] = orderPendingPayment;
+    data['orderPaidAmount'] = orderPaidAmount;
+    data['previousBalance'] = previousBalance;
+    data['totalBalance'] = totalBalance;
+    data['completeOrderDateTime'] = completeOrderDateTime;
+    data['orderBy'] = orderBy;
+    data['customerId'] = customerId;
     return data;
   }
 }
@@ -462,20 +462,20 @@ class OrderProducts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['productId'] = this.productId;
-    data['salePrice'] = this.salePrice;
-    data['price'] = this.price;
-    data['regularPrice'] = this.regularPrice;
-    data['quantity'] = this.quantity;
-    data['cost'] = this.cost;
-    data['totalCost'] = this.totalCost;
-    data['discount'] = this.discount;
-    data['totalPrice'] = this.totalPrice;
-    data['productName'] = this.productName;
-    data['productDescription'] = this.productDescription;
-    data['productImagePath'] = this.productImagePath;
-    data['productImage'] = this.productImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['productId'] = productId;
+    data['salePrice'] = salePrice;
+    data['price'] = price;
+    data['regularPrice'] = regularPrice;
+    data['quantity'] = quantity;
+    data['cost'] = cost;
+    data['totalCost'] = totalCost;
+    data['discount'] = discount;
+    data['totalPrice'] = totalPrice;
+    data['productName'] = productName;
+    data['productDescription'] = productDescription;
+    data['productImagePath'] = productImagePath;
+    data['productImage'] = productImage;
     return data;
   }
 }
@@ -497,11 +497,11 @@ class OrderPayment {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['paymentMethod'] = this.paymentMethod;
-    data['paymentAmount'] = this.paymentAmount;
-    data['chequeNumber'] = this.chequeNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['paymentMethod'] = paymentMethod;
+    data['paymentAmount'] = paymentAmount;
+    data['chequeNumber'] = chequeNumber;
     return data;
   }
 }

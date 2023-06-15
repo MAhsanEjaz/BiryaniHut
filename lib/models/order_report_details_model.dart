@@ -31,6 +31,8 @@ class OrderReports {
     required this.location,
     required this.customerImagePath,
     this.customerImage,
+    this.netTotal,
+
     required this.saleRepName,
     required this.rating,
     required this.orderProducts,
@@ -62,6 +64,7 @@ class OrderReports {
   int orderId;
   num totalPrice;
   num discount;
+  num? netTotal;
   num grandTotal;
   String dateTime;
   String status;
@@ -75,6 +78,7 @@ class OrderReports {
         firstName: json["firstName"],
         lastName: json["lastName"],
         salonName: json["salon_Name"],
+        netTotal: json["netTotal"],
         address: json["address"],
         location: json["location"],
         customerImagePath: json["customerImagePath"] ?? "",
@@ -103,6 +107,7 @@ class OrderReports {
         "lastName": lastName,
         "salon_Name": salonName,
         "address": address,
+        "netTotal": netTotal,
         "location": location,
         "customerImagePath": customerImagePath,
         "customerImage": customerImage,
