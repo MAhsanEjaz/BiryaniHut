@@ -790,6 +790,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //     totalPaid + previousBalance - totalPrice;
 
                                       CartModel cartModel = CartModel(
+                                        netTotal:
+                                            double.parse(getOrderAmount()),
                                         orderPayment: paymentsList,
                                         customerId: widget.customerId,
                                         dateTime: DateTime.now(),
@@ -1344,7 +1346,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       orderBy: 2,
       orderId: 0,
       orderProducts: model,
-      discount: 0,
+      discountType: isDiscountApplicable && isDiscountInPercent
+          ? "By Percentage"
+          : "By Value",
+      discount: repDiscountModel != null && isDiscountApplicable
+          ? repDiscountModel!.data.discount
+          : 0,
       grandTotal: totalPrice,
       status: '',
       totalPrice: totalPrice,
@@ -1353,6 +1360,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       remainingBalance: double.parse(getRemainigBalance()),
       totalBalance: double.parse(getTotalBalance()),
       previousBalance: previousBalance,
+      netTotal: double.parse(getOrderAmount()),
     );
 
     String discountString = '';

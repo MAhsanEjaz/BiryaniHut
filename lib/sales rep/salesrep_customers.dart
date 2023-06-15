@@ -192,8 +192,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                     showToast(
                                         "Discount percentage can't be more than 100");
                                     return;
-                                  } else if (discount < 1) {
-                                    showToast("Discount can't be less than 1");
+                                  } else if (discount < 0) {
+                                    showToast("Discount can't be Negative");
                                     return;
                                   }
                                   Navigator.of(context).pop();

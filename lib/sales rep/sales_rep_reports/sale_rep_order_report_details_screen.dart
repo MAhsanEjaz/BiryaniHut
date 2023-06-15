@@ -226,7 +226,7 @@ class _SaleRepOrderReportDetailsScreenState
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: const [
                             Icon(Icons.share),
                             SizedBox(width: 10),
                             Text("Share")
@@ -1004,7 +1004,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   "Details",
                   style: detailsStyle,
@@ -1149,6 +1149,49 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                 )
               ],
             ),
+            widget.orders.data!.discount != null &&
+                    widget.orders.data!.discount != 0
+                ? const Divider()
+                : SizedBox(),
+            widget.orders.data!.discount != null &&
+                    widget.orders.data!.discount != 0
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Discount",
+                        style: orderStyle,
+                      ),
+                      Text(
+                        widget.orders.data!.discount.toStringAsFixed(2),
+                        style: orderStyle,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+            widget.orders.data!.netTotal != null &&
+                    widget.orders.data!.netTotal != 0
+                ? const Divider()
+                : SizedBox(),
+            widget.orders.data!.netTotal != null &&
+                    widget.orders.data!.netTotal != 0
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Net Total",
+                        style: orderStyle,
+                      ),
+                      Text(
+                        widget.orders.data!.netTotal.toString(),
+                        style: orderStyle,
+                      )
+                    ],
+                  )
+                : const SizedBox(),
+            const Divider()
           ],
         ),
       ),

@@ -1,4 +1,4 @@
-package com.app.influance_hair_care
+package com.app.influance
 
 import io.flutter.embedding.android.FlutterActivity
 
