@@ -19,7 +19,7 @@ class SalesrepGetDiscountService {
       var res = await CustomGetRequestService().httpGetRequest(
         context: context,
         url:
-            'http://38.17.51.206:8073/api/SaleRep/GetSaleRepDicount?SaleRepId=${storage.getUserId()}',
+            '$apiBaseUrl/SaleRep/GetSaleRepDicount?SaleRepId=${storage.getUserId()}',
       );
 
       log("SalesrepGetDiscountService responce = $res");

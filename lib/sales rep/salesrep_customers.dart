@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/salesrep_customers_widget.dart';
 import 'package:shop_app/customer/register/register_page.dart';
 import 'package:shop_app/helper/custom_loader.dart';
@@ -80,7 +83,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
   bool showSellerList = false;
 
-  TextEditingController convertDiscountController = TextEditingController();
+  TextEditingController discountController = TextEditingController();
 
   LoginStorage loginStorage = LoginStorage();
 
@@ -89,7 +92,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
     var res = await PutSaleRepDiscountService().putSaleRepDiscountService(
         context: context,
         userId: loginStorage.getUserId(),
-        discount: convertDiscountController.text,
+        discount: discountController.text,
         discountType: discountType);
     CustomLoader.hideLoader(context);
 
@@ -166,26 +169,39 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                                   prefixWidget:
                                       const Icon(CupertinoIcons.money_dollar),
                                   inputType: TextInputType.number,
-                                  controller: convertDiscountController,
+                                  controller: discountController,
                                 ),
                               if (selectedIndex == 1)
                                 CustomTextField(
                                   prefixWidget:
                                       const Icon(CupertinoIcons.percent),
                                   inputType: TextInputType.number,
-                                  controller: convertDiscountController,
+                                  controller: discountController,
                                 ),
                               const SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () {
-                                  if (convertDiscountController.text.isEmpty) {
+                                  num discount =
+                                      double.parse(discountController.text);
+                                  log("discount value = $discount");
+                                  if (discountController.text.isEmpty) {
+                                    showToast("Please Add Discount First");
+                                    return;
+                                  } else if (selectedIndex == 1 &&
+                                      discount >= 100) {
+                                    showToast(
+                                        "Discount percentage can't be more than 100");
+                                    return;
+                                  } else if (discount < 1) {
+                                    showToast("Discount can't be less than 1");
                                     return;
                                   }
+                                  Navigator.of(context).pop();
+
                                   addDiscountHandler(selectedIndex == 0
                                       ? 'By Value'
                                       : 'By Percentage');
-                                  convertDiscountController.clear();
-                                  Navigator.of(context).pop();
+                                  discountController.clear();
                                   selectedIndex == 0;
                                 },
                                 child: const Text('Save'),

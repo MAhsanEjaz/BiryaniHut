@@ -119,10 +119,7 @@ class MyApp extends StatelessWidget {
         },
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-              appBarTheme: const AppBarTheme(
-                  backgroundColor: appColor,
-                  iconTheme: IconThemeData(color: Colors.white))),
+          theme: theme(),
           // home: SplashScreen(),
           home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
           // home: PdfEmailPage(),

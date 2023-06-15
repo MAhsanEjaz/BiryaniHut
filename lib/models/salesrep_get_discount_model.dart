@@ -37,7 +37,7 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         discount: json["discount"],
-        discountType: json["discountType"],
+        discountType: json["discountType"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
