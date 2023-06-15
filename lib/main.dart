@@ -58,7 +58,7 @@ void main() async {
 
 //! use this as your package name for ios
 //! as it is used in ios appstore app.
-// com.app.influance_hair_care
+// com.app.influance
 
   WidgetsFlutterBinding.ensureInitialized();
   // var data = await CustomDb().getKey();
@@ -102,7 +102,8 @@ class MyApp extends StatelessWidget {
             create: (context) => SaleRepCustomOrderAgingProvider()),
         ChangeNotifierProvider(
             create: (context) => SalesRepCustomerPaymentAgingProvider()),
-        ChangeNotifierProvider(create: (context) => OrderReportDetailsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => OrderReportDetailsProvider()),
         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
