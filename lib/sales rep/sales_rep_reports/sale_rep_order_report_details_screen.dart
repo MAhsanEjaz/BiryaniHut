@@ -224,7 +224,7 @@ class _SaleRepOrderReportDetailsScreenState
                                             ],
                                           ))));
                         },
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.share),
@@ -1002,7 +1002,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -1149,23 +1149,32 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                 )
               ],
             ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Discount",
-                  style: orderStyle,
-                ),
-                Text(
-                  widget.orders.data!.discount.toStringAsFixed(2),
-                  style: orderStyle,
-                ),
-              ],
-            ),
-            Divider(),
-            widget.orders.data!.netTotal != null ||
+            widget.orders.data!.discount != null &&
+                    widget.orders.data!.discount != 0
+                ? const Divider()
+                : SizedBox(),
+            widget.orders.data!.discount != null &&
+                    widget.orders.data!.discount != 0
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Discount",
+                        style: orderStyle,
+                      ),
+                      Text(
+                        widget.orders.data!.discount.toStringAsFixed(2),
+                        style: orderStyle,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+            widget.orders.data!.netTotal != null &&
+                    widget.orders.data!.netTotal != 0
+                ? const Divider()
+                : SizedBox(),
+            widget.orders.data!.netTotal != null &&
                     widget.orders.data!.netTotal != 0
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1181,8 +1190,8 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                       )
                     ],
                   )
-                : SizedBox(),
-            Divider()
+                : const SizedBox(),
+            const Divider()
           ],
         ),
       ),
