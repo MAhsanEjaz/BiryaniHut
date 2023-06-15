@@ -89,7 +89,9 @@ class _SaleRepOrderReportDetailsScreenState
 
   void sendSms(String message) async {
     // const message = 'Hello from!';
-    final url = 'sms:"${widget.phone}"?body=${Uri.encodeComponent(message)}';
+    String formattedPhoneNumber = widget.phone.replaceAll('-', '');
+    final url =
+        'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -100,7 +102,7 @@ class _SaleRepOrderReportDetailsScreenState
 
   Future<void> _sendEmail(List<String> path) async {
     final Email email = Email(
-      body: 'A new order has been placed ',
+      body: 'A new order has been placed with Order ID ${widget.orderId} ',
       subject: 'Influence',
       recipients: [widget.email],
       // cc: [widget.email],
@@ -161,6 +163,7 @@ class _SaleRepOrderReportDetailsScreenState
                       child: InkWell(
                         onTap: () async {
                           showCupertinoDialog(
+                              barrierDismissible: true,
                               context: context,
                               builder: (context) => AlertDialog(
                                   content: StatefulBuilder(
