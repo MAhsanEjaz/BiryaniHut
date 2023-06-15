@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_email_sender (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -13,73 +15,84 @@ PODS:
     - Flutter
   - local_auth_ios (0.0.1):
     - Flutter
-  - open_file (0.0.1):
+  - open_filex (0.0.2):
     - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - pay_ios (0.0.1):
     - Flutter
-  - sqflite (0.0.2):
+  - rive_common (0.0.1):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
-  - Stripe (23.6.0):
-    - StripeApplePay (= 23.6.0)
-    - StripeCore (= 23.6.0)
-    - StripePayments (= 23.6.0)
-    - StripePaymentsUI (= 23.6.0)
-    - StripeUICore (= 23.6.0)
+  - Stripe (23.7.1):
+    - StripeApplePay (= 23.7.1)
+    - StripeCore (= 23.7.1)
+    - StripePayments (= 23.7.1)
+    - StripePaymentsUI (= 23.7.1)
+    - StripeUICore (= 23.7.1)
   - stripe_ios (0.0.1):
     - Flutter
-    - Stripe (= 23.6.0)
-    - StripeApplePay (= 23.6.0)
-    - StripeFinancialConnections (= 23.6.0)
-    - StripePayments (= 23.6.0)
-    - StripePaymentSheet (= 23.6.0)
-    - StripePaymentsUI (= 23.6.0)
-  - StripeApplePay (23.6.0):
-    - StripeCore (= 23.6.0)
-  - StripeCore (23.6.0)
-  - StripeFinancialConnections (23.6.0):
-    - StripeCore (= 23.6.0)
-    - StripeUICore (= 23.6.0)
-  - StripePayments (23.6.0):
-    - StripeCore (= 23.6.0)
-    - StripePayments/Stripe3DS2 (= 23.6.0)
-  - StripePayments/Stripe3DS2 (23.6.0):
-    - StripeCore (= 23.6.0)
-  - StripePaymentSheet (23.6.0):
-    - StripeApplePay (= 23.6.0)
-    - StripeCore (= 23.6.0)
-    - StripePayments (= 23.6.0)
-    - StripePaymentsUI (= 23.6.0)
-  - StripePaymentsUI (23.6.0):
-    - StripeCore (= 23.6.0)
-    - StripePayments (= 23.6.0)
-    - StripeUICore (= 23.6.0)
-  - StripeUICore (23.6.0):
-    - StripeCore (= 23.6.0)
+    - Stripe (~> 23.7.0)
+    - StripeApplePay (~> 23.7.0)
+    - StripeFinancialConnections (~> 23.7.0)
+    - StripePayments (~> 23.7.0)
+    - StripePaymentSheet (~> 23.7.0)
+    - StripePaymentsUI (~> 23.7.0)
+  - StripeApplePay (23.7.1):
+    - StripeCore (= 23.7.1)
+  - StripeCore (23.7.1)
+  - StripeFinancialConnections (23.7.1):
+    - StripeCore (= 23.7.1)
+    - StripeUICore (= 23.7.1)
+  - StripePayments (23.7.1):
+    - StripeCore (= 23.7.1)
+    - StripePayments/Stripe3DS2 (= 23.7.1)
+  - StripePayments/Stripe3DS2 (23.7.1):
+    - StripeCore (= 23.7.1)
+  - StripePaymentSheet (23.7.1):
+    - StripeApplePay (= 23.7.1)
+    - StripeCore (= 23.7.1)
+    - StripePayments (= 23.7.1)
+    - StripePaymentsUI (= 23.7.1)
+  - StripePaymentsUI (23.7.1):
+    - StripeCore (= 23.7.1)
+    - StripePayments (= 23.7.1)
+    - StripeUICore (= 23.7.1)
+  - StripeUICore (23.7.1):
+    - StripeCore (= 23.7.1)
   - sumup (0.6.1):
     - Flutter
     - SumUpSDK (= 4.3.1)
   - SumUpSDK (4.3.1)
   - Toast (4.0.0)
   - TOCropViewController (2.6.1)
+  - url_launcher_ios (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
-  - open_file (from `.symlinks/plugins/open_file/ios`)
+  - open_filex (from `.symlinks/plugins/open_filex/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - pay_ios (from `.symlinks/plugins/pay_ios/ios`)
+  - rive_common (from `.symlinks/plugins/rive_common/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - sumup (from `.symlinks/plugins/sumup/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -100,6 +113,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_email_sender:
+    :path: ".symlinks/plugins/flutter_email_sender/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   image_cropper:
@@ -108,45 +123,55 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   local_auth_ios:
     :path: ".symlinks/plugins/local_auth_ios/ios"
-  open_file:
-    :path: ".symlinks/plugins/open_file/ios"
+  open_filex:
+    :path: ".symlinks/plugins/open_filex/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   pay_ios:
     :path: ".symlinks/plugins/pay_ios/ios"
+  rive_common:
+    :path: ".symlinks/plugins/rive_common/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   stripe_ios:
     :path: ".symlinks/plugins/stripe_ios/ios"
   sumup:
     :path: ".symlinks/plugins/sumup/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0
+  flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
+  fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
-  open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
-  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   pay_ios: 8c7beb9c61d885f3f51b61f75f8793023fc8843a
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  Stripe: 097f76ce332ff7dcb8a29ec2a8379bb4f34aa14d
-  stripe_ios: dfb96f1e36a0feb24596e280dfdc33d4106e9e77
-  StripeApplePay: 484761d4760ddb8af8c1510b8735cd9aee94515f
-  StripeCore: 0e83ad26d508e5a8e9eb04d6ddd3cbb08a3f7816
-  StripeFinancialConnections: eb303783458a7e5bd4380cbbf0a6cf44246473f4
-  StripePayments: cdd5222052d541f4daf1d84515f0b9cd18720534
-  StripePaymentSheet: 835aabcac7946d6b6b341055d021428b96894b70
-  StripePaymentsUI: 835b9422f86ceb2ca02b4146db9d3f7bf1acb0d9
-  StripeUICore: 81bac0f54df659ab7c5dd4f5a57719a5fecdcdc9
+  rive_common: 60ae7896ab40f9513974f36f015de33f70d2c5c5
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  Stripe: fbe3d1d61cba70ac7a920c6097222ba9525352c4
+  stripe_ios: 8e0be46c31e1758756e5fdc1613f751d4d945ae0
+  StripeApplePay: 06e3899c9db102567804b77c41cec2861b5e2c39
+  StripeCore: 9b331e5f9d4067ef7296718c680a73ad6f2d1066
+  StripeFinancialConnections: 7d8116c4dcd3b034f13a181b4d96e6991b594cfc
+  StripePayments: 46fbd561312cb300c93dd855b9c896285c8eb1fb
+  StripePaymentSheet: 016fd1c6053efff1f348fc6f44babecacda9d0af
+  StripePaymentsUI: cb06c01d3c9efde91ebce218f9e4e94e902dd676
+  StripeUICore: a9db3f2a82c932d5ca58dd8fc4ac0a6b72f1ccee
   sumup: f090ce0733279ca977cda7c2e30075ab58e0f924
   SumUpSDK: 956e45139329a2734e92cb3a3132f311e41d13b8
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: 775997f741c536251164e3eacf6e34abf2eb7a17
