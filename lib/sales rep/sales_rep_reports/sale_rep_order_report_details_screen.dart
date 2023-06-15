@@ -19,7 +19,6 @@ import 'package:shop_app/services/update_order_by_salesrep.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/multiline_custom_textfield.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../constants.dart';
 import '../../customer/screens/cart/components/orders_invoice_pdf.dart';
 import '../../models/order_report_details_model.dart';

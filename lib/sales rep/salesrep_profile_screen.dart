@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,11 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
+import 'package:shop_app/models/salesrep_orders_model.dart';
+import 'package:shop_app/providers/sale_rep_orders_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import 'package:shop_app/services/update_custom_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import '../../../storages/login_storage.dart';
 import '../customer/login/login_page.dart';
+import '../services/phone_format_service.dart';
 import '../services/salesrep_getprofile_service.dart';
 
 class SalesrepProfileScreen extends StatefulWidget {
@@ -204,6 +208,11 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                       // ),
                       TextButton(
                           onPressed: () {
+                            Provider.of<SaleRepOrdersProvider>(context,
+                                    listen: false)
+                                .repOrder!
+                                .clear();
+
                             Hive.box("login_hive").clear();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
@@ -234,8 +243,14 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                       CustomTextField(
                           headerText: "Phone #",
                           isEnabled: true,
+                          inputFormats: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(12),
+                            PhoneInputFormatter(),
+                          ],
                           controller: phoneCont,
                           hint: 'Phone #',
+                          inputType: TextInputType.phone,
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
                       CustomTextField(

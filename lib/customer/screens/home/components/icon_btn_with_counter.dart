@@ -37,7 +37,10 @@ class _IconBtnWithCounterState extends State<IconBtnWithCounter> {
               color: kSecondaryColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: SvgPicture.asset(widget.svgSrc),
+            child: SvgPicture.asset(
+              widget.svgSrc,
+              color: Colors.white,
+            ),
           ),
           if (widget.numOfitem != 0)
             Positioned(

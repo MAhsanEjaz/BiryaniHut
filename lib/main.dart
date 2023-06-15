@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/constants.dart';
 import 'package:shop_app/customer/screens/splash/splash_screen.dart';
 import 'package:shop_app/providers/account_balance_provider.dart';
 import 'package:shop_app/providers/all_orders_provider.dart';
@@ -113,23 +112,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
       ],
-      child: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus!.unfocus();
-        },
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-              appBarTheme: const AppBarTheme(
-                  backgroundColor: appColor,
-                  iconTheme: IconThemeData(color: Colors.white))),
-          // home: SplashScreen(),
-          home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
-          // home: PdfEmailPage(),
-          // home: MyNewPracticeScreen(),
-          // home: ImagePickerPage(),
-          // home: MyPracticeProductScreen(),
-        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme(),
+        // home: SplashScreen(),
+        home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+        // home: PdfEmailPage(),
+        // home: MyNewPracticeScreen(),
+        // home: ImagePickerPage(),
+        // home: MyPracticeProductScreen(),
       ),
     );
   }

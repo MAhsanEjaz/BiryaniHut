@@ -132,6 +132,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
       widget.customers.address = widget.address.text;
       widget.customers.firstName = widget.firstName.text;
       widget.customers.lastName = widget.lastName.text;
+      widget.customers.email = widget.email.text;
       widget.customers.phone = widget.phone.text;
 
       setState(() {});
