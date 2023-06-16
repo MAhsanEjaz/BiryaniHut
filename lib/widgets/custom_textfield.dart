@@ -101,7 +101,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
             obscureText: widget.obscureText,
             onChanged: widget.onChange,
             decoration: InputDecoration(
-
               contentPadding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(5), vertical: 6.0),
               border: InputBorder.none,

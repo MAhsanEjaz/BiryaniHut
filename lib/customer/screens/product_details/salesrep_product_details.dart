@@ -42,6 +42,7 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
   List<CartItem> model = [];
   final quantityCont = TextEditingController();
   num totalPrice = 0;
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +68,7 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
               child: Column(
                 children: [
                   ProductDescription(
+                    element: widget.data,
                     isReseller: true,
                     product: widget.data,
                     pressOnSeeMore: () {},

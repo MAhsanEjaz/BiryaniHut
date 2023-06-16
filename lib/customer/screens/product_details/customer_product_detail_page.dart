@@ -62,7 +62,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
               color: Colors.white,
               child: Column(
                 children: [
-                  ProductDescription(
+                  ProductDescription(element: widget.data ,
                     heartColor: widget.heartColor,
                     isReseller: false,
                     product: widget.data,
