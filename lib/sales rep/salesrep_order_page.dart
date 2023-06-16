@@ -138,6 +138,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
                         return selectedIndex == 0 &&
                                 getSaleOrders[index].status == "Pending"
                             ? SaleRepOrderWidget(
+                                index: index,
                                 isCustomer: false,
                                 repOrders: getSaleOrders[index],
                                 showBanner: false,
@@ -145,6 +146,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
                             : selectedIndex == 1 &&
                                     getSaleOrders[index].status == "Delivered"
                                 ? SaleRepOrderWidget(
+                                    index: index,
                                     isCustomer: false,
                                     repOrders: getSaleOrders[index],
                                     showBanner: false,
@@ -165,13 +167,15 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
 class SaleRepOrderWidget extends StatelessWidget {
   SaleRapOrdersList repOrders;
   bool showBanner;
+  int index;
   bool isCustomer;
 
   SaleRepOrderWidget(
       {Key? key,
       required this.repOrders,
       required this.showBanner,
-     required this.isCustomer})
+      required this.index,
+      required this.isCustomer})
       : super(key: key);
 
   @override
@@ -186,12 +190,14 @@ class SaleRepOrderWidget extends StatelessWidget {
         child: SalesrepOrderWidget2(
           repOrders: repOrders,
           isCustomer: isCustomer,
+          index: index,
         ),
       );
     } else {
       return SalesrepOrderWidget2(
         repOrders: repOrders,
         isCustomer: isCustomer,
+        index: index,
       );
     }
   }

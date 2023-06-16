@@ -11,7 +11,7 @@ class CustFavProductsService {
     try {
       var res = await CustomGetRequestService().httpGetRequest(
           context: context,
-          url: apiBaseUrl+"/Customer/GetCustomerFavoriteProducts/$customerId");
+          url: "$apiBaseUrl/Customer/GetCustomerFavoriteProducts/$customerId");
       if (res != null) {
         ProductsModel favProd = ProductsModel.fromJson(res);
         Provider.of<CustFavouritesProductsProvider>(context, listen: false)

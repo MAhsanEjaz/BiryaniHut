@@ -89,21 +89,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SaleRepOrdersProvider()),
         ChangeNotifierProvider(create: (context) => AccountBalanceProvider()),
         // ChangeNotifierProvider(create: (context) => CustomerOrderProvider()),
-        ChangeNotifierProvider(
-            create: (context) => CustFavouritesProductsProvider()),
+        ChangeNotifierProvider(create: (context) => CustFavouritesProductsProvider()),
         ChangeNotifierProvider(create: (context) => ReviewsProvider()),
         ChangeNotifierProvider(create: (context) => AllOrdersProvider()),
         ChangeNotifierProvider(create: (context) => CartCounterProvider()),
-        ChangeNotifierProvider(
-            create: (context) => SaleRepPaymentsReportsProvider()),
-        ChangeNotifierProvider(
-            create: (context) => SalesrepAllCustomersPaymentsProvider()),
-        ChangeNotifierProvider(
-            create: (context) => SaleRepCustomOrderAgingProvider()),
-        ChangeNotifierProvider(
-            create: (context) => SalesRepCustomerPaymentAgingProvider()),
-        ChangeNotifierProvider(
-            create: (context) => OrderReportDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => SaleRepPaymentsReportsProvider()),
+        ChangeNotifierProvider(create: (context) => SalesrepAllCustomersPaymentsProvider()),
+        ChangeNotifierProvider(create: (context) => SaleRepCustomOrderAgingProvider()),
+        ChangeNotifierProvider(create: (context) => SalesRepCustomerPaymentAgingProvider()),
+        ChangeNotifierProvider(create: (context) => OrderReportDetailsProvider()),
         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
@@ -113,20 +107,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
       ],
-      child: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus!.unfocus();
-        },
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: theme(),
-          // home: SplashScreen(),
-          home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
-          // home: PdfEmailPage(),
-          // home: MyNewPracticeScreen(),
-          // home: ImagePickerPage(),
-          // home: MyPracticeProductScreen(),
-        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme(),
+        // home: SplashScreen(),
+        home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+        // home: PdfEmailPage(),
+        // home: MyNewPracticeScreen(),
+        // home: ImagePickerPage(),
+        // home: MyPracticeProductScreen(),
       ),
     );
   }

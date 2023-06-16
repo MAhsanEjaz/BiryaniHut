@@ -291,7 +291,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ),
             ),
             bottomNavigationBar:
-                const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
+                    const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
           ),
         ),
       );

@@ -87,11 +87,28 @@ class _SaleRepOrderReportDetailsScreenState
     return filePath;
   }
 
-  void sendSms(String message) async {
-    // const message = 'Hello from!';
-    String formattedPhoneNumber = widget.phone.replaceAll('-', '');
-    final url =
-        'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
+  // void sendSms(String message) async {
+  //   // const message = 'Hello from!';
+  //   String formattedPhoneNumber = widget.phone.replaceAll('-', '');
+  //   final url =
+  //       'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
+  //
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
+
+  void newSendSms(List<OrderProduct> productList, String number) async {
+    String message = 'Order Details:\n';
+    for (var product in productList) {
+      message += '\nProduct Name: ${product.productName}\n'
+          'Quantity: ${product.quantity}\n'
+          'Price: ${product.price}\n';
+    }
+
+    final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -173,14 +190,12 @@ class _SaleRepOrderReportDetailsScreenState
                                               ListTile(
                                                 leading: const Icon(Icons.sms),
                                                 onTap: () {
-                                                  for (var element in data
-                                                      .reportDetailsModel!
-                                                      .data!
-                                                      .orderProducts) {
-                                                    sendSms(
-                                                      'Order Id : ${element.productId}\nProduct Name: ${element.productName}\nTotal Price: ${element.totalPrice}\nQuantity: ${element.quantity}\n',
-                                                    );
-                                                  }
+                                                  Navigator.pop(context);
+                                                  newSendSms(
+                                                      data.reportDetailsModel!
+                                                          .data!.orderProducts,
+                                                      widget.phone);
+                                                  setState(() {});
                                                 },
                                                 title: const Text('Message'),
                                               ),
