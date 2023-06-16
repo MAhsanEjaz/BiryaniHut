@@ -304,34 +304,34 @@ class SaleRapOrdersList {
 
   SaleRapOrdersList(
       {this.firstName,
-        this.lastName,
-        this.salonName,
-        this.address,
-        this.location,
-        this.customerImagePath,
-        this.customerImage,
-        this.saleRepName,
-        this.saleRepId,
-        this.rating,
-        this.email,
-        this.phone,
-        this.orderProducts,
-        this.orderPayment,
-        this.orderId,
-        this.totalPrice,
-        this.discount,
-        this.discountType,
-        this.grandTotal,
-        this.netTotal,
-        this.dateTime,
-        this.status,
-        this.orderPendingPayment,
-        this.orderPaidAmount,
-        this.previousBalance,
-        this.totalBalance,
-        this.completeOrderDateTime,
-        this.orderBy,
-        this.customerId});
+      this.lastName,
+      this.salonName,
+      this.address,
+      this.location,
+      this.customerImagePath,
+      this.customerImage,
+      this.saleRepName,
+      this.saleRepId,
+      this.rating,
+      this.email,
+      this.phone,
+      this.orderProducts,
+      this.orderPayment,
+      this.orderId,
+      this.totalPrice,
+      this.discount,
+      this.discountType,
+      this.grandTotal,
+      this.netTotal,
+      this.dateTime,
+      this.status,
+      this.orderPendingPayment,
+      this.orderPaidAmount,
+      this.previousBalance,
+      this.totalBalance,
+      this.completeOrderDateTime,
+      this.orderBy,
+      this.customerId});
 
   SaleRapOrdersList.fromJson(Map<String, dynamic> json) {
     firstName = json['firstName'];
@@ -360,10 +360,10 @@ class SaleRapOrdersList {
     }
     orderId = json['orderId'];
     totalPrice = json['totalPrice'];
-    discount = json['discount'];
+    discount = json['discount'] ?? 0;
     discountType = json['discountType'];
     grandTotal = json['grandTotal'];
-    netTotal = json['netTotal'];
+    netTotal = json['netTotal'] ?? 0;
     dateTime = json['dateTime'];
     status = json['status'];
     orderPendingPayment = json['orderPendingPayment'];
@@ -390,8 +390,7 @@ class SaleRapOrdersList {
     data['email'] = email;
     data['phone'] = phone;
     if (orderProducts != null) {
-      data['orderProducts'] =
-          orderProducts!.map((v) => v.toJson()).toList();
+      data['orderProducts'] = orderProducts!.map((v) => v.toJson()).toList();
     }
     if (orderPayment != null) {
       data['orderPayment'] = orderPayment!.map((v) => v.toJson()).toList();
@@ -432,18 +431,18 @@ class OrderProducts {
 
   OrderProducts(
       {this.productId,
-        this.salePrice,
-        this.price,
-        this.regularPrice,
-        this.quantity,
-        this.cost,
-        this.totalCost,
-        this.discount,
-        this.totalPrice,
-        this.productName,
-        this.productDescription,
-        this.productImagePath,
-        this.productImage});
+      this.salePrice,
+      this.price,
+      this.regularPrice,
+      this.quantity,
+      this.cost,
+      this.totalCost,
+      this.discount,
+      this.totalPrice,
+      this.productName,
+      this.productDescription,
+      this.productImagePath,
+      this.productImage});
 
   OrderProducts.fromJson(Map<String, dynamic> json) {
     productId = json['productId'];
@@ -505,5 +504,3 @@ class OrderPayment {
     return data;
   }
 }
-
-

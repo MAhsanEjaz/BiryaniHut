@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,9 @@ class PdfOrdersInvoiceService {
     } else {
       orderStatus = "Pending";
     }
+
+    log("discount = " + order.discount.toString());
+
     final List<CustomRow> elements = [
       // for (int i = 0; i < view!.order!.length; i++)
       // for (int i = 0; i < 3; i++)
@@ -344,7 +348,7 @@ class PdfOrdersInvoiceService {
                                     order.totalPrice!.toStringAsFixed(2),
                                     style: pdfStyle),
                               ]),
-                          if (order.discount! < 0 && order.discount != null)
+                          if (order.discount! > 0 && order.discount != null)
                             pw.Row(
                                 mainAxisAlignment:
                                     pw.MainAxisAlignment.spaceBetween,
@@ -358,10 +362,10 @@ class PdfOrdersInvoiceService {
                                       order.discount!.toStringAsFixed(2),
                                       style: pdfStyle),
                                 ]),
-                          if (order.discount! < 0 &&
+                          if (order.discount! > 0 &&
                               order.discount != null &&
                               order.netTotal != null &&
-                              order.netTotal != 0)
+                              order.netTotal! > 0)
                             pw.Row(
                                 mainAxisAlignment:
                                     pw.MainAxisAlignment.spaceBetween,

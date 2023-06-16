@@ -258,6 +258,7 @@ class _SaleRepOrderReportDetailsScreenState
         bottomNavigationBar: widget.isInvoices == true
             ? InkWell(
                 onTap: () async {
+                  log("discount = " + widget.orders.discount.toString());
                   String repName = '';
                   if (storage.getUsertype() == "customer") {
                     repName = storage.getSalesRepName();
