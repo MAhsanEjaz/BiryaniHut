@@ -36,15 +36,15 @@ class SalesrepOrderWidget2 extends StatelessWidget {
         children: [
           ListTile(
             leading: repOrders.customerImagePath != "" ||
-                    repOrders.customerImagePath != null
+                repOrders.customerImagePath != null
                 ? CircleAvatar(
-                    maxRadius: 28.0,
-                    backgroundImage: NetworkImage(repOrders.customerImagePath!))
+                maxRadius: 28.0,
+                backgroundImage: NetworkImage(repOrders.customerImagePath!))
                 : const CircleAvatar(
-                    maxRadius: 28.0,
-                    backgroundImage:
-                        AssetImage('assets/images/Profile Image.png'),
-                  ),
+              maxRadius: 28.0,
+              backgroundImage:
+              AssetImage('assets/images/Profile Image.png'),
+            ),
             title: Text(
               repOrders.salonName ?? "",
               style: nameStyle,
@@ -100,7 +100,7 @@ class SalesrepOrderWidget2 extends StatelessWidget {
           ),
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
