@@ -400,6 +400,7 @@ class OrderReportsWidget extends StatelessWidget {
                               phone: order.phone!,
                               email: order.email!,
                               isInvoices: true,
+                              index: index,
                               orderId: order.orderId!,
                               name: "${order.firstName!}" " " + order.lastName!,
                               date: order.dateTime!,

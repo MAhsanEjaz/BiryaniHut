@@ -12,10 +12,13 @@ class SalesrepOrderWidget2 extends StatelessWidget {
   SalesrepOrderWidget2({
     Key? key,
     required this.repOrders,
+    required this.index,
+
     required this.isCustomer,
   }) : super(key: key);
 
   final SaleRapOrdersList repOrders;
+  int index;
   bool isCustomer;
 
   @override
@@ -75,7 +78,7 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                                   name: repOrders.firstName! +
                                       repOrders.lastName!,
                                   orderId: repOrders.orderId!,
-                                  key: key,
+                                  key: key, index: index,
                                   // showScaffold: true,
                                 )));
                   },

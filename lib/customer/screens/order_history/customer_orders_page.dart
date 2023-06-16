@@ -87,7 +87,7 @@ class _CustomerOrderHistoryPageState extends State<CustomerOrderHistoryPage> {
                             ? SaleRepOrderWidget(
                                 repOrders: order.allOrders![index],
                                 showBanner: false,
-                                isCustomer: true,
+                                isCustomer: true, index: index,
                               )
                             : selectedIndex == 1 &&
                                     order.allOrders![index].status ==
@@ -95,7 +95,7 @@ class _CustomerOrderHistoryPageState extends State<CustomerOrderHistoryPage> {
                                 ? SaleRepOrderWidget(
                                     repOrders: order.allOrders![index],
                                     showBanner: false,
-                                    isCustomer: true,
+                                    isCustomer: true, index: index,
                                   )
                                 : const SizedBox();
                       });

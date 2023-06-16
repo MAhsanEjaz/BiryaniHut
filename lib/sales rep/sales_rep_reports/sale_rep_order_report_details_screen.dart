@@ -30,9 +30,9 @@ import '../order_detail_page.dart';
 
 class SaleRepOrderReportDetailsScreen extends StatefulWidget {
   final int orderId;
-
   bool? isInvoices;
   bool? isCustomer;
+  int index;
   final String name;
   final String email;
   String phone;
@@ -45,6 +45,7 @@ class SaleRepOrderReportDetailsScreen extends StatefulWidget {
       required this.name,
       required this.email,
       this.isInvoices,
+      required this.index,
       required this.phone,
       this.isCustomer,
       required this.date,
@@ -173,14 +174,9 @@ class _SaleRepOrderReportDetailsScreenState
                                               ListTile(
                                                 leading: const Icon(Icons.sms),
                                                 onTap: () {
-                                                  for (var element in data
-                                                      .reportDetailsModel!
-                                                      .data!
-                                                      .orderProducts) {
-                                                    sendSms(
-                                                      'Order Id : ${element.productId}\nProduct Name: ${element.productName}\nTotal Price: ${element.totalPrice}\nQuantity: ${element.quantity}\n',
-                                                    );
-                                                  }
+                                                  sendSms(
+                                                    'Order Id : ${widget.orders.orderProducts![widget.index].productId}\nProduct Name: ${widget.orders.orderProducts![widget.index].productName}\nTotal Price: ${widget.orders.orderProducts![widget.index].totalPrice}\nQuantity: ${widget.orders.orderProducts![widget.index].quantity}\n',
+                                                  );
                                                 },
                                                 title: const Text('Message'),
                                               ),
