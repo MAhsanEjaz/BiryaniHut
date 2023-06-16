@@ -348,7 +348,7 @@ class PdfInvoiceService {
                                   pw.Text(
                                       isDiscountInPercent
                                           ? "$discountValue %"
-                                          : "$discountValue Dollars",
+                                          : "$discountValue \$",
                                       style: pdfStyle),
                                 ]),
                           pw.Row(
