@@ -30,9 +30,9 @@ import '../order_detail_page.dart';
 
 class SaleRepOrderReportDetailsScreen extends StatefulWidget {
   final int orderId;
+
   bool? isInvoices;
   bool? isCustomer;
-  int index;
   final String name;
   final String email;
   String phone;
@@ -45,7 +45,6 @@ class SaleRepOrderReportDetailsScreen extends StatefulWidget {
       required this.name,
       required this.email,
       this.isInvoices,
-      required this.index,
       required this.phone,
       this.isCustomer,
       required this.date,
@@ -88,11 +87,28 @@ class _SaleRepOrderReportDetailsScreenState
     return filePath;
   }
 
-  void sendSms(String message) async {
-    // const message = 'Hello from!';
-    String formattedPhoneNumber = widget.phone.replaceAll('-', '');
-    final url =
-        'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
+  // void sendSms(String message) async {
+  //   // const message = 'Hello from!';
+  //   String formattedPhoneNumber = widget.phone.replaceAll('-', '');
+  //   final url =
+  //       'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
+  //
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
+
+  void newSendSms(List<OrderProduct> productList, String number) async {
+    String message = 'Order Details:\n';
+    for (var product in productList) {
+      message += '\nProduct Name: ${product.productName}\n'
+          'Quantity: ${product.quantity}\n'
+          'Price: ${product.price}\n';
+    }
+
+    final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -174,9 +190,12 @@ class _SaleRepOrderReportDetailsScreenState
                                               ListTile(
                                                 leading: const Icon(Icons.sms),
                                                 onTap: () {
-                                                  sendSms(
-                                                    'Order Id : ${widget.orders.orderProducts![widget.index].productId}\nProduct Name: ${widget.orders.orderProducts![widget.index].productName}\nTotal Price: ${widget.orders.orderProducts![widget.index].totalPrice}\nQuantity: ${widget.orders.orderProducts![widget.index].quantity}\n',
-                                                  );
+                                                  Navigator.pop(context);
+                                                  newSendSms(
+                                                      data.reportDetailsModel!
+                                                          .data!.orderProducts,
+                                                      widget.phone);
+                                                  setState(() {});
                                                 },
                                                 title: const Text('Message'),
                                               ),
