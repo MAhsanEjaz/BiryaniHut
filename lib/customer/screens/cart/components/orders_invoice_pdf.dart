@@ -32,6 +32,7 @@ class PdfOrdersInvoiceService {
       required String repName,
       required String customerName,
       required bool isOrderCompleted,
+      // required bool isDiscountApplicable,
 
       // PdfViewModel? view,
       required BuildContext ctx}) async {
@@ -322,19 +323,6 @@ class PdfOrdersInvoiceService {
                                   pw.MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text("Order Amount :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    order.totalPrice!.toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
                                 pw.Text("Total Payments :" " ",
                                     style: pdfHeaderStyle),
                                 pw.Text(
@@ -343,6 +331,50 @@ class PdfOrdersInvoiceService {
                                     order.orderPaidAmount!.toStringAsFixed(2),
                                     style: pdfStyle),
                               ]),
+                          pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text("Order Amount :" " ",
+                                    style: pdfHeaderStyle),
+                                pw.Text(
+                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                                    //
+                                    order.totalPrice!.toStringAsFixed(2),
+                                    style: pdfStyle),
+                              ]),
+                          if (order.discount! < 0 && order.discount != null)
+                            pw.Row(
+                                mainAxisAlignment:
+                                    pw.MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Text("Discount :" " ",
+                                      style: pdfHeaderStyle),
+                                  pw.Text(
+                                      // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                                      //
+                                      order.discount!.toStringAsFixed(2),
+                                      style: pdfStyle),
+                                ]),
+                          if (order.discount! < 0 &&
+                              order.discount != null &&
+                              order.netTotal != null &&
+                              order.netTotal != 0)
+                            pw.Row(
+                                mainAxisAlignment:
+                                    pw.MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Text("Order's Payable Amount :" " ",
+                                      style: pdfHeaderStyle),
+                                  pw.Text(
+                                      // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                                      //
+                                      order.netTotal!.toStringAsFixed(2),
+                                      style: pdfStyle),
+                                ]),
                           pw.Row(
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,

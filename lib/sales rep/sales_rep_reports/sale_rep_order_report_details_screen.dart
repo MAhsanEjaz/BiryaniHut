@@ -167,7 +167,7 @@ class _SaleRepOrderReportDetailsScreenState
                               context: context,
                               builder: (context) => AlertDialog(
                                   content: StatefulBuilder(
-                                      builder: (context, Setstate) => Column(
+                                      builder: (context, setStatess) => Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               ListTile(
@@ -1125,21 +1125,6 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Remaining Balance",
-                  style: orderStyle,
-                ),
-                Text(
-                  widget.orders.data!.orderPendingPayment.toStringAsFixed(2),
-                  style: orderStyle,
-                )
-              ],
-            ),
-            divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
                   "Order's Amount",
                   style: orderStyle,
                 ),
@@ -1149,10 +1134,11 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                 )
               ],
             ),
+            divider(),
             widget.orders.data!.discount != null &&
                     widget.orders.data!.discount != 0
                 ? const Divider()
-                : SizedBox(),
+                : const SizedBox(),
             widget.orders.data!.discount != null &&
                     widget.orders.data!.discount != 0
                 ? Row(
@@ -1169,11 +1155,11 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
             widget.orders.data!.netTotal != null &&
                     widget.orders.data!.netTotal != 0
                 ? const Divider()
-                : SizedBox(),
+                : const SizedBox(),
             widget.orders.data!.netTotal != null &&
                     widget.orders.data!.netTotal != 0
                 ? Row(
@@ -1191,7 +1177,21 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                     ],
                   )
                 : const SizedBox(),
-            const Divider()
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Remaining Balance",
+                  style: orderStyle,
+                ),
+                Text(
+                  widget.orders.data!.orderPendingPayment.toStringAsFixed(2),
+                  style: orderStyle,
+                )
+              ],
+            ),
           ],
         ),
       ),
