@@ -9,6 +9,11 @@ import 'package:shop_app/providers/top_five_products_provider.dart';
 import 'package:shop_app/services/top_five_customers_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+
+
+
+
+
 class TopFiveCustomersReportScreen extends StatefulWidget {
   const TopFiveCustomersReportScreen({Key? key}) : super(key: key);
 
@@ -104,55 +109,48 @@ class _TopFiveCustomersReportScreenState
                       Divider(),
                       const SizedBox(height: 5),
                       isFilteredItems == true
-                          ? AnimatedPositioned(
-                              duration: const Duration(seconds: 2),
-                              // Set the desired duration for the animation
-                              curve: Curves.easeInOutCubicEmphasized,
-                              // Set the desired curve for the animation
+                          ? Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(color: appColor)),
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  FilterWidget(
+                                      color:
+                                          selectIndex == 0 ? true : false,
+                                      text: 'Orders',
+                                      onTap: () {
+                                        selectFilter = 'Orders';
+                                        _sortByOrder = true;
+                                        _sortByAmount = false;
+                                        _filterItems();
 
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(color: appColor)),
-                                elevation: 10,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      FilterWidget(
-                                          color:
-                                              selectIndex == 0 ? true : false,
-                                          text: 'Orders',
-                                          onTap: () {
-                                            selectFilter = 'Orders';
-                                            _sortByOrder = true;
-                                            _sortByAmount = false;
-                                            _filterItems();
+                                        selectIndex = 0;
+                                        setState(() {});
+                                      }),
+                                  const SizedBox(height: 5),
+                                  const Divider(),
+                                  const SizedBox(height: 5),
+                                  FilterWidget(
+                                      color:
+                                          selectIndex == 1 ? true : false,
+                                      text: 'Purchase Amount',
+                                      onTap: () {
+                                        selectIndex = 1;
+                                        _sortByOrder = false;
+                                        _sortByAmount = true;
+                                        _filterItems();
+                                        selectFilter = 'PurchasingOrders';
 
-                                            selectIndex = 0;
-                                            setState(() {});
-                                          }),
-                                      const SizedBox(height: 5),
-                                      const Divider(),
-                                      const SizedBox(height: 5),
-                                      FilterWidget(
-                                          color:
-                                              selectIndex == 1 ? true : false,
-                                          text: 'Purchase Amount',
-                                          onTap: () {
-                                            selectIndex = 1;
-                                            _sortByOrder = false;
-                                            _sortByAmount = true;
-                                            _filterItems();
-                                            selectFilter = 'PurchasingOrders';
-
-                                            setState(() {});
-                                          }),
-                                    ],
-                                  ),
-                                ),
+                                        setState(() {});
+                                      }),
+                                ],
                               ),
-                            )
+                            ),
+                          )
                           : const SizedBox(),
                       const SizedBox(height: 10),
                       Table(
@@ -221,8 +219,7 @@ class _TopFiveCustomersReportScreenState
                                                     const EdgeInsets.all(8.0),
                                                 child: Center(
                                                   child: Text(model[index]
-                                                      .totalGrandTotal
-                                                      .toString()),
+                                                      .totalGrandTotal! .toStringAsFixed(2)),
                                                 ),
                                               )),
                                             ],
