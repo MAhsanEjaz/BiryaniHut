@@ -11,6 +11,7 @@ import 'package:shop_app/providers/counter_provider.dart';
 import 'package:shop_app/providers/cust_favourites_product_provider.dart';
 import 'package:shop_app/providers/customers_search_provider.dart';
 import 'package:shop_app/providers/order_report_details_provider.dart';
+import 'package:shop_app/providers/payment_get_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/providers/products_search_provider.dart';
 import 'package:shop_app/providers/regitration_provider.dart';
@@ -60,11 +61,11 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   // var data = await CustomDb().getKey();
-  String? publishableKey = await CustomDb().getKey();
+  // String? publishableKey = await CustomDb().getKey();
   // String? stripeKey = LoginStorage().getStripeKey();
 
-  log("publishableKey at start = $publishableKey");
-  Stripe.publishableKey = publishableKey ??
+  // log("publishableKey at start = $publishableKey");
+  Stripe.publishableKey =
       'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
   await Stripe.instance.applySettings();
   runApp(const MyApp());
@@ -104,6 +105,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TopFiveProductProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
+        ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
