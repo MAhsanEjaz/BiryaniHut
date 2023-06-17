@@ -45,7 +45,6 @@ class _TopFiveCustomersReportScreenState
       } else if (_sortByOrder) {
         model.sort((a, b) => b.totalOrders!.compareTo(a.totalOrders!));
       } else {
-        // If no filter is selected, display items in their original order
         model.sort((a, b) => a.totalGrandTotal!.compareTo(b.totalGrandTotal!));
       }
     });
