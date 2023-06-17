@@ -1,7 +1,7 @@
 class TopFiveCustomersModel {
   int? id;
   String? firstName;
-  int? totalOrders;
+  num? totalOrders;
   num? totalGrandTotal;
 
   TopFiveCustomersModel(

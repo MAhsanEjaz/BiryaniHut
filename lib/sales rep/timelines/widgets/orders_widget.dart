@@ -8,19 +8,23 @@ import '../../../models/salesrep_orders_model.dart';
 import '../../order_detail_page.dart';
 import '../../sales_rep_reports/sale_rep_order_report_details_screen.dart';
 
-class SalesrepOrderWidget2 extends StatelessWidget {
-  SalesrepOrderWidget2({
-    Key? key,
-    required this.repOrders,
-    required this.index,
-
-    required this.isCustomer,
-  }) : super(key: key);
+class SalesrepOrderWidget2 extends StatefulWidget {
+  SalesrepOrderWidget2(
+      {Key? key,
+      required this.repOrders,
+      required this.index,
+      required this.isCustomer})
+      : super(key: key);
 
   final SaleRapOrdersList repOrders;
   int index;
   bool isCustomer;
 
+  @override
+  State<SalesrepOrderWidget2> createState() => _SalesrepOrderWidget2State();
+}
+
+class _SalesrepOrderWidget2State extends State<SalesrepOrderWidget2> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -35,50 +39,53 @@ class SalesrepOrderWidget2 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ListTile(
-            leading: repOrders.customerImagePath != "" ||
-                repOrders.customerImagePath != null
+            leading: widget.repOrders.customerImagePath != "" ||
+                    widget.repOrders.customerImagePath != null
                 ? CircleAvatar(
-                maxRadius: 28.0,
-                backgroundImage: NetworkImage(repOrders.customerImagePath!))
+                    maxRadius: 28.0,
+                    backgroundImage:
+                        NetworkImage(widget.repOrders.customerImagePath!))
                 : const CircleAvatar(
-              maxRadius: 28.0,
-              backgroundImage:
-              AssetImage('assets/images/Profile Image.png'),
-            ),
+                    maxRadius: 28.0,
+                    backgroundImage:
+                        AssetImage('assets/images/Profile Image.png'),
+                  ),
             title: Text(
-              repOrders.salonName ?? "",
+              widget.repOrders.salonName ?? "",
               style: nameStyle,
             ),
-            subtitle: Text(repOrders.firstName! + " " + repOrders.lastName!),
+            subtitle: Text(
+                widget.repOrders.firstName! + " " + widget.repOrders.lastName!),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "\$ ${repOrders.grandTotal!.toStringAsFixed(2)} ",
+                  "\$ ${widget.repOrders.grandTotal!.toStringAsFixed(2)} ",
                 ),
                 InkWell(
                   onTap: () {
-                    log("isCustomer = $isCustomer");
-                    log("repOrders.dateTime = ${repOrders.dateTime}");
-                    log("repOrders.firstName! = ${repOrders.firstName!}");
-                    log("repOrders.lastName! = ${repOrders.lastName!}");
-                    log("repOrders.orderId = ${repOrders.orderId}");
+                    log("isCustomer = ${widget.isCustomer}");
+                    log("repOrders.dateTime = ${widget.repOrders.dateTime}");
+                    log("repOrders.firstName! = ${widget.repOrders.firstName!}");
+                    log("repOrders.lastName! = ${widget.repOrders.lastName!}");
+                    log("repOrders.orderId = ${widget.repOrders.orderId}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 SaleRepOrderReportDetailsScreen(
-                                  phone: repOrders.phone!,
+                                  phone: widget.repOrders.phone ??
+                                      '${widget.repOrders.phone}',
                                   isInvoices: false,
-                                  isCustomer: isCustomer,
-                                  email: repOrders.email!,
-                                  orders: repOrders,
-                                  date: repOrders.dateTime!,
-                                  name: repOrders.firstName! +
-                                      repOrders.lastName!,
-                                  orderId: repOrders.orderId!,
-                                  key: key,
+                                  isCustomer: widget.isCustomer,
+                                  email: widget.repOrders.email ??
+                                      '${widget.repOrders.email}',
+                                  orders: widget.repOrders,
+                                  date: widget.repOrders.dateTime!,
+                                  name: widget.repOrders.firstName! +
+                                      widget.repOrders.lastName!,
+                                  orderId: widget.repOrders.orderId!,
                                   // showScaffold: true,
                                 )));
                   },
@@ -100,7 +107,7 @@ class SalesrepOrderWidget2 extends StatelessWidget {
           ),
           Padding(
             padding:
-            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +122,7 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                             text: 'Address : ',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         TextSpan(
-                          text: repOrders.address,
+                          text: widget.repOrders.address,
                         ),
                       ],
                     ),
@@ -128,13 +135,13 @@ class SalesrepOrderWidget2 extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ResellerOrderTimeDateWidget(
-                        text: getDate(repOrders.dateTime),
+                        text: getDate(widget.repOrders.dateTime),
                         icon: Icons.calendar_month,
                       ),
                     ),
                     Expanded(
                       child: ResellerOrderTimeDateWidget(
-                        text: getTime(repOrders.dateTime),
+                        text: getTime(widget.repOrders.dateTime),
                         // "${getTime(repOrders.dateTime)}",
                         icon: Icons.access_time,
                       ),

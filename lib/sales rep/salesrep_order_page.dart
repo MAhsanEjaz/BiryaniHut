@@ -128,7 +128,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
                         onTap: onClearFunction, child: const Icon(Icons.clear))
                     : const SizedBox.shrink(),
               ),
-              getSaleOrders.isNotEmpty
+              getSaleOrders.isNotEmpty && getSaleOrders != null
                   ? ListView.builder(
                       shrinkWrap: true,
                       primary: false,

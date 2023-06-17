@@ -87,18 +87,7 @@ class _SaleRepOrderReportDetailsScreenState
     return filePath;
   }
 
-  // void sendSms(String message) async {
-  //   // const message = 'Hello from!';
-  //   String formattedPhoneNumber = widget.phone.replaceAll('-', '');
-  //   final url =
-  //       'sms:"$formattedPhoneNumber"?body=${Uri.encodeComponent(message)}';
-  //
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+
 
   void newSendSms(List<OrderProduct> productList, String number) async {
     String message = 'Order Details:\n';

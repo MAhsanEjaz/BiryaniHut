@@ -298,7 +298,8 @@ class SaleRapOrdersList {
   num? orderPaidAmount;
   num? previousBalance;
   num? totalBalance;
-  Null? completeOrderDateTime;
+
+  // Null? completeOrderDateTime;
   int? orderBy;
   int? customerId;
 
@@ -329,7 +330,7 @@ class SaleRapOrdersList {
       this.orderPaidAmount,
       this.previousBalance,
       this.totalBalance,
-      this.completeOrderDateTime,
+      // this.completeOrderDateTime,
       this.orderBy,
       this.customerId});
 
@@ -370,7 +371,7 @@ class SaleRapOrdersList {
     orderPaidAmount = json['orderPaidAmount'];
     previousBalance = json['previousBalance'];
     totalBalance = json['totalBalance'];
-    completeOrderDateTime = json['completeOrderDateTime'];
+    // completeOrderDateTime = json['completeOrderDateTime'];
     orderBy = json['orderBy'];
     customerId = json['customerId'];
   }
@@ -407,7 +408,7 @@ class SaleRapOrdersList {
     data['orderPaidAmount'] = orderPaidAmount;
     data['previousBalance'] = previousBalance;
     data['totalBalance'] = totalBalance;
-    data['completeOrderDateTime'] = completeOrderDateTime;
+    // data['completeOrderDateTime'] = completeOrderDateTime;
     data['orderBy'] = orderBy;
     data['customerId'] = customerId;
     return data;
