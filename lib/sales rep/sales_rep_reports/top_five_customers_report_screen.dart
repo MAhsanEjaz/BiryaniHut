@@ -77,18 +77,31 @@ class _TopFiveCustomersReportScreenState
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          const Text("Filter by categotries"),
-                          const Spacer(),
-                          InkWell(
-                              onTap: () {
-                                isFilteredItems = !isFilteredItems;
-                                setState(() {});
-                              },
-                              child: const Icon(CupertinoIcons.down_arrow))
-                        ],
+                      InkWell(
+                        onTap: () {
+                          isFilteredItems = !isFilteredItems;
+                          setState(() {});
+                        },
+                        child: Row(
+                          children: [
+                            const Text(
+                              "Filter by Categories",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            const Spacer(),
+                            InkWell(
+                                onTap: () {
+                                  isFilteredItems = !isFilteredItems;
+                                  setState(() {});
+                                },
+                                child: Icon(isFilteredItems == true
+                                    ? CupertinoIcons.up_arrow
+                                    : CupertinoIcons.down_arrow))
+                          ],
+                        ),
                       ),
+                      Divider(),
                       const SizedBox(height: 5),
                       isFilteredItems == true
                           ? AnimatedPositioned(
