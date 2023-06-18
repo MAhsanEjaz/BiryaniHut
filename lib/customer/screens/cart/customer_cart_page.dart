@@ -661,225 +661,237 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                   var res = await customer.customerProfileModel;
 
                                   res!.data!.saleRep?.id == null
-                                      ? showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              "Please first approved from admin",
-                                          okBtnText: 'Ok',
-                                          cancelBtnText: 'Cancel',
-                                          onCancelPress: () {},
-                                          onOkPress: () {})
-                                      :
+                                      ? WidgetsBinding.instance
+                                          .addPostFrameCallback((timeStamp) {
+                                          customerGetDataHandler();
+                                        })
+                                      : res.data!.saleRep?.id == null
+                                          ? showAwesomeAlert(
+                                              context: context,
+                                              msg:
+                                                  "Please first approved from admin",
+                                              okBtnText: 'Ok',
+                                              cancelBtnText: 'Cancel',
+                                              onCancelPress: () {},
+                                              onOkPress: () {})
+                                          :
 
-                                      // var box = Hive.box("salesrep_cart_box");
-                                      // try {
-                                      //   if (box.containsKey(
-                                      //       widget.customerId.toString() +
-                                      //           "salesrep_cart_list")) {
-                                      //     log("yes it  has key");
-                                      //   }
-                                      // } catch (e) {
-                                      //   log("message");
-                                      // }
+                                          // var box = Hive.box("salesrep_cart_box");
+                                          // try {
+                                          //   if (box.containsKey(
+                                          //       widget.customerId.toString() +
+                                          //           "salesrep_cart_list")) {
+                                          //     log("yes it  has key");
+                                          //   }
+                                          // } catch (e) {
+                                          //   log("message");
+                                          // }
 
-                                      // return;
+                                          // return;
 
-                                      showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              'Do you want to place the order?',
-                                          animType: AnimType.topSlide,
-                                          dialogType: DialogType.info,
-                                          onOkPress: () async {
-                                            log("payment list = ${json.encode(paymentsList)}");
+                                          showAwesomeAlert(
+                                              context: context,
+                                              msg:
+                                                  'Do you want to place the order?',
+                                              animType: AnimType.topSlide,
+                                              dialogType: DialogType.info,
+                                              onOkPress: () async {
+                                                log("payment list = ${json.encode(paymentsList)}");
 
-                                            if (isOrderPlaced) {
-                                              showToast(
-                                                  "This order already placed");
-                                              Navigator.of(context).pop();
-                                              return;
-                                            }
+                                                if (isOrderPlaced) {
+                                                  showToast(
+                                                      "This order already placed");
+                                                  Navigator.of(context).pop();
+                                                  return;
+                                                }
 
-                                            // num price = totalPrice +
-                                            //     totalPayable -
-                                            //     (totalPaid + previousBalance);
+                                                // num price = totalPrice +
+                                                //     totalPayable -
+                                                //     (totalPaid + previousBalance);
 
-                                            // !following logic is commented because changed scenario of previous balance
-                                            // if (totalPaid == 0 &&
-                                            //     previousBalance > totalPrice) {
-                                            //   totalPaid = totalPrice;
-                                            //   log("totalPaid after conditions = $totalPaid");
-                                            // }
+                                                // !following logic is commented because changed scenario of previous balance
+                                                // if (totalPaid == 0 &&
+                                                //     previousBalance > totalPrice) {
+                                                //   totalPaid = totalPrice;
+                                                //   log("totalPaid after conditions = $totalPaid");
+                                                // }
 
-                                            // if (price < 0 || price ) {
-                                            //   canPlaceOrder = true;
-                                            // }
+                                                // if (price < 0 || price ) {
+                                                //   canPlaceOrder = true;
+                                                // }
 
-                                            // log("creditLimit = $creditLimit");
-                                            // log("price = $price");
-                                            log("previousBalance = $previousBalance");
-                                            // if (creditLimit < price) {
-                                            //   showToast(
-                                            //       "You can Order upto \$${creditLimit + previousBalance}");
-                                            //   //! add awesome dialogue for this msg
-                                            //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
-                                            // } else {
-                                            // num paid = 0;
-                                            // num prevBlnc = previousBalance;
-                                            // if (totalPaid >= totalPrice) {
-                                            //   paid = totalPaid;
-                                            //   prevBlnc =
-                                            //       prevBlnc + (totalPaid - totalPrice);
-                                            // } else {
-                                            //   prevBlnc - totalPrice + totalPaid;
-                                            // }
-                                            // totalPaid =
-                                            //     totalPaid + previousBalance - totalPrice;
+                                                // log("creditLimit = $creditLimit");
+                                                // log("price = $price");
+                                                log("previousBalance = $previousBalance");
+                                                // if (creditLimit < price) {
+                                                //   showToast(
+                                                //       "You can Order upto \$${creditLimit + previousBalance}");
+                                                //   //! add awesome dialogue for this msg
+                                                //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
+                                                // } else {
+                                                // num paid = 0;
+                                                // num prevBlnc = previousBalance;
+                                                // if (totalPaid >= totalPrice) {
+                                                //   paid = totalPaid;
+                                                //   prevBlnc =
+                                                //       prevBlnc + (totalPaid - totalPrice);
+                                                // } else {
+                                                //   prevBlnc - totalPrice + totalPaid;
+                                                // }
+                                                // totalPaid =
+                                                //     totalPaid + previousBalance - totalPrice;
 
-                                            CartModel cartModel = CartModel(
-                                              netTotal: double.parse(
-                                                  getOrderAmount()),
-                                              orderPayment: paymentsList,
-                                              customerId:
-                                                  loginStorage.getUserId(),
-                                              dateTime: DateTime.now(),
-                                              orderBy: 1,
-                                              orderId: 0,
-                                              orderProducts: model,
-                                              discount: isDiscountApplicable
-                                                  ? repDiscountModel!
-                                                      .data.discount
-                                                  : 0,
-                                              grandTotal: totalPrice,
-                                              status: 'Pending',
-                                              totalPrice: totalPrice,
-                                              orderPaidAmount: totalPaid,
-                                              //! + previousBalance is removed in current scenario
-                                              //! becasue totalbalance param is added in api
-                                              orderPendingAmount: double.parse(
-                                                  getRemainigBalance()),
-                                              remainingBalance: double.parse(
-                                                  getRemainigBalance()),
-                                              totalBalance: double.parse(
-                                                  getTotalBalance()),
-                                              previousBalance: previousBalance,
-                                              discountType:
-                                                  isDiscountApplicable &&
-                                                          isDiscountInPercent
-                                                      ? "By Percentage"
-                                                      : "By Value",
-                                            );
+                                                CartModel cartModel = CartModel(
+                                                  netTotal: double.parse(
+                                                      getOrderAmount()),
+                                                  orderPayment: paymentsList,
+                                                  customerId:
+                                                      loginStorage.getUserId(),
+                                                  dateTime: DateTime.now(),
+                                                  orderBy: 1,
+                                                  orderId: 0,
+                                                  orderProducts: model,
+                                                  discount: isDiscountApplicable
+                                                      ? repDiscountModel!
+                                                          .data.discount
+                                                      : 0,
+                                                  grandTotal: totalPrice,
+                                                  status: 'Pending',
+                                                  totalPrice: totalPrice,
+                                                  orderPaidAmount: totalPaid,
+                                                  //! + previousBalance is removed in current scenario
+                                                  //! becasue totalbalance param is added in api
+                                                  orderPendingAmount:
+                                                      double.parse(
+                                                          getRemainigBalance()),
+                                                  remainingBalance:
+                                                      double.parse(
+                                                          getRemainigBalance()),
+                                                  totalBalance: double.parse(
+                                                      getTotalBalance()),
+                                                  previousBalance:
+                                                      previousBalance,
+                                                  discountType:
+                                                      isDiscountApplicable &&
+                                                              isDiscountInPercent
+                                                          ? "By Percentage"
+                                                          : "By Value",
+                                                );
 
-                                            String jsonnn =
-                                                cartModelToJson(cartModel);
-                                            await addToCartHandler(jsonnn);
-                                            log("jsonnn  /// = $jsonnn");
-                                            if (isOrderPlaced) {
-                                              await updateCustomerBalanceHandler(
-                                                loginStorage.getUserId(),
-                                                getPreviousBalance(), //! setting it to 0 because previous balance was added into
-                                                //! totalPaid and if total paid is more than total price then
-                                                //! murtaza will again add this extra to customer's wallet
-                                              );
-                                              openInvoice();
+                                                String jsonnn =
+                                                    cartModelToJson(cartModel);
+                                                await addToCartHandler(jsonnn);
+                                                log("jsonnn  /// = $jsonnn");
+                                                if (isOrderPlaced) {
+                                                  await updateCustomerBalanceHandler(
+                                                    loginStorage.getUserId(),
+                                                    getPreviousBalance(), //! setting it to 0 because previous balance was added into
+                                                    //! totalPaid and if total paid is more than total price then
+                                                    //! murtaza will again add this extra to customer's wallet
+                                                  );
+                                                  openInvoice();
 
-                                              //! clearing full sales rep box
-                                              //! because delete is not working for a particular key
+                                                  //! clearing full sales rep box
+                                                  //! because delete is not working for a particular key
 
-                                              Hive.box("customer_cart_box")
-                                                  .clear();
+                                                  Hive.box("customer_cart_box")
+                                                      .clear();
 
-                                              Provider.of<CartCounterProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .setCount(0);
-                                            }
+                                                  Provider.of<CartCounterProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .setCount(0);
+                                                }
 
-                                            if (isOrderPlaced) {
-                                              showModalBottomSheet(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0)),
-                                                        child: ListView(
-                                                          physics:
-                                                              const NeverScrollableScrollPhysics(),
-                                                          children: [
-                                                            const SizedBox(
-                                                                height: 15),
-                                                            SvgPicture.asset(
-                                                              'assets/icons/checkout.svg',
-                                                              color: appColor,
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            const Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
+                                                if (isOrderPlaced) {
+                                                  showModalBottomSheet(
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0)),
+                                                            child: ListView(
+                                                              physics:
+                                                                  const NeverScrollableScrollPhysics(),
+                                                              children: [
+                                                                const SizedBox(
+                                                                    height: 15),
+                                                                SvgPicture
+                                                                    .asset(
+                                                                  'assets/icons/checkout.svg',
+                                                                  color:
+                                                                      appColor,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 10),
+                                                                const Padding(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              8.0),
+                                                                  child: Text(
+                                                                    '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
                                                                           8.0),
-                                                              child: Text(
-                                                                '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
+                                                                  height: 45,
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child:
+                                                                      ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      // close bottom sheet and also navigate
+                                                                      // to previous page.
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: const Text(
+                                                                        'Continue Shopping'),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                        elevation:
+                                                                            0,
+                                                                        backgroundColor:
+                                                                            appColor,
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0))),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 30),
+                                                              ],
                                                             ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              height: 45,
-                                                              width: double
-                                                                  .infinity,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                onPressed: () {
-                                                                  // close bottom sheet and also navigate
-                                                                  // to previous page.
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child: const Text(
-                                                                    'Continue Shopping'),
-                                                                style: ElevatedButton.styleFrom(
-                                                                    elevation:
-                                                                        0,
-                                                                    backgroundColor:
-                                                                        appColor,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10.0))),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 30),
-                                                          ],
-                                                        ),
 
-                                                        // color: Colors.black,
-                                                      ),
-                                                    );
-                                                  });
-                                            }
-                                          },
-                                        );
+                                                            // color: Colors.black,
+                                                          ),
+                                                        );
+                                                      });
+                                                }
+                                              },
+                                            );
                                 }),
                           ],
                         ),
