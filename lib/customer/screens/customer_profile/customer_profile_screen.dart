@@ -87,23 +87,23 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .data!
             .lastName
             .toString();
-    salesRepCont.text =
+    var customerProfile =
         Provider.of<CustomerProfileProvider>(context, listen: false)
-            .customerProfileModel!
-            .data!
-            .saleRep!
-            .firstName!;
+            .customerProfileModel;
+
+    if (customerProfile != null &&
+        customerProfile.data != null &&
+        customerProfile.data!.saleRep != null) {
+      salesRepCont.text = (customerProfile.data!.saleRep!.id ?? '').toString();
+    } else {
+      salesRepCont.text = '';
+    }
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
             .phone!;
-    phoneCont.text =
-        Provider.of<CustomerProfileProvider>(context, listen: false)
-            .customerProfileModel!
-            .data!
-            .phone!;
-            
+
     addressCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!

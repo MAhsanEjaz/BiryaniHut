@@ -72,107 +72,112 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PaymentGetProvider>(builder: (context, data, _) {
-      return Scaffold(
-          appBar: AppBar(
-              backgroundColor: appColor,
-              title: const Text(
-                "Payment Setup Panel",
-                style: TextStyle(color: Colors.white),
-              )),
-          body: Column(
-            children: [
-              data.paymentKeyGetModel!.data == null
-                  ? const Center(child: Text("Please add Payment Key"))
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: data.paymentKeyGetModel!.data!
-                                  .publishableTestKey ==
-                              null
-                          ? const CircularProgressIndicator()
-                          : Text(
-                              "Stripe Key: ${data.paymentKeyGetModel!.data!.publishableTestKey.toString()}"),
-                    ),
-              CheckboxListTile(
-                title: const Text("Stripe"),
-                value: isStripeEnabled,
-                onChanged: (value) {
-                  isStripeEnabled = value!;
-                  isPayPalEnabled = false;
-                  isApplePayEnabled = false;
-                  isGoogleEnabled = false;
-                  setState(() {});
-                },
-              ),
-              const Divider(),
-              isStripeEnabled
-                  ? CustomPaymentCard(
-                      controller: stripeController,
-                      onTap: () async {
-                        myPublishKey = stripeController.text;
+      return  Scaffold(
+              appBar: AppBar(
+                  backgroundColor: appColor,
+                  title: const Text(
+                    "Payment Setup Panel",
+                    style: TextStyle(color: Colors.white),
+                  )),
+              body: data.paymentKeyGetModel!.data!.publishableTestKey == null &&
+                      data.paymentKeyGetModel!.data!.publishableTestKey!.isEmpty
+                  ? const CircularProgressIndicator()
+                  : Column(
+                      children: [
+                        data.paymentKeyGetModel!.data!.publishableTestKey ==
+                                null
+                            ? const Center(
+                                child: Text("Please add Payment Key"))
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: data.paymentKeyGetModel!.data!
+                                            .publishableTestKey ==
+                                        null
+                                    ? const Text("Please Add Key")
+                                    : Text(
+                                        "Stripe Key: ${data.paymentKeyGetModel!.data!.publishableTestKey == null ? 'Please Add Key' : data.paymentKeyGetModel!.data!.publishableTestKey.toString()}"),
+                              ),
+                        CheckboxListTile(
+                          title: const Text("Stripe"),
+                          value: isStripeEnabled,
+                          onChanged: (value) {
+                            isStripeEnabled = value!;
+                            isPayPalEnabled = false;
+                            isApplePayEnabled = false;
+                            isGoogleEnabled = false;
+                            setState(() {});
+                          },
+                        ),
+                        const Divider(),
+                        isStripeEnabled
+                            ? CustomPaymentCard(
+                                controller: stripeController,
+                                onTap: () async {
+                                  myPublishKey = stripeController.text;
 
-                        paymentHandler();
+                                  paymentHandler();
 
-                        // await CustomDb().saveKey(key: myPublishKey);
+                                  // await CustomDb().saveKey(key: myPublishKey);
 
-                        // loginStorage.setStripeKey(stripeKey: myPublishKey!);
-                        // restartApp(context);
-                        log("myPublishKey = $myPublishKey");
-                        setState(() {});
-                      },
-                    )
-                  : const SizedBox(),
-              // CheckboxListTile(
-              //   title: const Text("Paypal"),
-              //   value: isPayPalEnabled,
-              //   onChanged: (value) {
-              //     isPayPalEnabled = value!;
-              //     isStripeEnabled = false;
-              //     isApplePayEnabled = false;
-              //     isGoogleEnabled = false;
-              //     setState(() {});
-              //   },
-              // ),
-              // const Divider(),
-              // isPayPalEnabled
-              //     ? CustomPaymentCard(
-              //         onTap: () {},
-              //       )
-              //     : const SizedBox(),
-              // CheckboxListTile(
-              //   title: const Text("Apple Pay"),
-              //   value: isApplePayEnabled,
-              //   onChanged: (value) {
-              //     isApplePayEnabled = value!;
-              //     isPayPalEnabled = false;
-              //     isStripeEnabled = false;
-              //     isGoogleEnabled = false;
-              //     setState(() {});
-              //   },
-              // ),
-              // const Divider(),
-              // isApplePayEnabled
-              //     ? CustomPaymentCard(
-              //         onTap: () {},
-              //       )
-              //     : const SizedBox(),
-              // CheckboxListTile(
-              //   title: const Text("Google Pay"),
-              //   value: isGoogleEnabled,
-              //   onChanged: (value) {
-              //     isGoogleEnabled = value!;
-              //     isPayPalEnabled = false;
-              //     isStripeEnabled = false;
-              //     isApplePayEnabled = false;
-              //     setState(() {});
-              //   },
-              // ),
-              // isGoogleEnabled
-              //     ? CustomPaymentCard(
-              //         onTap: () {},
-              //       )
-              //     : const SizedBox(),
-            ],
-          ));
+                                  // loginStorage.setStripeKey(stripeKey: myPublishKey!);
+                                  // restartApp(context);
+                                  log("myPublishKey = $myPublishKey");
+                                  setState(() {});
+                                },
+                              )
+                            : const SizedBox(),
+                        // CheckboxListTile(
+                        //   title: const Text("Paypal"),
+                        //   value: isPayPalEnabled,
+                        //   onChanged: (value) {
+                        //     isPayPalEnabled = value!;
+                        //     isStripeEnabled = false;
+                        //     isApplePayEnabled = false;
+                        //     isGoogleEnabled = false;
+                        //     setState(() {});
+                        //   },
+                        // ),
+                        // const Divider(),
+                        // isPayPalEnabled
+                        //     ? CustomPaymentCard(
+                        //         onTap: () {},
+                        //       )
+                        //     : const SizedBox(),
+                        // CheckboxListTile(
+                        //   title: const Text("Apple Pay"),
+                        //   value: isApplePayEnabled,
+                        //   onChanged: (value) {
+                        //     isApplePayEnabled = value!;
+                        //     isPayPalEnabled = false;
+                        //     isStripeEnabled = false;
+                        //     isGoogleEnabled = false;
+                        //     setState(() {});
+                        //   },
+                        // ),
+                        // const Divider(),
+                        // isApplePayEnabled
+                        //     ? CustomPaymentCard(
+                        //         onTap: () {},
+                        //       )
+                        //     : const SizedBox(),
+                        // CheckboxListTile(
+                        //   title: const Text("Google Pay"),
+                        //   value: isGoogleEnabled,
+                        //   onChanged: (value) {
+                        //     isGoogleEnabled = value!;
+                        //     isPayPalEnabled = false;
+                        //     isStripeEnabled = false;
+                        //     isApplePayEnabled = false;
+                        //     setState(() {});
+                        //   },
+                        // ),
+                        // isGoogleEnabled
+                        //     ? CustomPaymentCard(
+                        //         onTap: () {},
+                        //       )
+                        //     : const SizedBox(),
+                      ],
+                    ));
     });
   }
 
