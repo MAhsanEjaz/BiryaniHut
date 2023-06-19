@@ -142,10 +142,11 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                         primary: false,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          return SaleRepOrderWidget(index: index,
+                          return SaleRepOrderWidget(
+                            index: index,
                             repOrders: finalList[index],
                             showBanner: true,
-                            isCustomer: true,
+                            isCustomer: false,
                           );
                         });
                   } else {
