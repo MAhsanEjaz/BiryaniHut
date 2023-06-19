@@ -5,7 +5,6 @@ import 'package:shop_app/constants.dart';
 
 import '../../../components/reseller_order_time_calender_widget.dart';
 import '../../../models/salesrep_orders_model.dart';
-import '../../order_detail_page.dart';
 import '../../sales_rep_reports/sale_rep_order_report_details_screen.dart';
 
 class SalesrepOrderWidget2 extends StatefulWidget {

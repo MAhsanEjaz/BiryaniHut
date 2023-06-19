@@ -436,23 +436,23 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                           paymentName: 'Stripe',
                         ),
 
-                        PaymentCard(
-                          image:
-                              'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
-                          color: selectedPaymentIndex == 5 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 5;
-                            setState(() {});
-                          },
-                          paymentName: 'Paypal',
-                        ),
+                        // PaymentCard(
+                        //   image:
+                        //       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
+                        //   color: selectedPaymentIndex == 5 ? true : false,
+                        //   onTap: () {
+                        //     selectedPaymentIndex = 5;
+                        //     setState(() {});
+                        //   },
+                        //   paymentName: 'Paypal',
+                        // ),
 
-                        Column(
-                          children: [
-                            const Text('G-Pay'),
-                            const GooglePlayButtonCard(),
-                          ],
-                        )
+                        // Column(
+                        //   children: [
+                        //     const Text('G-Pay'),
+                        //     const GooglePlayButtonCard(),
+                        //   ],
+                        // )
 
                         // PaymentCard(
                         //   image:
@@ -482,7 +482,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
               if (selectedPaymentIndex == 4) stripePaymentMethod(),
               //! paypal payment payment
 
-              if (selectedPaymentIndex == 5) payPalPaymentMethod(),
+              // if (selectedPaymentIndex == 5) payPalPaymentMethod(),
             ],
           ),
         ),
