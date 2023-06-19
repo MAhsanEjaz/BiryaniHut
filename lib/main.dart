@@ -88,15 +88,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SaleRepOrdersProvider()),
         ChangeNotifierProvider(create: (context) => AccountBalanceProvider()),
         // ChangeNotifierProvider(create: (context) => CustomerOrderProvider()),
-        ChangeNotifierProvider(create: (context) => CustFavouritesProductsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => CustFavouritesProductsProvider()),
         ChangeNotifierProvider(create: (context) => ReviewsProvider()),
         ChangeNotifierProvider(create: (context) => AllOrdersProvider()),
         ChangeNotifierProvider(create: (context) => CartCounterProvider()),
-        ChangeNotifierProvider(create: (context) => SaleRepPaymentsReportsProvider()),
-        ChangeNotifierProvider(create: (context) => SalesrepAllCustomersPaymentsProvider()),
-        ChangeNotifierProvider(create: (context) => SaleRepCustomOrderAgingProvider()),
-        ChangeNotifierProvider(create: (context) => SalesRepCustomerPaymentAgingProvider()),
-        ChangeNotifierProvider(create: (context) => OrderReportDetailsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => SaleRepPaymentsReportsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => SalesrepAllCustomersPaymentsProvider()),
+        ChangeNotifierProvider(
+            create: (context) => SaleRepCustomOrderAgingProvider()),
+        ChangeNotifierProvider(
+            create: (context) => SalesRepCustomerPaymentAgingProvider()),
+        ChangeNotifierProvider(
+            create: (context) => OrderReportDetailsProvider()),
         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProfileProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepProfileProvider()),
@@ -111,7 +117,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme(),
         home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
-
       ),
     );
   }
