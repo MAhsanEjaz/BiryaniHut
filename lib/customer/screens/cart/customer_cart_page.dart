@@ -491,10 +491,10 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                         .accountBalanceModel !=
                     null
             ? Consumer<AccountBalanceProvider>(builder: (context, data, _) {
-                if (data.accountBalanceModel!.data!.creditLimit != null) {
-                  log("Here Error");
-                  // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
-                }
+                // if (data.accountBalanceModel!.data!.creditLimit != null) {
+                //   log("Here Error");
+                //   // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
+                // }
 
                 ///Creating Issue
                 previousBalance =

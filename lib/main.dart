@@ -58,12 +58,22 @@ void main() async {
   await Hive.openBox('login_hive');
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
+  // initializeAppData(context);
 
   runApp(Builder(builder: (BuildContext context) {
+    return const MyApp();
+  }));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    initializeAppData(context);
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
-        // Add other providers here
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
         ChangeNotifierProvider(create: (context) => RegistrationProvider()),
@@ -97,45 +107,38 @@ void main() async {
         ChangeNotifierProvider(create: (context) => TopFiveProductProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
+        ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
       ],
-      child: const MyApp(),
-    );
-  }));
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: theme(),
-      home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme(),
+        home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+      ),
     );
   }
-}
 
-Future<void> initializeAppData(BuildContext context) async {
-  try {
-    ChangeNotifierProvider(create: (context) => PaymentGetProvider());
+  Future<void> initializeAppData(BuildContext context) async {
+    try {
+      ChangeNotifierProvider(create: (context) => PaymentGetProvider());
 
-    LoginStorage loginStorage = LoginStorage();
+      LoginStorage loginStorage = LoginStorage();
 
-    await GetPaymentKeyService().getPaymentKeyService(
-        salRepId: loginStorage.getUserId(), context: context);
-    var data = Provider.of<GetPaymentKeyService>(context, listen: false).model;
+      await GetPaymentKeyService().getPaymentKeyService(
+          salRepId: loginStorage.getUserId(), context: context);
+      var data =
+          Provider.of<GetPaymentKeyService>(context, listen: false).model;
 
-    String? mydata;
-    data.forEach((element) {
-      mydata = element.data!.publishableTestKey;
-      print('mydata---->${mydata}');
-    });
+      String? mydata;
+      data.forEach((element) {
+        mydata = element.data!.publishableTestKey;
+        print('mydata---->${mydata}');
+      });
 
-    Stripe.publishableKey = mydata ??
-        'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-    await Stripe.instance.applySettings();
-  } catch (err) {
-    log('exception--->$err');
+      Stripe.publishableKey = mydata ??
+          'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+      await Stripe.instance.applySettings();
+    } catch (err) {
+      log('exception--->$err');
+    }
   }
 }
