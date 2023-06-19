@@ -727,7 +727,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
       productImage: item.productImagePath!,
       productImagePath: item.productImagePath!,
       productName: item.productName,
-      totalCost: item.salePrice * item.quantity,
+      totalCost: item.salePrice * quantity,
       totalPrice: item.salePrice,
     );
     cartStorage.addCartItem(item: cartItem, customerId: widget.customerId);
