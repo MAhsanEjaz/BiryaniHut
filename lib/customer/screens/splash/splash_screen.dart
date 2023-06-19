@@ -8,7 +8,6 @@ import 'package:shop_app/customer/screens/home/customer_home_page.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import '../../../sales rep/salesrep_dashboard.dart';
-import '../home/customer_home_page.dart';
 import 'components/splash_content.dart';
 
 class SplashScreen extends StatefulWidget {

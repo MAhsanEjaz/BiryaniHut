@@ -664,7 +664,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                       ? showAwesomeAlert(
                                           context: context,
                                           msg:
-                                              "Please first approved from admin",
+                                              "Approval for creation of your account is in process. We will let you know as soon as it is completed.",
                                           okBtnText: 'Ok',
                                           cancelBtnText: 'Cancel',
                                           onCancelPress: () {

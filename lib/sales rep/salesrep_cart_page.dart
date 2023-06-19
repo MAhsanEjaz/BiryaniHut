@@ -281,6 +281,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
                               updateIsDiscountApplicable();
                               setState(() {});
+                              log("model length = ${model.length}");
                             },
                             background: Container(
                               padding:
@@ -738,6 +739,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   // }
 
                                   // return;
+
+                                  if (totalPrice <= 0) {
+                                    showAwesomeAlert(
+                                        context: context,
+                                        msg: 'Order Amount can\'t be 0',
+                                        animType: AnimType.topSlide,
+                                        dialogType: DialogType.info,
+                                        onOkPress: () async {});
+                                  }
 
                                   showAwesomeAlert(
                                     context: context,
