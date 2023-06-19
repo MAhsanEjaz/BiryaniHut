@@ -29,12 +29,14 @@ import 'package:shop_app/providers/top_five_customers_provider.dart';
 import 'package:shop_app/providers/top_five_products_provider.dart';
 import 'package:shop_app/providers/user_data_provider.dart';
 import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
+import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/theme.dart';
 import 'customer/provider/categories_provider.dart';
 import 'customer/screens/splash/password_screen.dart';
 import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
 import 'providers/salesrep_discount_provider.dart';
+import 'services/get_payment_service.dart';
 
 String? myPublishKey;
 
@@ -50,34 +52,18 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   await Hive.openBox('login_hive');
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
 
-//! use this as your package name for ios
-//! as it is used in ios appstore app.
-// com.app.influance
-
-  WidgetsFlutterBinding.ensureInitialized();
-  // var data = await CustomDb().getKey();
-  // String? publishableKey = await CustomDb().getKey();
-  // String? stripeKey = LoginStorage().getStripeKey();
-
-  // log("publishableKey at start = $publishableKey");
-  Stripe.publishableKey =
-      'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-  await Stripe.instance.applySettings();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  runApp(Builder(builder: (BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
+        // Add other providers here
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(create: (context) => UserDataProvider()),
         ChangeNotifierProvider(create: (context) => RegistrationProvider()),
@@ -111,16 +97,45 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TopFiveProductProvider()),
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
-        ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: theme(),
-        home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
-      ),
+      child: const MyApp(),
+    );
+  }));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme(),
+      home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
     );
   }
 }
 
-// flutter clean && flutter pub get && pod install &&
-// pod repo update
+Future<void> initializeAppData(BuildContext context) async {
+  try {
+    ChangeNotifierProvider(create: (context) => PaymentGetProvider());
+
+    LoginStorage loginStorage = LoginStorage();
+
+    await GetPaymentKeyService().getPaymentKeyService(
+        salRepId: loginStorage.getUserId(), context: context);
+    var data = Provider.of<GetPaymentKeyService>(context, listen: false).model;
+
+    String? mydata;
+    data.forEach((element) {
+      mydata = element.data!.publishableTestKey;
+      print('mydata---->${mydata}');
+    });
+
+    Stripe.publishableKey = mydata ??
+        'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+    await Stripe.instance.applySettings();
+  } catch (err) {
+    log('exception--->$err');
+  }
+}
