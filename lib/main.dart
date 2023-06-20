@@ -116,7 +116,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: theme(),
-        home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+        // home: Platform.isIOS ? PasswordScreen() : SplashScreen(),
+        home: SplashScreen(),
       ),
     );
   }
