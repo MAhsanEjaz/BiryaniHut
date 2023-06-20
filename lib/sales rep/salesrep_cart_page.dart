@@ -743,10 +743,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   if (totalPrice <= 0) {
                                     showAwesomeAlert(
                                         context: context,
-                                        msg: 'Order Amount can\'t be 0',
+                                        msg: 'Order Amount can\'t be zero',
                                         animType: AnimType.topSlide,
                                         dialogType: DialogType.info,
                                         onOkPress: () async {});
+
+                                    return;
                                   }
 
                                   showAwesomeAlert(
