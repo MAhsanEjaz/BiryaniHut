@@ -58,7 +58,10 @@ void main() async {
   await Hive.openBox('login_hive');
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
-  // initializeAppData(context);
+
+  Stripe.publishableKey =
+      'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+  await Stripe.instance.applySettings();
 
   runApp(Builder(builder: (BuildContext context) {
     return const MyApp();
@@ -119,8 +122,6 @@ class MyApp extends StatelessWidget {
 
   Future<void> initializeAppData(BuildContext context) async {
     try {
-      ChangeNotifierProvider(create: (context) => PaymentGetProvider());
-
       LoginStorage loginStorage = LoginStorage();
 
       await GetPaymentKeyService().getPaymentKeyService(
@@ -133,7 +134,6 @@ class MyApp extends StatelessWidget {
         mydata = element.data!.publishableTestKey;
         print('mydata---->${mydata}');
       });
-
       Stripe.publishableKey = mydata ??
           'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
       await Stripe.instance.applySettings();
