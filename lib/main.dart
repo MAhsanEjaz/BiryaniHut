@@ -28,11 +28,9 @@ import 'package:shop_app/providers/top_category_provider.dart';
 import 'package:shop_app/providers/top_five_customers_provider.dart';
 import 'package:shop_app/providers/top_five_products_provider.dart';
 import 'package:shop_app/providers/user_data_provider.dart';
-import 'package:shop_app/sales%20rep/rep_panel/salesrep_panel_page.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/theme.dart';
 import 'customer/provider/categories_provider.dart';
-import 'customer/screens/splash/password_screen.dart';
 import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
 import 'providers/salesrep_discount_provider.dart';
@@ -59,7 +57,6 @@ void main() async {
 
   runApp(Builder(builder: (BuildContext context) {
     return MultiProvider(
-      // Wrap your app with MultiProvider
       providers: [
         ChangeNotifierProvider(create: (_) => PaymentGetProvider()),
       ],
@@ -163,25 +160,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
-// Future<void> initializeAppData(BuildContext context) async {
-//   try {
-//     LoginStorage loginStorage = LoginStorage();
-//     await GetPaymentKeyService().getPaymentKeyService(
-//         salRepId: loginStorage.getUserId(), context: context);
-//     var data =
-//         Provider.of<GetPaymentKeyService>(context, listen: false).model;
-//
-//     String? mydata;
-//     data.forEach((element) {
-//       mydata = element.data!.publishableTestKey;
-//       print('mydata---->${mydata}');
-//     });
-//     Stripe.publishableKey = mydata ??
-//         'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-//     await Stripe.instance.applySettings();
-//   } catch (err) {
-//     log('exception--->$err');
-//   }
-// }
 }
