@@ -6,9 +6,12 @@ class PaymentStripeAddService {
   Future paymentAddStripeService(
       {required BuildContext context,
       String? paymentTestKey,
+      int? paymentId,
+      bool update = false,
       int? saleRepId}) async {
     try {
       Map body = {
+        "id": paymentId,
         "publishableTestKey": paymentTestKey,
         "publishableLiveKey": "string",
         "testSecretKey": "string",
@@ -21,7 +24,9 @@ class PaymentStripeAddService {
 
       var res = await CustomPostRequestService().httpPostRequest(
           context: context,
-          url: '$apiBaseUrl/SaleRep/SalesRepPaymentGatewayAdd',
+          url: update == false
+              ? '$apiBaseUrl/SaleRep/SalesRepPaymentGatewayAdd'
+              : '$apiBaseUrl/SaleRep/SalesRepPaymentGatewayUpdate',
           body: body);
 
       if (res != null) {

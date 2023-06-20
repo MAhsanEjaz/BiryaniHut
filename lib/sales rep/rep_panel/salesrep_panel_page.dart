@@ -42,13 +42,22 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       saleRepGetPaymentKeyHandler();
+      stripeController.text =
+          Provider.of<PaymentGetProvider>(context, listen: false)
+              .paymentKeyGetModel!
+              .data!
+              .publishableTestKey!;
     });
   }
 
-  paymentHandler() async {
+  bool updateKey = false;
+
+  paymentHandler(int id) async {
     CustomLoader.showLoader(context: context);
     bool res = await PaymentStripeAddService().paymentAddStripeService(
+        paymentId: id,
         context: context,
+        update: updateKey,
         paymentTestKey: stripeController.text,
         saleRepId: loginStorage.getUserId());
     saleRepGetPaymentKeyHandler();
@@ -96,9 +105,25 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
               isStripeEnabled
                   ? CustomPaymentCard(
                       controller: stripeController,
-                      onTap: () {
-                        paymentHandler();
-                      },
+                      onTap: data.paymentKeyGetModel!.data == null ||
+                              data.paymentKeyGetModel!.data!
+                                      .publishableTestKey ==
+                                  null
+                          ? () {
+                              paymentHandler(
+                                  data.paymentKeyGetModel!.data!.id!);
+                            }
+                          : () {
+                              updateKey = true;
+                              paymentHandler(
+                                  data.paymentKeyGetModel!.data!.id!);
+                            },
+                      text: data.paymentKeyGetModel!.data == null ||
+                              data.paymentKeyGetModel!.data!
+                                      .publishableTestKey ==
+                                  null
+                          ? 'Save'
+                          : 'Update',
                     )
                   : const SizedBox(),
               // CheckboxListTile(
@@ -171,9 +196,12 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
 
 class CustomPaymentCard extends StatefulWidget {
   TextEditingController? controller;
+
+  String? text;
+
   Function()? onTap;
 
-  CustomPaymentCard({this.controller, this.onTap});
+  CustomPaymentCard({this.controller, this.onTap, this.text});
 
   @override
   State<CustomPaymentCard> createState() => _CustomPaymentCardState();
@@ -200,7 +228,7 @@ class _CustomPaymentCardState extends State<CustomPaymentCard> {
               ),
               ElevatedButton(
                 onPressed: (widget.onTap),
-                child: const Text("Save"),
+                child: Text(widget.text!),
                 style: ElevatedButton.styleFrom(primary: appColor),
               )
             ],
