@@ -16,11 +16,10 @@ class TopFiveProductsService {
 
       LoginStorage storage = LoginStorage();
 
-      log("url = ${'$apiBaseUrl/Product/GetTopRatedProductsBySalesRep/${storage.getUserId()}'}");
+      log("url = ${'$apiBaseUrl/Product/GetTopRatedProductsBySalesRep?saleRepId=${storage.getUserId()}'}");
       http.Response response = await http.get(Uri.parse(
           '$apiBaseUrl/Product/GetTopRatedProductsBySalesRep?saleRepId=${storage.getUserId()}'));
 
-      print('response--->${response.body}');
       print('response--->${response.body}');
       print('response--->${response.statusCode}');
 
