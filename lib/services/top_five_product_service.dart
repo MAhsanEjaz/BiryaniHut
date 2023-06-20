@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -15,8 +16,9 @@ class TopFiveProductsService {
 
       LoginStorage storage = LoginStorage();
 
+      log("url = ${'$apiBaseUrl/Product/GetTopRatedProductsBySalesRep/${storage.getUserId()}'}");
       http.Response response = await http.get(Uri.parse(
-          '$apiBaseUrl/Product/GetTopRatedProductsBySalesRep/${storage.getUserId()}'));
+          '$apiBaseUrl/Product/GetTopRatedProductsBySalesRep?saleRepId=${storage.getUserId()}'));
 
       print('response--->${response.body}');
       print('response--->${response.body}');
