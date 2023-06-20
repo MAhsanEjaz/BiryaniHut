@@ -46,18 +46,22 @@ class MyHttpOverrides extends HttpOverrides {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
+
+
   }
 }
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
-
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
   await Hive.openBox('login_hive');
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
+
+
+
+
 
   Stripe.publishableKey =
       'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
@@ -123,7 +127,6 @@ class MyApp extends StatelessWidget {
   Future<void> initializeAppData(BuildContext context) async {
     try {
       LoginStorage loginStorage = LoginStorage();
-
       await GetPaymentKeyService().getPaymentKeyService(
           salRepId: loginStorage.getUserId(), context: context);
       var data =
