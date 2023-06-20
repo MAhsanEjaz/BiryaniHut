@@ -658,7 +658,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                 text: "Check Out",
                                 width: getProportionateScreenWidth(300),
                                 press: () async {
-                                  var res = await customer.customerProfileModel;
+                                  var res = customer.customerProfileModel;
 
                                   res!.data!.saleRep?.id == null
                                       ? showAwesomeAlert(

@@ -6,14 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/top_five_product_model.dart';
 import 'package:shop_app/providers/top_five_products_provider.dart';
+import 'package:shop_app/storages/login_storage.dart';
 
 class TopFiveProductsService {
   Future topFIveProductsService({required BuildContext context}) async {
     try {
       List<TopFiveProductsModel> model = [];
 
-      http.Response response = await http.get(
-          Uri.parse('$apiBaseUrl/Product/GetTopFiveProducts'));
+      LoginStorage storage = LoginStorage();
+
+      http.Response response = await http.get(Uri.parse(
+          '$apiBaseUrl/Product/GetTopRatedProductsBySalesRep/${storage.getUserId()}'));
 
       print('response--->${response.body}');
       print('response--->${response.body}');
