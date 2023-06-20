@@ -70,14 +70,14 @@ class _LoginScreenState extends State<LoginPage> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => CustomerHomePage(),
+              builder: (context) => const CustomerHomePage(),
             ));
         showToast("Login Successfully");
       } else if (role == 2) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SalesRepDashboardPage(),
+              builder: (context) => const SalesRepDashboardPage(),
             ));
         showToast("Login Successfully");
       }
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginPage> {
   }
 
   bool _capsOn = false;
-  bool isObscure=true;
+  bool isObscure = true;
   @override
   void initState() {
     super.initState();
@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginPage> {
         // ),
         body: SafeArea(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginPage> {
                     height: 200,
                     width: 499,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Align(
@@ -178,24 +179,20 @@ class _LoginScreenState extends State<LoginPage> {
                   CustomTextField(
                     controller: passCont,
                     obscureText: isObscure,
-
                     isshowPasswordControls: true,
                     isEnabled: true,
                     inputType: TextInputType.visiblePassword,
                     hint: "Password",
                     suffixWidget: IconButton(
-                      onPressed: (){
-                        isObscure =! isObscure;
-                        setState(() {
-
-                        });
+                      onPressed: () {
+                        isObscure = !isObscure;
+                        setState(() {});
                       },
                       icon: Icon(
                         isObscure ? Icons.visibility_off : Icons.visibility,
                         color: isObscure ? appColor : kPrimaryColor,
                       ),
                     ),
-
                     onChange: (value) {
                       _checkCaps();
                     },
@@ -214,13 +211,13 @@ class _LoginScreenState extends State<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SignUpPage(
+                                  builder: (context) => const SignUpPage(
                                     isReseller: false,
                                   ),
                                 ));
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                               "Don't have Account ?",
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -231,11 +228,12 @@ class _LoginScreenState extends State<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ForgetPasswordPage(),
+                                  builder: (context) =>
+                                      const ForgetPasswordPage(),
                                 ));
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                               "Forget Password ?",
                               style: TextStyle(fontWeight: FontWeight.bold),

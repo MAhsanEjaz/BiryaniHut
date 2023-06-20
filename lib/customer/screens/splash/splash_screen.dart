@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: <Widget>[
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -75,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         (index) => buildDot(index: index),
                       ),
                     ),
-                    Spacer(flex: 3),
+                    const Spacer(flex: 3),
                     DefaultButton(
                       text: "Continue",
                       press: () {
@@ -86,7 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CustomerHomePage(),
+                                  builder: (context) =>
+                                      const CustomerHomePage(),
                                   // builder: (context) => SalesrepDashboardPage(),
                                   // builder: (context) => LoginPage(),
                                 ));
@@ -94,7 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SalesRepDashboardPage(),
+                                  builder: (context) =>
+                                      const SalesRepDashboardPage(),
                                   // builder: (context) => LoginPage(),
                                 ));
                           }
@@ -116,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         // Navigator.pushNamed(context, HomePage.routeName);
                       },
                     ),
-                    Spacer(),
+                    const Spacer(),
                   ],
                 ),
               ),
@@ -130,11 +132,11 @@ class _SplashScreenState extends State<SplashScreen> {
   AnimatedContainer buildDot({int? index}) {
     return AnimatedContainer(
       duration: kAnimationDuration,
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       height: 6,
       width: currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
-        color: currentPage == index ? kPrimaryColor : Color(0xFFD8D8D8),
+        color: currentPage == index ? kPrimaryColor : const Color(0xFFD8D8D8),
         borderRadius: BorderRadius.circular(3),
       ),
     );
