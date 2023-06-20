@@ -245,6 +245,7 @@ class _LoginScreenState extends State<LoginPage> {
                   SizedBox(
                     height: getProportionateScreenHeight(20),
                   ),
+
                   DefaultButton(
                     text: "Login",
                     press: () {
@@ -261,6 +262,8 @@ class _LoginScreenState extends State<LoginPage> {
                       // }
                     },
                   ),
+                  const Text("Version 3.0.0"),
+
                   SizedBox(
                     height: getProportionateScreenHeight(20),
                   ),

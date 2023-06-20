@@ -94,9 +94,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     if (customerProfile != null &&
         customerProfile.data != null &&
         customerProfile.data!.saleRep != null) {
-      salesRepCont.text = (customerProfile.data!.saleRep!.id ?? '').toString();
+      salesRepCont.text =
+          (customerProfile.data!.saleRep!.id ?? 'Not Assigned yet').toString();
     } else {
-      salesRepCont.text = '';
+      salesRepCont.text = 'Not Assigned yet';
     }
     phoneCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
