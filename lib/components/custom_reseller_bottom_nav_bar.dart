@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/customer/login/login_page.dart';
 import 'package:shop_app/enums.dart';
+import 'package:shop_app/providers/sale_rep_orders_provider.dart';
 import '../constants.dart';
 import '../sales rep/salesrep_profile_screen.dart';
 
@@ -63,6 +65,9 @@ class CustomResellerBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
+                  Provider.of<SaleRepOrdersProvider>(context, listen: false)
+                      .repOrder!
+                      .clear();
                   Hive.box("login_hive").clear();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
