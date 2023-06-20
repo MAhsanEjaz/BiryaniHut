@@ -46,8 +46,6 @@ class MyHttpOverrides extends HttpOverrides {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
-
-
   }
 }
 
@@ -59,26 +57,66 @@ void main() async {
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
 
-
-
-
-
-  Stripe.publishableKey =
-      'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-  await Stripe.instance.applySettings();
+  // try {
+  //   Stripe.publishableKey =
+  //       'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+  //   await Stripe.instance.applySettings();
+  // } catch (e) {
+  //   // Handle the exception and display a Snackbar
+  //   final snackBar = SnackBar(
+  //       content: Text('Your Stripe key is wrong. Please update the code.'));
+  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  // }
 
   runApp(Builder(builder: (BuildContext context) {
     return const MyApp();
   }));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    initializeAppData(context);
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initializeStripe();
+
+    saleRepGetPaymentKeyHandler();
+  }
+
+  saleRepGetPaymentKeyHandler() async {
+    await GetPaymentKeyService().getPaymentKeyService(
+        context: context, salRepId: loginStorage.getUserId());
+  }
+
+  LoginStorage loginStorage = LoginStorage();
+
+  Future<void> initializeStripe() async {
+    var stripeApiKey = Provider
+        .of<PaymentGetProvider>(context, listen: false)
+        .paymentKeyGetModel!
+        .data!
+        .publishableTestKey;
+
+    try {
+      Stripe.publishableKey =
+      'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+      await Stripe.instance.applySettings();
+    } catch (e) {
+      print(e);
+      // const snackBar = SnackBar(
+      //     content: Text('Your Stripe key is wrong. Please update the code.'));
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
@@ -125,24 +163,24 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Future<void> initializeAppData(BuildContext context) async {
-    try {
-      LoginStorage loginStorage = LoginStorage();
-      await GetPaymentKeyService().getPaymentKeyService(
-          salRepId: loginStorage.getUserId(), context: context);
-      var data =
-          Provider.of<GetPaymentKeyService>(context, listen: false).model;
-
-      String? mydata;
-      data.forEach((element) {
-        mydata = element.data!.publishableTestKey;
-        print('mydata---->${mydata}');
-      });
-      Stripe.publishableKey = mydata ??
-          'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-      await Stripe.instance.applySettings();
-    } catch (err) {
-      log('exception--->$err');
-    }
-  }
+// Future<void> initializeAppData(BuildContext context) async {
+//   try {
+//     LoginStorage loginStorage = LoginStorage();
+//     await GetPaymentKeyService().getPaymentKeyService(
+//         salRepId: loginStorage.getUserId(), context: context);
+//     var data =
+//         Provider.of<GetPaymentKeyService>(context, listen: false).model;
+//
+//     String? mydata;
+//     data.forEach((element) {
+//       mydata = element.data!.publishableTestKey;
+//       print('mydata---->${mydata}');
+//     });
+//     Stripe.publishableKey = mydata ??
+//         'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+//     await Stripe.instance.applySettings();
+//   } catch (err) {
+//     log('exception--->$err');
+//   }
+// }
 }
