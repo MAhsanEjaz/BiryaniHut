@@ -57,19 +57,14 @@ void main() async {
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
 
-  // try {
-  //   Stripe.publishableKey =
-  //       'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
-  //   await Stripe.instance.applySettings();
-  // } catch (e) {
-  //   // Handle the exception and display a Snackbar
-  //   final snackBar = SnackBar(
-  //       content: Text('Your Stripe key is wrong. Please update the code.'));
-  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  // }
-
   runApp(Builder(builder: (BuildContext context) {
-    return const MyApp();
+    return MultiProvider(
+      // Wrap your app with MultiProvider
+      providers: [
+        ChangeNotifierProvider(create: (_) => PaymentGetProvider()),
+      ],
+      child: const MyApp(),
+    );
   }));
 }
 
@@ -85,7 +80,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initializeStripe();
-
     saleRepGetPaymentKeyHandler();
   }
 
@@ -97,22 +91,29 @@ class _MyAppState extends State<MyApp> {
   LoginStorage loginStorage = LoginStorage();
 
   Future<void> initializeStripe() async {
-    var stripeApiKey = Provider
-        .of<PaymentGetProvider>(context, listen: false)
-        .paymentKeyGetModel!
-        .data!
-        .publishableTestKey;
+    // var paymentProvider =
+    //     Provider.of<PaymentGetProvider?>(context, listen: false);
+    //
+    // if (paymentProvider != null && paymentProvider.paymentKeyGetModel != null) {
+    //   var stripeApiKey =
+    //       paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+    //
+    //   if (stripeApiKey == null || stripeApiKey.isEmpty) {
+    //     print('Stripe publishable key is null or empty');
+    //     return; // Exit the function if the key is not available
+    //   }
 
     try {
       Stripe.publishableKey =
-      'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+          'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
       await Stripe.instance.applySettings();
     } catch (e) {
       print(e);
-      // const snackBar = SnackBar(
-      //     content: Text('Your Stripe key is wrong. Please update the code.'));
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // Handle the exception
     }
+    // } else {
+    //   print('PaymentGetProvider or paymentKeyGetModel is null');
+    // }
   }
 
   @override

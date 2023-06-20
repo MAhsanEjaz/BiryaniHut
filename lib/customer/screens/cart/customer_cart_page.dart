@@ -949,6 +949,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
       await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
+
                   paymentIntentClientSecret:
                       paymentIntentData!['client_secret'],
                   // // applePay: true,

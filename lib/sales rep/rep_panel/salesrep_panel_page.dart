@@ -40,7 +40,6 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       saleRepGetPaymentKeyHandler();
     });
@@ -55,7 +54,6 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
     saleRepGetPaymentKeyHandler();
 
     CustomLoader.hideLoader(context);
-
     if (res) {
       CustomSnackBar.showSnackBar(
           context: context, message: 'Payment key add successfully');
@@ -74,11 +72,15 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
               )),
           body: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "Stripe Key: ${data.paymentKeyGetModel!.data!.publishableTestKey.toString()} "),
-              ),
+              data.paymentKeyGetModel == null ||
+                      data.paymentKeyGetModel!.data == null ||
+                      data.paymentKeyGetModel!.data!.publishableTestKey == null
+                  ? const Text("Please add your payment key")
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          "Stripe Key: ${data.paymentKeyGetModel!.data!.publishableTestKey.toString()} "),
+                    ),
               CheckboxListTile(
                 title: const Text("Stripe"),
                 value: isStripeEnabled,
