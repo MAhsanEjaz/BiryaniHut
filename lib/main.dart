@@ -82,35 +82,42 @@ class _MyAppState extends State<MyApp> {
 
   saleRepGetPaymentKeyHandler() async {
     await GetPaymentKeyService().getPaymentKeyService(
-        context: context, salRepId: loginStorage.getUserId());
+        context: context,
+        salRepId: loginStorage.getSalesRepId() ?? loginStorage.getUserId());
   }
 
   LoginStorage loginStorage = LoginStorage();
 
   Future<void> initializeStripe() async {
-    // var paymentProvider =
-    //     Provider.of<PaymentGetProvider?>(context, listen: false);
-    //
-    // if (paymentProvider != null && paymentProvider.paymentKeyGetModel != null) {
-    //   var stripeApiKey =
-    //       paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
-    //
-    //   if (stripeApiKey == null || stripeApiKey.isEmpty) {
-    //     print('Stripe publishable key is null or empty');
-    //     return; // Exit the function if the key is not available
-    //   }
+    String? stripeApiKey;
+
+    var paymentProvider =
+    Provider.of<PaymentGetProvider?>(context, listen: false);
+
+    if (paymentProvider != null && paymentProvider.paymentKeyGetModel != null) {
+      stripeApiKey =
+          paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+
+      if (stripeApiKey == null || stripeApiKey.isEmpty) {
+        print('Stripe publishable key is null or empty');
+        return; // Exit the function if the key is not available
+      }
+
+      // } else {
+      //   print('PaymentGetProvider or paymentKeyGetModel is null');
+    }
 
     try {
-      Stripe.publishableKey =
-          'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd';
+      Stripe.publishableKey = stripeApiKey == null
+          ? 'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd'
+          : stripeApiKey.toString();
       await Stripe.instance.applySettings();
+
+      print('stripe--->${stripeApiKey}');
     } catch (e) {
       print(e);
       // Handle the exception
     }
-    // } else {
-    //   print('PaymentGetProvider or paymentKeyGetModel is null');
-    // }
   }
 
   @override
