@@ -12,6 +12,7 @@ import 'package:shop_app/storages/salesrep_cart_storage.dart';
 
 import '../customer/screens/product_details/salesrep_product_details.dart';
 import '../providers/counter_provider.dart';
+import '../providers/products_provider.dart';
 import '../size_config.dart';
 
 class SalesrepProductsWidget extends StatefulWidget {
@@ -717,7 +718,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 
   void addtoCart(ProductData item, BuildContext context, int quantity) {
 // int quantity = 0;
-
+    Provider.of<ProductsProvider>(context, listen: false)
+        .clearProductsSearchCont();
     CartItem cartItem = CartItem(
       productId: item.productId,
       price: item.salePrice,

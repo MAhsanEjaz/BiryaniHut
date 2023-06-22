@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -92,7 +91,7 @@ class _MyAppState extends State<MyApp> {
     String? stripeApiKey;
 
     var paymentProvider =
-    Provider.of<PaymentGetProvider?>(context, listen: false);
+        Provider.of<PaymentGetProvider?>(context, listen: false);
 
     if (paymentProvider != null && paymentProvider.paymentKeyGetModel != null) {
       stripeApiKey =

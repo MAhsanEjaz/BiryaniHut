@@ -33,7 +33,7 @@ class SalesRepProductsPage extends StatefulWidget {
 }
 
 class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
-  final searchCont = TextEditingController();
+  // final searchCont = TextEditingController();
 
   SalesrepCartStorage cartStorage = SalesrepCartStorage();
   List<String> list = [];
@@ -176,19 +176,19 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextField(
-                    controller: searchCont,
+                    controller: data.searchCont,
                     hint: "Search Products",
                     prefixWidget: const Icon(Icons.search),
                     isEnabled: true,
-                    suffixWidget: searchCont.text.isNotEmpty
+                    suffixWidget: data.searchCont.text.isNotEmpty
                         ? InkWell(
                             onTap: () {
-                              searchCont.clear();
+                              data.searchCont.clear();
                               callProducts = data.prod!;
                               setState(() {});
                             },
-                            child: Icon(Icons.close))
-                        : SizedBox(),
+                            child: const Icon(Icons.close))
+                        : const SizedBox.shrink(),
                     onChange: productSearchFunction,
                   ),
                 ),
@@ -204,7 +204,8 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                         )
                     ],
                   )
-                else if (callProducts.isEmpty && searchCont.text.isNotEmpty)
+                else if (callProducts.isEmpty &&
+                    data.searchCont.text.isNotEmpty)
                   const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
