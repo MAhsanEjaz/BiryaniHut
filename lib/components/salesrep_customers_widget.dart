@@ -363,18 +363,12 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                         const Icon(Icons.home),
                                                     controller:
                                                         widget.saloonName,
-                                                    hint: 'Salon'),
+                                                    hint: 'Salon Name'),
                                                 CustomTextField(
                                                     prefixWidget: const Icon(
                                                         Icons.person),
                                                     controller: widget.lastName,
                                                     hint: 'Last Name'),
-                                                CustomTextField(
-                                                    prefixWidget: const Icon(
-                                                        Icons.home_work_sharp),
-                                                    controller:
-                                                        widget.solonName,
-                                                    hint: 'Salon Name'),
                                                 CustomTextField(
                                                     inputFormats: [
                                                       FilteringTextInputFormatter

@@ -10,7 +10,7 @@ class PhoneInputFormatter extends TextInputFormatter {
     String formatted = '';
     int index = 0;
     for (int i = 0; i < newValue.text.length; i++) {
-      if (index == 3 || index == 6) {
+      if (index == 3 || index == 7) {
         formatted += '-';
         index++;
       }
@@ -26,3 +26,4 @@ class PhoneInputFormatter extends TextInputFormatter {
     );
   }
 }
+

@@ -9,11 +9,6 @@ import 'package:shop_app/providers/top_five_products_provider.dart';
 import 'package:shop_app/services/top_five_customers_service.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
-
-
-
-
 class TopFiveCustomersReportScreen extends StatefulWidget {
   const TopFiveCustomersReportScreen({Key? key}) : super(key: key);
 
@@ -63,6 +58,9 @@ class _TopFiveCustomersReportScreenState
 
   int? selectIndex;
 
+  String? startDate;
+  String? endDate;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,52 +103,153 @@ class _TopFiveCustomersReportScreenState
                           ],
                         ),
                       ),
-                      Divider(),
+                      const Divider(),
                       const SizedBox(height: 5),
                       isFilteredItems == true
                           ? Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                side: const BorderSide(color: appColor)),
-                            elevation: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(color: appColor)),
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    FilterWidget(
+                                        color: selectIndex == 0 ? true : false,
+                                        text: 'Orders',
+                                        onTap: () {
+                                          selectFilter = 'Orders';
+                                          _sortByOrder = true;
+                                          _sortByAmount = false;
+                                          _filterItems();
+
+                                          selectIndex = 0;
+                                          setState(() {});
+                                        }),
+                                    const SizedBox(height: 5),
+                                    const Divider(),
+                                    const SizedBox(height: 5),
+                                    FilterWidget(
+                                        color: selectIndex == 1 ? true : false,
+                                        text: 'Purchase Amount',
+                                        onTap: () {
+                                          selectIndex = 1;
+                                          _sortByOrder = false;
+                                          _sortByAmount = true;
+                                          _filterItems();
+                                          selectFilter = 'PurchasingOrders';
+
+                                          setState(() {});
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(height: 10),
+                      Card(
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  FilterWidget(
-                                      color:
-                                          selectIndex == 0 ? true : false,
-                                      text: 'Orders',
-                                      onTap: () {
-                                        selectFilter = 'Orders';
-                                        _sortByOrder = true;
-                                        _sortByAmount = false;
-                                        _filterItems();
+                                  InkWell(
+                                    child: const Text(
+                                      "Start Date",
+                                      style: TextStyle(
+                                          color: appColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () async {
+                                      final start = await showDatePicker(
+                                        builder: (BuildContext context,
+                                            Widget? child) {
+                                          return Theme(
+                                            data: ThemeData.light().copyWith(
+                                              backgroundColor:
+                                                  appColor, // Set the background color here
+                                            ),
+                                            child: child!,
+                                          );
+                                        },
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime.now().add(const Duration(
+                                            days:
+                                                365)), // Adjust the duration as needed
+                                      );
 
-                                        selectIndex = 0;
-                                        setState(() {});
-                                      }),
-                                  const SizedBox(height: 5),
-                                  const Divider(),
-                                  const SizedBox(height: 5),
-                                  FilterWidget(
-                                      color:
-                                          selectIndex == 1 ? true : false,
-                                      text: 'Purchase Amount',
-                                      onTap: () {
-                                        selectIndex = 1;
-                                        _sortByOrder = false;
-                                        _sortByAmount = true;
-                                        _filterItems();
-                                        selectFilter = 'PurchasingOrders';
+                                      startDate =
+                                          start.toString().substring(0, 10);
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const Spacer(),
+                                  InkWell(
+                                      onTap: () async {
+                                        final end = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(Duration(days: 365)),
+                                          // Adjust the duration as needed
+                                          builder: (BuildContext context,
+                                              Widget? child) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith(
+                                                // Customize the theme data
+                                                backgroundColor:
+                                                    appColor, // Set the background color here
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
+                                        );
 
+                                        endDate =
+                                            end.toString().substring(0, 10);
                                         setState(() {});
-                                      }),
+                                      },
+                                      child: const Text(
+                                        "End Date",
+                                        style: TextStyle(
+                                            color: appColor,
+                                            fontWeight: FontWeight.bold),
+                                      )),
                                 ],
                               ),
-                            ),
-                          )
-                          : const SizedBox(),
+                              const Divider(),
+                              Row(
+                                children: [
+                                  Text(
+                                    startDate ?? "Select Start Date",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    endDate ?? "Select End Date",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: TextButton(
+                                  child: const Text('Apply'),
+                                  onPressed: () {},
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Table(
                         defaultVerticalAlignment:
@@ -218,7 +317,8 @@ class _TopFiveCustomersReportScreenState
                                                     const EdgeInsets.all(8.0),
                                                 child: Center(
                                                   child: Text(model[index]
-                                                      .totalGrandTotal! .toStringAsFixed(2)),
+                                                      .totalGrandTotal!
+                                                      .toStringAsFixed(2)),
                                                 ),
                                               )),
                                             ],
