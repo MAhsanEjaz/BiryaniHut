@@ -698,13 +698,6 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //           getTotalPrice()),
                                     ],
                                   )
-
-                                // const SizedBox(width: 10),
-                                // Icon(
-                                //   Icons.arrow_forward_ios,
-                                //   size: 12,
-                                //   color: kTextColor,
-                                // )
                               ],
                             ),
                           ),
@@ -1231,23 +1224,237 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   void showOrderPreviewSheet() {
     showModalBottomSheet(
         context: context,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        )),
         builder: (BuildContext context) {
-          return Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-            ),
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                      color: appColor,
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(10),
+                //   topRight: Radius.circular(10),
+                // )
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: SizeConfig.screenWidth,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        color: appColor,
+                      ),
+                      child: const Center(
+                        child: Text('Order Preview',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18)),
+                      )),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20)),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (model.isNotEmpty)
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Cart Items :",
+                              style: titleStyle,
+                            ),
+                          ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: model.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    child: AspectRatio(
+                                      aspectRatio: 0.88,
+                                      child: Container(
+                                        padding: EdgeInsets.all(
+                                            getProportionateScreenWidth(4)),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF5F6F9),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        // child: Image.network(cart.product.images[0]),
+                                        child: Image.network(model[index]
+                                                        .productImagePath ==
+                                                    "" ||
+                                                // ignore: unnecessary_null_comparison
+                                                model[index].productImagePath ==
+                                                    null
+                                            ? dummyImageUrl
+                                            : getImageUrl(
+                                                model[index].productImagePath)),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.8,
+                                        child: Text(
+                                          model[index].productName,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: "\$${model[index].price}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: kPrimaryColor),
+                                          children: [
+                                            TextSpan(
+                                                text:
+                                                    " x ${model[index].quantity}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1),
+                                            TextSpan(
+                                                text: " = \$" +
+                                                    (model[index].price *
+                                                            model[index]
+                                                                .quantity)
+                                                        .toStringAsFixed(2),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        if (paymentStringList.isNotEmpty)
+                          const Divider(
+                            thickness: 1,
+                          ),
+                        if (paymentStringList.isNotEmpty)
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Payment Details :",
+                              style: titleStyle,
+                            ),
+                          ),
+                        if (paymentStringList.isNotEmpty)
+                          ListView.builder(
+                            itemCount: paymentStringList.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 4.0, bottom: 4),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Image.asset(
+                                        'assets/images/payment_done.png',
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    ),
+                                    Expanded(
+                                        flex: 4,
+                                        child: Text(paymentStringList[index],
+                                            style: nameStyle)),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Balance Details :",
+                            style: titleStyle,
+                          ),
+                        ),
+                        Text(
+                          "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
+                          // style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        if (repDiscountModel != null && isDiscountApplicable)
+                          Text(
+                            "Today's Order Amount : \$ " +
+                                totalPrice.toStringAsFixed(2),
+                            // style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        if (repDiscountModel != null && isDiscountApplicable)
+                          Text(
+                            "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
+                            // style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        Text(
+                          "Order Payable Amount : \$ " + getOrderAmount(),
+                          // style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Total Balance: \$ " + getTotalBalance(),
+                          // style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
+                          // style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Remaining Balance : \$ " + getRemainigBalance(),
+                          // style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Share Invoice :",
+                            style: titleStyle,
+                          ),
+                        ),
+                      ],
                     ),
-                    child: const Text('Order Preview', style: titleStyle)),
-                Divider(),
-              ],
+                  ),
+                ],
+              ),
             ),
           );
         });
