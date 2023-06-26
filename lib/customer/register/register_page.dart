@@ -11,7 +11,13 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
+import 'package:shop_app/models/all_cities_model.dart';
+import 'package:shop_app/models/states_model.dart';
+import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/providers/regitration_provider.dart';
+import 'package:shop_app/providers/states_provider.dart';
+import 'package:shop_app/services/get_all_cities_service.dart';
+import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/register_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
@@ -114,6 +120,11 @@ class _SignUpScreenState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getAllStatesHandler();
+    });
+
     phoneCont.addListener(() {
       setState(() {});
     });
@@ -132,6 +143,38 @@ class _SignUpScreenState extends State<SignUpPage> {
   //   }
   // }
 
+  List<AllStatesModel> statesModel = [];
+  List<AllCitiesModel> citiesModel = [];
+
+  getAllCitiesHandler(String cityCode) async {
+    CustomLoader.showLoader(context: context);
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityCode: cityCode);
+
+    citiesModel =
+        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print('cities---->${citiesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  getAllStatesHandler() async {
+    CustomLoader.showLoader(context: context);
+    await GetAllStatesServices().getAllStatesServices(context: context);
+
+    statesModel =
+        Provider.of<StatesProvider>(context, listen: false).statesData!;
+    print('states---->${statesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  String? statesName;
+  String? cityName;
+
+  @override
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -321,38 +364,125 @@ class _SignUpScreenState extends State<SignUpPage> {
 
                   if (isSalonError) formErrorText(error: salonNameErrorString),
 
-                  CustomTextField(
-                    controller: stateCont,
-                    // isshowPasswordControls: true,
-                    isEnabled: true,
-                    hint: "State Name",
-                    prefixWidget: SvgPicture.asset(
-                      "assets/svg/State Icon (1).svg",
-                      width: 26,
-                      height: 26,
-                      alignment: Alignment.centerLeft,
+                  // CustomTextField(
+                  //   controller: stateCont,
+                  //   // isshowPasswordControls: true,
+                  //   isEnabled: true,
+                  //   hint: "State Name",
+                  //   prefixWidget: SvgPicture.asset(
+                  //     "assets/svg/State Icon (1).svg",
+                  //     width: 26,
+                  //     height: 26,
+                  //     alignment: Alignment.centerLeft,
+                  //   ),
+                  // ),
+                  //
+                  // if (isStateError) formErrorText(error: stateNameErrorString),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0, vertical: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: kSecondaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButton(
+                            isExpanded: true,
+                            underline: SizedBox(),
+                            hint: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/svg/State Icon (1).svg",
+                                  width: 26,
+                                  height: 26,
+                                  alignment: Alignment.centerLeft,
+                                ),
+                                SizedBox(width: 10),
+                                Text(statesName == null
+                                    ? 'Select State'
+                                    : statesName!),
+                              ],
+                            ),
+                            items: statesModel.map((e) {
+                              return DropdownMenuItem(
+                                  onTap: () {
+                                    statesName = e.stateName;
+
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((timeStamp) {
+                                      getAllCitiesHandler(e.stateCode!);
+                                    });
+                                    setState(() {});
+                                  },
+                                  value: e.stateName,
+                                  child: Text(e.stateName.toString()));
+                            }).toList(),
+                            onChanged: (_) {}),
+                      ),
                     ),
                   ),
 
-                  if (isStateError) formErrorText(error: stateNameErrorString),
-
-                  CustomTextField(
-                    controller: cityCont,
-                    // isshowPasswordControls: true,
-
-                    isEnabled: true,
-                    hint: "City Name",
-
-                    prefixWidget: SvgPicture.asset(
-                      "assets/svg/City Icon (1).svg",
-                      color: Colors.black45,
-                      width: 26,
-                      height: 26,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.centerLeft,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0, vertical: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: kSecondaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButton(
+                            isExpanded: true,
+                            underline: SizedBox(),
+                            hint: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/svg/City Icon (1).svg",
+                                  color: Colors.black45,
+                                  width: 26,
+                                  height: 26,
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.centerLeft,
+                                ),
+                                SizedBox(width: 10),
+                                Text(cityName == null
+                                    ? 'Select City'
+                                    : cityName!),
+                              ],
+                            ),
+                            items: citiesModel.map((e) {
+                              return DropdownMenuItem(
+                                  onTap: () {
+                                    cityName = e.cityName;
+                                    setState(() {});
+                                  },
+                                  value: e.cityName,
+                                  child: Text(e.cityName.toString()));
+                            }).toList(),
+                            onChanged: (_) {}),
+                      ),
                     ),
                   ),
-                  if (isCityError) formErrorText(error: cityNameErrorString),
+
+                  // CustomTextField(
+                  //   controller: cityCont,
+                  //   // isshowPasswordControls: true,
+                  //
+                  //   isEnabled: true,
+                  //   hint: "City Name",
+                  //
+                  //   prefixWidget: SvgPicture.asset(
+                  //     "assets/svg/City Icon (1).svg",
+                  //     color: Colors.black45,
+                  //     width: 26,
+                  //     height: 26,
+                  //     fit: BoxFit.cover,
+                  //     alignment: Alignment.centerLeft,
+                  //   ),
+                  // ),
+                  // if (isCityError) formErrorText(error: cityNameErrorString),
 
                   CustomTextField(
                       controller: emailCont,
@@ -497,8 +627,10 @@ class _SignUpScreenState extends State<SignUpPage> {
                             "firstName": fNameCont.text.trim(),
                             "lastName": lNameCont.text.trim(),
                             "salon_Name": salonNameCont.text.trim(),
-                            "state": stateCont.text.trim(),
-                            "city": cityCont.text.trim(),
+                            // "state": stateCont.text.trim(),
+                            "state": statesName,
+                            // "city": cityCont.text.trim(),
+                            "city": cityName,
                             "address": addressCont.text.trim(),
                             "location": "",
                             "customerImage":

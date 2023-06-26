@@ -18,6 +18,7 @@ import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/storages/salesrep_cart_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import 'package:sumup/sumup.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../components/default_button.dart';
 import '../../../components/rounded_icon_btn.dart';
 import '../../../constants.dart';
@@ -31,10 +32,14 @@ import '../services/add_to_cart_service.dart';
 class SalesRepCartPage extends StatefulWidget {
   final int customerId;
   final String customerName;
+  String number;
+  String email;
 
-  const SalesRepCartPage({
+   SalesRepCartPage({
     Key? key,
     required this.customerId,
+    required this.number,
+     required this.email,
     required this.customerName,
   }) : super(key: key);
 
@@ -190,6 +195,41 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
         await AddToCartService().addToCart(context: context, cart: cart);
     CustomLoader.hideLoader(context);
   }
+
+  void newSendSms(String number) async {
+    String message = 'Order Details:\n';
+    for (var product in model) {
+      message += '\nProduct Name: ${product.productName}\n'
+          'Quantity: ${product.quantity}\n'
+          'Price: ${product.price}\n';
+    }
+
+    final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  // Future<void> _sendEmail(List<String> path) async {
+  //   final Email email = Email(
+  //     body: 'A new order has been placed with Order ID ${widget.orderId} ',
+  //     subject: 'Influence',
+  //     recipients: [widget.email],
+  //     // cc: [widget.email],
+  //     // bcc: [widget.email],
+  //     attachmentPaths: path,
+  //     isHTML: false,
+  //   );
+  //
+  //   try {
+  //     await FlutterEmailSender.send(email);
+  //   } catch (error) {
+  //     print('Error sending email: $error');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -1452,6 +1492,38 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                             style: titleStyle,
                           ),
                         ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: appColor,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(0))),
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Share with Gmail',
+                                      style: TextStyle(color: Colors.white),
+                                    ))),
+                            Expanded(
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: appColor,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(0))),
+                                    onPressed: () {
+                                      newSendSms(widget.number);
+                                    },
+                                    child: const Text(
+                                      'Share with Sms',
+                                      style: TextStyle(color: Colors.white),
+                                    ))),
+                          ],
+                        )
                       ],
                     ),
                   ),

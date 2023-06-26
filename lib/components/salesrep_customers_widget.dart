@@ -232,6 +232,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                               " " +
                                               widget.customers.lastName!,
                                       customerId: widget.customers.id!,
+                                      email: widget.email.toString(),
+                                      phone: widget.phone.toString(),
                                     ),
                                   ));
                             },
@@ -1158,6 +1160,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                                   " " +
                                   customerSearchData.lastName!,
                               customerId: customerSearchData.id!,
+                              email: customerSearchData.email.toString(),
+                              phone: customerSearchData.phone.toString(),
                             ),
                           ));
                     } else {

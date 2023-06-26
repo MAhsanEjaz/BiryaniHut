@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/customer/screens/splash/splash_screen.dart';
 import 'package:shop_app/providers/account_balance_provider.dart';
+import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/providers/all_orders_provider.dart';
 import 'package:shop_app/providers/counter_provider.dart';
 import 'package:shop_app/providers/cust_favourites_product_provider.dart';
@@ -22,6 +23,7 @@ import 'package:shop_app/providers/salerep_payments_report_provider.dart';
 import 'package:shop_app/providers/salesrep_all_customer_payment_provider.dart';
 import 'package:shop_app/providers/salesrep_customer_payment_aging_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
+import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/providers/timelines_provider.dart';
 import 'package:shop_app/providers/top_category_provider.dart';
 import 'package:shop_app/providers/top_five_customers_provider.dart';
@@ -157,6 +159,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => TopFiveCustomerProvider()),
         ChangeNotifierProvider(create: (context) => SalesrepDiscountProvider()),
         ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
+        ChangeNotifierProvider(create: (context) => StatesProvider()),
+        ChangeNotifierProvider(create: (context) => AllCitiesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

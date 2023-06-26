@@ -19,6 +19,8 @@ import '../size_config.dart';
 
 class SalesrepProductsWidget extends StatefulWidget {
   ProductData productData;
+  String email;
+  String phone;
   int customerId;
   String customerName;
   bool isShowCartBtn;
@@ -27,6 +29,8 @@ class SalesrepProductsWidget extends StatefulWidget {
       {Key? key,
       required this.productData,
       required this.customerId,
+      required this.email,
+      required this.phone,
       required this.customerName,
       required this.isShowCartBtn})
       : super(key: key);
@@ -82,6 +86,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                   builder: (context) => SalesRepCartPage(
                     customerId: widget.customerId,
                     customerName: widget.customerName,
+                    number: widget.phone,
+                    email: widget.email,
                   ),
                 ));
 
@@ -159,6 +165,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                 customerId: widget.customerId,
                                                 customerName:
                                                     widget.customerName,
+                                                number: widget.phone,
+                                                email: widget.email,
                                               )));
 
                                   totalPrice = 0;

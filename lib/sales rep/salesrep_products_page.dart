@@ -22,11 +22,14 @@ class SalesRepProductsPage extends StatefulWidget {
     Key? key,
     required this.isReseller,
     this.customerName,
+    required this.email,required this.phone,
     required this.customerId,
   }) : super(key: key);
   final bool isReseller;
   final int customerId;
   String? customerName;
+  String email;
+  String phone;
 
   @override
   State<SalesRepProductsPage> createState() => _SalesRepProductsPageState();
@@ -120,7 +123,8 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                                 MaterialPageRoute(
                                   builder: (context) => SalesRepCartPage(
                                     customerName: widget.customerName!,
-                                    customerId: widget.customerId,
+                                    customerId: widget.customerId, number: widget.phone,
+                                    email: widget.email,
                                   ),
                                 ));
                             // } else {
@@ -202,7 +206,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                           customerName: widget.customerName!,
                           productData: product,
                           customerId: widget.customerId,
-                          isShowCartBtn: widget.isReseller,
+                          isShowCartBtn: widget.isReseller, email: widget.email!, phone: widget.phone!,
                         )
                     ],
                   )
