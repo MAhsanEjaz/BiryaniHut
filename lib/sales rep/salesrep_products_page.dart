@@ -199,6 +199,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                     children: [
                       for (var product in callProducts)
                         SalesrepProductsWidget(
+                          customerName: widget.customerName!,
                           productData: product,
                           customerId: widget.customerId,
                           isShowCartBtn: widget.isReseller,

@@ -9,6 +9,7 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/products_model.dart';
+import 'package:shop_app/sales%20rep/salesrep_cart_page.dart';
 import 'package:shop_app/storages/salesrep_cart_storage.dart';
 
 import '../customer/screens/product_details/salesrep_product_details.dart';
@@ -19,12 +20,14 @@ import '../size_config.dart';
 class SalesrepProductsWidget extends StatefulWidget {
   ProductData productData;
   int customerId;
+  String customerName;
   bool isShowCartBtn;
 
   SalesrepProductsWidget(
       {Key? key,
       required this.productData,
       required this.customerId,
+      required this.customerName,
       required this.isShowCartBtn})
       : super(key: key);
 
@@ -71,17 +74,26 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
       children: [
         InkWell(
           onTap: () {
-            //SalesrepProductDetailsPage
-
+//! navigate to cart page in rep side
+//! in customer side on click will take it to product detail page
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SalesrepProductDetailsPage(
-                    isShowCartBtn: widget.isShowCartBtn,
-                    data: widget.productData,
+                  builder: (context) => SalesRepCartPage(
                     customerId: widget.customerId,
+                    customerName: widget.customerName,
                   ),
                 ));
+
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => SalesrepProductDetailsPage(
+            //         isShowCartBtn: widget.isShowCartBtn,
+            //         data: widget.productData,
+            //         customerId: widget.customerId,
+            //       ),
+            //     ));
 
             // Navigator.push(
             //     context,
