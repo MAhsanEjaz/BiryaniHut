@@ -414,9 +414,9 @@ class _SaleRepOrderDetailsWidgetState extends State<SaleRepOrderDetailsWidget> {
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 0.0),
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(getImageUrl(widget.orders
+                        backgroundImage: NetworkImage(widget.orders
                                 .orderProducts![index].productImagePath ??
-                            "")),
+                            ""),
                       ),
                       title: Text(
                           widget.orders.orderProducts![index].productName ??

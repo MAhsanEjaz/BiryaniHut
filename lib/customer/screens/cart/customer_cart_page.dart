@@ -227,8 +227,8 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                             // ignore: unnecessary_null_comparison
                                             model[index].productImage == null
                                         ? dummyImageUrl
-                                        : getImageUrl(
-                                            model[index].productImage)),
+                                        : 
+                                            model[index].productImage),
                                   ),
                                 ),
                               ),

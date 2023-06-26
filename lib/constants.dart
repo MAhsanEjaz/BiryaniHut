@@ -81,19 +81,19 @@ String dummyImageUrl = "https://picsum.photos/200/300";
 String userDummyUrl =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz-bjByJY1rNIa6Yn8Et3RwlOuOMklKNM5cA&usqp=CAU";
 
-String getImageUrl(String url) {
-  log("url to split = $url");
-  List<String> list = url.split("\\");
-  log("My List ${list.last}");
+// String getImageUrl(String url) {
+//   // log("url to split = $url");
+//   List<String> list = url.split("\\");
+//   log("My List ${list.last}");
 
-  // url = "http://38.17.51.206:8070/productImages/" + list.last;
-  // url = "http://38.17.51.206:8020/productImages/productImages/";
+//   // url = "http://38.17.51.206:8070/productImages/" + list.last;
+//   // url = "http://38.17.51.206:8020/productImages/productImages/";
 
-  log("new url after split= $url");
-  // http://192.168.18.37:5955/influanceweb/productImages
+//   log("new url after split= $url");
+//   // http://192.168.18.37:5955/influanceweb/productImages
 
-  return url;
-}
+//   return url;
+// }
 
 showAwesomeAlert({
   required BuildContext context,
