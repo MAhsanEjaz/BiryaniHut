@@ -60,8 +60,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
     // quantityCont;
     getCartItems();
     calculateQuantity();
-    quantityCont.text =  qty.toString();
-
+    quantityCont.text = qty.toString();
   }
 
   bool showMoreQty = false;
@@ -755,68 +754,73 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
         ),
         widget.isShowCartBtn == true
             ? Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              onTap: () {
-                decrementQuantity();
-              },
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                child: const Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(
-                    CupertinoIcons.minus,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-                color: appColor,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                  // border: Border.all(color: Colors.black),
-                  // borderRadius: BorderRadius.circular(2),
-                ),
-                child: Center(
-                  child: TextField(
-                    controller: quantityCont,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(4),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      qty++;
+                      setState(() {});
+                      decrementQuantity();
+                    },
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          CupertinoIcons.minus,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                      color: appColor,
                     ),
                   ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                incrementQuantity();
-              },
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                color: appColor,
-                child: const Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 18,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      height: 35,
+                      width: 35,
+                      decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.black),
+                          // borderRadius: BorderRadius.circular(2),
+                          ),
+                      child: Center(
+                        child: TextField(
+                          controller: quantityCont,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(4),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        )
-
+                  InkWell(
+                    onTap: () {
+                      qty--;
+                      setState(() {});
+                      incrementQuantity();
+                    },
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      color: appColor,
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             : SizedBox()
       ],
     );
