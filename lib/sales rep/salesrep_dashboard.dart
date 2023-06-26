@@ -101,11 +101,9 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text(
-                  //   "Welcome ${storage.getUserFirstName()} " +
-                  //       storage.getUserLastName(),
-                  //   style: welStyle,
-                  // ),
+
+
+
 
                   data.repProfileModel == null
                       ? const CupertinoActivityIndicator()
