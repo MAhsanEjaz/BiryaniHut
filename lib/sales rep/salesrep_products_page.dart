@@ -105,6 +105,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
               style: TextStyle(color: Colors.white),
             ),
             actions: [
+              NavigatorWidget(),
               if (widget.customerName != null)
                 Row(
                   children: [

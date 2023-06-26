@@ -36,6 +36,7 @@ class _SalesRepReviewsPageState extends State<SalesRepReviewsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         backgroundColor: appColor,
         title: const Text(

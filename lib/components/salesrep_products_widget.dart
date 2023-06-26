@@ -22,9 +22,9 @@ class SalesrepProductsWidget extends StatefulWidget {
 
   SalesrepProductsWidget(
       {Key? key,
-        required this.productData,
-        required this.customerId,
-        required this.isShowCartBtn})
+      required this.productData,
+      required this.customerId,
+      required this.isShowCartBtn})
       : super(key: key);
 
   @override
@@ -100,11 +100,11 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                     image: DecorationImage(
                         image: NetworkImage(
                             widget.productData.productImagePath == "" ||
-                                widget.productData.productImagePath == null
+                                    widget.productData.productImagePath == null
                                 ? dummyImageUrl
                                 : getImageUrl(
-                              widget.productData.productImagePath!,
-                            )),
+                                    widget.productData.productImagePath!,
+                                  )),
                         onError: (exception, stackTrace) => const SizedBox(),
                         fit: BoxFit.cover)),
                 child: Container(
@@ -698,7 +698,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                     elevation: 10,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(20.0)),
+                                            BorderRadius.circular(20.0)),
                                     child: const Padding(
                                       padding: EdgeInsets.all(2.0),
                                       child: Icon(
@@ -717,61 +717,63 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
             ),
           ),
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              onTap: () {
-                decrementQuantity();
-              },
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: const Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(
-                    CupertinoIcons.minus,
-                    color: Colors.white,
-                    size: 21,
+        widget.isShowCartBtn == true
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      decrementQuantity();
+                    },
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          CupertinoIcons.minus,
+                          color: Colors.white,
+                          size: 21,
+                        ),
+                      ),
+                      color: appColor,
+                    ),
                   ),
-                ),
-                color: appColor,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(7.0)),
-                  child: Padding(
-                    padding:
-                    EdgeInsets.symmetric(horizontal: 14.0, vertical: 3),
-                    child: Center(child: Text(qty.toString())),
-                  )),
-            ),
-            InkWell(
-              onTap: () {
-                incrementQuantity();
-              },
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: appColor,
-                child: const Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 21,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(7.0)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 14.0, vertical: 3),
+                          child: Center(child: Text(qty.toString())),
+                        )),
                   ),
-                ),
-              ),
-            )
-          ],
-        )
+                  InkWell(
+                    onTap: () {
+                      incrementQuantity();
+                    },
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      color: appColor,
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 21,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : SizedBox()
       ],
     );
   }

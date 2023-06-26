@@ -115,6 +115,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         title: const Text(
           'Profile',

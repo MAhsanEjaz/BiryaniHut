@@ -46,6 +46,7 @@ class _SalesRepPaymentAgingReportState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         backgroundColor: appColor,
         title: const Text(

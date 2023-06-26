@@ -4,10 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
+import 'package:shop_app/sales%20rep/salesrep_dashboard.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'components/default_button.dart';
+
+class NavigatorWidget extends StatelessWidget {
+  Color? color;
+
+  NavigatorWidget({this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SalesRepDashboardPage()),
+        );
+      },
+      icon: Icon(
+        Icons.home,
+        color: color ?? Colors.white,
+      ),
+    );
+  }
+}
 
 const kPrimaryColor = Colors.black;
 const Color appColor = Color(0xFF990D38);

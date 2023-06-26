@@ -74,6 +74,7 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
     return Consumer<PaymentGetProvider>(builder: (context, data, _) {
       return Scaffold(
           appBar: AppBar(
+              actions: [NavigatorWidget()],
               backgroundColor: appColor,
               title: const Text(
                 "Payment Setup Panel",

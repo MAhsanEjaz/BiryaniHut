@@ -88,6 +88,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   SalesrepDiscountModel? repDiscountModel;
   bool isDiscountInPercent = false;
   bool isDiscountApplicable = false;
+
   @override
   void initState() {
     super.initState();
@@ -227,6 +228,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
               ],
             ),
             actions: [
+              NavigatorWidget(),
               IconButton(
                   tooltip: "Hold this order",
                   onPressed: () {

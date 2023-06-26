@@ -40,6 +40,7 @@ class _TopFiveProductsPageState extends State<TopFiveProductsPage> {
     return Consumer<TopFiveProductProvider>(builder: (context, data, _) {
       return Scaffold(
         appBar: AppBar(
+          actions: [NavigatorWidget()],
           backgroundColor: appColor,
           title: Text(
             'Top Five Products',

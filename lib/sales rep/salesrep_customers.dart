@@ -116,6 +116,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
         child: Scaffold(
           appBar: AppBar(
             actions: [
+              NavigatorWidget(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(

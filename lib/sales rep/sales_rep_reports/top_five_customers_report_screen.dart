@@ -65,6 +65,7 @@ class _TopFiveCustomersReportScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         title: const Text(
           "Top Five Customers",
           style: TextStyle(color: Colors.white),

@@ -85,6 +85,7 @@ class _OrderReportPageState extends State<SalesrepPaymentsReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         backgroundColor: appColor,
         title: const Text(

@@ -102,6 +102,7 @@ class _OrderReportPageState extends State<OrderReportPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          actions: [NavigatorWidget()],
           iconTheme: iconTheme,
           backgroundColor: appColor,
           title: const Text(

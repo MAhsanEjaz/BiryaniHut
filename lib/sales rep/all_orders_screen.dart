@@ -13,6 +13,7 @@ import '../services/all_orders_service.dart';
 
 class AllOrdersScreen extends StatefulWidget {
   final int customerId;
+
   const AllOrdersScreen({Key? key, required this.customerId}) : super(key: key);
 
   @override
@@ -46,6 +47,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         backgroundColor: appColor,
         title: const Text(

@@ -74,6 +74,7 @@ class _TimelinesPageState extends State<TimelinesPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Consumer<TimeLinesProvider>(builder: (context, data, _) {
         return Scaffold(
+
           // appBar: AppBar(title: Text("Timelines")),
           body: TimelineScreen(time: getTimeLine, onChanged: searchQuery),
         );
@@ -100,12 +101,13 @@ class _TimelineScreenState extends State<TimelineScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
+         SliverAppBar(
           backgroundColor: appColor,
           iconTheme: iconTheme,
           title: Text('Timeline', style: appbarTextStye),
           centerTitle: false,
           floating: true,
+          actions: [NavigatorWidget()],
           // expandedHeight:  ,
           pinned: true,
 

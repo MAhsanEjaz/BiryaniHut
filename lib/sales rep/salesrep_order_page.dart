@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/sales%20rep/timelines/widgets/orders_widget.dart';
 import 'package:shop_app/services/salesrep_orders_service.dart';
@@ -83,6 +84,7 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: AppBar(
+          actions: [NavigatorWidget(color: appColor,)],
           backgroundColor: Colors.white,
           centerTitle: false,
           flexibleSpace: Row(

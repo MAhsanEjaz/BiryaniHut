@@ -22,6 +22,7 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [NavigatorWidget()],
         iconTheme: iconTheme,
         backgroundColor: appColor,
         title: const Text(
@@ -101,10 +102,9 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const TopFiveCustomersReportScreen()));
+                                  const TopFiveCustomersReportScreen()));
                     },
                   ),
-
 
                   // InkWell(
                   //     onTap: () {
@@ -126,7 +126,7 @@ class _SaleRepReportPageState extends State<SaleRepReportPage> {
                   //     },
                   //     child: const Text("Top five products report")),
                 ],
-              ),  
+              ),
             ),
           ),
         ),
