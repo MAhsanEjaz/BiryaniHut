@@ -758,201 +758,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       msg: 'Do you want to place the order?',
                                       animType: AnimType.topSlide,
                                       dialogType: DialogType.info,
+                                      okBtnText: "Preview",
                                       onOkPress: () async {
-                                        log("payment list = ${json.encode(paymentsList)}");
-
-                                        if (isOrderPlaced) {
-                                          showToast(
-                                              "This order already placed");
-                                          Navigator.of(context).pop();
-                                          return;
-                                        }
-
-                                        // num price = totalPrice +
-                                        //     totalPayable -
-                                        //     (totalPaid + previousBalance);
-
-                                        // !following logic is commented because changed scenario of previous balance
-                                        // if (totalPaid == 0 &&
-                                        //     previousBalance > totalPrice) {
-                                        //   totalPaid = totalPrice;
-                                        //   log("totalPaid after conditions = $totalPaid");
-                                        // }
-
-                                        // if (price < 0 || price ) {
-                                        //   canPlaceOrder = true;
-                                        // }
-
-                                        // log("creditLimit = $creditLimit");
-                                        // log("price = $price");
-                                        log("previousBalance = $previousBalance");
-                                        // if (creditLimit < price) {
-                                        //   showToast(
-                                        //       "You can Order upto \$${creditLimit + previousBalance}");
-                                        //   //! add awesome dialogue for this msg
-                                        //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
-                                        // } else {
-                                        // num paid = 0;
-                                        // num prevBlnc = previousBalance;
-                                        // if (totalPaid >= totalPrice) {
-                                        //   paid = totalPaid;
-                                        //   prevBlnc =
-                                        //       prevBlnc + (totalPaid - totalPrice);
-                                        // } else {
-                                        //   prevBlnc - totalPrice + totalPaid;
-                                        // }
-                                        // totalPaid =
-                                        //     totalPaid + previousBalance - totalPrice;
-
-                                        CartModel cartModel = CartModel(
-                                          netTotal:
-                                              double.parse(getOrderAmount()),
-                                          orderPayment: paymentsList,
-                                          customerId: widget.customerId,
-                                          dateTime: DateTime.now(),
-                                          orderBy: 2,
-                                          orderId: 0,
-                                          orderProducts: model,
-                                          discount: isDiscountApplicable
-                                              ? repDiscountModel!.data.discount
-                                              : 0,
-                                          grandTotal: totalPrice,
-                                          status: 'Pending',
-                                          totalPrice: totalPrice,
-                                          orderPaidAmount: totalPaid,
-                                          //! + previousBalance is removed in current scenario
-                                          //! becasue totalbalance param is added in api
-                                          orderPendingAmount: double.parse(
-                                              getRemainigBalance()),
-                                          remainingBalance: double.parse(
-                                              getRemainigBalance()),
-                                          totalBalance:
-                                              double.parse(getTotalBalance()),
-                                          previousBalance: previousBalance,
-                                          discountType: isDiscountApplicable &&
-                                                  isDiscountInPercent
-                                              ? "By Percentage"
-                                              : "By Value",
-                                        );
-
-                                        String jsonnn =
-                                            cartModelToJson(cartModel);
-                                        await addToCartHandler(jsonnn);
-                                        log("jsonnn  /// = $jsonnn");
-                                        if (isOrderPlaced) {
-                                          await updateCustomerBalanceHandler(
-                                            widget.customerId,
-                                            getPreviousBalance(), //! setting it to 0 because previous balance was added into
-                                            //! totalPaid and if total paid is more than total price then
-                                            //! murtaza will again add this extra to customer's wallet
-                                          );
-                                          openInvoice();
-
-                                          //! clearing full sales rep box
-                                          //! because delete is not working for a particular key
-
-                                          // Hive.box("salesrep_cart_box").clear();
-                                          cartStorage.clearAnyCustomerCart(
-                                              customerId: widget.customerId);
-
-                                          // var box = Hive.box("salesrep_cart_box");
-                                          // if (box.containsKey(
-                                          //     widget.customerId.toString() +
-                                          //         "salesrep_cart_list")) {
-                                          //   log("yes it  has key");
-                                          // }
-                                          // box.delete(widget.customerId.toString() +
-                                          //     "salesrep_cart_list");
-
-                                          // box.compact();
-
-                                          Provider.of<CartCounterProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .setCount(0);
-                                        }
-
-                                        if (isOrderPlaced) {
-                                          showModalBottomSheet(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (context) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    10.0)),
-                                                    child: ListView(
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      children: [
-                                                        const SizedBox(
-                                                            height: 15),
-                                                        SvgPicture.asset(
-                                                          'assets/icons/checkout.svg',
-                                                          color: appColor,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        const Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      8.0),
-                                                          child: Text(
-                                                            '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          height: 45,
-                                                          width:
-                                                              double.infinity,
-                                                          child: ElevatedButton(
-                                                            onPressed: () {
-                                                              // close bottom sheet and also navigate
-                                                              // to previous page.
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: const Text(
-                                                                'Continue Shopping'),
-                                                            style: ElevatedButton.styleFrom(
-                                                                elevation: 0,
-                                                                backgroundColor:
-                                                                    appColor,
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10.0))),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 30),
-                                                      ],
-                                                    ),
-
-                                                    // color: Colors.black,
-                                                  ),
-                                                );
-                                              });
-                                        }
+                                        showOrderPreviewSheet();
                                       },
                                     );
                                   }
@@ -1418,5 +1226,30 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     } else {
       isDiscountApplicable = false;
     }
+  }
+
+  void showOrderPreviewSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+            ),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                      color: appColor,
+                    ),
+                    child: const Text('Order Preview', style: titleStyle)),
+                Divider(),
+              ],
+            ),
+          );
+        });
   }
 }
