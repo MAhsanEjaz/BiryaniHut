@@ -371,7 +371,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                                 // ignore: unnecessary_null_comparison
                                                                                                 model[index].productImagePath == null
                                                                                             ? dummyImageUrl
-                                                                                            : getImageUrl(model[index].productImagePath)),
+                                                                                            :model[index].productImagePath),
                                                                                       ),
                                                                                     ),
                                                                                   ),
@@ -519,7 +519,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                 // ignore: unnecessary_null_comparison
                                                                                 model[index].productImagePath == null
                                                                             ? dummyImageUrl
-                                                                            : getImageUrl(model[index].productImagePath)),
+                                                                            : model[index].productImagePath),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -653,10 +653,10 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                       const Text("Add Quantity",
                                                           style: titleStyle),
                                                       RowWithImage(
-                                                          image: getImageUrl(
+                                                          image:
                                                             widget.data
                                                                 .productImagePath!,
-                                                          ),
+                                                          
                                                           name: widget.data
                                                               .productName),
                                                       const SizedBox(height: 5),

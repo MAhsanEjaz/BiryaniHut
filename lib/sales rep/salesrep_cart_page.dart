@@ -360,8 +360,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                               model[index].productImagePath ==
                                                   null
                                           ? dummyImageUrl
-                                          : getImageUrl(
-                                              model[index].productImagePath)),
+                                          : model[index].productImagePath),
                                     ),
                                   ),
                                 ),
@@ -1343,8 +1342,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                 model[index].productImagePath ==
                                                     null
                                             ? dummyImageUrl
-                                            : getImageUrl(
-                                                model[index].productImagePath)),
+                                            : model[index].productImagePath),
                                       ),
                                     ),
                                   ),

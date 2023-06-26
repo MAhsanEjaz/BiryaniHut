@@ -32,7 +32,7 @@ class _ProductImagesState extends State<ProductImages> {
                       // ignore: unnecessary_null_comparison
                       widget.product.productImagePath == null
                   ? dummyImageUrl
-                  : getImageUrl(widget.product.productImagePath!)),
+                  : widget.product.productImagePath!),
             ),
           ),
         ),

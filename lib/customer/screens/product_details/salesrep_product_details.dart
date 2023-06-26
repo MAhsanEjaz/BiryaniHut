@@ -398,7 +398,7 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
                                                                                                   // ignore: unnecessary_null_comparison
                                                                                                   model[index].productImagePath == null
                                                                                               ? dummyImageUrl
-                                                                                              : getImageUrl(model[index].productImagePath)),
+                                                                                              : model[index].productImagePath),
                                                                                         ),
                                                                                       ),
                                                                                     ),
@@ -545,7 +545,7 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
                                                                                   // ignore: unnecessary_null_comparison
                                                                                   model[index].productImagePath == null
                                                                               ? dummyImageUrl
-                                                                              : getImageUrl(model[index].productImagePath)),
+                                                                              : model[index].productImagePath),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -678,10 +678,8 @@ class _ProductDetailsPageState extends State<SalesrepProductDetailsPage> {
                                                             "Add Quantity",
                                                             style: titleStyle),
                                                         RowWithImage(
-                                                            image: getImageUrl(
-                                                              widget.data
-                                                                  .productImagePath!,
-                                                            ),
+                                                            image: widget.data
+                                                                .productImagePath!,
                                                             name: widget.data
                                                                 .productName),
                                                         const SizedBox(

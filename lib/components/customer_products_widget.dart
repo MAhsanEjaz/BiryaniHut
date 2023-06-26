@@ -79,8 +79,8 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                       widget.productData.productImagePath ==
                                           null
                                   ? dummyImageUrl
-                                  : getImageUrl(
-                                      widget.productData.productImagePath!)),
+                                  :
+                                      widget.productData.productImagePath!),
                           fit: BoxFit.cover),
                     ),
                     child: Container(
@@ -378,7 +378,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                                                     // ignore: unnecessary_null_comparison
                                                                                                     model[index].productImagePath == null
                                                                                                 ? dummyImageUrl
-                                                                                                : getImageUrl(model[index].productImagePath)),
+                                                                                                : model[index].productImagePath),
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -524,7 +524,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                                     // ignore: unnecessary_null_comparison
                                                                                     model[index].productImagePath == null
                                                                                 ? dummyImageUrl
-                                                                                : getImageUrl(model[index].productImagePath)),
+                                                                                : model[index].productImagePath),
                                                                           ),
                                                                         ),
                                                                       ),
@@ -650,11 +650,11 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                   titleStyle),
                                                           RowWithImage(
                                                               image:
-                                                                  getImageUrl(
+                                                                
                                                                 widget
                                                                     .productData
                                                                     .productImagePath!,
-                                                              ),
+                                                            
                                                               name: widget
                                                                   .productData
                                                                   .productName),
