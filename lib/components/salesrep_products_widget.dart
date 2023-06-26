@@ -168,8 +168,6 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                     return;
                                   }
 
-                                  Focus.of(context).unfocus();
-
                                   List<CartItem> model = [];
 
                                   bool isDuplicate = false;
@@ -221,6 +219,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                 customerName:
                                                     widget.customerName,
                                               )));
+                                  Focus.of(context).requestFocus(FocusNode());
                                 },
                                 child: Card(
                                     color: appColor,
