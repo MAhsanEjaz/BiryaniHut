@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
           : stripeApiKey.toString();
       await Stripe.instance.applySettings();
 
-      print('stripe--->${stripeApiKey}');
+      print('stripe--->$stripeApiKey');
     } catch (e) {
       print(e);
       // Handle the exception
