@@ -32,14 +32,14 @@ import '../services/add_to_cart_service.dart';
 class SalesRepCartPage extends StatefulWidget {
   final int customerId;
   final String customerName;
-  String number;
+  String phone;
   String email;
 
-   SalesRepCartPage({
+  SalesRepCartPage({
     Key? key,
     required this.customerId,
-    required this.number,
-     required this.email,
+    required this.phone,
+    required this.email,
     required this.customerName,
   }) : super(key: key);
 
@@ -1514,7 +1514,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             borderRadius:
                                                 BorderRadius.circular(0))),
                                     onPressed: () {
-                                      newSendSms(widget.number);
+                                      newSendSms(widget.phone);
                                     },
                                     child: const Text(
                                       'Share with Sms',

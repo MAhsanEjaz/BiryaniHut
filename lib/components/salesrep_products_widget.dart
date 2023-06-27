@@ -22,12 +22,15 @@ class SalesrepProductsWidget extends StatefulWidget {
   int customerId;
   String customerName;
   bool isShowCartBtn;
+  String email, phone;
 
   SalesrepProductsWidget(
       {Key? key,
       required this.productData,
       required this.customerId,
       required this.customerName,
+      required this.email,
+      required this.phone,
       required this.isShowCartBtn})
       : super(key: key);
 
@@ -82,6 +85,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                   builder: (context) => SalesRepCartPage(
                     customerId: widget.customerId,
                     customerName: widget.customerName,
+                    email: widget.email,
+                    phone: widget.phone,
                   ),
                 ));
 
@@ -218,6 +223,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                 customerId: widget.customerId,
                                                 customerName:
                                                     widget.customerName,
+                                                email: widget.email,
+                                                phone: widget.phone,
                                               )));
                                   Focus.of(context).requestFocus(FocusNode());
                                 },
