@@ -377,7 +377,6 @@ class _SignUpScreenState extends State<SignUpPage> {
                   //   ),
                   // ),
                   //
-                  // if (isStateError) formErrorText(error: stateNameErrorString),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -390,7 +389,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: DropdownButton(
                             isExpanded: true,
-                            underline: SizedBox(),
+                            underline: const SizedBox(),
                             hint: Row(
                               children: [
                                 SvgPicture.asset(
@@ -399,7 +398,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                                   height: 26,
                                   alignment: Alignment.centerLeft,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(statesName == null
                                     ? 'Select State'
                                     : statesName!),
@@ -423,6 +422,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                       ),
                     ),
                   ),
+                  if (isStateError) formErrorText(error: stateNameErrorString),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -435,7 +435,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: DropdownButton(
                             isExpanded: true,
-                            underline: SizedBox(),
+                            underline: const SizedBox(),
                             hint: Row(
                               children: [
                                 SvgPicture.asset(
@@ -446,7 +446,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                                   fit: BoxFit.cover,
                                   alignment: Alignment.centerLeft,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(cityName == null
                                     ? 'Select City'
                                     : cityName!),
@@ -482,7 +482,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                   //     alignment: Alignment.centerLeft,
                   //   ),
                   // ),
-                  // if (isCityError) formErrorText(error: cityNameErrorString),
+                  if (isCityError) formErrorText(error: cityNameErrorString),
 
                   CustomTextField(
                       controller: emailCont,
@@ -714,16 +714,16 @@ class _SignUpScreenState extends State<SignUpPage> {
       isSalonError = false;
     }
 
-    if (stateCont.text.isEmpty) {
-      stateNameErrorString = "Please enter state name";
+    if (statesName == null) {
+      stateNameErrorString = "Please select State Name";
       isStateError = true;
       isValid = false;
     } else {
       isStateError = false;
     }
 
-    if (cityCont.text.isEmpty) {
-      cityNameErrorString = "Please enter city name";
+    if (cityName == null) {
+      cityNameErrorString = "Please select City Name";
       isCityError = true;
       isValid = false;
     } else {
