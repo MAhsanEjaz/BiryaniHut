@@ -14,7 +14,7 @@ import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/models/salesrep_orders_model.dart';
 import 'package:shop_app/providers/sale_rep_orders_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
-import 'package:shop_app/services/update_custom_service.dart';
+import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import '../../../storages/login_storage.dart';
 import '../customer/login/login_page.dart';
@@ -45,7 +45,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
 
   updateCustomerHandler() async {
     CustomLoader.showLoader(context: context);
-    bool res = await UpdateCustomService().updateCustomerService(
+    bool res = await UpdateCustomerService().updateCustomerService(
         isSaleREpProfile: true,
         context: context,
         email: emailCont.text,
