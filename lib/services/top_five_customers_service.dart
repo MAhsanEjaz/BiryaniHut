@@ -10,7 +10,10 @@ import 'package:shop_app/providers/top_five_customers_provider.dart';
 import 'package:shop_app/storages/login_storage.dart';
 
 class TopFiveCustomersService {
-  Future topFiveCustomerService({required BuildContext context}) async {
+  Future topFiveCustomerService(
+      {required BuildContext context,
+      String? startDate,
+      String? endDate}) async {
     List<TopFiveCustomersModel> model = [];
     LoginStorage storage = LoginStorage();
 
@@ -18,7 +21,7 @@ class TopFiveCustomersService {
 
     try {
       http.Response response = await http.get(Uri.parse(
-          '$apiBaseUrl/Customer/GetTopFiveCustomers/${storage.getUserId()}'));
+          '$apiBaseUrl/Customer/GetTopFiveCustomers/${storage.getUserId()}?startDate=${startDate}&endTime=${endDate}'));
 
       log('response--->${response.body}');
       log('response--->${response.statusCode}');

@@ -298,9 +298,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(Icons.edit),
                             SizedBox(width: 5),
                             Text('Edit Profile')
@@ -333,9 +333,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                                       builder: (context) => LoginPage()),
                                   (Route route) => false);
                             },
-                            child: Align(
+                            child: const Align(
                                 alignment: Alignment.center,
-                                child: const Text("Sign out"))),
+                                child: Text("Sign out"))),
 
                         CustomTextField(
                             headerText: "First Name",
@@ -378,14 +378,14 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                             hint: 'Email',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
                             "State",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(height: 7),
+                        const SizedBox(height: 7),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -434,14 +434,14 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                           ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
                             "City",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(height: 7),
+                        const SizedBox(height: 7),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(

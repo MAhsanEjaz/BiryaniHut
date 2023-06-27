@@ -21,7 +21,8 @@ class _TopFiveCustomersReportScreenState
     extends State<TopFiveCustomersReportScreen> {
   topFiveCustomersHandler() async {
     CustomLoader.showLoader(context: context);
-    await TopFiveCustomersService().topFiveCustomerService(context: context);
+    await TopFiveCustomersService().topFiveCustomerService(
+        context: context, endDate: endDate ?? '', startDate: startDate ?? '');
 
     model = Provider.of<TopFiveCustomerProvider>(context, listen: false)
         .fiveCustomers!;
@@ -244,7 +245,9 @@ class _TopFiveCustomersReportScreenState
                                 alignment: Alignment.bottomRight,
                                 child: TextButton(
                                   child: const Text('Apply'),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    topFiveCustomersHandler();
+                                  },
                                 ),
                               )
                             ],
