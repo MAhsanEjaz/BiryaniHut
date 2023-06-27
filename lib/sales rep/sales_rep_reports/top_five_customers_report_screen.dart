@@ -66,7 +66,17 @@ class _TopFiveCustomersReportScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [NavigatorWidget()],
+        actions: [
+          NavigatorWidget(),
+          InkWell(
+              onTap: () {
+                topFiveCustomersHandler();
+              },
+              child: const Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ))
+        ],
         title: const Text(
           "Top Five Customers",
           style: TextStyle(color: Colors.white),
@@ -167,22 +177,19 @@ class _TopFiveCustomersReportScreenState
                                     ),
                                     onTap: () async {
                                       final start = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2023),
+                                        lastDate: DateTime(2024),
                                         builder: (BuildContext context,
                                             Widget? child) {
                                           return Theme(
-                                            data: ThemeData.light().copyWith(
-                                              backgroundColor:
-                                                  appColor, // Set the background color here
-                                            ),
+                                            data:
+                                                customDatePickerTheme(context),
+                                            // Apply the custom theme
                                             child: child!,
                                           );
                                         },
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime.now().add(const Duration(
-                                            days:
-                                                365)), // Adjust the duration as needed
                                       );
 
                                       startDate =
@@ -196,18 +203,14 @@ class _TopFiveCustomersReportScreenState
                                         final end = await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now()
-                                              .add(Duration(days: 365)),
-                                          // Adjust the duration as needed
+                                          firstDate: DateTime(2023),
+                                          lastDate: DateTime(2024),
                                           builder: (BuildContext context,
                                               Widget? child) {
                                             return Theme(
-                                              data: ThemeData.light().copyWith(
-                                                // Customize the theme data
-                                                backgroundColor:
-                                                    appColor, // Set the background color here
-                                              ),
+                                              data: customDatePickerTheme(
+                                                  context),
+                                              // Apply the custom theme
                                               child: child!,
                                             );
                                           },
@@ -369,6 +372,15 @@ class _TopFiveCustomersReportScreenState
             ),
     );
   }
+}
+
+ThemeData customDatePickerTheme(BuildContext context) {
+  return ThemeData(
+    // Customize the colors for the date picker
+    colorScheme: ColorScheme.light().copyWith(
+      primary: appColor, // Change this to your desired color
+    ),
+  );
 }
 
 class FilterWidget extends StatefulWidget {
