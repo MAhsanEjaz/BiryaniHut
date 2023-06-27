@@ -117,7 +117,6 @@ class _MyAppState extends State<MyApp> {
       print('stripe--->$stripeApiKey');
     } catch (e) {
       print(e);
-      // Handle the exception
     }
   }
 
