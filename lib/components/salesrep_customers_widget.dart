@@ -3,15 +3,22 @@ import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/reseller_order_time_calender_widget.dart';
 import 'package:shop_app/customer/services/customer_delete_service.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
+import 'package:shop_app/models/all_cities_model.dart';
 import 'package:shop_app/models/resseller_customers_model.dart';
+import 'package:shop_app/models/states_model.dart';
+import 'package:shop_app/providers/all_cities_provider.dart';
+import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/sales%20rep/all_orders_screen.dart';
 import 'package:shop_app/sales%20rep/salesrep_products_page.dart';
+import 'package:shop_app/services/get_all_cities_service.dart';
+import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
@@ -38,6 +45,9 @@ class SalesRepCustomersWidget extends StatefulWidget {
   TextEditingController email = TextEditingController();
   TextEditingController saloonName = TextEditingController();
 
+  String? statesName;
+  String? cityName;
+
   bool showDialogue;
   BuildContext context;
 
@@ -50,6 +60,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
       required this.solonName,
       required this.address,
       required this.firstName,
+      this.cityName,
+      this.statesName,
       required this.customers,
       this.showDialogue = true,
       required this.context})
@@ -122,6 +134,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
+        city: widget.cityName,
+        state: widget.statesName,
         phone: widget.phone.text);
 
     if (res == true) {
@@ -146,9 +160,41 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(context);
   }
 
+  List<AllStatesModel> statesModel = [];
+  List<AllCitiesModel> citiesModel = [];
+
+  getAllCitiesHandler(String cityCode) async {
+    CustomLoader.showLoader(context: context);
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityCode: cityCode);
+
+    citiesModel =
+        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print('cities---->${citiesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  getAllStatesHandler() async {
+    CustomLoader.showLoader(context: context);
+    await GetAllStatesServices().getAllStatesServices(context: context);
+
+    statesModel =
+        Provider.of<StatesProvider>(context, listen: false).statesData!;
+    print('states---->${statesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getAllStatesHandler();
+    });
 
     widget.firstName.text = widget.customers.firstName!;
     widget.lastName.text = widget.customers.lastName!;
@@ -296,105 +342,247 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
-                                  builder: (context) => BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaY: 10, sigmaX: 10),
-                                        child: AlertDialog(
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          icon: Align(
-                                              alignment: Alignment.topRight,
-                                              child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
+                                  builder: (context) => StatefulBuilder(
+                                          builder: (context, sestate) {
+                                        return BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaY: 10, sigmaX: 10),
+                                          child: AlertDialog(
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            icon: Align(
+                                                alignment: Alignment.topRight,
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Card(
+                                                        elevation: 5.0,
+                                                        child: Icon(
+                                                            Icons.close)))),
+                                            actions: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20.0),
+                                                child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    if (customUpdateValidation()) {
+                                                      await updateCustomerHandler();
+                                                      Navigator.pop(context);
+                                                    }
                                                   },
-                                                  child: const Card(
-                                                      elevation: 5.0,
-                                                      child:
-                                                          Icon(Icons.close)))),
-                                          actions: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20.0),
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  if (customUpdateValidation()) {
-                                                    await updateCustomerHandler();
-                                                    Navigator.pop(context);
-                                                  }
-                                                },
-                                                child: const Text('Update'),
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: appColor),
-                                              ),
-                                            )
-                                          ],
-                                          title: const Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                'Update Profile',
-                                                style: TextStyle(
-                                                    color: appColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                          content: SingleChildScrollView(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Divider(),
-                                                CustomTextField(
-                                                  prefixWidget:
-                                                      const Icon(Icons.person),
-                                                  controller: widget.firstName,
-                                                  hint: 'First Name',
+                                                  child: const Text('Update'),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              appColor),
                                                 ),
-                                                CustomTextField(
-                                                    prefixWidget:
-                                                        const Icon(Icons.email),
-                                                    controller: widget.email,
-                                                    hint: 'Email'),
-                                                CustomTextField(
-                                                    prefixWidget:
-                                                        const Icon(Icons.home),
-                                                    controller:
-                                                        widget.saloonName,
-                                                    hint: 'Salon Name'),
-                                                CustomTextField(
+                                              )
+                                            ],
+                                            title: const Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  'Update Profile',
+                                                  style: TextStyle(
+                                                      color: appColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const Divider(),
+                                                  CustomTextField(
                                                     prefixWidget: const Icon(
                                                         Icons.person),
-                                                    controller: widget.lastName,
-                                                    hint: 'Last Name'),
-                                                CustomTextField(
-                                                    inputFormats: [
-                                                      FilteringTextInputFormatter
-                                                          .digitsOnly,
-                                                      LengthLimitingTextInputFormatter(
-                                                          12),
-                                                      PhoneInputFormatter(),
-                                                    ],
-                                                    inputType:
-                                                        TextInputType.number,
-                                                    prefixWidget:
-                                                        const Icon(Icons.phone),
-                                                    controller: widget.phone,
-                                                    hint: 'Phone'),
-                                                CustomTextField(
-                                                    prefixWidget:
-                                                        const Icon(Icons.home),
-                                                    controller: widget.address,
-                                                    hint: 'Address'),
-                                              ],
+                                                    controller:
+                                                        widget.firstName,
+                                                    hint: 'First Name',
+                                                  ),
+                                                  CustomTextField(
+                                                      prefixWidget: const Icon(
+                                                          Icons.email),
+                                                      controller: widget.email,
+                                                      hint: 'Email'),
+                                                  CustomTextField(
+                                                      prefixWidget: const Icon(
+                                                          Icons.home),
+                                                      controller:
+                                                          widget.saloonName,
+                                                      hint: 'Salon Name'),
+                                                  CustomTextField(
+                                                      prefixWidget: const Icon(
+                                                          Icons.person),
+                                                      controller:
+                                                          widget.lastName,
+                                                      hint: 'Last Name'),
+                                                  CustomTextField(
+                                                      inputFormats: [
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly,
+                                                        LengthLimitingTextInputFormatter(
+                                                            12),
+                                                        PhoneInputFormatter(),
+                                                      ],
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget: const Icon(
+                                                          Icons.phone),
+                                                      controller: widget.phone,
+                                                      hint: 'Phone'),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 6.0,
+                                                        vertical: 4),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: kSecondaryColor
+                                                              .withOpacity(0.1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    8.0),
+                                                        child: DropdownButton(
+                                                            isExpanded: true,
+                                                            underline:
+                                                                const SizedBox(),
+                                                            hint: Row(
+                                                              children: [
+                                                                SvgPicture
+                                                                    .asset(
+                                                                  "assets/svg/State Icon (1).svg",
+                                                                  width: 26,
+                                                                  height: 26,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 10),
+                                                                Text(widget.statesName ==
+                                                                        null
+                                                                    ? 'Select State'
+                                                                    : widget
+                                                                        .statesName!),
+                                                              ],
+                                                            ),
+                                                            items: statesModel
+                                                                .map((e) {
+                                                              return DropdownMenuItem(
+                                                                  onTap: () {
+                                                                    widget.statesName =
+                                                                        e.stateName;
+
+                                                                    WidgetsBinding
+                                                                        .instance
+                                                                        .addPostFrameCallback(
+                                                                            (timeStamp) {
+                                                                      getAllCitiesHandler(
+                                                                          e.stateCode!);
+                                                                    });
+                                                                    sestate(
+                                                                        () {});
+                                                                  },
+                                                                  value: e
+                                                                      .stateName,
+                                                                  child: Text(e
+                                                                      .stateName
+                                                                      .toString()));
+                                                            }).toList(),
+                                                            onChanged: (_) {}),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 6.0,
+                                                        vertical: 4),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: kSecondaryColor
+                                                              .withOpacity(0.1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    8.0),
+                                                        child: DropdownButton(
+                                                            isExpanded: true,
+                                                            underline:
+                                                                const SizedBox(),
+                                                            hint: Row(
+                                                              children: [
+                                                                SvgPicture
+                                                                    .asset(
+                                                                  "assets/svg/City Icon (1).svg",
+                                                                  color: Colors
+                                                                      .black45,
+                                                                  width: 26,
+                                                                  height: 26,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 10),
+                                                                Text(widget.cityName ==
+                                                                        null
+                                                                    ? 'Select City'
+                                                                    : widget
+                                                                        .cityName!),
+                                                              ],
+                                                            ),
+                                                            items: citiesModel
+                                                                .map((e) {
+                                                              return DropdownMenuItem(
+                                                                  onTap: () {
+                                                                    widget.cityName =
+                                                                        e.cityName;
+                                                                    sestate(
+                                                                        () {});
+                                                                  },
+                                                                  value: e
+                                                                      .cityName,
+                                                                  child: Text(e
+                                                                      .cityName
+                                                                      .toString()));
+                                                            }).toList(),
+                                                            onChanged: (_) {}),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  CustomTextField(
+                                                      prefixWidget: const Icon(
+                                                          Icons.home),
+                                                      controller:
+                                                          widget.address,
+                                                      hint: 'Address'),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ));
+                                        );
+                                      }));
                             },
                             child: Row(
                               children: const [
