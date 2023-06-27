@@ -45,6 +45,9 @@ class SalesRepCustomersWidget extends StatefulWidget {
   TextEditingController email = TextEditingController();
   TextEditingController saloonName = TextEditingController();
 
+  String? statesName;
+  String? cityName;
+
   bool showDialogue;
   BuildContext context;
 
@@ -57,6 +60,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
       required this.solonName,
       required this.address,
       required this.firstName,
+      this.cityName,
+      this.statesName,
       required this.customers,
       this.showDialogue = true,
       required this.context})
@@ -129,8 +134,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
-        city: cityName,
-        state: statesName,
+        city: widget.cityName,
+        state: widget.statesName,
         phone: widget.phone.text);
 
     if (res == true) {
@@ -182,9 +187,6 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
     CustomLoader.hideLoader(context);
   }
-
-  String? statesName;
-  String? cityName;
 
   @override
   void initState() {
@@ -470,17 +472,18 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                                 ),
                                                                 const SizedBox(
                                                                     width: 10),
-                                                                Text(statesName ==
+                                                                Text(widget.statesName ==
                                                                         null
                                                                     ? 'Select State'
-                                                                    : statesName!),
+                                                                    : widget
+                                                                        .statesName!),
                                                               ],
                                                             ),
                                                             items: statesModel
                                                                 .map((e) {
                                                               return DropdownMenuItem(
                                                                   onTap: () {
-                                                                    statesName =
+                                                                    widget.statesName =
                                                                         e.stateName;
 
                                                                     WidgetsBinding
@@ -542,18 +545,19 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                                 ),
                                                                 const SizedBox(
                                                                     width: 10),
-                                                                Text(cityName ==
+                                                                Text(widget.cityName ==
                                                                         null
                                                                     ? 'Select City'
-                                                                    : cityName!),
+                                                                    : widget
+                                                                        .cityName!),
                                                               ],
                                                             ),
                                                             items: citiesModel
                                                                 .map((e) {
                                                               return DropdownMenuItem(
                                                                   onTap: () {
-                                                                    cityName = e
-                                                                        .cityName;
+                                                                    widget.cityName =
+                                                                        e.cityName;
                                                                     sestate(
                                                                         () {});
                                                                   },

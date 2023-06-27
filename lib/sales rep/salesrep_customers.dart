@@ -266,6 +266,10 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final originalIndex = searchList[index];
+
+                        String city = originalIndex.city!;
+                        String state = originalIndex.state!;
+
                         TextEditingController firstNameController =
                             TextEditingController(
                           text: originalIndex.firstName?.toString() ?? '',
@@ -306,6 +310,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           context: context,
                           phone: phoneController,
                           lastName: lastNameController,
+                          cityName: city,
+                          statesName: state,
                           solonName: saloonNameController,
                           email: emailController,
                           saloonName: saloonController,

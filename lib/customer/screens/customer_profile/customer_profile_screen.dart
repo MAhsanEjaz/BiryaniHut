@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,8 +13,14 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
+import 'package:shop_app/models/all_cities_model.dart';
+import 'package:shop_app/models/states_model.dart';
+import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/providers/customer_profile_provider.dart';
+import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
+import 'package:shop_app/services/get_all_cities_service.dart';
+import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/size_config.dart';
@@ -111,6 +118,15 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .data!
             .address!;
 
+    statesName = Provider.of<CustomerProfileProvider>(context, listen: false)
+        .customerProfileModel!
+        .data!
+        .state;
+    cityName = Provider.of<CustomerProfileProvider>(context, listen: false)
+        .customerProfileModel!
+        .data!
+        .city;
+
     CustomLoader.hideLoader(context);
   }
 
@@ -123,6 +139,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         email: emailCont.text,
         saleRepImage: imagee,
         customerId: loginStorage.getUserId(),
+        state: statesName,
+        city: cityName,
         firstName: firstNameCont.text,
         lastName: lastNameCont.text,
         phone: phoneCont.text);
@@ -149,6 +167,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     // emailCont.text = loginStorage.getUserEmail();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getAllStatesHandler();
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       customerGetDataHandler();
     });
   }
@@ -165,6 +187,37 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
       });
     }
   }
+
+  List<AllStatesModel> statesModel = [];
+  List<AllCitiesModel> citiesModel = [];
+
+  getAllCitiesHandler(String cityCode) async {
+    CustomLoader.showLoader(context: context);
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityCode: cityCode);
+
+    citiesModel =
+        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print('cities---->${citiesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  getAllStatesHandler() async {
+    CustomLoader.showLoader(context: context);
+    await GetAllStatesServices().getAllStatesServices(context: context);
+
+    statesModel =
+        Provider.of<StatesProvider>(context, listen: false).statesData!;
+    print('states---->${statesModel}');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  String? statesName;
+  String? cityName;
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +238,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
                         Align(
@@ -256,12 +309,15 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         const SizedBox(height: 3),
                         data.customerProfileModel == null
                             ? const CupertinoActivityIndicator(radius: 10)
-                            : Text(
-                                "Hey there ${data.customerProfileModel!.data!.firstName}!",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                    color: Colors.black87),
+                            : Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Hey there ${data.customerProfileModel!.data!.firstName}!",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: Colors.black87),
+                                ),
                               ),
                         TextButton(
                             onPressed: () {
@@ -277,7 +333,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                                       builder: (context) => LoginPage()),
                                   (Route route) => false);
                             },
-                            child: const Text("Sign out")),
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: const Text("Sign out"))),
 
                         CustomTextField(
                             headerText: "First Name",
@@ -320,6 +378,114 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                             hint: 'Email',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "State",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 7),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0, vertical: 4),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: kSecondaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: DropdownButton(
+                                  isExpanded: true,
+                                  underline: const SizedBox(),
+                                  hint: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/State Icon (1).svg",
+                                        width: 26,
+                                        height: 26,
+                                        alignment: Alignment.centerLeft,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(statesName == null
+                                          ? 'Select State'
+                                          : statesName!),
+                                    ],
+                                  ),
+                                  items: statesModel.map((e) {
+                                    return DropdownMenuItem(
+                                        onTap: () {
+                                          statesName = e.stateName;
+
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback(
+                                                  (timeStamp) {
+                                            getAllCitiesHandler(e.stateCode!);
+                                          });
+                                          setState(() {});
+                                        },
+                                        value: e.stateName,
+                                        child: Text(e.stateName.toString()));
+                                  }).toList(),
+                                  onChanged: (_) {}),
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            "City",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 7),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0, vertical: 4),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: kSecondaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: DropdownButton(
+                                  isExpanded: true,
+                                  underline: const SizedBox(),
+                                  hint: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/City Icon (1).svg",
+                                        color: Colors.black45,
+                                        width: 26,
+                                        height: 26,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.centerLeft,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(cityName == null
+                                          ? 'Select City'
+                                          : cityName!),
+                                    ],
+                                  ),
+                                  items: citiesModel.map((e) {
+                                    return DropdownMenuItem(
+                                        onTap: () {
+                                          cityName = e.cityName;
+                                          setState(() {});
+                                        },
+                                        value: e.cityName,
+                                        child: Text(e.cityName.toString()));
+                                  }).toList(),
+                                  onChanged: (_) {}),
+                            ),
+                          ),
+                        ),
+
                         CustomTextField(
                             headerText: "Phone # ",
                             isEnabled: true,
@@ -340,13 +506,16 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                             hint: "Address",
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        DefaultButton(
-                          verticalMargin: 10.0,
-                          text: "Update",
-                          width: getProportionateScreenWidth(200),
-                          press: () {
-                            updateCustomerHandler();
-                          },
+                        Align(
+                          alignment: Alignment.center,
+                          child: DefaultButton(
+                            verticalMargin: 10.0,
+                            text: "Update",
+                            width: getProportionateScreenWidth(200),
+                            press: () {
+                              updateCustomerHandler();
+                            },
+                          ),
                         ),
                       ],
                     ),
