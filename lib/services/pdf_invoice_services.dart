@@ -500,13 +500,14 @@ class PdfInvoiceService {
     return paymentName;
   }
 
-  Future<void> savePdfFile(String fileName, Uint8List byteList) async {
+  Future savePdfFile(String fileName, Uint8List byteList) async {
     final output = await getTemporaryDirectory();
     var filePath = "${output.path}/$fileName.pdf";
     final file = File(filePath);
     await file.writeAsBytes(byteList);
     await OpenFilex.open(filePath);
     print(filePath);
+    return filePath;
   }
 
   String getValue(num value) {

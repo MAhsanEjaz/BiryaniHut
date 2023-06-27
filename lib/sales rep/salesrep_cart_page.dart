@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     if (isDiscountApplicable) {
       if (isDiscountInPercent) {
         return (totalPrice -
-                (totalPrice * repDiscountModel!.data.discount / 100))
+            (totalPrice * repDiscountModel!.data.discount / 100))
             .toStringAsFixed(2);
       } else {
         return (totalPrice - repDiscountModel!.data.discount)
@@ -142,11 +143,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     CustomLoader.hideLoader(context);
   }
 
-  updateCustomerBalanceHandler(
-    //String? creditLmit
-    int? id,
-    num accountBalance,
-  ) async {
+  updateCustomerBalanceHandler(//String? creditLmit
+      int? id,
+      num accountBalance,) async {
     CustomLoader.showLoader(context: context);
 
     bool isUpdated = await UpdateCustmerBalanceService().updateCustomerBalance(
@@ -192,7 +191,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   addToCartHandler(String cart) async {
     CustomLoader.showLoader(context: context);
     isOrderPlaced =
-        await AddToCartService().addToCart(context: context, cart: cart);
+    await AddToCartService().addToCart(context: context, cart: cart);
     CustomLoader.hideLoader(context);
   }
 
@@ -213,23 +212,26 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     }
   }
 
-  // Future<void> _sendEmail(List<String> path) async {
-  //   final Email email = Email(
-  //     body: 'A new order has been placed with Order ID ${widget.orderId} ',
-  //     subject: 'Influence',
-  //     recipients: [widget.email],
-  //     // cc: [widget.email],
-  //     // bcc: [widget.email],
-  //     attachmentPaths: path,
-  //     isHTML: false,
-  //   );
-  //
-  //   try {
-  //     await FlutterEmailSender.send(email);
-  //   } catch (error) {
-  //     print('Error sending email: $error');
-  //   }
-  // }
+  Future<void> _sendEmail(List<String> path) async {
+    final Email email = Email(
+      body: '',
+      subject: 'Influence',
+      recipients: [widget.email],
+      // cc: [widget.email],
+      // bcc: [widget.email],
+      attachmentPaths: path,
+      isHTML: false,
+    );
+
+    print('email--->${widget.email}');
+    print('phone--->${widget.phone}');
+
+    try {
+      await FlutterEmailSender.send(email);
+    } catch (error) {
+      print('Error sending email: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -247,569 +249,595 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       },
       child: Consumer<SalesrepDiscountProvider>(
           builder: (context, discountData, _) {
-        repDiscountModel = discountData.repDiscountModel;
-        if (repDiscountModel!.data.discountType == "By Percentage") {
-          isDiscountInPercent = true;
-        } else {
-          isDiscountInPercent = false;
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: Column(
-              children: [
-                Text(
-                  "${widget.customerName}'s Cart",
-                  style: const TextStyle(color: Colors.black),
-                ),
-                Text(
-                  "${model.length} items",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-            actions: [
-              NavigatorWidget(),
-              IconButton(
-                  tooltip: "Hold this order",
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Icon(
-                      Icons.cancel_sharp,
-                      size: 30,
-                      // color: Colors.black,
+            repDiscountModel = discountData.repDiscountModel;
+            if (repDiscountModel!.data.discountType == "By Percentage") {
+              isDiscountInPercent = true;
+            } else {
+              isDiscountInPercent = false;
+            }
+            return Scaffold(
+              appBar: AppBar(
+                title: Column(
+                  children: [
+                    Text(
+                      "${widget.customerName}'s Cart",
+                      style: const TextStyle(color: Colors.black),
                     ),
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(20)),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: model.length,
-                    itemBuilder: (context, index) {
-                      // final item = model[index];
-                      // int quantity = item.quantity;
-                      // model[index].quantity=;
+                    Text(
+                      "${model.length} items",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodySmall,
+                    ),
+                  ],
+                ),
+                actions: [
+                  NavigatorWidget(),
+                  IconButton(
+                      tooltip: "Hold this order",
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.cancel_sharp,
+                          size: 30,
+                          // color: Colors.black,
+                        ),
+                      ))
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(20)),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: model.length,
+                        itemBuilder: (context, index) {
+                          // final item = model[index];
+                          // int quantity = item.quantity;
+                          // model[index].quantity=;
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Dismissible(
-                            key: Key(model[index].productId.toString()),
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (direction) {
-                              num price =
-                                  model[index].price * model[index].quantity;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Dismissible(
+                                key: Key(model[index].productId.toString()),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (direction) {
+                                  num price =
+                                      model[index].price *
+                                          model[index].quantity;
 
-                              totalPrice = totalPrice - price;
-                              model.removeAt(index);
+                                  totalPrice = totalPrice - price;
+                                  model.removeAt(index);
 
-                              cartStorage.deleteCartItem(
-                                  index: index, customerId: widget.customerId);
-                              Provider.of<CartCounterProvider>(context,
+                                  cartStorage.deleteCartItem(
+                                      index: index,
+                                      customerId: widget.customerId);
+                                  Provider.of<CartCounterProvider>(context,
                                       listen: false)
-                                  .setCount(model.length);
+                                      .setCount(model.length);
 
-                              cartItemsCount =
-                                  cartItemsCount - model[index].quantity;
+                                  cartItemsCount =
+                                      cartItemsCount - model[index].quantity;
 
-                              updateIsDiscountApplicable();
-                              setState(() {});
-                              log("model length = ${model.length}");
-                            },
-                            background: Container(
-                              padding:
+                                  updateIsDiscountApplicable();
+                                  setState(() {});
+                                  log("model length = ${model.length}");
+                                },
+                                background: Container(
+                                  padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFFE6E6),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Spacer(),
-                                  SvgPicture.asset("assets/icons/Trash.svg"),
-                                ],
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 88,
-                                  child: AspectRatio(
-                                    aspectRatio: 0.88,
-                                    child: Container(
-                                      padding: EdgeInsets.all(
-                                          getProportionateScreenWidth(10)),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFF5F6F9),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      // child: Image.network(cart.product.images[0]),
-                                      child: Image.network(model[index]
-                                                      .productImagePath ==
-                                                  "" ||
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFE6E6),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Spacer(),
+                                      SvgPicture.asset(
+                                          "assets/icons/Trash.svg"),
+                                    ],
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 88,
+                                      child: AspectRatio(
+                                        aspectRatio: 0.88,
+                                        child: Container(
+                                          padding: EdgeInsets.all(
+                                              getProportionateScreenWidth(10)),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF5F6F9),
+                                            borderRadius: BorderRadius.circular(
+                                                15),
+                                          ),
+                                          // child: Image.network(cart.product.images[0]),
+                                          child: Image.network(model[index]
+                                              .productImagePath ==
+                                              "" ||
                                               // ignore: unnecessary_null_comparison
                                               model[index].productImagePath ==
                                                   null
-                                          ? dummyImageUrl
-                                          : model[index].productImagePath),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.8,
-                                      child: Text(
-                                        model[index].productName,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                        maxLines: 2,
+                                              ? dummyImageUrl
+                                              : model[index].productImagePath),
+                                        ),
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: "\$${model[index].price}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: kPrimaryColor),
-                                        children: [
-                                          TextSpan(
-                                              // text: " x${cart.numOfItem}",
-                                              text:
-                                                  " x ${model[index].quantity}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1),
-                                          TextSpan(
-                                              // text: " x${cart.numOfItem}",
-                                              text: " = \$" +
-                                                  (model[index].price *
-                                                          model[index].quantity)
-                                                      .toStringAsFixed(2),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                    const SizedBox(width: 20),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
                                       children: [
-                                        RoundedIconBtn(
-                                          icon: Icons.remove,
-                                          showShadow: true,
-                                          press: () {
-                                            totalPrice = totalPrice -
-                                                model[index].price *
-                                                    model[index].quantity;
+                                        SizedBox(
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width /
+                                              1.8,
+                                          child: Text(
+                                            model[index].productName,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: "\$${model[index].price}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: kPrimaryColor),
+                                            children: [
+                                              TextSpan(
+                                                // text: " x${cart.numOfItem}",
+                                                  text:
+                                                  " x ${model[index].quantity}",
+                                                  style: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .bodyText1),
+                                              TextSpan(
+                                                // text: " x${cart.numOfItem}",
+                                                  text: " = \$" +
+                                                      (model[index].price *
+                                                          model[index].quantity)
+                                                          .toStringAsFixed(2),
+                                                  style: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .bodyText1),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            RoundedIconBtn(
+                                              icon: Icons.remove,
+                                              showShadow: true,
+                                              press: () {
+                                                totalPrice = totalPrice -
+                                                    model[index].price *
+                                                        model[index].quantity;
 
-                                            model[index].quantity--;
-                                            //! if quantity is less than 1 then remove item from cart
-                                            if (model[index].quantity < 1) {
-                                              cartStorage.deleteCartItem(
-                                                  index: index,
-                                                  customerId:
+                                                model[index].quantity--;
+                                                //! if quantity is less than 1 then remove item from cart
+                                                if (model[index].quantity < 1) {
+                                                  cartStorage.deleteCartItem(
+                                                      index: index,
+                                                      customerId:
                                                       widget.customerId);
-                                              model.removeAt(index);
-                                              Provider.of<CartCounterProvider>(
+                                                  model.removeAt(index);
+                                                  Provider.of<
+                                                      CartCounterProvider>(
                                                       context,
                                                       listen: false)
-                                                  .decrementCount();
-                                            } else {
-                                              totalPrice = totalPrice +
-                                                  model[index].price *
-                                                      model[index].quantity;
+                                                      .decrementCount();
+                                                } else {
+                                                  totalPrice = totalPrice +
+                                                      model[index].price *
+                                                          model[index].quantity;
 
-                                              cartStorage.updateCartItem(
-                                                  item: model[index],
-                                                  customerId:
+                                                  cartStorage.updateCartItem(
+                                                      item: model[index],
+                                                      customerId:
                                                       widget.customerId);
-                                            }
-                                            cartItemsCount--;
+                                                }
+                                                cartItemsCount--;
 
-                                            updateIsDiscountApplicable();
+                                                updateIsDiscountApplicable();
 
-                                            // updatePrices();
-                                            setState(() {});
-                                          },
-                                        ),
-                                        SizedBox(
-                                            width: getProportionateScreenWidth(
-                                                20)),
-                                        RoundedIconBtn(
-                                          icon: Icons.add,
-                                          showShadow: true,
-                                          press: () {
-                                            totalPrice = totalPrice -
-                                                model[index].price *
-                                                    model[index].quantity;
+                                                // updatePrices();
+                                                setState(() {});
+                                              },
+                                            ),
+                                            SizedBox(
+                                                width: getProportionateScreenWidth(
+                                                    20)),
+                                            RoundedIconBtn(
+                                              icon: Icons.add,
+                                              showShadow: true,
+                                              press: () {
+                                                totalPrice = totalPrice -
+                                                    model[index].price *
+                                                        model[index].quantity;
 
-                                            model[index].quantity++;
-                                            cartStorage.updateCartItem(
-                                                item: model[index],
-                                                customerId: widget.customerId);
+                                                model[index].quantity++;
+                                                cartStorage.updateCartItem(
+                                                    item: model[index],
+                                                    customerId: widget
+                                                        .customerId);
 
-                                            totalPrice = totalPrice +
-                                                model[index].price *
-                                                    model[index].quantity;
-                                            // updatePrices();
-                                            cartItemsCount++;
-                                            updateIsDiscountApplicable();
+                                                totalPrice = totalPrice +
+                                                    model[index].price *
+                                                        model[index].quantity;
+                                                // updatePrices();
+                                                cartItemsCount++;
+                                                updateIsDiscountApplicable();
 
-                                            setState(() {});
+                                                setState(() {});
 
-                                            log("quantity = ${model[index].quantity}");
-                                          },
-                                        ),
+                                                log("quantity = ${model[index]
+                                                    .quantity}");
+                                              },
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
                                   ],
-                                )
-                              ],
-                            )),
-                      );
-                    },
-                  ),
-                ),
-
-                if (model.isEmpty)
-                  const Center(
-                    child: Text(
-                      "Your Cart is empty yet",
-                      style: nameStyle,
-                    ),
-                  ),
-                // if (model.isNotEmpty)
-                if (paymentStringList.isNotEmpty)
-                  ListView.builder(
-                    itemCount: paymentStringList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 4.0, bottom: 4),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/payment_done.png',
-                                height: 30,
-                                width: 30,
-                              ),
-                            ),
-                            Expanded(
-                                flex: 3,
-                                child: Text(paymentStringList[index],
-                                    style: nameStyle)),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-
-                if (model.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        // SizedBox(
-                        //   child: PaymentCard(
-                        //     image: getSumupImageUrl(),
-                        //     color: selectedPaymentIndex == 1 ? true : false,
-                        //     onTap: () {
-                        //       selectedPaymentIndex = 1;
-                        //
-                        //       handleSumupClick();
-                        //       setState(() {});
-                        //     },
-                        //     paymentName: 'SumUp',
-                        //   ),
-                        // ),
-                        //! payment by cash
-                        PaymentCard(
-                          image:
-                              'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
-                          color: selectedPaymentIndex == 2 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 2;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash',
-                        ),
-
-                        //! payment with cheque
-                        PaymentCard(
-                          image:
-                              'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
-                          color: selectedPaymentIndex == 3 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 3;
-                            setState(() {});
-                          },
-                          paymentName: 'Cheque',
-                        ),
-
-                        //! payment with cash app
-                        PaymentCard(
-                          image:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
-                          color: selectedPaymentIndex == 4 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 4;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash App',
-                        ),
-                      ],
-                    ),
-                  ),
-                //! cash on delivery
-
-                if (selectedPaymentIndex == 2 && model.isNotEmpty)
-                  cashPaymentDesign(),
-
-                //! cheque payment
-                if (selectedPaymentIndex == 3 && model.isNotEmpty)
-                  chequePaymentDesign(),
-
-                //! cashapp payment payment
-
-                if (selectedPaymentIndex == 4 && model.isNotEmpty)
-                  cashAppPaymentDesign(),
-              ],
-            ),
-          ),
-          bottomNavigationBar: model.isNotEmpty &&
-                  Provider.of<AccountBalanceProvider>(context, listen: true)
-                          .accountBalanceModel !=
-                      null
-              ? Consumer<AccountBalanceProvider>(builder: (context, data, _) {
-                  if (data.accountBalanceModel!.data!.creditLimit != null) {
-                    log("Here Error");
-                    // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
-                  }
-
-                  ///Creating Issue
-                  previousBalance =
-                      data.accountBalanceModel!.data!.accountBalance!;
-                  log("Previous Balance $previousBalance");
-
-                  // if (data.accountBalanceModel!.data!.accountBalance! < 0) {
-                  //   totalPayable =
-                  //       (data.accountBalanceModel!.data!.accountBalance!).abs();
-                  // } else {
-                  //   previousBalance =
-                  //       data.accountBalanceModel!.data!.accountBalance!;
-                  // }
-                  return Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: getProportionateScreenWidth(15),
-                      horizontal: getProportionateScreenWidth(30),
-                    ),
-                    // height: 174,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
+                                )),
+                          );
+                        },
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, -15),
-                          blurRadius: 20,
-                          color: const Color(0xFFDADADA).withOpacity(0.15),
-                        )
-                      ],
                     ),
-                    child: SafeArea(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 4.0),
+
+                    if (model.isEmpty)
+                      const Center(
+                        child: Text(
+                          "Your Cart is empty yet",
+                          style: nameStyle,
+                        ),
+                      ),
+                    // if (model.isNotEmpty)
+                    if (paymentStringList.isNotEmpty)
+                      ListView.builder(
+                        itemCount: paymentStringList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 4.0, bottom: 4),
                             child: Row(
                               children: [
-                                Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        openInvoice();
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        height: getProportionateScreenWidth(40),
-                                        width: getProportionateScreenWidth(40),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F6F9),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: SvgPicture.asset(
-                                            "assets/icons/receipt.svg"),
-                                      ),
-                                    ),
-                                    const Text("Invoice")
-                                  ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Image.asset(
+                                    'assets/images/payment_done.png',
+                                    height: 30,
+                                    width: 30,
+                                  ),
                                 ),
-                                const Spacer(),
-                                if (data.accountBalanceModel != null)
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      // if (totalPayable > 0)
-                                      //   Text(
-                                      //     "Previous Payable : \$ ${totalPayable.toStringAsFixed(2)}",
-                                      //     style: TextStyle(
-                                      //         fontWeight: FontWeight.bold),
-                                      //   ),di
-
-                                      if (repDiscountModel != null &&
-                                          isDiscountApplicable)
-                                        Text(
-                                          "Today's Order Amount : \$ " +
-                                              totalPrice.toStringAsFixed(2),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      if (repDiscountModel != null &&
-                                          isDiscountApplicable)
-                                        Text(
-                                          "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      Text(
-                                        "Order Payable Amount : \$ " +
-                                            getOrderAmount(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Total Balance: \$ " +
-                                            getTotalBalance(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Remaining Balance : \$ " +
-                                            getRemainigBalance(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      //! Total Paid
-//(totalPrice - totalPaid)
-                                      //! credit limit is working fine but it is removed due to client requirement
-                                      //! changes
-                                      // Text(
-                                      //     "Credit Limit : \$ ${creditLimit.toStringAsFixed(2)}"),
-
-                                      // if (totalPayable > 0)
-                                      //   Text(
-                                      //       "\$${totalPrice.toStringAsFixed(2)} + ${totalPayable.toStringAsFixed(2)} = " +
-                                      //           getTotalPrice()),
-                                    ],
-                                  )
+                                Expanded(
+                                    flex: 3,
+                                    child: Text(paymentStringList[index],
+                                        style: nameStyle)),
                               ],
                             ),
-                          ),
-                          SizedBox(height: getProportionateScreenHeight(20)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Text.rich(
-                              //   TextSpan(
-                              //     text: "Total:\n", //! total price
-                              //     children: [
-                              //       TextSpan(
-                              //         // text: getTotalPrice(),
-                              //         text: totalPrice.toStringAsFixed(2),
+                          );
+                        },
+                      ),
 
-                              //         style: TextStyle(
-                              //             fontSize: 16, color: Colors.black),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+                    if (model.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            // SizedBox(
+                            //   child: PaymentCard(
+                            //     image: getSumupImageUrl(),
+                            //     color: selectedPaymentIndex == 1 ? true : false,
+                            //     onTap: () {
+                            //       selectedPaymentIndex = 1;
+                            //
+                            //       handleSumupClick();
+                            //       setState(() {});
+                            //     },
+                            //     paymentName: 'SumUp',
+                            //   ),
+                            // ),
+                            //! payment by cash
+                            PaymentCard(
+                              image:
+                              'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+                              color: selectedPaymentIndex == 2 ? true : false,
+                              onTap: () {
+                                selectedPaymentIndex = 2;
+                                setState(() {});
+                              },
+                              paymentName: 'Cash',
+                            ),
 
-                              DefaultButton(
-                                text: "Check Out",
-                                width: getProportionateScreenWidth(300),
-                                press: () async {
-                                  // var box = Hive.box("salesrep_cart_box");
-                                  // try {
-                                  //   if (box.containsKey(
-                                  //       widget.customerId.toString() +
-                                  //           "salesrep_cart_list")) {
-                                  //     log("yes it  has key");
-                                  //   }
-                                  // } catch (e) {
-                                  //   log("message");
-                                  // }
+                            //! payment with cheque
+                            PaymentCard(
+                              image:
+                              'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
+                              color: selectedPaymentIndex == 3 ? true : false,
+                              onTap: () {
+                                selectedPaymentIndex = 3;
+                                setState(() {});
+                              },
+                              paymentName: 'Cheque',
+                            ),
 
-                                  // return;
-                                  log("totalPrice = $totalPrice");
-                                  log("model.length = ${model.length}");
-                                  if (totalPrice <= 0 || model.isEmpty) {
-                                    showAwesomeAlert(
-                                        context: context,
-                                        msg: 'Order Amount can\'t be zero',
-                                        animType: AnimType.topSlide,
-                                        dialogType: DialogType.info,
-                                        onOkPress: () async {});
-                                  } else {
-                                    showAwesomeAlert(
-                                      context: context,
-                                      msg: 'Do you want to place the order?',
-                                      animType: AnimType.topSlide,
-                                      dialogType: DialogType.info,
-                                      okBtnText: "Preview",
-                                      onOkPress: () async {
-                                        showOrderPreviewSheet();
-                                      },
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                            //! payment with cash app
+                            PaymentCard(
+                              image:
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
+                              color: selectedPaymentIndex == 4 ? true : false,
+                              onTap: () {
+                                selectedPaymentIndex = 4;
+                                setState(() {});
+                              },
+                              paymentName: 'Cash App',
+                            ),
+                          ],
+                        ),
+                      ),
+                    //! cash on delivery
+
+                    if (selectedPaymentIndex == 2 && model.isNotEmpty)
+                      cashPaymentDesign(),
+
+                    //! cheque payment
+                    if (selectedPaymentIndex == 3 && model.isNotEmpty)
+                      chequePaymentDesign(),
+
+                    //! cashapp payment payment
+
+                    if (selectedPaymentIndex == 4 && model.isNotEmpty)
+                      cashAppPaymentDesign(),
+                  ],
+                ),
+              ),
+              bottomNavigationBar: model.isNotEmpty &&
+                  Provider
+                      .of<AccountBalanceProvider>(context, listen: true)
+                      .accountBalanceModel !=
+                      null
+                  ? Consumer<AccountBalanceProvider>(
+                  builder: (context, data, _) {
+                    if (data.accountBalanceModel!.data!.creditLimit != null) {
+                      log("Here Error");
+                      // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
+                    }
+
+                    ///Creating Issue
+                    previousBalance =
+                    data.accountBalanceModel!.data!.accountBalance!;
+                    log("Previous Balance $previousBalance");
+
+                    // if (data.accountBalanceModel!.data!.accountBalance! < 0) {
+                    //   totalPayable =
+                    //       (data.accountBalanceModel!.data!.accountBalance!).abs();
+                    // } else {
+                    //   previousBalance =
+                    //       data.accountBalanceModel!.data!.accountBalance!;
+                    // }
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: getProportionateScreenWidth(15),
+                        horizontal: getProportionateScreenWidth(30),
+                      ),
+                      // height: 174,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, -15),
+                            blurRadius: 20,
+                            color: const Color(0xFFDADADA).withOpacity(0.15),
+                          )
                         ],
                       ),
-                    ),
-                  );
-                })
-              : const SizedBox(),
-        );
-      }),
+                      child: SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          openInvoice();
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(8),
+                                          height: getProportionateScreenWidth(
+                                              40),
+                                          width: getProportionateScreenWidth(
+                                              40),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF5F6F9),
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                              "assets/icons/receipt.svg"),
+                                        ),
+                                      ),
+                                      const Text("Invoice")
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  if (data.accountBalanceModel != null)
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Previous Balance : \$ ${previousBalance
+                                              .toStringAsFixed(2)}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        // if (totalPayable > 0)
+                                        //   Text(
+                                        //     "Previous Payable : \$ ${totalPayable.toStringAsFixed(2)}",
+                                        //     style: TextStyle(
+                                        //         fontWeight: FontWeight.bold),
+                                        //   ),di
+
+                                        if (repDiscountModel != null &&
+                                            isDiscountApplicable)
+                                          Text(
+                                            "Today's Order Amount : \$ " +
+                                                totalPrice.toStringAsFixed(2),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        if (repDiscountModel != null &&
+                                            isDiscountApplicable)
+                                          Text(
+                                            "Discount in ${isDiscountInPercent
+                                                ? 'Percent'
+                                                : 'Dollar'} : \$ ${repDiscountModel!
+                                                .data.discount}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        Text(
+                                          "Order Payable Amount : \$ " +
+                                              getOrderAmount(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Total Balance: \$ " +
+                                              getTotalBalance(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Today's Payment : \$ ${totalPaid
+                                              .toStringAsFixed(2)}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Remaining Balance : \$ " +
+                                              getRemainigBalance(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        //! Total Paid
+//(totalPrice - totalPaid)
+                                        //! credit limit is working fine but it is removed due to client requirement
+                                        //! changes
+                                        // Text(
+                                        //     "Credit Limit : \$ ${creditLimit.toStringAsFixed(2)}"),
+
+                                        // if (totalPayable > 0)
+                                        //   Text(
+                                        //       "\$${totalPrice.toStringAsFixed(2)} + ${totalPayable.toStringAsFixed(2)} = " +
+                                        //           getTotalPrice()),
+                                      ],
+                                    )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Text.rich(
+                                //   TextSpan(
+                                //     text: "Total:\n", //! total price
+                                //     children: [
+                                //       TextSpan(
+                                //         // text: getTotalPrice(),
+                                //         text: totalPrice.toStringAsFixed(2),
+
+                                //         style: TextStyle(
+                                //             fontSize: 16, color: Colors.black),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+
+                                DefaultButton(
+                                  text: "Check Out",
+                                  width: getProportionateScreenWidth(300),
+                                  press: () async {
+                                    // var box = Hive.box("salesrep_cart_box");
+                                    // try {
+                                    //   if (box.containsKey(
+                                    //       widget.customerId.toString() +
+                                    //           "salesrep_cart_list")) {
+                                    //     log("yes it  has key");
+                                    //   }
+                                    // } catch (e) {
+                                    //   log("message");
+                                    // }
+
+                                    // return;
+                                    log("totalPrice = $totalPrice");
+                                    log("model.length = ${model.length}");
+                                    if (totalPrice <= 0 || model.isEmpty) {
+                                      showAwesomeAlert(
+                                          context: context,
+                                          msg: 'Order Amount can\'t be zero',
+                                          animType: AnimType.topSlide,
+                                          dialogType: DialogType.info,
+                                          onOkPress: () async {});
+                                    } else {
+                                      showAwesomeAlert(
+                                        context: context,
+                                        msg: 'Do you want to place the order?',
+                                        animType: AnimType.topSlide,
+                                        dialogType: DialogType.info,
+                                        okBtnText: "Preview",
+                                        onOkPress: () async {
+                                          showOrderPreviewSheet();
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  })
+                  : const SizedBox(),
+            );
+          }),
     );
   }
 
@@ -834,7 +862,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     log(init.toString());
     var login = await Sumup.login();
     var loginToken =
-        await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
+    await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
 
     var settings = await Sumup.openSettings();
     var prepare = await Sumup.wakeUpTerminal();
@@ -941,7 +969,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
               showAwesomeAlert(
                   context: context, msg: "Cheque No can't be empty");
               return;
-            } else if (amountCont.text.trim().isEmpty) {
+            } else if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: context, msg: "Please Enter amount first");
@@ -1024,7 +1054,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: context, msg: "Please Enter amount first");
@@ -1092,7 +1124,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: context, msg: "Please Enter amount first");
@@ -1161,12 +1195,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   String getTotalBalance() {
     num totalBalance = 0;
-    log("getTotalBalance fired with isDiscountApplicable = $isDiscountApplicable");
-    log("getTotalBalance fired with isDiscountInPercent = $isDiscountInPercent");
+    log(
+        "getTotalBalance fired with isDiscountApplicable = $isDiscountApplicable");
+    log(
+        "getTotalBalance fired with isDiscountInPercent = $isDiscountInPercent");
     // totalBalance = previousBalance + totalPaid; //! before
     if (isDiscountApplicable) {
       if (isDiscountInPercent) {
-        log("totalPrice * repDiscountModel!.data.discount / 100 = ${totalPrice * repDiscountModel!.data.discount / 100}");
+        log("totalPrice * repDiscountModel!.data.discount / 100 = ${totalPrice *
+            repDiscountModel!.data.discount / 100}");
         totalBalance = previousBalance +
             (totalPrice - totalPrice * repDiscountModel!.data.discount / 100);
       } else {
@@ -1198,6 +1235,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     return "";
   }
 
+  String? myPath;
+
   Future<void> openInvoice() async {
     CartModel cartModel = CartModel(
       orderPayment: paymentsList,
@@ -1227,10 +1266,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     if (isDiscountApplicable) {
       if (isDiscountInPercent) {
         discountString =
-            "Discount in Percent = ${repDiscountModel!.data.discount}";
+        "Discount in Percent = ${repDiscountModel!.data.discount}";
       } else {
         discountString =
-            "Discount in Dollars = ${repDiscountModel!.data.discount}";
+        "Discount in Dollars = ${repDiscountModel!.data.discount}";
       }
     }
 
@@ -1248,7 +1287,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       isOrderCompleted: false,
     );
 
-    pdfService.savePdfFile("invoice_$number", data);
+    // myPath = pdfService.savePdfFile("invoice_$number", data);
+    await pdfService.savePdfFile("invoice_$number", data) as String?;
+
     number++;
   }
 
@@ -1269,9 +1310,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-        )),
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            )),
         builder: (BuildContext context) {
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -1296,7 +1337,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                       child: const Center(
                         child: Text('Order Preview',
                             style:
-                                TextStyle(color: Colors.white, fontSize: 18)),
+                            TextStyle(color: Colors.white, fontSize: 18)),
                       )),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -1332,15 +1373,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFF5F6F9),
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                          BorderRadius.circular(15),
                                         ),
                                         // child: Image.network(cart.product.images[0]),
                                         child: Image.network(model[index]
-                                                        .productImagePath ==
-                                                    "" ||
-                                                // ignore: unnecessary_null_comparison
-                                                model[index].productImagePath ==
-                                                    null
+                                            .productImagePath ==
+                                            "" ||
+                                            // ignore: unnecessary_null_comparison
+                                            model[index].productImagePath ==
+                                                null
                                             ? dummyImageUrl
                                             : model[index].productImagePath),
                                       ),
@@ -1349,12 +1390,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   const SizedBox(width: 20),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                1.8,
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width /
+                                            1.8,
                                         child: Text(
                                           model[index].productName,
                                           overflow: TextOverflow.ellipsis,
@@ -1376,17 +1420,19 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                           children: [
                                             TextSpan(
                                                 text:
-                                                    " x ${model[index].quantity}",
-                                                style: Theme.of(context)
+                                                " x ${model[index].quantity}",
+                                                style: Theme
+                                                    .of(context)
                                                     .textTheme
                                                     .bodyText1),
                                             TextSpan(
                                                 text: " = \$" +
                                                     (model[index].price *
-                                                            model[index]
-                                                                .quantity)
+                                                        model[index]
+                                                            .quantity)
                                                         .toStringAsFixed(2),
-                                                style: Theme.of(context)
+                                                style: Theme
+                                                    .of(context)
                                                     .textTheme
                                                     .bodyText1),
                                           ],
@@ -1419,7 +1465,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 4.0, bottom: 4),
+                                const EdgeInsets.only(top: 4.0, bottom: 4),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -1450,7 +1496,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                           ),
                         ),
                         Text(
-                          "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
+                          "Previous Balance : \$ ${previousBalance
+                              .toStringAsFixed(2)}",
                           // style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         if (repDiscountModel != null && isDiscountApplicable)
@@ -1461,7 +1508,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                           ),
                         if (repDiscountModel != null && isDiscountApplicable)
                           Text(
-                            "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
+                            "Discount in ${isDiscountInPercent
+                                ? 'Percent'
+                                : 'Dollar'} : \$ ${repDiscountModel!.data
+                                .discount}",
                             // style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         Text(
@@ -1473,7 +1523,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                           // style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
+                          "Today's Payment : \$ ${totalPaid.toStringAsFixed(
+                              2)}",
                           // style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -1499,8 +1550,82 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(0))),
-                                    onPressed: () {},
+                                            BorderRadius.circular(0))),
+                                    onPressed: () async {
+                                      // Create the cartModel and generate the discountString
+                                      CartModel cartModel = CartModel(
+                                        orderPayment: paymentsList,
+                                        customerId: widget.customerId,
+                                        dateTime: DateTime.now(),
+                                        orderBy: 2,
+                                        orderId: 0,
+                                        orderProducts: model,
+                                        discountType: isDiscountApplicable &&
+                                            isDiscountInPercent
+                                            ? "By Percentage"
+                                            : "By Value",
+                                        discount: repDiscountModel != null &&
+                                            isDiscountApplicable
+                                            ? repDiscountModel!.data.discount
+                                            : 0,
+                                        grandTotal: totalPrice,
+                                        status: '',
+                                        totalPrice: totalPrice,
+                                        orderPaidAmount: totalPaid,
+                                        orderPendingAmount:
+                                        double.parse(getRemainigBalance()),
+                                        remainingBalance:
+                                        double.parse(getRemainigBalance()),
+                                        totalBalance:
+                                        double.parse(getTotalBalance()),
+                                        previousBalance: previousBalance,
+                                        netTotal:
+                                        double.parse(getOrderAmount()),
+                                      );
+
+                                      String discountString = '';
+                                      if (isDiscountApplicable) {
+                                        if (isDiscountInPercent) {
+                                          discountString =
+                                          "Discount in Percent = ${repDiscountModel!
+                                              .data.discount}";
+                                        } else {
+                                          discountString =
+                                          "Discount in Dollars = ${repDiscountModel!
+                                              .data.discount}";
+                                        }
+                                      }
+
+                                      final data =
+                                      await pdfService.createInvoice(
+                                        discountValue: repDiscountModel !=
+                                            null &&
+                                            isDiscountApplicable
+                                            ? repDiscountModel!.data.discount
+                                            .toStringAsFixed(2)
+                                            : null,
+                                        isDiscountInPercent:
+                                        isDiscountApplicable
+                                            ? isDiscountInPercent
+                                            : null,
+                                        ctx: context,
+                                        cartModel: cartModel,
+                                        customerName: widget.customerName,
+                                        repName: storage.getUserFirstName() +
+                                            " " +
+                                            storage.getUserLastName(),
+                                        isOrderCompleted: false,
+                                      );
+
+                                      final filePath = await pdfService
+                                          .savePdfFile("invoice_$number", data);
+                                      print('PDF File Path: $filePath');
+
+                                      Navigator.pop(context);
+
+                                      await _sendEmail([filePath]);
+                                      // number++;
+                                    },
                                     child: const Text(
                                       'Share with Gmail',
                                       style: TextStyle(color: Colors.white),
@@ -1512,7 +1637,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(0))),
+                                            BorderRadius.circular(0))),
                                     onPressed: () {
                                       newSendSms(widget.phone);
                                     },
