@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_post_request.dart';
 
-class UpdateCustomService {
+class UpdateCustomerService {
   Future updateCustomerService(
       {required BuildContext context,
       isSaleREpProfile = false,

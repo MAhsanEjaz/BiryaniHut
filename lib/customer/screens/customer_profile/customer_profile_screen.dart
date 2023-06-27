@@ -15,7 +15,7 @@ import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/providers/customer_profile_provider.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
 import 'package:shop_app/services/phone_format_service.dart';
-import 'package:shop_app/services/update_custom_service.dart';
+import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 
@@ -116,7 +116,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
 
   updateCustomerHandler() async {
     CustomLoader.showLoader(context: context);
-    bool res = await UpdateCustomService().updateCustomerService(
+    bool res = await UpdateCustomerService().updateCustomerService(
         context: context,
         address: addressCont.text,
         salonName: saloonControl.text,

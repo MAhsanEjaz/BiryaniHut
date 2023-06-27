@@ -20,7 +20,7 @@ import 'package:shop_app/sales%20rep/salesrep_products_page.dart';
 import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
-import 'package:shop_app/services/update_custom_service.dart';
+import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:sumup/sumup.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -121,7 +121,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   updateCustomerHandler() async {
     CustomLoader.showLoader(context: context);
 
-    bool res = await UpdateCustomService().updateCustomerService(
+    bool res = await UpdateCustomerService().updateCustomerService(
         context: context,
         address: widget.address.text,
         email: widget.email.text,
@@ -281,8 +281,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -303,8 +303,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -324,8 +324,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -580,8 +580,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         );
                                       }));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -611,8 +611,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1356,8 +1356,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: const Row(
-                        children: [
+                      child: Row(
+                        children: const [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,
