@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/customer/screens/product_details/components/product_description.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/products_model.dart';
@@ -70,16 +71,24 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
           onTap: () {
 //! navigate to cart page in rep side
 //! in customer side on click will take it to product detail page
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SalesRepCartPage(
-                    customerId: widget.customerId,
-                    customerName: widget.customerName,
-                    email: widget.email,
-                    phone: widget.phone,
-                  ),
-                ));
+            if (widget.customerId == 0) {
+              // Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => ProductDescription(product: product, element: element, isReseller: isReseller),
+              //               ));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SalesRepCartPage(
+                      customerId: widget.customerId,
+                      customerName: widget.customerName,
+                      email: widget.email,
+                      phone: widget.phone,
+                    ),
+                  ));
+            }
 
             // Navigator.push(
             //     context,

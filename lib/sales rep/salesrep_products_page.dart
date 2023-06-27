@@ -21,14 +21,14 @@ class SalesRepProductsPage extends StatefulWidget {
   SalesRepProductsPage({
     Key? key,
     required this.isReseller,
-    this.customerName,
+    required this.customerName,
     required this.email,
     required this.phone,
     required this.customerId,
   }) : super(key: key);
   final bool isReseller;
   final int customerId;
-  String? customerName;
+  String customerName;
   String email;
   String phone;
 
@@ -72,6 +72,8 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
       Provider.of<CartCounterProvider>(context, listen: false)
           .setCount(list.length);
     }
+
+    log("widget.customerId = ${widget.customerId}");
     super.initState();
   }
 
@@ -92,7 +94,9 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductsProvider>(builder: (context, data, _) {
-      myProducts = data.prod!;
+      if (data != null) {
+        myProducts = data.prod!;
+      }
       return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -110,7 +114,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
             ),
             actions: [
               NavigatorWidget(),
-              if (widget.customerName != null)
+              if (widget.customerId != 0)
                 Row(
                   children: [
                     Consumer<CartCounterProvider>(builder: (context, cart, _) {
@@ -123,7 +127,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SalesRepCartPage(
-                                    customerName: widget.customerName!,
+                                    customerName: widget.customerName,
                                     customerId: widget.customerId,
                                     phone: widget.phone,
                                     email: widget.email,
@@ -149,7 +153,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                if (widget.customerName != null)
+                if (widget.customerName != "")
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -205,7 +209,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                     children: [
                       for (var product in callProducts)
                         SalesrepProductsWidget(
-                          customerName: widget.customerName!,
+                          customerName: widget.customerName,
                           productData: product,
                           customerId: widget.customerId,
                           isShowCartBtn: widget.isReseller,
