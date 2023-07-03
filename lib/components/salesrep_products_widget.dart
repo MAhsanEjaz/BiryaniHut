@@ -78,6 +78,9 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
               //                 builder: (context) => ProductDescription(product: product, element: element, isReseller: isReseller),
               //               ));
             } else {
+              // Provider.of<ProductsProvider>(context, listen: false)
+              //     .prod!
+              //     .clear();
               Navigator.push(
                   context,
                   MaterialPageRoute(
