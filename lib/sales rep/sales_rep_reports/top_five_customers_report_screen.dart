@@ -184,8 +184,7 @@ class _TopFiveCustomersReportScreenState
                                         builder: (BuildContext context,
                                             Widget? child) {
                                           return Theme(
-                                            data:
-                                                customDatePickerTheme(context),
+                                            data:customDatePickerTheme(context),
                                             // Apply the custom theme
                                             child: child!,
                                           );
