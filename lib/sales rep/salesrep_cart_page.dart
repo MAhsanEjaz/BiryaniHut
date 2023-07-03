@@ -313,8 +313,13 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                               num price =
                                   model[index].price * model[index].quantity;
 
+                              log("price = $price");
+                              log("model[index].price = ${model[index].price}");
+                              log("model[index].quantity = ${model[index].quantity}");
+
                               totalPrice = totalPrice - price;
                               model.removeAt(index);
+                              setState(() {});
 
                               cartStorage.deleteCartItem(
                                   index: index, customerId: widget.customerId);
@@ -324,9 +329,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
                               cartItemsCount =
                                   cartItemsCount - model[index].quantity;
-
+                              log("deleting the item and setState is fired");
                               updateIsDiscountApplicable();
                               setState(() {});
+
                               log("model length = ${model.length}");
                             },
                             background: Container(
@@ -787,13 +793,16 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                             },
                           ),
                           SizedBox(height: getProportionateScreenHeight(12)),
-                          DefaultButton(
-                            text: "Add New Item +",
-                            width: getProportionateScreenWidth(300),
-                            press: () async {
-                              Navigator.of(context).pop();
-                            },
-                          )
+                          Builder(builder: (context) {
+                            return DefaultButton(
+                              text: "Add New Item +",
+                              width: getProportionateScreenWidth(300),
+                              press: () async {
+                                Navigator.of(context).pop();
+                                // Focus.of(context).requestFocus(FocusNode());
+                              },
+                            );
+                          })
                         ],
                       ),
                     ),
@@ -1256,6 +1265,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     } else {
       isDiscountApplicable = false;
     }
+    setState(() {});
   }
 
   void showOrderPreviewSheet() {

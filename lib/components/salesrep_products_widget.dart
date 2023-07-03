@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/customer/screens/product_details/components/product_description.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/models/cart_model.dart';
 import 'package:shop_app/models/products_model.dart';
@@ -42,20 +43,11 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
   SalesrepCartStorage cartStorage = SalesrepCartStorage();
 
   TextEditingController quantityCont = TextEditingController();
-  TextEditingController updateControl = TextEditingController();
+  FocusNode quantityNode = FocusNode();
+  // TextEditingController updateControl = TextEditingController();
   List<String> list = [];
   List<CartItem> model = [];
   num totalPrice = 0;
-
-  // quantityFunction() async {
-  //   for (int i = 0; i < model.length; i++) {
-  //     updateControl.text = model[i].quantity.toString();
-  //     print(updateControl.text);
-  //     setState(() {});
-  //   }
-  // }
-
-  // TextEditingController quantityController = TextEditingController();
 
   @override
   void initState() {
@@ -79,16 +71,24 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
           onTap: () {
 //! navigate to cart page in rep side
 //! in customer side on click will take it to product detail page
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SalesRepCartPage(
-                    customerId: widget.customerId,
-                    customerName: widget.customerName,
-                    email: widget.email,
-                    phone: widget.phone,
-                  ),
-                ));
+            if (widget.customerId == 0) {
+              // Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => ProductDescription(product: product, element: element, isReseller: isReseller),
+              //               ));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SalesRepCartPage(
+                      customerId: widget.customerId,
+                      customerName: widget.customerName,
+                      email: widget.email,
+                      phone: widget.phone,
+                    ),
+                  ));
+            }
 
             // Navigator.push(
             //     context,
@@ -151,97 +151,99 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                               width: 100,
                             ),
                             if (widget.isShowCartBtn)
-                              InkWell(
-                                onTap: () {
-                                  // model.clear();
+                              Builder(builder: (context) {
+                                return InkWell(
+                                  onTap: () {
+                                    // model.clear();
 
-                                  totalPrice = 0;
-                                  getCartItems();
-                                  int quantity = int.parse(quantityCont.text);
-                                  if (quantityCont.text.isEmpty) {
-                                    showToast("Please add some quantity");
-                                    return;
-                                  }
+                                    totalPrice = 0;
+                                    getCartItems();
+                                    int quantity = int.parse(quantityCont.text);
+                                    if (quantityCont.text.isEmpty) {
+                                      showToast("Please add some quantity");
+                                      return;
+                                    }
 
-                                  /// check if the string contains only numbers
+                                    /// check if the string contains only numbers
 
-                                  else if (!isNumeric(quantityCont.text)) {
-                                    showToast("Quantity not valid");
-                                    return;
-                                  } else if (quantity < 1) {
-                                    showToast("Quantity can't be less than 1");
-                                    return;
-                                  }
+                                    else if (!isNumeric(quantityCont.text)) {
+                                      showToast("Quantity not valid");
+                                      return;
+                                    } else if (quantity < 1) {
+                                      showToast(
+                                          "Quantity can't be less than 1");
+                                      return;
+                                    }
 
-                                  List<CartItem> model = [];
+                                    List<CartItem> model = [];
 
-                                  bool isDuplicate = false;
+                                    bool isDuplicate = false;
 
-                                  if (cartStorage.getCartItems(
-                                          customerId: widget.customerId) !=
-                                      null) {
-                                    var list = cartStorage.getCartItems(
-                                        customerId: widget.customerId);
-                                    // log("listlist = $list");
+                                    if (cartStorage.getCartItems(
+                                            customerId: widget.customerId) !=
+                                        null) {
+                                      var list = cartStorage.getCartItems(
+                                          customerId: widget.customerId);
+                                      // log("listlist = $list");
 
-                                    list!.forEach((element) {
-                                      model.add(CartItem.fromJson(
-                                          json.decode(element)));
-                                    });
-                                    log("model length = ${model.length}");
+                                      list!.forEach((element) {
+                                        model.add(CartItem.fromJson(
+                                            json.decode(element)));
+                                      });
+                                      log("model length = ${model.length}");
 
-                                    model.forEach((element) {
-                                      if (element.productId ==
-                                          widget.productData.productId) {
-                                        isDuplicate = true;
+                                      model.forEach((element) {
+                                        if (element.productId ==
+                                            widget.productData.productId) {
+                                          isDuplicate = true;
+                                        }
+                                      });
+
+                                      if (isDuplicate) {
+                                        showToast("Already Added to Cart");
+                                      } else {
+                                        showToast("Added to Cart");
+
+                                        addtoCart(
+                                          widget.productData,
+                                          context,
+                                          quantity,
+                                        );
                                       }
-                                    });
-
-                                    if (isDuplicate) {
-                                      showToast("Already Added to Cart");
                                     } else {
                                       showToast("Added to Cart");
 
-                                      addtoCart(
-                                        widget.productData,
-                                        context,
-                                        quantity,
-                                      );
+                                      addtoCart(widget.productData, context,
+                                          quantity);
                                     }
-                                  } else {
-                                    showToast("Added to Cart");
-
-                                    addtoCart(
-                                        widget.productData, context, quantity);
-                                  }
-
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) =>
-                                              SalesRepCartPage(
-                                                customerId: widget.customerId,
-                                                customerName:
-                                                    widget.customerName,
-                                                email: widget.email,
-                                                phone: widget.phone,
-                                              )));
-                                  Focus.of(context).requestFocus(FocusNode());
-                                },
-                                child: Card(
-                                    color: appColor,
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      ),
-                                    )),
-                              )
+                                    quantityNode.unfocus();
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) =>
+                                                SalesRepCartPage(
+                                                  customerId: widget.customerId,
+                                                  customerName:
+                                                      widget.customerName,
+                                                  email: widget.email,
+                                                  phone: widget.phone,
+                                                )));
+                                  },
+                                  child: Card(
+                                      color: appColor,
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(2.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                      )),
+                                );
+                              })
                           ],
                         ),
                       )
@@ -291,6 +293,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                           ),
                       child: Center(
                         child: TextField(
+                          focusNode: quantityNode,
                           controller: quantityCont,
                           textAlign: TextAlign.center,
                           decoration: const InputDecoration(

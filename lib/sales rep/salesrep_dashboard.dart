@@ -167,10 +167,11 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SalesRepProductsPage(
-                                    email: data.repProfileModel!.data.email,
-                                    phone: data.repProfileModel!.data.phone,
+                                    email: "",
+                                    phone: "",
                                     customerId: 0,
                                     isReseller: false,
+                                    customerName: "",
                                   )));
                     },
                   ),
