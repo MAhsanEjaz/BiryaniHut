@@ -215,6 +215,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                           isShowCartBtn: widget.isReseller,
                           email: widget.email,
                           phone: widget.phone,
+                          callProducts: callProducts,
                         )
                     ],
                   )

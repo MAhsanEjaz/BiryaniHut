@@ -22,6 +22,8 @@ class SalesrepProductsWidget extends StatefulWidget {
   ProductData productData;
   int customerId;
   String customerName;
+  // List<ProductData> myProducts = [];
+  List<ProductData> callProducts = [];
   bool isShowCartBtn;
   String email, phone;
 
@@ -31,6 +33,8 @@ class SalesrepProductsWidget extends StatefulWidget {
       required this.customerId,
       required this.customerName,
       required this.email,
+      // required this.myProducts,
+      required this.callProducts,
       required this.phone,
       required this.isShowCartBtn})
       : super(key: key);
@@ -44,6 +48,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 
   TextEditingController quantityCont = TextEditingController();
   FocusNode quantityNode = FocusNode();
+
   // TextEditingController updateControl = TextEditingController();
   List<String> list = [];
   List<CartItem> model = [];
@@ -217,6 +222,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                           quantity);
                                     }
                                     quantityNode.unfocus();
+
                                     Navigator.push(
                                         context,
                                         CupertinoPageRoute(
@@ -228,6 +234,12 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                                   email: widget.email,
                                                   phone: widget.phone,
                                                 )));
+                                    final data = Provider.of<ProductsProvider>(
+                                            context,
+                                            listen: false)
+                                        .prod;
+                                    widget.callProducts = data!;
+                                    setState(() {});
                                   },
                                   child: Card(
                                       color: appColor,
