@@ -256,6 +256,7 @@ class SaleRepOrdersModel {
         data!.add(SaleRapOrdersList.fromJson(v));
       });
     }
+
     statusCode = json['statusCode'];
     message = json['message'];
   }
@@ -393,6 +394,7 @@ class SaleRapOrdersList {
     if (orderProducts != null) {
       data['orderProducts'] = orderProducts!.map((v) => v.toJson()).toList();
     }
+
     if (orderPayment != null) {
       data['orderPayment'] = orderPayment!.map((v) => v.toJson()).toList();
     }

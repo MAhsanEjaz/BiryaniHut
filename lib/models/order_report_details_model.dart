@@ -32,7 +32,6 @@ class OrderReports {
     required this.customerImagePath,
     this.customerImage,
     this.netTotal,
-
     required this.saleRepName,
     required this.rating,
     required this.orderProducts,
@@ -99,7 +98,8 @@ class OrderReports {
         orderPaidAmount: json["orderPaidAmount"],
         orderBy: json["orderBy"],
         totalBalance: json["totalBalance"],
-        previousBalance: json["previousBalance"],
+        previousBalance:
+            json["previousBalance"] == -0 ? 0 : json["previousBalance"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -101,8 +101,10 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
     if (customerProfile != null &&
         customerProfile.data != null &&
         customerProfile.data!.saleRep != null) {
-      salesRepCont.text =
-          (customerProfile.data!.saleRep!.id ?? 'Not Assigned yet').toString();
+      salesRepCont.text = (customerProfile.data!.saleRep!.firstName! +
+              " " +
+              customerProfile.data!.saleRep!.lastName!)
+          .toString();
     } else {
       salesRepCont.text = 'Not Assigned yet';
     }
