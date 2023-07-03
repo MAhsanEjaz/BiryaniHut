@@ -20,6 +20,7 @@ import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/register_service.dart';
+import 'package:shop_app/services/reseller_customers_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 import 'package:shop_app/customer/login/login_page.dart';
@@ -117,12 +118,20 @@ class _SignUpScreenState extends State<SignUpPage> {
   String? imagePath;
   String passChangedVal = '';
 
+  getResellerCustomerHandler() async {
+    CustomLoader.showLoader(context: context);
+    await ResellerCustomerService()
+        .getCustomerList(context: context, isReport: false);
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getAllStatesHandler();
+      getResellerCustomerHandler();
     });
 
     phoneCont.addListener(() {
@@ -251,18 +260,23 @@ class _SignUpScreenState extends State<SignUpPage> {
                                   ),
                                 ),
                               )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.file(
-                                  _image!,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                ),
+                            : Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      _image!,
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ],
                               ),
                       ),
                       Positioned(
-                        right: 1,
+                        right: .3,
+                        top: -.2,
                         child: InkWell(
                           onTap: () {
                             showModalBottomSheet(
@@ -318,7 +332,16 @@ class _SignUpScreenState extends State<SignUpPage> {
                                     color: Colors.white,
                                   ),
                                 )
-                              : const SizedBox(),
+                              : Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle, color: appColor),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       )
                     ],
