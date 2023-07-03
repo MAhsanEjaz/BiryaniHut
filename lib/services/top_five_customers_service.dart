@@ -21,7 +21,9 @@ class TopFiveCustomersService {
 
     try {
       http.Response response = await http.get(Uri.parse(
-          '$apiBaseUrl/Customer/GetTopFiveCustomers/${storage.getUserId()}?startDate=${startDate}&endTime=${endDate}'));
+          '$apiBaseUrl/Customer/GetTopFiveCustomers/${storage.getUserId()}?startDate=$startDate&endTime=$endDate'));
+
+      log('url--->$apiBaseUrl/Customer/GetTopFiveCustomers/${storage.getUserId()}?startDate=$startDate&endTime=$endDate');
 
       log('response--->${response.body}');
       log('response--->${response.statusCode}');
