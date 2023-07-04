@@ -123,7 +123,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   // TextEditingController phone = TextEditingController();
   // TextEditingController address = TextEditingController();
 
-  updateCustomerHandler(String city, String state) async {
+  updateCustomerHandler() async {
     CustomLoader.showLoader(context: context);
 
     bool res = await UpdateCustomerService().updateCustomerService(
@@ -134,8 +134,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
-        city: city,
-        state: state,
+        city: widget.cityName,
+        state: widget.statesName,
         phone: widget.phone.text);
 
     if (res == true) {
@@ -369,9 +369,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 child: ElevatedButton(
                                                   onPressed: () async {
                                                     if (customUpdateValidation()) {
-                                                      await updateCustomerHandler(
-                                                          widget.cityName!,
-                                                          widget.statesName!);
+                                                      await updateCustomerHandler();
                                                       Navigator.pop(context);
                                                     }
                                                   },
@@ -1464,6 +1462,9 @@ class _DropDownClassState extends State<DropDownClass> {
     });
   }
 
+  String? city;
+  String? state;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -1496,7 +1497,10 @@ class _DropDownClassState extends State<DropDownClass> {
                   items: statesModel.map((e) {
                     return DropdownMenuItem(
                         onTap: () {
-                          widget.statesName = e.stateName;
+                          city = e.stateName;
+                          widget.statesName = city;
+                          setState(() {});
+                          print('dataStates----->${widget.statesName}');
 
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
@@ -1541,7 +1545,9 @@ class _DropDownClassState extends State<DropDownClass> {
                   items: citiesModel.map((e) {
                     return DropdownMenuItem(
                         onTap: () {
-                          widget.cityName = e.cityName;
+                          state = e.cityName;
+                          widget.cityName = state;
+                          print('dataStates----->${widget.cityName}');
                           setState(() {});
                         },
                         value: e.cityName,
