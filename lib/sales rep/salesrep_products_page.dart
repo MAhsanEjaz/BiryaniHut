@@ -189,6 +189,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextField(
+                    focusNode: data.productSearchNode,
                     controller: data.searchCont,
                     hint: "Search Products",
                     prefixWidget: const Icon(Icons.search),
