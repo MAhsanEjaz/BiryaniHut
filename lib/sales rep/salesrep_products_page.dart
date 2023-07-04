@@ -43,7 +43,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   List<String> list = [];
 
   List<ProductData> myProducts = [];
-  List<ProductData> callProducts = [];
+  List<ProductData> searchProductsList = [];
 
   getProductsHandler(BuildContext context) async {
     CustomLoader.showLoader(context: context);
@@ -52,7 +52,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
         Provider.of<ProductsProvider>(context, listen: false);
     myProducts = currentProductsProvider.prod!;
 
-    callProducts = myProducts;
+    searchProductsList = myProducts;
 
     setState(() {});
     print('myList$myProducts');
@@ -84,7 +84,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   productSearchFunction(String query) {
     final queryLower = query.toLowerCase();
     setState(() {
-      callProducts = myProducts.where((element) {
+      searchProductsList = myProducts.where((element) {
         final name = element.productName.trim().toLowerCase();
         return name.contains(queryLower);
       }).toList();
@@ -94,9 +94,10 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductsProvider>(builder: (context, data, _) {
-      if (data != null) {
-        myProducts = data.prod!;
-      }
+      // searchProductsList = data.prod!;
+      // if (data != null) {
+      myProducts = data.prod!;
+      // }
       return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -123,6 +124,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                           svgSrc: "assets/icons/Cart Icon.svg",
                           press: () {
                             // if (list.length > 0) {
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -187,6 +189,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextField(
+                    focusNode: data.productSearchNode,
                     controller: data.searchCont,
                     hint: "Search Products",
                     prefixWidget: const Icon(Icons.search),
@@ -195,7 +198,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                         ? InkWell(
                             onTap: () {
                               data.searchCont.clear();
-                              callProducts = data.prod!;
+                              searchProductsList.clear();
                               setState(() {});
                             },
                             child: const Icon(Icons.close))
@@ -204,10 +207,11 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                   ),
                 ),
 
-                if (callProducts.isNotEmpty)
+                if (searchProductsList.isNotEmpty &&
+                    data.searchCont.text.isNotEmpty)
                   Wrap(
                     children: [
-                      for (var product in callProducts)
+                      for (var product in searchProductsList)
                         SalesrepProductsWidget(
                           customerName: widget.customerName,
                           productData: product,
@@ -219,7 +223,21 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                         )
                     ],
                   )
-                else if (callProducts.isEmpty &&
+                else if (myProducts.isNotEmpty)
+                  Wrap(
+                    children: [
+                      for (var product in myProducts)
+                        SalesrepProductsWidget(
+                          customerName: widget.customerName,
+                          productData: product,
+                          customerId: widget.customerId,
+                          isShowCartBtn: widget.isReseller,
+                          email: widget.email,
+                          phone: widget.phone,
+                        )
+                    ],
+                  )
+                else if (searchProductsList.isEmpty &&
                     data.searchCont.text.isNotEmpty)
                   const Align(
                       alignment: Alignment.bottomCenter,

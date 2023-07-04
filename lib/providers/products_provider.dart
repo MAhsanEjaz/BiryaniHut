@@ -5,6 +5,7 @@ import 'package:shop_app/models/products_model.dart';
 
 class ProductsProvider extends ChangeNotifier {
   List<ProductData>? prod = [];
+  FocusNode productSearchNode = FocusNode();
   TextEditingController searchCont = TextEditingController();
 
   updateProd({List<ProductData>? newProd}) {
@@ -13,8 +14,8 @@ class ProductsProvider extends ChangeNotifier {
   }
 
   clearProductsSearchCont() {
+    productSearchNode.unfocus();
     searchCont.clear();
-    log("clearProductsSearchCont is fired in provider");
     notifyListeners();
   }
 }

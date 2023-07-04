@@ -22,8 +22,6 @@ class SalesrepProductsWidget extends StatefulWidget {
   ProductData productData;
   int customerId;
   String customerName;
-  // List<ProductData> myProducts = [];
-  List<ProductData> callProducts = [];
   bool isShowCartBtn;
   String email, phone;
 
@@ -33,8 +31,6 @@ class SalesrepProductsWidget extends StatefulWidget {
       required this.customerId,
       required this.customerName,
       required this.email,
-      // required this.myProducts,
-      required this.callProducts,
       required this.phone,
       required this.isShowCartBtn})
       : super(key: key);
@@ -48,7 +44,6 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 
   TextEditingController quantityCont = TextEditingController();
   FocusNode quantityNode = FocusNode();
-
   // TextEditingController updateControl = TextEditingController();
   List<String> list = [];
   List<CartItem> model = [];
@@ -77,12 +72,10 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 //! navigate to cart page in rep side
 //! in customer side on click will take it to product detail page
             if (widget.customerId == 0) {
-              // Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                 builder: (context) => ProductDescription(product: product, element: element, isReseller: isReseller),
-              //               ));
             } else {
+              Provider.of<ProductsProvider>(context, listen: false)
+                  .clearProductsSearchCont();
+              Focus.of(context).requestFocus(FocusNode());
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -222,24 +215,23 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                           quantity);
                                     }
                                     quantityNode.unfocus();
-
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                SalesRepCartPage(
-                                                  customerId: widget.customerId,
-                                                  customerName:
-                                                      widget.customerName,
-                                                  email: widget.email,
-                                                  phone: widget.phone,
-                                                )));
-                                    final data = Provider.of<ProductsProvider>(
-                                            context,
+                                    Provider.of<ProductsProvider>(context,
                                             listen: false)
-                                        .prod;
-                                    widget.callProducts = data!;
-                                    setState(() {});
+                                        .clearProductsSearchCont();
+                                    if (mounted) {
+                                      Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  SalesRepCartPage(
+                                                    customerId:
+                                                        widget.customerId,
+                                                    customerName:
+                                                        widget.customerName,
+                                                    email: widget.email,
+                                                    phone: widget.phone,
+                                                  )));
+                                    }
                                   },
                                   child: Card(
                                       color: appColor,
