@@ -72,15 +72,10 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 //! navigate to cart page in rep side
 //! in customer side on click will take it to product detail page
             if (widget.customerId == 0) {
-              // Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                 builder: (context) => ProductDescription(product: product, element: element, isReseller: isReseller),
-              //               ));
             } else {
-              // Provider.of<ProductsProvider>(context, listen: false)
-              //     .prod!
-              //     .clear();
+              Provider.of<ProductsProvider>(context, listen: false)
+                  .clearProductsSearchCont();
+              Focus.of(context).requestFocus(FocusNode());
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -220,17 +215,23 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                           quantity);
                                     }
                                     quantityNode.unfocus();
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                SalesRepCartPage(
-                                                  customerId: widget.customerId,
-                                                  customerName:
-                                                      widget.customerName,
-                                                  email: widget.email,
-                                                  phone: widget.phone,
-                                                )));
+                                    Provider.of<ProductsProvider>(context,
+                                            listen: false)
+                                        .clearProductsSearchCont();
+                                    if (mounted) {
+                                      Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  SalesRepCartPage(
+                                                    customerId:
+                                                        widget.customerId,
+                                                    customerName:
+                                                        widget.customerName,
+                                                    email: widget.email,
+                                                    phone: widget.phone,
+                                                  )));
+                                    }
                                   },
                                   child: Card(
                                       color: appColor,

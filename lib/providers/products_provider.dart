@@ -14,8 +14,6 @@ class ProductsProvider extends ChangeNotifier {
 
   clearProductsSearchCont() {
     searchCont.clear();
-    // prod!.clear();
-    log("clearProductsSearchCont is fired in provider");
     notifyListeners();
   }
 }

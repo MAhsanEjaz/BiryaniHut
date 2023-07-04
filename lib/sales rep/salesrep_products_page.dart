@@ -94,9 +94,10 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductsProvider>(builder: (context, data, _) {
-      if (data != null) {
-        myProducts = data.prod!;
-      }
+      // searchProductsList = data.prod!;
+      // if (data != null) {
+      myProducts = data.prod!;
+      // }
       return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -123,6 +124,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                           svgSrc: "assets/icons/Cart Icon.svg",
                           press: () {
                             // if (list.length > 0) {
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -195,7 +197,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                         ? InkWell(
                             onTap: () {
                               data.searchCont.clear();
-                              searchProductsList = data.prod!;
+                              searchProductsList.clear();
                               setState(() {});
                             },
                             child: const Icon(Icons.close))
@@ -204,10 +206,25 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                   ),
                 ),
 
-                if (searchProductsList.isNotEmpty)
+                if (searchProductsList.isNotEmpty &&
+                    data.searchCont.text.isNotEmpty)
                   Wrap(
                     children: [
                       for (var product in searchProductsList)
+                        SalesrepProductsWidget(
+                          customerName: widget.customerName,
+                          productData: product,
+                          customerId: widget.customerId,
+                          isShowCartBtn: widget.isReseller,
+                          email: widget.email,
+                          phone: widget.phone,
+                        )
+                    ],
+                  )
+                else if (myProducts.isNotEmpty)
+                  Wrap(
+                    children: [
+                      for (var product in myProducts)
                         SalesrepProductsWidget(
                           customerName: widget.customerName,
                           productData: product,
