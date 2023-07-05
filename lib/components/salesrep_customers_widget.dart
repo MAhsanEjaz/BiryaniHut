@@ -138,8 +138,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
-        city: city,
-        state: state,
+        city: widget.cityName,
+        state: widget.statesName,
         phone: widget.phone.text);
 
     if (res == true) {
