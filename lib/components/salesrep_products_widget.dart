@@ -149,14 +149,14 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                   ),
                                 ));
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: 220,
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Center(
-                              child: Container(
+                            child: const Center(
+                              child: SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   color: appColor,
                                 ),
@@ -478,6 +478,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                       child: Center(
                         child: TextField(
                           focusNode: quantityNode,
+                          keyboardType: TextInputType.number,
                           controller: quantityCont,
                           textAlign: TextAlign.center,
                           decoration: const InputDecoration(
