@@ -34,6 +34,10 @@ import '../size_config.dart';
 import '../widgets/custom_textfield.dart';
 import 'default_button.dart';
 
+String? city;
+
+String? state;
+
 class SalesRepCustomersWidget extends StatefulWidget {
   SalesrepCustomerData customers;
 
@@ -134,8 +138,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
-        city: widget.cityName,
-        state: widget.statesName,
+        city: city,
+        state: state,
         phone: widget.phone.text);
 
     if (res == true) {
@@ -160,40 +164,40 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(context);
   }
 
-  // List<AllStatesModel> statesModel = [];
-  // List<AllCitiesModel> citiesModel = [];
-  //
-  // getAllCitiesHandler(String cityCode) async {
-  //   CustomLoader.showLoader(context: context);
-  //   await GetAllCitiesService()
-  //       .getAllCitiesService(context: context, cityCode: cityCode);
-  //
-  //   citiesModel =
-  //       Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-  //   print('cities---->${citiesModel}');
-  //   setState(() {});
-  //
-  //   CustomLoader.hideLoader(context);
-  // }
-  //
-  // getAllStatesHandler() async {
-  //   CustomLoader.showLoader(context: context);
-  //   await GetAllStatesServices().getAllStatesServices(context: context);
-  //
-  //   statesModel =
-  //       Provider.of<StatesProvider>(context, listen: false).statesData!;
-  //   print('states---->${statesModel}');
-  //   setState(() {});
-  //
-  //   CustomLoader.hideLoader(context);
-  // }
+  List<AllStatesModel> statesModel = [];
+  List<AllCitiesModel> citiesModel = [];
+
+  getAllCitiesHandler(String cityCode) async {
+    CustomLoader.showLoader(context: context);
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityCode: cityCode);
+
+    citiesModel =
+        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print('cities---->$citiesModel');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
+
+  getAllStatesHandler() async {
+    CustomLoader.showLoader(context: context);
+    await GetAllStatesServices().getAllStatesServices(context: context);
+
+    statesModel =
+        Provider.of<StatesProvider>(context, listen: false).statesData!;
+    print('states---->$statesModel');
+    setState(() {});
+
+    CustomLoader.hideLoader(context);
+  }
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // getAllStatesHandler();
+      getAllStatesHandler();
     });
 
     widget.firstName.text = widget.customers.firstName!;
@@ -370,6 +374,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   onPressed: () async {
                                                     if (customUpdateValidation()) {
                                                       await updateCustomerHandler();
+
+                                                      statesModel.clear();
+                                                      citiesModel.clear();
+
                                                       Navigator.pop(context);
                                                     }
                                                   },
@@ -438,146 +446,144 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       controller: widget.phone,
                                                       hint: 'Phone'),
 
-                                                  DropDownClass(
-                                                      statesName:
-                                                          widget.statesName,
-                                                      cityName:
-                                                          widget.cityName),
+                                                  // DropDownClass(
+                                                  //     cityData: widget.cityName,
+                                                  //     statesData:
+                                                  //         widget.statesName),
 
-                                                  // Padding(
-                                                  //   padding: const EdgeInsets
-                                                  //           .symmetric(
-                                                  //       horizontal: 6.0,
-                                                  //       vertical: 4),
-                                                  //   child: Container(
-                                                  //     decoration: BoxDecoration(
-                                                  //         color: kSecondaryColor
-                                                  //             .withOpacity(0.1),
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(8)),
-                                                  //     child: Padding(
-                                                  //       padding:
-                                                  //           const EdgeInsets
-                                                  //                   .symmetric(
-                                                  //               horizontal:
-                                                  //                   8.0),
-                                                  //       child: DropdownButton(
-                                                  //           isExpanded: true,
-                                                  //           underline:
-                                                  //               const SizedBox(),
-                                                  //           hint: Row(
-                                                  //             children: [
-                                                  //               SvgPicture
-                                                  //                   .asset(
-                                                  //                 "assets/svg/State Icon (1).svg",
-                                                  //                 width: 26,
-                                                  //                 height: 26,
-                                                  //                 alignment:
-                                                  //                     Alignment
-                                                  //                         .centerLeft,
-                                                  //               ),
-                                                  //               const SizedBox(
-                                                  //                   width: 10),
-                                                  //               Text(widget.statesName ==
-                                                  //                       null
-                                                  //                   ? 'Select State'
-                                                  //                   : widget
-                                                  //                       .statesName!),
-                                                  //             ],
-                                                  //           ),
-                                                  //           items: statesModel
-                                                  //               .map((e) {
-                                                  //             return DropdownMenuItem(
-                                                  //                 onTap: () {
-                                                  //                   widget.statesName =
-                                                  //                       e.stateName;
-                                                  //
-                                                  //                   WidgetsBinding
-                                                  //                       .instance
-                                                  //                       .addPostFrameCallback(
-                                                  //                           (timeStamp) {
-                                                  //                     getAllCitiesHandler(
-                                                  //                         e.stateCode!);
-                                                  //                   });
-                                                  //                   sestate(
-                                                  //                       () {});
-                                                  //                 },
-                                                  //                 value: e
-                                                  //                     .stateName,
-                                                  //                 child: Text(e
-                                                  //                     .stateName
-                                                  //                     .toString()));
-                                                  //           }).toList(),
-                                                  //           onChanged: (_) {}),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                  // Padding(
-                                                  //   padding: const EdgeInsets
-                                                  //           .symmetric(
-                                                  //       horizontal: 6.0,
-                                                  //       vertical: 4),
-                                                  //   child: Container(
-                                                  //     decoration: BoxDecoration(
-                                                  //         color: kSecondaryColor
-                                                  //             .withOpacity(0.1),
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(8)),
-                                                  //     child: Padding(
-                                                  //       padding:
-                                                  //           const EdgeInsets
-                                                  //                   .symmetric(
-                                                  //               horizontal:
-                                                  //                   8.0),
-                                                  //       child: DropdownButton(
-                                                  //           isExpanded: true,
-                                                  //           underline:
-                                                  //               const SizedBox(),
-                                                  //           hint: Row(
-                                                  //             children: [
-                                                  //               SvgPicture
-                                                  //                   .asset(
-                                                  //                 "assets/svg/City Icon (1).svg",
-                                                  //                 color: Colors
-                                                  //                     .black45,
-                                                  //                 width: 26,
-                                                  //                 height: 26,
-                                                  //                 fit: BoxFit
-                                                  //                     .cover,
-                                                  //                 alignment:
-                                                  //                     Alignment
-                                                  //                         .centerLeft,
-                                                  //               ),
-                                                  //               const SizedBox(
-                                                  //                   width: 10),
-                                                  //               Text(widget.cityName ==
-                                                  //                       null
-                                                  //                   ? 'Select City'
-                                                  //                   : widget
-                                                  //                       .cityName!),
-                                                  //             ],
-                                                  //           ),
-                                                  //           items: citiesModel
-                                                  //               .map((e) {
-                                                  //             return DropdownMenuItem(
-                                                  //                 onTap: () {
-                                                  //                   widget.cityName =
-                                                  //                       e.cityName;
-                                                  //                   sestate(
-                                                  //                       () {});
-                                                  //                 },
-                                                  //                 value: e
-                                                  //                     .cityName,
-                                                  //                 child: Text(e
-                                                  //                     .cityName
-                                                  //                     .toString()));
-                                                  //           }).toList(),
-                                                  //           onChanged: (_) {}),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 6.0,
+                                                        vertical: 4),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: kSecondaryColor
+                                                              .withOpacity(0.1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    8.0),
+                                                        child: DropdownButton(
+                                                            isExpanded: true,
+                                                            underline:
+                                                                const SizedBox(),
+                                                            hint: Row(
+                                                              children: [
+                                                                SvgPicture
+                                                                    .asset(
+                                                                  "assets/svg/State Icon (1).svg",
+                                                                  width: 26,
+                                                                  height: 26,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 10),
+                                                                Text(widget.statesName ==
+                                                                        null
+                                                                    ? 'Select State'
+                                                                    : widget
+                                                                        .statesName!),
+                                                              ],
+                                                            ),
+                                                            items: statesModel
+                                                                .map((e) {
+                                                              return DropdownMenuItem(
+                                                                  onTap: () {
+                                                                    sestate(() {
+                                                                      widget.statesName =
+                                                                          e.stateName;
+                                                                      WidgetsBinding
+                                                                          .instance
+                                                                          .addPostFrameCallback(
+                                                                              (timeStamp) {
+                                                                        getAllCitiesHandler(
+                                                                            e.stateCode!);
+                                                                      });
+                                                                    });
+                                                                  },
+                                                                  value: e
+                                                                      .stateName,
+                                                                  child: Text(e
+                                                                      .stateName
+                                                                      .toString()));
+                                                            }).toList(),
+                                                            onChanged: (_) {}),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 6.0,
+                                                        vertical: 4),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: kSecondaryColor
+                                                              .withOpacity(0.1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    8.0),
+                                                        child: DropdownButton(
+                                                            isExpanded: true,
+                                                            underline:
+                                                                const SizedBox(),
+                                                            hint: Row(
+                                                              children: [
+                                                                SvgPicture
+                                                                    .asset(
+                                                                  "assets/svg/City Icon (1).svg",
+                                                                  color: Colors
+                                                                      .black45,
+                                                                  width: 26,
+                                                                  height: 26,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 10),
+                                                                Text(widget.cityName ==
+                                                                        null
+                                                                    ? 'Select City'
+                                                                    : widget
+                                                                        .cityName!),
+                                                              ],
+                                                            ),
+                                                            items: citiesModel
+                                                                .map((e) {
+                                                              return DropdownMenuItem(
+                                                                  onTap: () {
+                                                                    sestate(() {
+                                                                      widget.cityName =
+                                                                          e.cityName;
+                                                                    });
+                                                                  },
+                                                                  value: e
+                                                                      .cityName,
+                                                                  child: Text(e
+                                                                      .cityName
+                                                                      .toString()));
+                                                            }).toList(),
+                                                            onChanged: (_) {}),
+                                                      ),
+                                                    ),
+                                                  ),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
                                                           Icons.home),
@@ -1415,10 +1421,10 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
 }
 
 class DropDownClass extends StatefulWidget {
-  String? statesName;
-  String? cityName;
+  String? statesData;
+  String? cityData;
 
-  DropDownClass({this.cityName, this.statesName});
+  DropDownClass({this.statesData, this.cityData});
 
   @override
   State<DropDownClass> createState() => _DropDownClassState();
@@ -1435,7 +1441,7 @@ class _DropDownClassState extends State<DropDownClass> {
 
     citiesModel =
         Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-    print('cities---->${citiesModel}');
+    print('cities---->$citiesModel');
     setState(() {});
 
     CustomLoader.hideLoader(context);
@@ -1447,7 +1453,7 @@ class _DropDownClassState extends State<DropDownClass> {
 
     statesModel =
         Provider.of<StatesProvider>(context, listen: false).statesData!;
-    print('states---->${statesModel}');
+    print('states---->$statesModel');
     setState(() {});
 
     CustomLoader.hideLoader(context);
@@ -1462,8 +1468,7 @@ class _DropDownClassState extends State<DropDownClass> {
     });
   }
 
-  String? city;
-  String? state;
+  SalesrepCustomerData? customers;
 
   @override
   Widget build(BuildContext context) {
@@ -1489,23 +1494,24 @@ class _DropDownClassState extends State<DropDownClass> {
                         alignment: Alignment.centerLeft,
                       ),
                       const SizedBox(width: 10),
-                      Text(widget.statesName == null
-                          ? 'Select State'
-                          : widget.statesName!),
+                      Text(state == null ? customers!.state! : state!),
                     ],
                   ),
                   items: statesModel.map((e) {
                     return DropdownMenuItem(
                         onTap: () {
-                          city = e.stateName;
-                          widget.statesName = city;
+                          state = e.stateName;
                           setState(() {});
-                          print('dataStates----->${widget.statesName}');
+                          print('dataStates----->$state');
 
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
                             getAllCitiesHandler(e.stateCode!);
                           });
+
+                          citiesModel.clear();
+                          statesModel.clear();
+
                           setState(() {});
                         },
                         value: e.stateName,
@@ -1537,17 +1543,18 @@ class _DropDownClassState extends State<DropDownClass> {
                         alignment: Alignment.centerLeft,
                       ),
                       const SizedBox(width: 10),
-                      Text(widget.cityName == null
-                          ? 'Select City'
-                          : widget.cityName!),
+                      Text(city == null ? customers!.city! : city!),
                     ],
                   ),
                   items: citiesModel.map((e) {
                     return DropdownMenuItem(
                         onTap: () {
-                          state = e.cityName;
-                          widget.cityName = state;
-                          print('dataStates----->${widget.cityName}');
+                          city = e.cityName;
+
+                          print('dataStates----->$city');
+
+                          citiesModel.clear();
+                          statesModel.clear();
                           setState(() {});
                         },
                         value: e.cityName,
