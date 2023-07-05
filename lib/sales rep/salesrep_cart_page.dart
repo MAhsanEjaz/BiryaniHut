@@ -105,7 +105,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
     if (cartStorage.getCartItems(customerId: widget.customerId) != null) {
       var list = cartStorage.getCartItems(customerId: widget.customerId);
-      log("listlist = $list");
+      // log("listlist = $list");
       list!.forEach((element) {
         model.add(CartItem.fromJson(json.decode(element)));
       });
