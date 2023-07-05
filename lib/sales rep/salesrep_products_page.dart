@@ -44,16 +44,21 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
 
   List<ProductData> myProducts = [];
   List<ProductData> searchProductsList = [];
-  List<ProductData> paginationProductsList = [];
+  List<ProductData> allPRoductsList = [];
+  ScrollController scrollController = ScrollController();
 
   getProductsHandler(BuildContext context) async {
     CustomLoader.showLoader(context: context);
     await ProductsService().getProducts(context: context);
     final currentProductsProvider =
         Provider.of<ProductsProvider>(context, listen: false);
-    myProducts = currentProductsProvider.prod!;
+    allPRoductsList = currentProductsProvider.prod!;
 
-    searchProductsList = myProducts;
+    for (int i = 0; i < 10; i++) {
+      myProducts.add(allPRoductsList[i]);
+    }
+
+    // searchProductsList = myProducts;
 
     setState(() {});
     print('myList$myProducts');
@@ -62,20 +67,11 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     CustomLoader.hideLoader(context);
   }
 
-  productSearchFunction(String query) {
-    final queryLower = query.toLowerCase();
-    setState(() {
-      searchProductsList = myProducts.where((element) {
-        final name = element.productName.trim().toLowerCase();
-        return name.contains(queryLower);
-      }).toList();
-    });
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getProductsHandler(context);
+      scrollListener();
     });
     if (cartStorage.getCartItems(customerId: widget.customerId) != null) {
       list = cartStorage.getCartItems(customerId: widget.customerId)!;
@@ -85,19 +81,49 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     }
 
     log("widget.customerId = ${widget.customerId}");
+
     super.initState();
   }
 
   bool showSearch = false;
 
+  int itemCount = 10;
+
   String query = '';
+
+  void scrollListener() {
+    scrollController.addListener(() {
+      for (int i = itemCount; i < itemCount + 10; i++) {
+        myProducts.add(allPRoductsList[i]);
+        itemCount++;
+      }
+      setState(() {});
+      log(" scrollController.addListener fired");
+      // if (scrollController.offset >=
+      //         scrollController.position.maxScrollExtent &&
+      //     !scrollController.position.outOfRange) {
+      //   log("adding new items in products list");
+
+      // }
+    });
+  }
+
+  productSearchFunction(String query) {
+    final queryLower = query.toLowerCase();
+    setState(() {
+      searchProductsList = allPRoductsList.where((element) {
+        final name = element.productName.trim().toLowerCase();
+        return name.contains(queryLower);
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductsProvider>(builder: (context, data, _) {
       // searchProductsList = data.prod!;
       // if (data != null) {
-      myProducts = data.prod!;
+      // myProducts = data.prod!;
       // }
       return GestureDetector(
         onTap: () {
@@ -153,6 +179,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
             ],
           ),
           body: SingleChildScrollView(
+            controller: scrollController,
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
