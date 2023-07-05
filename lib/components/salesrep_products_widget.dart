@@ -582,7 +582,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
   void getCartItems() {
     if (cartStorage.getCartItems(customerId: widget.customerId) != null) {
       list = cartStorage.getCartItems(customerId: widget.customerId)!;
-      log("listlist = $list");
+      // log("listlist = $list");
       list.forEach((element) {
         model.add(CartItem.fromJson(json.decode(element)));
       });

@@ -79,8 +79,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                       widget.productData.productImagePath ==
                                           null
                                   ? dummyImageUrl
-                                  :
-                                      widget.productData.productImagePath!),
+                                  : widget.productData.productImagePath!),
                           fit: BoxFit.cover),
                     ),
                     child: Container(
@@ -183,7 +182,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                               null) {
                                                             var list = cartStorage
                                                                 .getCartItems();
-                                                            log("listlist = $list");
+                                                            // log("listlist = $list");
 
                                                             list!.forEach(
                                                                 (element) {
@@ -649,12 +648,9 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                               style:
                                                                   titleStyle),
                                                           RowWithImage(
-                                                              image:
-                                                                
-                                                                widget
-                                                                    .productData
-                                                                    .productImagePath!,
-                                                            
+                                                              image: widget
+                                                                  .productData
+                                                                  .productImagePath!,
                                                               name: widget
                                                                   .productData
                                                                   .productName),
@@ -766,7 +762,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
   void getCartItems() {
     if (cartStorage.getCartItems() != null) {
       var list = cartStorage.getCartItems();
-      log("listlist = $list");
+      // log("listlist = $list");
       list!.forEach((element) {
         model.add(CartItem.fromJson(json.decode(element)));
       });

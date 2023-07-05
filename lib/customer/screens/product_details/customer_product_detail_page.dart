@@ -62,7 +62,8 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
               color: Colors.white,
               child: Column(
                 children: [
-                  ProductDescription(element: widget.data ,
+                  ProductDescription(
+                    element: widget.data,
                     heartColor: widget.heartColor,
                     isReseller: false,
                     product: widget.data,
@@ -186,7 +187,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                           null) {
                                                         var list = cartStorage
                                                             .getCartItems();
-                                                        log("listlist = $list");
+                                                        // log("listlist = $list");
 
                                                         list!
                                                             .forEach((element) {
@@ -371,7 +372,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                                 // ignore: unnecessary_null_comparison
                                                                                                 model[index].productImagePath == null
                                                                                             ? dummyImageUrl
-                                                                                            :model[index].productImagePath),
+                                                                                            : model[index].productImagePath),
                                                                                       ),
                                                                                     ),
                                                                                   ),
@@ -653,10 +654,8 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                       const Text("Add Quantity",
                                                           style: titleStyle),
                                                       RowWithImage(
-                                                          image:
-                                                            widget.data
-                                                                .productImagePath!,
-                                                          
+                                                          image: widget.data
+                                                              .productImagePath!,
                                                           name: widget.data
                                                               .productName),
                                                       const SizedBox(height: 5),
@@ -718,7 +717,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
   void getCartItems() {
     if (cartStorage.getCartItems() != null) {
       var list = cartStorage.getCartItems();
-      log("listlist = $list");
+      // log("listlist = $list");
       list!.forEach((element) {
         model.add(CartItem.fromJson(json.decode(element)));
       });

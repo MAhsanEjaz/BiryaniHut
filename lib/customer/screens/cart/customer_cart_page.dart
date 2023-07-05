@@ -73,7 +73,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
     if (cartStorage.getCartItems() != null) {
       var list = cartStorage.getCartItems();
-      log("listlist = $list");
+      // log("listlist = $list");
       list!.forEach((element) {
         model.add(CartItem.fromJson(json.decode(element)));
       });
