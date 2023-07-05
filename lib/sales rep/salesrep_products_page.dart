@@ -44,15 +44,21 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
 
   List<ProductData> myProducts = [];
   List<ProductData> searchProductsList = [];
+  List<ProductData> allPRoductsList = [];
+  ScrollController scrollController = ScrollController();
 
   getProductsHandler(BuildContext context) async {
     CustomLoader.showLoader(context: context);
     await ProductsService().getProducts(context: context);
     final currentProductsProvider =
         Provider.of<ProductsProvider>(context, listen: false);
-    myProducts = currentProductsProvider.prod!;
+    allPRoductsList = currentProductsProvider.prod!;
 
-    searchProductsList = myProducts;
+    for (int i = 0; i < 10; i++) {
+      myProducts.add(allPRoductsList[i]);
+    }
+
+    // searchProductsList = myProducts;
 
     setState(() {});
     print('myList$myProducts');
@@ -65,6 +71,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getProductsHandler(context);
+      scrollListener();
     });
     if (cartStorage.getCartItems(customerId: widget.customerId) != null) {
       list = cartStorage.getCartItems(customerId: widget.customerId)!;
@@ -74,17 +81,37 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     }
 
     log("widget.customerId = ${widget.customerId}");
+
     super.initState();
   }
 
   bool showSearch = false;
 
+  int itemCount = 10;
+
   String query = '';
+
+  void scrollListener() {
+    scrollController.addListener(() {
+      for (int i = itemCount; i < itemCount + 10; i++) {
+        myProducts.add(allPRoductsList[i]);
+        itemCount++;
+      }
+      setState(() {});
+      log(" scrollController.addListener fired");
+      // if (scrollController.offset >=
+      //         scrollController.position.maxScrollExtent &&
+      //     !scrollController.position.outOfRange) {
+      //   log("adding new items in products list");
+
+      // }
+    });
+  }
 
   productSearchFunction(String query) {
     final queryLower = query.toLowerCase();
     setState(() {
-      searchProductsList = myProducts.where((element) {
+      searchProductsList = allPRoductsList.where((element) {
         final name = element.productName.trim().toLowerCase();
         return name.contains(queryLower);
       }).toList();
@@ -96,7 +123,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     return Consumer<ProductsProvider>(builder: (context, data, _) {
       // searchProductsList = data.prod!;
       // if (data != null) {
-      myProducts = data.prod!;
+      // myProducts = data.prod!;
       // }
       return GestureDetector(
         onTap: () {
@@ -151,157 +178,157 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                 ),
             ],
           ),
-          body:  SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      if (widget.customerName != "")
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.info),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              RichText(
-                                  text: TextSpan(
-                                      text: "You are ordering for ",
-                                      style: custStyle,
-                                      children: [
-                                    TextSpan(
-                                        text: widget.customerName,
-                                        style: idStyle)
-                                  ])),
-                            ],
-                          ),
+          body: SingleChildScrollView(
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                if (widget.customerName != "")
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.info),
+                        const SizedBox(
+                          width: 10,
                         ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: CustomTextField(
-                      //     controller: searchCont,
-                      //     hint: "Search any Product",
-                      //     prefixWidget: Icon(Icons.search),
-                      //     isEnabled: true,
-                      //   ),
-                      // ),
+                        RichText(
+                            text: TextSpan(
+                                text: "You are ordering for ",
+                                style: custStyle,
+                                children: [
+                              TextSpan(
+                                  text: widget.customerName, style: idStyle)
+                            ])),
+                      ],
+                    ),
+                  ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: CustomTextField(
+                //     controller: searchCont,
+                //     hint: "Search any Product",
+                //     prefixWidget: Icon(Icons.search),
+                //     isEnabled: true,
+                //   ),
+                // ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomTextField(
-                          focusNode: data.productSearchNode,
-                          controller: data.searchCont,
-                          hint: "Search Products",
-                          prefixWidget: const Icon(Icons.search),
-                          isEnabled: true,
-                          suffixWidget: data.searchCont.text.isNotEmpty
-                              ? InkWell(
-                                  onTap: () {
-                                    data.searchCont.clear();
-                                    searchProductsList.clear();
-                                    setState(() {});
-                                  },
-                                  child: const Icon(Icons.close))
-                              : const SizedBox.shrink(),
-                          onChange: productSearchFunction,
-                        ),
-                      ),
-
-                      if (searchProductsList.isNotEmpty &&
-                          data.searchCont.text.isNotEmpty)
-                        Wrap(
-                          children: [
-                            for (var product in searchProductsList)
-                              SalesrepProductsWidget(
-                                customerName: widget.customerName,
-                                productData: product,
-                                customerId: widget.customerId,
-                                isShowCartBtn: widget.isReseller,
-                                email: widget.email,
-                                phone: widget.phone,
-                              )
-                          ],
-                        )
-                      else if (myProducts.isNotEmpty)
-                        Wrap(
-                          children: [
-                            for (var product in myProducts)
-                              SalesrepProductsWidget(
-                                customerName: widget.customerName,
-                                productData: product,
-                                customerId: widget.customerId,
-                                isShowCartBtn: widget.isReseller,
-                                email: widget.email,
-                                phone: widget.phone,
-                              )
-                          ],
-                        )
-                      else if (searchProductsList.isEmpty &&
-                          data.searchCont.text.isNotEmpty)
-                        const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Product not Found',
-                                style: titleStyle,
-                              ),
-                            ))
-
-                      //
-                      // showSearch == false
-                      //     ? Consumer<ProductsProvider>(builder: (context, product, _) {
-                      //         List<Widget> widgets = [];
-                      //         product.prod!.isNotEmpty
-                      //             ? product.prod!.forEach((element) {
-                      //                 widgets.add(SalesrepProductsWidget(
-                      //                   productData: element,
-                      //                   customerId: widget.customerId,
-                      //                   isShowCartBtn: widget.isReseller,
-                      //                 ));
-                      //               })
-                      //             : Container(
-                      //                 alignment: Alignment.center,
-                      //                 child: const Text(
-                      //                   "No Product Available",
-                      //                 ),
-                      //               );
-                      //         return Center(
-                      //           child: Wrap(
-                      //             alignment: WrapAlignment.start,
-                      //             crossAxisAlignment: WrapCrossAlignment.center,
-                      //             children: widgets,
-                      //           ),
-                      //         );
-                      //       })
-                      //     : Consumer<ProductSearchProvider>(builder: (context, prod, _) {
-                      //         List<Widget> widgets = [];
-                      //         prod.prodSearch!.isNotEmpty && prod.prodSearch != null
-                      //             ? prod.prodSearch!.forEach((element) {
-                      //                 widgets.add(SalesrepProductsWidget(
-                      //                   productData: element,
-                      //                   customerId: widget.customerId,
-                      //                   isShowCartBtn: widget.isReseller,
-                      //                 ));
-                      //               })
-                      //             : Container(
-                      //                 alignment: Alignment.center,
-                      //                 child: const Text(
-                      //                   "No Product Available",
-                      //                 ),
-                      //               );
-                      //         return Center(
-                      //           child: Wrap(
-                      //             alignment: WrapAlignment.start,
-                      //             crossAxisAlignment: WrapCrossAlignment.center,
-                      //             children: widgets,
-                      //           ),
-                      //         );
-                      //       }),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextField(
+                    focusNode: data.productSearchNode,
+                    controller: data.searchCont,
+                    hint: "Search Products",
+                    prefixWidget: const Icon(Icons.search),
+                    isEnabled: true,
+                    suffixWidget: data.searchCont.text.isNotEmpty
+                        ? InkWell(
+                            onTap: () {
+                              data.searchCont.clear();
+                              searchProductsList.clear();
+                              setState(() {});
+                            },
+                            child: const Icon(Icons.close))
+                        : const SizedBox.shrink(),
+                    onChange: productSearchFunction,
                   ),
                 ),
+
+                if (searchProductsList.isNotEmpty &&
+                    data.searchCont.text.isNotEmpty)
+                  Wrap(
+                    children: [
+                      for (var product in searchProductsList)
+                        SalesrepProductsWidget(
+                          customerName: widget.customerName,
+                          productData: product,
+                          customerId: widget.customerId,
+                          isShowCartBtn: widget.isReseller,
+                          email: widget.email,
+                          phone: widget.phone,
+                        )
+                    ],
+                  )
+                else if (myProducts.isNotEmpty)
+                  Wrap(
+                    children: [
+                      for (var product in myProducts)
+                        SalesrepProductsWidget(
+                          customerName: widget.customerName,
+                          productData: product,
+                          customerId: widget.customerId,
+                          isShowCartBtn: widget.isReseller,
+                          email: widget.email,
+                          phone: widget.phone,
+                        )
+                    ],
+                  )
+                else if (searchProductsList.isEmpty &&
+                    data.searchCont.text.isNotEmpty)
+                  const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Product not Found',
+                          style: titleStyle,
+                        ),
+                      ))
+
+                //
+                // showSearch == false
+                //     ? Consumer<ProductsProvider>(builder: (context, product, _) {
+                //         List<Widget> widgets = [];
+                //         product.prod!.isNotEmpty
+                //             ? product.prod!.forEach((element) {
+                //                 widgets.add(SalesrepProductsWidget(
+                //                   productData: element,
+                //                   customerId: widget.customerId,
+                //                   isShowCartBtn: widget.isReseller,
+                //                 ));
+                //               })
+                //             : Container(
+                //                 alignment: Alignment.center,
+                //                 child: const Text(
+                //                   "No Product Available",
+                //                 ),
+                //               );
+                //         return Center(
+                //           child: Wrap(
+                //             alignment: WrapAlignment.start,
+                //             crossAxisAlignment: WrapCrossAlignment.center,
+                //             children: widgets,
+                //           ),
+                //         );
+                //       })
+                //     : Consumer<ProductSearchProvider>(builder: (context, prod, _) {
+                //         List<Widget> widgets = [];
+                //         prod.prodSearch!.isNotEmpty && prod.prodSearch != null
+                //             ? prod.prodSearch!.forEach((element) {
+                //                 widgets.add(SalesrepProductsWidget(
+                //                   productData: element,
+                //                   customerId: widget.customerId,
+                //                   isShowCartBtn: widget.isReseller,
+                //                 ));
+                //               })
+                //             : Container(
+                //                 alignment: Alignment.center,
+                //                 child: const Text(
+                //                   "No Product Available",
+                //                 ),
+                //               );
+                //         return Center(
+                //           child: Wrap(
+                //             alignment: WrapAlignment.start,
+                //             crossAxisAlignment: WrapCrossAlignment.center,
+                //             children: widgets,
+                //           ),
+                //         );
+                //       }),
+              ],
+            ),
+          ),
         ),
       );
     });
