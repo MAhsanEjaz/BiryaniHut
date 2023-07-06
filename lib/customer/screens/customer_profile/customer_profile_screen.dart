@@ -60,6 +60,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
   TextEditingController salesRepCont = TextEditingController();
+  TextEditingController companyCont = TextEditingController();
 
   LoginStorage loginStorage = LoginStorage();
 
@@ -94,6 +95,14 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .data!
             .lastName
             .toString();
+    companyCont.text =
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+                .customerProfileModel!
+                .data!
+                .saleRep!
+                .companyName ??
+            '';
+
     var customerProfile =
         Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel;
@@ -140,6 +149,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         salonName: saloonControl.text,
         email: emailCont.text,
         saleRepImage: imagee,
+        companyName: companyCont.text,
         customerId: loginStorage.getUserId(),
         state: statesName,
         city: cityName,
@@ -378,6 +388,13 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                             controller: emailCont,
                             // isEnabled: false,
                             hint: 'Email',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Company Name",
+                            controller: companyCont,
+                            // isEnabled: false,
+                            hint: 'Company Name',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
                         const Padding(

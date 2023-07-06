@@ -28,11 +28,11 @@ class SalesrepProfileModel {
         message: json["message"],
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "data": data.toJson(),
-  //       "statusCode": statusCode,
-  //       "message": message,
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "data": data.toJson(),
+//       "statusCode": statusCode,
+//       "message": message,
+//     };
 }
 
 class Data {
@@ -47,6 +47,7 @@ class Data {
   String city;
   String address;
   String location;
+  String companyName;
   String phone;
   num rating;
   num? discount;
@@ -58,6 +59,7 @@ class Data {
     required this.email,
     required this.password,
     required this.roleId,
+    required this.companyName,
     this.bytefile,
     required this.id,
     required this.firstName,
@@ -79,6 +81,7 @@ class Data {
         password: json["password"],
         roleId: json["roleId"],
         bytefile: json["bytefile"],
+        companyName: json["companyName"],
         id: json["id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -94,23 +97,23 @@ class Data {
         saleRepImage: json["saleRepImage"],
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "email": email,
-  //       "password": password,
-  //       "roleId": roleId,
-  //       "bytefile": bytefile,
-  //       "id": id,
-  //       "firstName": firstName,
-  //       "lastName": lastName,
-  //       "state": state,
-  //       "city": city,
-  //       "address": address,
-  //       "location": location,
-  //       "phone": phone,
-  //       "rating": rating,
-  //       "discount": discount,
-  //       "status": status,
-  //       "saleRepImagePath": saleRepImagePath,
-  //       "saleRepImage": saleRepImage,
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "email": email,
+//       "password": password,
+//       "roleId": roleId,
+//       "bytefile": bytefile,
+//       "id": id,
+//       "firstName": firstName,
+//       "lastName": lastName,
+//       "state": state,
+//       "city": city,
+//       "address": address,
+//       "location": location,
+//       "phone": phone,
+//       "rating": rating,
+//       "discount": discount,
+//       "status": status,
+//       "saleRepImagePath": saleRepImagePath,
+//       "saleRepImage": saleRepImage,
+//     };
 }

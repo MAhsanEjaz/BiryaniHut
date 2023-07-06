@@ -12,6 +12,7 @@ import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_loader.dart';
 import 'package:shop_app/models/salesrep_orders_model.dart';
+import 'package:shop_app/models/salesrep_profile_model.dart';
 import 'package:shop_app/providers/sale_rep_orders_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import 'package:shop_app/services/update_customer_service.dart';
@@ -40,6 +41,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
   TextEditingController phoneCont = TextEditingController();
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
+  TextEditingController companyCont = TextEditingController();
 
   LoginStorage loginStorage = LoginStorage();
 
@@ -50,6 +52,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         context: context,
         email: emailCont.text,
         salonName: 'saloonControl.text',
+        companyName: companyCont.text,
         address: addressCont.text,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
@@ -91,6 +94,11 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
     lastNameCont.text = loginStorage.getUserLastName();
     phoneCont.text = loginStorage.getPhone();
     addressCont.text = loginStorage.getAdress();
+    companyCont.text =
+        Provider.of<SalesrepProfileProvider>(context, listen: false)
+            .repProfileModel!
+            .data
+            .companyName;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getSalesrepProfileDataHandler();
     });
@@ -239,6 +247,12 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           headerText: "Email",
                           controller: emailCont,
                           hint: 'Email',
+                          hintTextStyle:
+                              const TextStyle(fontWeight: FontWeight.bold)),
+                      CustomTextField(
+                          headerText: "Company Name",
+                          controller: companyCont,
+                          hint: 'Company Name',
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
                       CustomTextField(

@@ -138,7 +138,6 @@ class Data {
   String? customerImagePath;
   String? customerImage;
   String? customerImageFile;
-
   String? phone;
   double? accountBalance;
   int? saleRepID;
@@ -150,30 +149,31 @@ class Data {
 
   Data(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.salonName,
-        this.state,
-        this.city,
-        this.address,
-        this.email,
-        this.location,
-        this.customerImagePath,
-        this.customerImage,
-        this.phone,
-        this.accountBalance,
-        this.saleRepID,
-        this.saleRep,
-        this.loginId,
-        this.deleteStatus,
-        this.deletedDate,
-        this.deletedBy});
+      this.firstName,
+      this.lastName,
+      this.salonName,
+      this.state,
+      this.city,
+      this.address,
+      this.email,
+      this.location,
+      this.customerImagePath,
+      this.customerImage,
+      this.phone,
+      this.accountBalance,
+      this.saleRepID,
+      this.saleRep,
+      this.loginId,
+      this.deleteStatus,
+      this.deletedDate,
+      this.deletedBy});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstName = json['firstName'];
     lastName = json['lastName'];
     salonName = json['salon_Name'];
+
     state = json['state'];
     city = json['city'];
     address = json['address'];
@@ -185,7 +185,7 @@ class Data {
     accountBalance = json['accountBalance'];
     saleRepID = json['saleRepID'];
     saleRep =
-    json['saleRep'] != null ? new SaleRep.fromJson(json['saleRep']) : null;
+        json['saleRep'] != null ? new SaleRep.fromJson(json['saleRep']) : null;
     loginId = json['loginId'];
     deleteStatus = json['deleteStatus'];
     deletedDate = json['deletedDate'];
@@ -223,6 +223,7 @@ class SaleRep {
   int? id;
   String? firstName;
   String? lastName;
+  String? companyName;
   String? saleRepImagePath;
 
   SaleRep({this.id, this.firstName, this.lastName, this.saleRepImagePath});
@@ -231,6 +232,7 @@ class SaleRep {
     id = json['id'];
     firstName = json['firstName'];
     lastName = json['lastName'];
+    companyName = json['companyName'];
     saleRepImagePath = json['saleRepImagePath'];
   }
 
@@ -239,8 +241,8 @@ class SaleRep {
     data['id'] = this.id;
     data['firstName'] = this.firstName;
     data['lastName'] = this.lastName;
+    data['companyName'] = this.companyName;
     data['saleRepImagePath'] = this.saleRepImagePath;
     return data;
   }
 }
-
