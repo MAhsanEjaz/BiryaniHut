@@ -35,7 +35,7 @@ class PdfInvoiceService {
       required String repName,
       required String customerName,
       required bool isOrderCompleted,
-      // required String repCompanyName,
+      required String repCompanyName,
       String? discountValue,
       bool? isDiscountInPercent,
       // PdfViewModel? view,
@@ -95,6 +95,13 @@ class PdfInvoiceService {
                             "Sales Rep Name:"
                                     "  " +
                                 repName
+                            // style: dealStyle
+                            ),
+                        pw.Text(
+                            // "Dealer Name :" + "  " + usermodels!.name!,
+                            "Sales Rep Company:"
+                                    "  " +
+                                repCompanyName
                             // style: dealStyle
                             ),
                         pw.Text(

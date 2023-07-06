@@ -1253,6 +1253,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       customerName: widget.customerName,
       repName: storage.getUserFirstName() + " " + storage.getUserLastName(),
       isOrderCompleted: false,
+      repCompanyName: '',
     );
 
     // myPath = pdfService.savePdfFile("invoice_$number", data);
@@ -1572,6 +1573,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             " " +
                                             storage.getUserLastName(),
                                         isOrderCompleted: false,
+                                        repCompanyName: '',
                                       );
 
                                       final filePath = await pdfService

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -78,7 +79,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initializeStripe();
-    saleRepGetPaymentKeyHandler();
   }
 
   saleRepGetPaymentKeyHandler() async {
@@ -90,35 +90,41 @@ class _MyAppState extends State<MyApp> {
   LoginStorage loginStorage = LoginStorage();
 
   Future<void> initializeStripe() async {
-    String? stripeApiKey;
+    log("loginStorage.getUsertype() = ${loginStorage.getUsertype()}");
+    if (loginStorage.getUsertype() == "customer") {
+      await saleRepGetPaymentKeyHandler();
 
-    var paymentProvider =
-        Provider.of<PaymentGetProvider?>(context, listen: false);
+      String? stripeApiKey;
 
-    if (paymentProvider != null && paymentProvider.paymentKeyGetModel != null) {
-      stripeApiKey =
-          paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+      var paymentProvider =
+          Provider.of<PaymentGetProvider?>(context, listen: false);
 
-      if (stripeApiKey == null || stripeApiKey.isEmpty) {
-        print('Stripe publishable key is null or empty');
-        return; // Exit the function if the key is not available
+      if (paymentProvider != null &&
+          paymentProvider.paymentKeyGetModel != null) {
+        stripeApiKey =
+            paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+
+        if (stripeApiKey == null || stripeApiKey.isEmpty) {
+          log('Stripe publishable key is null or empty');
+          return;
+        } else {
+          try {
+            Stripe.publishableKey = stripeApiKey.toString();
+            await Stripe.instance.applySettings();
+
+            log('stripe--->$stripeApiKey');
+          } catch (e) {
+            log("exception in setting stripe key = ${e.toString()}");
+          }
+        }
+
+        // } else {
+        //   print('PaymentGetProvider or paymentKeyGetModel is null');
       }
-
-      // } else {
-      //   print('PaymentGetProvider or paymentKeyGetModel is null');
-    }
-
-    try {
-      Stripe.publishableKey = stripeApiKey == null
-          ? 'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd'
-          : stripeApiKey.toString();
-      await Stripe.instance.applySettings();
-
-      print('stripe--->$stripeApiKey');
-    } catch (e) {
-      print(e);
     }
   }
+
+// 'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd'
 
   @override
   Widget build(BuildContext context) {

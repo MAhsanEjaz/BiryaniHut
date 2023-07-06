@@ -227,8 +227,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                             // ignore: unnecessary_null_comparison
                                             model[index].productImage == null
                                         ? dummyImageUrl
-                                        : 
-                                            model[index].productImage),
+                                        : model[index].productImage),
                                   ),
                                 ),
                               ),
@@ -949,7 +948,6 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
       await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
-
                   paymentIntentClientSecret:
                       paymentIntentData!['client_secret'],
                   // // applePay: true,
@@ -1453,6 +1451,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           loginStorage.getUserLastName(),
       repName: loginStorage.getSalesRepName(),
       isOrderCompleted: false,
+      repCompanyName: '',
     );
 
     pdfService.savePdfFile("invoice_$number", data);
