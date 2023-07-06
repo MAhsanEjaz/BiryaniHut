@@ -49,7 +49,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         isSaleREpProfile: true,
         context: context,
         email: emailCont.text,
-        salonName: 'saloonControl.text',
+        // salonName: 'saloonControl.text',
         address: addressCont.text,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,

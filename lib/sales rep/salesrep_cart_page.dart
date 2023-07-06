@@ -205,10 +205,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
           'Price: ${product.price}\n';
     }
 
-    final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
+    final url = Uri.parse('sms:$number?body=${Uri.encodeComponent(message)}');
 
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -327,9 +327,13 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       listen: false)
                                   .setCount(model.length);
 
+                              log("cartItemsCount before update = $cartItemsCount");
+
                               cartItemsCount =
                                   cartItemsCount - model[index].quantity;
                               log("deleting the item and setState is fired");
+                              log("cartItemsCount after update = $cartItemsCount");
+
                               updateIsDiscountApplicable();
                               setState(() {});
 
