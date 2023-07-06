@@ -44,6 +44,8 @@ class LoginApiService {
           // storage.setSalesRepCompany(company: userModel.data!.!);
         } else {
           storage.setUserType(usertype: "salesrep");
+          storage.setSalesRepCompany(
+              company: userModel.data!.companyName.toString());
         }
         return true;
       } else {

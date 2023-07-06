@@ -66,7 +66,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   // List<num> pricelist = [];
   // List<num> discountlist = [];
   SalesrepCartStorage cartStorage = SalesrepCartStorage();
-  LoginStorage storage = LoginStorage();
+  LoginStorage loginStorage = LoginStorage();
 
   String getOrderAmount() {
     if (isDiscountApplicable) {
@@ -1251,7 +1251,9 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       ctx: context,
       cartModel: cartModel,
       customerName: widget.customerName,
-      repName: storage.getUserFirstName() + " " + storage.getUserLastName(),
+      repName: loginStorage.getUserFirstName() +
+          " " +
+          loginStorage.getUserLastName(),
       isOrderCompleted: false,
       repCompanyName: '',
     );
@@ -1569,11 +1571,13 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         ctx: context,
                                         cartModel: cartModel,
                                         customerName: widget.customerName,
-                                        repName: storage.getUserFirstName() +
-                                            " " +
-                                            storage.getUserLastName(),
+                                        repName:
+                                            loginStorage.getUserFirstName() +
+                                                " " +
+                                                loginStorage.getUserLastName(),
                                         isOrderCompleted: false,
-                                        repCompanyName: '',
+                                        repCompanyName:
+                                            loginStorage.getSalesRepCompany(),
                                       );
 
                                       final filePath = await pdfService
