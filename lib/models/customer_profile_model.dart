@@ -119,8 +119,8 @@ class CustomerProfileModel {
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['statusCode'] = this.statusCode;
-    data['message'] = this.message;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
     return data;
   }
 }
@@ -194,27 +194,27 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['salon_Name'] = this.salonName;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['address'] = this.address;
-    data['email'] = this.email;
-    data['location'] = this.location;
-    data['customerImagePath'] = this.customerImagePath;
-    data['customerImage'] = this.customerImage;
-    data['phone'] = this.phone;
-    data['accountBalance'] = this.accountBalance;
-    data['saleRepID'] = this.saleRepID;
-    if (this.saleRep != null) {
-      data['saleRep'] = this.saleRep!.toJson();
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['salon_Name'] = salonName;
+    data['state'] = state;
+    data['city'] = city;
+    data['address'] = address;
+    data['email'] = email;
+    data['location'] = location;
+    data['customerImagePath'] = customerImagePath;
+    data['customerImage'] = customerImage;
+    data['phone'] = phone;
+    data['accountBalance'] = accountBalance;
+    data['saleRepID'] = saleRepID;
+    if (saleRep != null) {
+      data['saleRep'] = saleRep!.toJson();
     }
-    data['loginId'] = this.loginId;
-    data['deleteStatus'] = this.deleteStatus;
-    data['deletedDate'] = this.deletedDate;
-    data['deletedBy'] = this.deletedBy;
+    data['loginId'] = loginId;
+    data['deleteStatus'] = deleteStatus;
+    data['deletedDate'] = deletedDate;
+    data['deletedBy'] = deletedBy;
     return data;
   }
 }
@@ -237,12 +237,12 @@ class SaleRep {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['companyName'] = this.companyName;
-    data['saleRepImagePath'] = this.saleRepImagePath;
+    final Map<String, dynamic> data = < String, dynamic>{};
+    data['id'] = id;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['companyName'] = companyName;
+    data['saleRepImagePath'] = saleRepImagePath;
     return data;
   }
 }

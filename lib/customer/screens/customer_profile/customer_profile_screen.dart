@@ -17,11 +17,14 @@ import 'package:shop_app/models/all_cities_model.dart';
 import 'package:shop_app/models/states_model.dart';
 import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/providers/customer_profile_provider.dart';
+import 'package:shop_app/providers/sale_rep_orders_provider.dart';
+import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
 import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
+import 'package:shop_app/services/salesrep_getprofile_service.dart';
 import 'package:shop_app/services/update_customer_service.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
@@ -95,6 +98,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
             .data!
             .lastName
             .toString();
+
     companyCont.text =
         Provider.of<CustomerProfileProvider>(context, listen: false)
                 .customerProfileModel!
@@ -393,7 +397,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         CustomTextField(
                             headerText: "Company Name",
                             controller: companyCont,
-                            // isEnabled: false,
+                            isEnabled: false,
                             hint: 'Company Name',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),

@@ -40,6 +40,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
   TextEditingController phoneCont = TextEditingController();
   TextEditingController numberCont = TextEditingController();
   TextEditingController addressCont = TextEditingController();
+  TextEditingController companyCont = TextEditingController();
 
   LoginStorage loginStorage = LoginStorage();
 
@@ -49,8 +50,9 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         isSaleREpProfile: true,
         context: context,
         email: emailCont.text,
-        // salonName: 'saloonControl.text',
+        salonName: 'saloonControl.text',
         address: addressCont.text,
+        companyName: companyCont.text,
         customerId: loginStorage.getUserId(),
         firstName: firstNameCont.text,
         lastName: lastNameCont.text,
@@ -91,6 +93,11 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
     lastNameCont.text = loginStorage.getUserLastName();
     phoneCont.text = loginStorage.getPhone();
     addressCont.text = loginStorage.getAdress();
+    companyCont.text =
+        Provider.of<SalesrepProfileProvider>(context, listen: false)
+            .repProfileModel!
+            .data
+            .companyName;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getSalesrepProfileDataHandler();
     });
@@ -239,6 +246,12 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                           headerText: "Email",
                           controller: emailCont,
                           hint: 'Email',
+                          hintTextStyle:
+                              const TextStyle(fontWeight: FontWeight.bold)),
+                      CustomTextField(
+                          headerText: "Company Name",
+                          controller: companyCont,
+                          hint: 'Company Name',
                           hintTextStyle:
                               const TextStyle(fontWeight: FontWeight.bold)),
                       CustomTextField(
