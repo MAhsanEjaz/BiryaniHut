@@ -59,7 +59,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     }
 
     // searchProductsList = myProducts;
-
+    isLoading = true;
     setState(() {});
     print('myList$myProducts');
     print(
@@ -126,7 +126,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
     });
   }
 
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
