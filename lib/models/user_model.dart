@@ -44,29 +44,32 @@ class LoginData {
   String? email;
   String? password;
   bool? isActive;
+  String? companyName;
 
-  LoginData(
-      {this.imagePath,
-      this.imageName,
-      this.id,
-      this.firstName,
-      this.lastName,
-      this.salonName,
-      this.state,
-      this.city,
-      this.address,
-      this.location,
-      this.phone,
-      this.rating,
-      this.discount,
-      this.saleRepId,
-      this.saleRepName,
-      this.token,
-      this.loginId,
-      this.roleId,
-      this.email,
-      this.password,
-      this.isActive});
+  LoginData({
+    this.imagePath,
+    this.imageName,
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.salonName,
+    this.state,
+    this.city,
+    this.address,
+    this.location,
+    this.phone,
+    this.rating,
+    this.discount,
+    this.saleRepId,
+    this.saleRepName,
+    this.token,
+    this.loginId,
+    this.roleId,
+    this.email,
+    this.password,
+    this.isActive,
+    this.companyName,
+  });
 
   LoginData.fromJson(Map<String, dynamic> json) {
     imagePath = json['imagePath'];
@@ -90,6 +93,7 @@ class LoginData {
     email = json['email'];
     password = json['password'];
     isActive = json['isActive'];
+    companyName = json['companyName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -115,6 +119,7 @@ class LoginData {
     data['email'] = email;
     data['password'] = password;
     data['isActive'] = isActive;
+    data['companyName'] = companyName;
     return data;
   }
 }

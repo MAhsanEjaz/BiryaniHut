@@ -97,6 +97,9 @@ class LoginStorage {
   }
 
   String getUsertype() {
+    if (box.get("usertype") == null) {
+      return "";
+    }
     return box.get("usertype");
   }
 
