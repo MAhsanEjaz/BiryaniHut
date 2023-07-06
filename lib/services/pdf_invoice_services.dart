@@ -35,6 +35,7 @@ class PdfInvoiceService {
       required String repName,
       required String customerName,
       required bool isOrderCompleted,
+      // required String repCompanyName,
       String? discountValue,
       bool? isDiscountInPercent,
       // PdfViewModel? view,

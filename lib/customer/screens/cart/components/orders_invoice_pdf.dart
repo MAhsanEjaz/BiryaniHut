@@ -32,6 +32,7 @@ class PdfOrdersInvoiceService {
       {required SaleRapOrdersList order,
       required String repName,
       required String customerName,
+      // required String repCompanyName,
       required bool isOrderCompleted,
       // required bool isDiscountApplicable,
 

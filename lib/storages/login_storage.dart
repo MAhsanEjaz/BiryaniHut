@@ -127,6 +127,15 @@ class LoginStorage {
     return box.get("repname");
   }
 
+  void setSalesRepCompany({required String company}) {
+    log("company in hive = $company");
+    box.put("repCompany", company);
+  }
+
+  String getSalesRepCompany() {
+    return box.get("repCompany");
+  }
+
   void setStripeKey({required String stripeKey}) {
     log("setStripeKey stripeKey hive = $stripeKey");
     box.put("stripeKey", stripeKey);
@@ -135,6 +144,4 @@ class LoginStorage {
   String? getStripeKey() {
     return box.get("stripeKey");
   }
-
-
 }
