@@ -78,51 +78,51 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initializeStripe();
+    // initializeStripe();
   }
 
-  saleRepGetPaymentKeyHandler() async {
-    await GetPaymentKeyService().getPaymentKeyService(
-        context: context,
-        salRepId: loginStorage.getSalesRepId() ?? loginStorage.getUserId());
-  }
-
-  LoginStorage loginStorage = LoginStorage();
-
-  Future<void> initializeStripe() async {
-    log("loginStorage.getUsertype() = ${loginStorage.getUsertype()}");
-    if (loginStorage.getUsertype() == "customer") {
-      await saleRepGetPaymentKeyHandler();
-
-      String? stripeApiKey;
-
-      var paymentProvider =
-          Provider.of<PaymentGetProvider?>(context, listen: false);
-
-      if (paymentProvider != null &&
-          paymentProvider.paymentKeyGetModel != null) {
-        stripeApiKey =
-            paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
-
-        if (stripeApiKey == null || stripeApiKey.isEmpty) {
-          log('Stripe publishable key is null or empty');
-          return;
-        } else {
-          try {
-            Stripe.publishableKey = stripeApiKey.toString();
-            await Stripe.instance.applySettings();
-
-            log('stripe--->$stripeApiKey');
-          } catch (e) {
-            log("exception in setting stripe key = ${e.toString()}");
-          }
-        }
-
-        // } else {
-        //   print('PaymentGetProvider or paymentKeyGetModel is null');
-      }
-    }
-  }
+  // saleRepGetPaymentKeyHandler() async {
+  //   await GetPaymentKeyService().getPaymentKeyService(
+  //       context: context,
+  //       salRepId: loginStorage.getSalesRepId() ?? loginStorage.getUserId());
+  // }
+  //
+  // LoginStorage loginStorage = LoginStorage();
+  //
+  // Future<void> initializeStripe() async {
+  //   log("loginStorage.getUsertype() = ${loginStorage.getUsertype()}");
+  //   if (loginStorage.getUsertype() == "customer") {
+  //     await saleRepGetPaymentKeyHandler();
+  //
+  //     String? stripeApiKey;
+  //
+  //     var paymentProvider =
+  //         Provider.of<PaymentGetProvider?>(context, listen: false);
+  //
+  //     if (paymentProvider != null &&
+  //         paymentProvider.paymentKeyGetModel != null) {
+  //       stripeApiKey =
+  //           paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+  //
+  //       if (stripeApiKey == null || stripeApiKey.isEmpty) {
+  //         log('Stripe publishable key is null or empty');
+  //         return;
+  //       } else {
+  //         try {
+  //           Stripe.publishableKey = stripeApiKey.toString();
+  //           await Stripe.instance.applySettings();
+  //
+  //           log('stripe--->$stripeApiKey');
+  //         } catch (e) {
+  //           log("exception in setting stripe key = ${e.toString()}");
+  //         }
+  //       }
+  //
+  //       // } else {
+  //       //   print('PaymentGetProvider or paymentKeyGetModel is null');
+  //     }
+  //   }
+  // }
 
 // 'pk_test_51JUUldDdNsnMpgdhSlxjCo0yQBGHy9RsTQojb3YENwH5llfYiEmqqFjkc6SmsSQpLb9BH40OKQb0fwTlfifqJhFd00Cy7xTNwd'
 

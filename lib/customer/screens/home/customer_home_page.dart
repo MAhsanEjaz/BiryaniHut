@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/customer_custom_bottom_nav_bar.dart';
@@ -8,8 +9,10 @@ import 'package:shop_app/customer/screens/home/components/discount_banner.dart';
 import 'package:shop_app/enums.dart';
 import 'package:shop_app/components/customer_products_widget.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
+import 'package:shop_app/providers/payment_get_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
+import 'package:shop_app/services/get_payment_service.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/storages/customer_cart_storage.dart';
 import 'package:shop_app/storages/login_storage.dart';
@@ -67,6 +70,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      initializeStripe();
       if (cartStorage.getCartItems() != null) {
         list = cartStorage.getCartItems()!;
         log("list length = ${list.length}");
@@ -120,6 +124,51 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       return false;
     }
     return true;
+  }
+
+  saleRepGetPaymentKeyHandler() async {
+    await GetPaymentKeyService().getPaymentKeyService(
+        context: context,
+        salRepId: loginStorage.getSalesRepId() ?? loginStorage.getUserId());
+  }
+
+  Future<void> initializeStripe() async {
+    log("loginStorage.getUsertype() = ${loginStorage.getUsertype()}");
+    if (loginStorage.getUsertype() == "customer") {
+      await saleRepGetPaymentKeyHandler();
+
+      String? stripeApiKey;
+
+      var paymentProvider =
+          Provider.of<PaymentGetProvider?>(context, listen: false);
+
+      if (paymentProvider != null &&
+          paymentProvider.paymentKeyGetModel != null) {
+        stripeApiKey =
+            paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
+
+        // Stripe.publishableKey = stripeApiKey.toString();
+        Stripe.publishableKey =
+            'pk_test_51Mt7WuFPO4xgbPFkTVVahnMEIb9IZPgkOkPIVL68Nj6nBeJVJD9gIJcekJuHNh35QV6JH6hQ01VJY7ytkvrxISre00U8vrdKF1';
+        await Stripe.instance.applySettings();
+
+        if (stripeApiKey == null || stripeApiKey.isEmpty) {
+          log('Stripe publishable key is null or empty');
+          return;
+        } else {
+          try {
+            Stripe.publishableKey = stripeApiKey.toString();
+            await Stripe.instance.applySettings();
+
+            log('stripe--->$stripeApiKey');
+          } catch (e) {
+            log("exception in setting stripe key = ${e.toString()}");
+          }
+        }
+      } else {
+        print('PaymentGetProvider or paymentKeyGetModel is null');
+      }
+    }
   }
 
   @override
@@ -291,7 +340,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ),
             ),
             bottomNavigationBar:
-                    const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
+                const CustomCustomBottomNavBar(selectedMenu: MenuState.home),
           ),
         ),
       );

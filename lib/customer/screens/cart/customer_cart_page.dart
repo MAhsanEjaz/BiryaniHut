@@ -1051,7 +1051,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           body: body,
           headers: {
             'Authorization':
-                'Bearer sk_test_51JUUldDdNsnMpgdhx8kWqPhfiqHAHUVcd0BDw48M5HiP5GF36hOROHX2A2kq5BxYrzN2uZysgeDKpyTTzpOD1Ncf008VybA4Gu',
+                'Bearer sk_test_51Mt7WuFPO4xgbPFkao5mxU8gWMnltxu32FtUhcIdONFqmENpIPIhlRU3xMEfwztAgJsgp5QE5GDriiMjQysxa9pT00xTUcsYEN',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
       print('Create Intent reponse ===> ${response.body.toString()}');

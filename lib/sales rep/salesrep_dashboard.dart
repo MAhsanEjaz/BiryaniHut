@@ -221,6 +221,7 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                     },
                     subTitle: 'Setup your payment methods',
                   ),
+
                 ],
               ),
             ),
@@ -273,7 +274,7 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                       verticalMargin: 12.0,
                       width: MediaQuery.of(context).size.width / 2,
                       press: () {},
-                    )
+                    ),
                   ],
                 ),
               ),
