@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginPage> {
                       // }
                     },
                   ),
-                  const Text("Version 4.0.0"),
+                  const Text("Version 5.0.0"),
 
                   SizedBox(
                     height: getProportionateScreenHeight(20),

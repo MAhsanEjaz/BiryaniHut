@@ -97,13 +97,13 @@ class PdfInvoiceService {
                                 repName
                             // style: dealStyle
                             ),
-                        pw.Text(
-                            // "Dealer Name :" + "  " + usermodels!.name!,
-                            "Sales Rep Company:"
-                                    "  " +
-                                repCompanyName
-                            // style: dealStyle
-                            ),
+                        // pw.Text(
+                        //     // "Dealer Name :" + "  " + usermodels!.name!,
+                        //     "Sales Rep Company:"
+                        //             "  " +
+                        //         repCompanyName
+                        //     // style: dealStyle
+                        //     ),
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
                           "Customer Name :"

@@ -101,6 +101,7 @@ class _OrdersDetailsPageState extends State<OrdersDetailsPage> {
                     repName: repName,
                     isOrderCompleted:
                         widget.orders.status == "Pending" ? false : true,
+                    repCompanyName: LoginStorage().getSalesRepCompany(),
                   );
 
                   PdfOrdersInvoiceService()

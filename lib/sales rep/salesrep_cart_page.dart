@@ -1255,7 +1255,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
           " " +
           loginStorage.getUserLastName(),
       isOrderCompleted: false,
-      repCompanyName: '',
+      repCompanyName: loginStorage.getSalesRepCompany(),
     );
 
     // myPath = pdfService.savePdfFile("invoice_$number", data);
@@ -1579,6 +1579,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         repCompanyName:
                                             loginStorage.getSalesRepCompany(),
                                       );
+
+                                      log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
 
                                       final filePath = await pdfService
                                           .savePdfFile("invoice_$number", data);

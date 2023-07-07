@@ -87,8 +87,6 @@ class _SaleRepOrderReportDetailsScreenState
     return filePath;
   }
 
-
-
   void newSendSms(List<OrderProduct> productList, String number) async {
     String message = 'Order Details:\n';
     for (var product in productList) {
@@ -215,6 +213,8 @@ class _SaleRepOrderReportDetailsScreenState
                                                           " " +
                                                           storage
                                                               .getUserLastName(),
+                                                      repCompanyName: loginStorage
+                                                          .getSalesRepCompany(),
                                                     );
 
                                                     final filePath =
@@ -257,6 +257,7 @@ class _SaleRepOrderReportDetailsScreenState
                         storage.getUserLastName();
                   }
                   final data = await PdfOrdersInvoiceService().createInvoice(
+                    repCompanyName: loginStorage.getSalesRepCompany(),
                     ctx: context,
                     order: widget.orders,
                     customerName: widget.orders.firstName! +
@@ -334,6 +335,7 @@ class _SaleRepOrderReportDetailsScreenState
                             }
                             final data =
                                 await PdfOrdersInvoiceService().createInvoice(
+                              repCompanyName: loginStorage.getSalesRepCompany(),
                               ctx: context,
                               order: widget.orders,
                               customerName: widget.orders.firstName! +
@@ -483,6 +485,8 @@ class _SaleRepOrderReportDetailsScreenState
                                   onTap: () async {
                                     final data = await PdfOrdersInvoiceService()
                                         .createInvoice(
+                                            repCompanyName: loginStorage
+                                                .getSalesRepCompany(),
                                             ctx: context,
                                             order: widget.orders,
                                             customerName:
@@ -641,6 +645,8 @@ class _SaleRepOrderReportDetailsScreenState
                                   onTap: () async {
                                     final data = await PdfOrdersInvoiceService()
                                         .createInvoice(
+                                      repCompanyName:
+                                          loginStorage.getSalesRepCompany(),
                                       ctx: context,
                                       order: widget.orders,
                                       customerName: widget.orders.firstName! +
@@ -800,6 +806,8 @@ class _SaleRepOrderReportDetailsScreenState
                                 onTap: () async {
                                   final data = await PdfOrdersInvoiceService()
                                       .createInvoice(
+                                    repCompanyName:
+                                        loginStorage.getSalesRepCompany(),
                                     ctx: context,
                                     order: widget.orders,
                                     customerName: widget.name,

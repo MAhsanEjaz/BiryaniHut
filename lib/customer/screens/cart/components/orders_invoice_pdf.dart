@@ -32,7 +32,7 @@ class PdfOrdersInvoiceService {
       {required SaleRapOrdersList order,
       required String repName,
       required String customerName,
-      // required String repCompanyName,
+      required String repCompanyName,
       required bool isOrderCompleted,
       // required bool isDiscountApplicable,
 
@@ -98,13 +98,13 @@ class PdfOrdersInvoiceService {
                           // style: dealStyle
                         ),
 
-                        pw.Text(
-                          // "Dealer Name :" + "  " + usermodels!.name!,
-                          "Customer Name :"
-                                  "  " +
-                              customerName,
-                          // style: dealStyle
-                        ),
+                        // pw.Text(
+                        //   // "Dealer Name :" + "  " + usermodels!.name!,
+                        //   "Customer Name :"
+                        //           "  " +
+                        //       customerName,
+                        //   // style: dealStyle
+                        // ),
 
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
