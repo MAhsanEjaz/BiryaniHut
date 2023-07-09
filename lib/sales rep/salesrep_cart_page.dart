@@ -495,102 +495,6 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                     ),
                   ),
                 // if (model.isNotEmpty)
-                if (paymentStringList.isNotEmpty)
-                  ListView.builder(
-                    itemCount: paymentStringList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 4.0, bottom: 4),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/payment_done.png',
-                                height: 30,
-                                width: 30,
-                              ),
-                            ),
-                            Expanded(
-                                flex: 3,
-                                child: Text(paymentStringList[index],
-                                    style: nameStyle)),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-
-                if (model.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        // SizedBox(
-                        //   child: PaymentCard(
-                        //     image: getSumupImageUrl(),
-                        //     color: selectedPaymentIndex == 1 ? true : false,
-                        //     onTap: () {
-                        //       selectedPaymentIndex = 1;
-                        //
-                        //       handleSumupClick();
-                        //       setState(() {});
-                        //     },
-                        //     paymentName: 'SumUp',
-                        //   ),
-                        // ),
-                        //! payment by cash
-                        PaymentCard(
-                          image:
-                              'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
-                          color: selectedPaymentIndex == 2 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 2;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash',
-                        ),
-
-                        //! payment with cheque
-                        PaymentCard(
-                          image:
-                              'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
-                          color: selectedPaymentIndex == 3 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 3;
-                            setState(() {});
-                          },
-                          paymentName: 'Cheque',
-                        ),
-
-                        //! payment with cash app
-                        PaymentCard(
-                          image:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
-                          color: selectedPaymentIndex == 4 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 4;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash App',
-                        ),
-                      ],
-                    ),
-                  ),
-                //! cash on delivery
-
-                if (selectedPaymentIndex == 2 && model.isNotEmpty)
-                  cashPaymentDesign(),
-
-                //! cheque payment
-                if (selectedPaymentIndex == 3 && model.isNotEmpty)
-                  chequePaymentDesign(),
-
-                //! cashapp payment payment
-
-                if (selectedPaymentIndex == 4 && model.isNotEmpty)
-                  cashAppPaymentDesign(),
               ],
             ),
           ),
@@ -858,7 +762,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     setState(() {});
   }
 
-  Widget chequePaymentDesign() {
+  Widget chequePaymentDesign(setStatesss) {
     return Column(
       children: [
         Padding(
@@ -976,7 +880,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             amountCont.clear();
             chequeNo.clear();
             FocusScope.of(context).unfocus();
-            setState(() {});
+            setStatesss(() {});
           },
           text: "Save",
           width: getProportionateScreenWidth(100),
@@ -985,7 +889,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     );
   }
 
-  cashAppPaymentDesign() {
+  cashAppPaymentDesign(setStatesss) {
     return Column(
       children: [
         // Padding(
@@ -1055,7 +959,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             amountCont.clear();
             // cashAppTransId.clear();
             FocusScope.of(context).unfocus();
-            setState(() {});
+            setStatesss(() {});
           },
           text: "Save",
           width: getProportionateScreenWidth(100),
@@ -1064,7 +968,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     );
   }
 
-  Widget cashPaymentDesign() {
+  Widget cashPaymentDesign(setStatesss) {
     return Column(
       children: [
         Padding(
@@ -1122,7 +1026,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             paymentStringList.add("\$ $totalByCash Paid by Cash");
             amountCont.clear();
             FocusScope.of(context).unfocus();
-            setState(() {});
+            setStatesss(() {});
           },
           text: "Save",
           width: getProportionateScreenWidth(100),
@@ -1270,533 +1174,621 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
           topRight: Radius.circular(10),
         )),
         builder: (BuildContext context) {
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(10),
-                //   topRight: Radius.circular(10),
-                // )
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      width: SizeConfig.screenWidth,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: appColor,
-                      ),
-                      child: const Center(
-                        child: Text('Order Preview',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18)),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(20)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (model.isNotEmpty)
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Cart Items :",
-                              style: titleStyle,
-                            ),
+          return StatefulBuilder(
+            builder: (context, setStatesss) {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    // borderRadius: BorderRadius.only(
+                    //   topLeft: Radius.circular(10),
+                    //   topRight: Radius.circular(10),
+                    // )
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: SizeConfig.screenWidth,
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            color: appColor,
                           ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: model.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 50,
-                                    child: AspectRatio(
-                                      aspectRatio: 0.88,
-                                      child: Container(
-                                        padding: EdgeInsets.all(
-                                            getProportionateScreenWidth(4)),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F6F9),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        // child: Image.network(cart.product.images[0]),
-                                        child: Image.network(model[index]
-                                                        .productImagePath ==
-                                                    "" ||
-                                                // ignore: unnecessary_null_comparison
-                                                model[index].productImagePath ==
-                                                    null
-                                            ? dummyImageUrl
-                                            : model[index].productImagePath),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                          child: const Center(
+                            child: Text('Order Preview',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                          )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(20)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (model.isNotEmpty)
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Cart Items :",
+                                  style: titleStyle,
+                                ),
+                              ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: model.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
                                     children: [
                                       SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.8,
-                                        child: Text(
-                                          model[index].productName,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
-                                          maxLines: 2,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text.rich(
-                                        TextSpan(
-                                          text: "\$${model[index].price}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: kPrimaryColor),
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                    " x ${model[index].quantity}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1),
-                                            TextSpan(
-                                                text: " = \$" +
-                                                    (model[index].price *
-                                                            model[index]
-                                                                .quantity)
-                                                        .toStringAsFixed(2),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        if (paymentStringList.isNotEmpty)
-                          const Divider(
-                            thickness: 1,
-                          ),
-                        if (paymentStringList.isNotEmpty)
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Payment Details :",
-                              style: titleStyle,
-                            ),
-                          ),
-                        if (paymentStringList.isNotEmpty)
-                          ListView.builder(
-                            itemCount: paymentStringList.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 4.0, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Image.asset(
-                                        'assets/images/payment_done.png',
-                                        height: 30,
-                                        width: 30,
-                                      ),
-                                    ),
-                                    Expanded(
-                                        flex: 4,
-                                        child: Text(paymentStringList[index],
-                                            style: nameStyle)),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        const Divider(
-                          thickness: 1,
-                        ),
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Balance Details :",
-                            style: titleStyle,
-                          ),
-                        ),
-                        Text(
-                          "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
-                          // style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        if (repDiscountModel != null && isDiscountApplicable)
-                          Text(
-                            "Today's Order Amount : \$ " +
-                                totalPrice.toStringAsFixed(2),
-                            // style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        if (repDiscountModel != null && isDiscountApplicable)
-                          Text(
-                            "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
-                            // style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        Text(
-                          "Order Payable Amount : \$ " + getOrderAmount(),
-                          // style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Total Balance: \$ " + getTotalBalance(),
-                          // style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
-                          // style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Remaining Balance : \$ " + getRemainigBalance(),
-                          // style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const Divider(
-                          thickness: 1,
-                        ),
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Share Invoice :",
-                            style: titleStyle,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: appColor,
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0))),
-                                    onPressed: () async {
-                                      // Create the cartModel and generate the discountString
-                                      CartModel cartModel = CartModel(
-                                        orderPayment: paymentsList,
-                                        customerId: widget.customerId,
-                                        dateTime: DateTime.now(),
-                                        orderBy: 2,
-                                        orderId: 0,
-                                        orderProducts: model,
-                                        discountType: isDiscountApplicable &&
-                                                isDiscountInPercent
-                                            ? "By Percentage"
-                                            : "By Value",
-                                        discount: repDiscountModel != null &&
-                                                isDiscountApplicable
-                                            ? repDiscountModel!.data.discount
-                                            : 0,
-                                        grandTotal: totalPrice,
-                                        status: '',
-                                        totalPrice: totalPrice,
-                                        orderPaidAmount: totalPaid,
-                                        orderPendingAmount:
-                                            double.parse(getRemainigBalance()),
-                                        remainingBalance:
-                                            double.parse(getRemainigBalance()),
-                                        totalBalance:
-                                            double.parse(getTotalBalance()),
-                                        previousBalance: previousBalance,
-                                        netTotal:
-                                            double.parse(getOrderAmount()),
-                                      );
-
-                                      // String discountString = '';
-                                      // if (isDiscountApplicable) {
-                                      //   if (isDiscountInPercent) {
-                                      //     discountString =
-                                      //         "Discount in Percent = ${repDiscountModel!.data.discount}";
-                                      //   } else {
-                                      //     discountString =
-                                      //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
-                                      //   }
-                                      // }
-
-                                      final data =
-                                          await pdfService.createInvoice(
-                                        discountValue: repDiscountModel !=
-                                                    null &&
-                                                isDiscountApplicable
-                                            ? repDiscountModel!.data.discount
-                                                .toStringAsFixed(2)
-                                            : null,
-                                        isDiscountInPercent:
-                                            isDiscountApplicable
-                                                ? isDiscountInPercent
-                                                : null,
-                                        ctx: context,
-                                        cartModel: cartModel,
-                                        customerName: widget.customerName,
-                                        repName:
-                                            loginStorage.getUserFirstName() +
-                                                " " +
-                                                loginStorage.getUserLastName(),
-                                        isOrderCompleted: false,
-                                        repCompanyName:
-                                            loginStorage.getSalesRepCompany(),
-                                      );
-
-                                      log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
-
-                                      final filePath = await pdfService
-                                          .savePdfFile("invoice_$number", data);
-                                      print('PDF File Path: $filePath');
-
-                                      Navigator.pop(context);
-
-                                      await sendEmail([filePath]);
-                                      // number++;
-                                    },
-                                    child: const Text(
-                                      'Share with Gmail',
-                                      style: TextStyle(color: Colors.white),
-                                    ))),
-                            Expanded(
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: appColor,
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0))),
-                                    onPressed: () {
-                                      sendSMS(widget.phone);
-                                    },
-                                    child: const Text(
-                                      'Share with SMS',
-                                      style: TextStyle(color: Colors.white),
-                                    ))),
-                          ],
-                        ),
-                        DefaultButton(
-                          buttonColor: appColor,
-                          press: () {
-                            showAwesomeAlert(
-                              context: context,
-                              msg: 'Do you want to place the order?',
-                              animType: AnimType.topSlide,
-                              dialogType: DialogType.info,
-                              // okBtnText: "Ok",
-                              onOkPress: () async {
-                                log("payment list = ${json.encode(paymentsList)}");
-
-                                if (isOrderPlaced) {
-                                  showToast("This order already placed");
-                                  Navigator.of(context).pop();
-                                  return;
-                                }
-
-                                // num price = totalPrice +
-                                //     totalPayable -
-                                //     (totalPaid + previousBalance);
-
-                                // !following logic is commented because changed scenario of previous balance
-                                // if (totalPaid == 0 &&
-                                //     previousBalance > totalPrice) {
-                                //   totalPaid = totalPrice;
-                                //   log("totalPaid after conditions = $totalPaid");
-                                // }
-
-                                // if (price < 0 || price ) {
-                                //   canPlaceOrder = true;
-                                // }
-
-                                // log("creditLimit = $creditLimit");
-                                // log("price = $price");
-                                log("previousBalance = $previousBalance");
-                                // if (creditLimit < price) {
-                                //   showToast(
-                                //       "You can Order upto \$${creditLimit + previousBalance}");
-                                //   //! add awesome dialogue for this msg
-                                //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
-                                // } else {
-                                // num paid = 0;
-                                // num prevBlnc = previousBalance;
-                                // if (totalPaid >= totalPrice) {
-                                //   paid = totalPaid;
-                                //   prevBlnc =
-                                //       prevBlnc + (totalPaid - totalPrice);
-                                // } else {
-                                //   prevBlnc - totalPrice + totalPaid;
-                                // }
-                                // totalPaid =
-                                //     totalPaid + previousBalance - totalPrice;
-
-                                CartModel cartModel = CartModel(
-                                  netTotal: double.parse(getOrderAmount()),
-                                  orderPayment: paymentsList,
-                                  customerId: widget.customerId,
-                                  dateTime: DateTime.now(),
-                                  orderBy: 2,
-                                  orderId: 0,
-                                  orderProducts: model,
-                                  discount: isDiscountApplicable
-                                      ? repDiscountModel!.data.discount
-                                      : 0,
-                                  grandTotal: totalPrice,
-                                  status: 'Pending',
-                                  totalPrice: totalPrice,
-                                  orderPaidAmount: totalPaid,
-                                  //! + previousBalance is removed in current scenario
-                                  //! becasue totalbalance param is added in api
-                                  orderPendingAmount:
-                                      double.parse(getRemainigBalance()),
-                                  remainingBalance:
-                                      double.parse(getRemainigBalance()),
-                                  totalBalance: double.parse(getTotalBalance()),
-                                  previousBalance: previousBalance,
-                                  discountType: isDiscountApplicable &&
-                                          isDiscountInPercent
-                                      ? "By Percentage"
-                                      : "By Value",
-                                );
-
-                                String jsonnn = cartModelToJson(cartModel);
-                                await addToCartHandler(jsonnn);
-                                log("jsonnn  /// = $jsonnn");
-                                if (isOrderPlaced) {
-                                  await updateCustomerBalanceHandler(
-                                    widget.customerId,
-                                    getPreviousBalance(), //! setting it to 0 because previous balance was added into
-                                    //! totalPaid and if total paid is more than total price then
-                                    //! murtaza will again add this extra to customer's wallet
-                                  );
-                                  openInvoice();
-
-                                  //! clearing full sales rep box
-                                  //! because delete is not working for a particular key
-
-                                  // Hive.box("salesrep_cart_box").clear();
-                                  cartStorage.clearAnyCustomerCart(
-                                      customerId: widget.customerId);
-
-                                  // var box = Hive.box("salesrep_cart_box");
-                                  // if (box.containsKey(
-                                  //     widget.customerId.toString() +
-                                  //         "salesrep_cart_list")) {
-                                  //   log("yes it  has key");
-                                  // }
-                                  // box.delete(widget.customerId.toString() +
-                                  //     "salesrep_cart_list");
-
-                                  // box.compact();
-
-                                  Provider.of<CartCounterProvider>(context,
-                                          listen: false)
-                                      .setCount(0);
-                                }
-
-                                if (isOrderPlaced) {
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                        width: 50,
+                                        child: AspectRatio(
+                                          aspectRatio: 0.88,
                                           child: Container(
+                                            padding: EdgeInsets.all(
+                                                getProportionateScreenWidth(4)),
                                             decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10.0)),
-                                            child: ListView(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
+                                              color: const Color(0xFFF5F6F9),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            // child: Image.network(cart.product.images[0]),
+                                            child: Image.network(model[index]
+                                                            .productImagePath ==
+                                                        "" ||
+                                                    // ignore: unnecessary_null_comparison
+                                                    model[index]
+                                                            .productImagePath ==
+                                                        null
+                                                ? dummyImageUrl
+                                                : model[index]
+                                                    .productImagePath),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.8,
+                                            child: Text(
+                                              model[index].productName,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text.rich(
+                                            TextSpan(
+                                              text: "\$${model[index].price}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: kPrimaryColor),
                                               children: [
-                                                const SizedBox(height: 15),
-                                                SvgPicture.asset(
-                                                  'assets/icons/checkout.svg',
-                                                  color: appColor,
-                                                ),
-                                                const SizedBox(height: 10),
-                                                const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                                  child: Text(
-                                                    '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  height: 45,
-                                                  width: double.infinity,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      // close bottom sheet and also navigate
-                                                      // to previous page.
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text(
-                                                        'Continue Shopping'),
-                                                    style: ElevatedButton.styleFrom(
-                                                        elevation: 0,
-                                                        backgroundColor:
-                                                            appColor,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0))),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 30),
+                                                TextSpan(
+                                                    text:
+                                                        " x ${model[index].quantity}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
+                                                TextSpan(
+                                                    text: " = \$" +
+                                                        (model[index].price *
+                                                                model[index]
+                                                                    .quantity)
+                                                            .toStringAsFixed(2),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1),
                                               ],
                                             ),
-
-                                            // color: Colors.black,
                                           ),
-                                        );
-                                      });
-                                }
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
                               },
-                            );
-                          },
-                          text: "Place Order",
+                            ),
+                            if (paymentStringList.isNotEmpty)
+                              const Divider(
+                                thickness: 1,
+                              ),
+                            if (paymentStringList.isNotEmpty)
+                              ListView.builder(
+                                itemCount: paymentStringList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 4.0, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Image.asset(
+                                            'assets/images/payment_done.png',
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                        ),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                                paymentStringList[index],
+                                                style: nameStyle)),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+
+                            if (model.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    // SizedBox(
+                                    //   child: PaymentCard(
+                                    //     image: getSumupImageUrl(),
+                                    //     color: selectedPaymentIndex == 1 ? true : false,
+                                    //     onTap: () {
+                                    //       selectedPaymentIndex = 1;
+                                    //
+                                    //       handleSumupClick();
+                                    //       setState(() {});
+                                    //     },
+                                    //     paymentName: 'SumUp',
+                                    //   ),
+                                    // ),
+                                    //! payment by cash
+                                    PaymentCard(
+                                      image:
+                                          'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+                                      color: selectedPaymentIndex == 2
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        selectedPaymentIndex = 2;
+                                        setStatesss(() {});
+                                      },
+                                      paymentName: 'Cash',
+                                    ),
+
+                                    //! payment with cheque
+                                    PaymentCard(
+                                      image:
+                                          'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
+                                      color: selectedPaymentIndex == 3
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        selectedPaymentIndex = 3;
+                                        setStatesss(() {});
+                                      },
+                                      paymentName: 'Cheque',
+                                    ),
+
+                                    //! payment with cash app
+                                    PaymentCard(
+                                      image:
+                                          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
+                                      color: selectedPaymentIndex == 4
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        selectedPaymentIndex = 4;
+                                        setStatesss(() {});
+                                      },
+                                      paymentName: 'Cash App',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            //! cash on delivery
+
+                            if (selectedPaymentIndex == 2 && model.isNotEmpty)
+                              cashPaymentDesign(setStatesss),
+
+                            //! cheque payment
+                            if (selectedPaymentIndex == 3 && model.isNotEmpty)
+                              chequePaymentDesign(setStatesss),
+
+                            //! cashapp payment payment
+
+                            if (selectedPaymentIndex == 4 && model.isNotEmpty)
+                              cashAppPaymentDesign(setStatesss),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Balance Details :",
+                                style: titleStyle,
+                              ),
+                            ),
+                            Text(
+                              "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
+                              // style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            if (repDiscountModel != null &&
+                                isDiscountApplicable)
+                              Text(
+                                "Today's Order Amount : \$ " +
+                                    totalPrice.toStringAsFixed(2),
+                                // style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            if (repDiscountModel != null &&
+                                isDiscountApplicable)
+                              Text(
+                                "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
+                                // style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            Text(
+                              "Order Payable Amount : \$ " + getOrderAmount(),
+                              // style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Total Balance: \$ " + getTotalBalance(),
+                              // style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
+                              // style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Remaining Balance : \$ " + getRemainigBalance(),
+                              // style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Share Invoice :",
+                                style: titleStyle,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: appColor,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(0))),
+                                        onPressed: () async {
+                                          // Create the cartModel and generate the discountString
+                                          CartModel cartModel = CartModel(
+                                            orderPayment: paymentsList,
+                                            customerId: widget.customerId,
+                                            dateTime: DateTime.now(),
+                                            orderBy: 2,
+                                            orderId: 0,
+                                            orderProducts: model,
+                                            discountType:
+                                                isDiscountApplicable &&
+                                                        isDiscountInPercent
+                                                    ? "By Percentage"
+                                                    : "By Value",
+                                            discount:
+                                                repDiscountModel != null &&
+                                                        isDiscountApplicable
+                                                    ? repDiscountModel!
+                                                        .data.discount
+                                                    : 0,
+                                            grandTotal: totalPrice,
+                                            status: '',
+                                            totalPrice: totalPrice,
+                                            orderPaidAmount: totalPaid,
+                                            orderPendingAmount: double.parse(
+                                                getRemainigBalance()),
+                                            remainingBalance: double.parse(
+                                                getRemainigBalance()),
+                                            totalBalance:
+                                                double.parse(getTotalBalance()),
+                                            previousBalance: previousBalance,
+                                            netTotal:
+                                                double.parse(getOrderAmount()),
+                                          );
+
+                                          // String discountString = '';
+                                          // if (isDiscountApplicable) {
+                                          //   if (isDiscountInPercent) {
+                                          //     discountString =
+                                          //         "Discount in Percent = ${repDiscountModel!.data.discount}";
+                                          //   } else {
+                                          //     discountString =
+                                          //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
+                                          //   }
+                                          // }
+
+                                          final data =
+                                              await pdfService.createInvoice(
+                                            discountValue:
+                                                repDiscountModel != null &&
+                                                        isDiscountApplicable
+                                                    ? repDiscountModel!
+                                                        .data.discount
+                                                        .toStringAsFixed(2)
+                                                    : null,
+                                            isDiscountInPercent:
+                                                isDiscountApplicable
+                                                    ? isDiscountInPercent
+                                                    : null,
+                                            ctx: context,
+                                            cartModel: cartModel,
+                                            customerName: widget.customerName,
+                                            repName: loginStorage
+                                                    .getUserFirstName() +
+                                                " " +
+                                                loginStorage.getUserLastName(),
+                                            isOrderCompleted: false,
+                                            repCompanyName: loginStorage
+                                                .getSalesRepCompany(),
+                                          );
+
+                                          log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+
+                                          final filePath =
+                                              await pdfService.savePdfFile(
+                                                  "invoice_$number", data);
+                                          print('PDF File Path: $filePath');
+
+                                          Navigator.pop(context);
+
+                                          await sendEmail([filePath]);
+                                          // number++;
+                                        },
+                                        child: const Text(
+                                          'Share with Gmail',
+                                          style: TextStyle(color: Colors.white),
+                                        ))),
+                                Expanded(
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: appColor,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(0))),
+                                        onPressed: () {
+                                          sendSMS(widget.phone);
+                                        },
+                                        child: const Text(
+                                          'Share with SMS',
+                                          style: TextStyle(color: Colors.white),
+                                        ))),
+                              ],
+                            ),
+                            DefaultButton(
+                              buttonColor: appColor,
+                              press: () {
+                                showAwesomeAlert(
+                                  context: context,
+                                  msg: 'Do you want to place the order?',
+                                  animType: AnimType.topSlide,
+                                  dialogType: DialogType.info,
+                                  // okBtnText: "Ok",
+                                  onOkPress: () async {
+                                    log("payment list = ${json.encode(paymentsList)}");
+
+                                    if (isOrderPlaced) {
+                                      showToast("This order already placed");
+                                      Navigator.of(context).pop();
+                                      return;
+                                    }
+
+                                    // num price = totalPrice +
+                                    //     totalPayable -
+                                    //     (totalPaid + previousBalance);
+
+                                    // !following logic is commented because changed scenario of previous balance
+                                    // if (totalPaid == 0 &&
+                                    //     previousBalance > totalPrice) {
+                                    //   totalPaid = totalPrice;
+                                    //   log("totalPaid after conditions = $totalPaid");
+                                    // }
+
+                                    // if (price < 0 || price ) {
+                                    //   canPlaceOrder = true;
+                                    // }
+
+                                    // log("creditLimit = $creditLimit");
+                                    // log("price = $price");
+                                    log("previousBalance = $previousBalance");
+                                    // if (creditLimit < price) {
+                                    //   showToast(
+                                    //       "You can Order upto \$${creditLimit + previousBalance}");
+                                    //   //! add awesome dialogue for this msg
+                                    //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
+                                    // } else {
+                                    // num paid = 0;
+                                    // num prevBlnc = previousBalance;
+                                    // if (totalPaid >= totalPrice) {
+                                    //   paid = totalPaid;
+                                    //   prevBlnc =
+                                    //       prevBlnc + (totalPaid - totalPrice);
+                                    // } else {
+                                    //   prevBlnc - totalPrice + totalPaid;
+                                    // }
+                                    // totalPaid =
+                                    //     totalPaid + previousBalance - totalPrice;
+
+                                    CartModel cartModel = CartModel(
+                                      netTotal: double.parse(getOrderAmount()),
+                                      orderPayment: paymentsList,
+                                      customerId: widget.customerId,
+                                      dateTime: DateTime.now(),
+                                      orderBy: 2,
+                                      orderId: 0,
+                                      orderProducts: model,
+                                      discount: isDiscountApplicable
+                                          ? repDiscountModel!.data.discount
+                                          : 0,
+                                      grandTotal: totalPrice,
+                                      status: 'Pending',
+                                      totalPrice: totalPrice,
+                                      orderPaidAmount: totalPaid,
+                                      //! + previousBalance is removed in current scenario
+                                      //! becasue totalbalance param is added in api
+                                      orderPendingAmount:
+                                          double.parse(getRemainigBalance()),
+                                      remainingBalance:
+                                          double.parse(getRemainigBalance()),
+                                      totalBalance:
+                                          double.parse(getTotalBalance()),
+                                      previousBalance: previousBalance,
+                                      discountType: isDiscountApplicable &&
+                                              isDiscountInPercent
+                                          ? "By Percentage"
+                                          : "By Value",
+                                    );
+
+                                    String jsonnn = cartModelToJson(cartModel);
+                                    await addToCartHandler(jsonnn);
+                                    log("jsonnn  /// = $jsonnn");
+                                    if (isOrderPlaced) {
+                                      await updateCustomerBalanceHandler(
+                                        widget.customerId,
+                                        getPreviousBalance(), //! setting it to 0 because previous balance was added into
+                                        //! totalPaid and if total paid is more than total price then
+                                        //! murtaza will again add this extra to customer's wallet
+                                      );
+                                      openInvoice();
+
+                                      //! clearing full sales rep box
+                                      //! because delete is not working for a particular key
+
+                                      // Hive.box("salesrep_cart_box").clear();
+                                      cartStorage.clearAnyCustomerCart(
+                                          customerId: widget.customerId);
+
+                                      // var box = Hive.box("salesrep_cart_box");
+                                      // if (box.containsKey(
+                                      //     widget.customerId.toString() +
+                                      //         "salesrep_cart_list")) {
+                                      //   log("yes it  has key");
+                                      // }
+                                      // box.delete(widget.customerId.toString() +
+                                      //     "salesrep_cart_list");
+
+                                      // box.compact();
+
+                                      Provider.of<CartCounterProvider>(context,
+                                              listen: false)
+                                          .setCount(0);
+                                    }
+
+                                    if (isOrderPlaced) {
+                                      showModalBottomSheet(
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0)),
+                                                child: ListView(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  children: [
+                                                    const SizedBox(height: 15),
+                                                    SvgPicture.asset(
+                                                      'assets/icons/checkout.svg',
+                                                      color: appColor,
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 8.0),
+                                                      child: Text(
+                                                        '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      height: 45,
+                                                      width: double.infinity,
+                                                      child: ElevatedButton(
+                                                        onPressed: () {
+                                                          // close bottom sheet and also navigate
+                                                          // to previous page.
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: const Text(
+                                                            'Continue Shopping'),
+                                                        style: ElevatedButton.styleFrom(
+                                                            elevation: 0,
+                                                            backgroundColor:
+                                                                appColor,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0))),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 30),
+                                                  ],
+                                                ),
+
+                                                // color: Colors.black,
+                                              ),
+                                            );
+                                          });
+                                    }
+                                  },
+                                );
+                              },
+                              text: "Place Order",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         });
   }
