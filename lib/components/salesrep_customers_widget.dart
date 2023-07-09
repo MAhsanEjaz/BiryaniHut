@@ -1374,7 +1374,7 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                       value: popupMenuValue,
                       onTap: () {},
                       child: Row(
-                        children: [
+                        children: const [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

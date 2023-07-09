@@ -58,7 +58,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
     getCartItems();
     calculateQuantity();
     // quantityCont.text = qty.toString();
-    quantityCont = TextEditingController(text: qty.toString());
+    quantityCont = TextEditingController();
   }
 
   bool showMoreQty = false;
@@ -192,6 +192,10 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                     onTap: () {
                                       // model.clear();
 
+                                      if (quantityCont.text.isEmpty) {
+                                        quantityCont.text = "1";
+                                      }
+
                                       totalPrice = 0;
                                       getCartItems();
                                       int quantity =
@@ -233,11 +237,17 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                           if (element.productId ==
                                               widget.productData.productId) {
                                             isDuplicate = true;
+                                            //! add previous items and new items
+                                            element.quantity =
+                                                element.quantity + quantity;
+                                            cartStorage.updateCartItem(
+                                                item: element,
+                                                customerId: widget.customerId);
                                           }
                                         });
 
                                         if (isDuplicate) {
-                                          showToast("Already Added to Cart");
+                                          showToast("Cart Items Updated");
                                         } else {
                                           showToast("Added to Cart");
 
@@ -438,87 +448,87 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
             ),
           ),
         ),
-        widget.isShowCartBtn == true
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: qty.bitLength < 2
-                        ? null
-                        : () {
-                            setState(() {
-                              qty--;
-                              quantityCont.text = qty.toString();
-                            });
-                          },
-                    child: Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Icon(
-                          CupertinoIcons.minus,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                      color: appColor,
+        if (widget.isShowCartBtn)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: qty.bitLength < 2
+                    ? null
+                    : () {
+                        setState(() {
+                          qty--;
+                          quantityCont.text = qty.toString();
+                        });
+                      },
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Icon(
+                      CupertinoIcons.minus,
+                      color: Colors.white,
+                      size: 18,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: const BoxDecoration(
-                          // border: Border.all(color: Colors.black),
-                          // borderRadius: BorderRadius.circular(2),
-                          ),
-                      child: Center(
-                        child: TextField(
-                          focusNode: quantityNode,
-                          keyboardType: TextInputType.number,
-                          controller: quantityCont,
-                          textAlign: TextAlign.center,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(4),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              qty = int.tryParse(value) ?? 0;
-                            });
-                          },
-                        ),
+                  color: appColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  height: 35,
+                  width: 35,
+                  decoration: const BoxDecoration(
+                      // border: Border.all(color: Colors.black),
+                      // borderRadius: BorderRadius.circular(2),
                       ),
+                  child: Center(
+                    child: TextField(
+                      focusNode: quantityNode,
+                      keyboardType: TextInputType.number,
+                      controller: quantityCont,
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        hintText: "1",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(4),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          qty = int.tryParse(value) ?? 0;
+                        });
+                      },
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        qty++;
-                        quantityCont.text = qty.toString();
-                      });
-                    },
-                    child: Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      color: appColor,
-                      child: const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    qty++;
+                    quantityCont.text = qty.toString();
+                  });
+                },
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: appColor,
+                  child: const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 18,
                     ),
                   ),
-                ],
-              )
-            : const SizedBox()
+                ),
+              ),
+            ],
+          )
       ],
     );
   }

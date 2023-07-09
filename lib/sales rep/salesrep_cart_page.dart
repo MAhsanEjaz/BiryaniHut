@@ -61,7 +61,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   FocusNode amountNode = FocusNode();
   FocusNode chequeNoNode = FocusNode();
-  FocusNode cashAppTransIdNode = FocusNode();
+  // FocusNode cashAppTransIdNode = FocusNode();
 
   // List<num> pricelist = [];
   // List<num> discountlist = [];
@@ -98,6 +98,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   @override
   void initState() {
     super.initState();
+
+    log(widget.customerName);
+    log(widget.email);
+    log(widget.phone);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getRepDiscountHandler();
@@ -197,7 +201,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     CustomLoader.hideLoader(context);
   }
 
-  void newSendSms(String number) async {
+  void sendSMS(String number) async {
     String message = 'Order Details:\n';
     for (var product in model) {
       message += '\nProduct Name: ${product.productName}\n'
@@ -214,10 +218,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     }
   }
 
-  Future<void> _sendEmail(List<String> path) async {
+  Future<void> sendEmail(List<String> path) async {
     final Email email = Email(
       body: '',
-      subject: 'Influence',
+      subject: 'Influance',
       recipients: [widget.email],
       // cc: [widget.email],
       // bcc: [widget.email],
@@ -225,15 +229,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       isHTML: false,
     );
 
-    print('email--->${widget.email}');
-    print('phone--->${widget.phone}');
-
     try {
       await FlutterEmailSender.send(email);
     } catch (error) {
-      print('Error sending email: $error');
+      log('Error sending email: $error');
     }
   }
+
+  bool isDeleteProductAllowed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -307,38 +310,16 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Dismissible(
-                            key: Key(model[index].productId.toString()),
+                            key: isDeleteProductAllowed
+                                ? Key(model[index].productId.toString())
+                                : const Key("0"),
                             direction: DismissDirection.endToStart,
-                            onDismissed: (direction) {
-                              num price =
-                                  model[index].price * model[index].quantity;
-
-                              log("price = $price");
-                              log("model[index].price = ${model[index].price}");
-                              log("model[index].quantity = ${model[index].quantity}");
-
-                              totalPrice = totalPrice - price;
-                              model.removeAt(index);
-                              setState(() {});
-
-                              cartStorage.deleteCartItem(
-                                  index: index, customerId: widget.customerId);
-                              Provider.of<CartCounterProvider>(context,
-                                      listen: false)
-                                  .setCount(model.length);
-
-                              log("cartItemsCount before update = $cartItemsCount");
-
-                              cartItemsCount =
-                                  cartItemsCount - model[index].quantity;
-                              log("deleting the item and setState is fired");
-                              log("cartItemsCount after update = $cartItemsCount");
-
-                              updateIsDiscountApplicable();
-                              setState(() {});
-
-                              log("model length = ${model.length}");
+                            confirmDismiss: (direction) async {
+                              return await deleteProductFromCart(index);
                             },
+                            // onDismissed: (direction) {
+
+                            // },
                             background: Container(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
@@ -434,19 +415,22 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                 model[index].price *
                                                     model[index].quantity;
 
-                                            model[index].quantity--;
+                                            // model[index].quantity--;
                                             //! if quantity is less than 1 then remove item from cart
-                                            if (model[index].quantity < 1) {
-                                              cartStorage.deleteCartItem(
-                                                  index: index,
-                                                  customerId:
-                                                      widget.customerId);
-                                              model.removeAt(index);
-                                              Provider.of<CartCounterProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .decrementCount();
+                                            if (model[index].quantity < 2) {
+                                              deleteProductFromCart(index);
+                                              // cartStorage.deleteCartItem(
+                                              //     index: index,
+                                              //     customerId:
+                                              //         widget.customerId);
+                                              // model.removeAt(index);
+                                              // Provider.of<CartCounterProvider>(
+                                              //         context,
+                                              //         listen: false)
+                                              //     .decrementCount();
                                             } else {
+                                              model[index].quantity--;
+
                                               totalPrice = totalPrice +
                                                   model[index].price *
                                                       model[index].quantity;
@@ -1004,17 +988,17 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   cashAppPaymentDesign() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-          child: CustomTextField(
-            controller: cashAppTransId,
-            focusNode: cashAppTransIdNode,
-            hint: "Enter Transaction Id",
-            inputType: TextInputType.text,
-            isEnabled: true,
-            prefixWidget: const Icon(Icons.numbers),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        //   child: CustomTextField(
+        //     controller: cashAppTransId,
+        //     focusNode: cashAppTransIdNode,
+        //     hint: "Enter Transaction Id",
+        //     inputType: TextInputType.text,
+        //     isEnabled: true,
+        //     prefixWidget: const Icon(Icons.numbers),
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
           child: CustomTextField(
@@ -1062,14 +1046,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             } else {
               paymentsList.add(OrderPayment(
                   paymentMethod: "8",
-                  chequeNo: cashAppTransId.text, //! add transaction id here
+                  // chequeNo: cashAppTransId.text, //! add transaction id here
                   paymentAmount: double.parse(amountCont.text.trim())));
               totalByCashApp = double.parse(amountCont.text.trim());
             }
 
             paymentStringList.add("\$ $totalByCashApp Paid by CashApp");
             amountCont.clear();
-            cashAppTransId.clear();
+            // cashAppTransId.clear();
             FocusScope.of(context).unfocus();
             setState(() {});
           },
@@ -1588,7 +1572,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
                                       Navigator.pop(context);
 
-                                      await _sendEmail([filePath]);
+                                      await sendEmail([filePath]);
                                       // number++;
                                     },
                                     child: const Text(
@@ -1604,10 +1588,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             borderRadius:
                                                 BorderRadius.circular(0))),
                                     onPressed: () {
-                                      newSendSms(widget.phone);
+                                      sendSMS(widget.phone);
                                     },
                                     child: const Text(
-                                      'Share with Sms',
+                                      'Share with SMS',
                                       style: TextStyle(color: Colors.white),
                                     ))),
                           ],
@@ -1815,5 +1799,59 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             ),
           );
         });
+  }
+
+  deleteProductFromCart(int index) {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Do you want to delete this item ?'),
+          actions: <Widget>[
+            ElevatedButton(
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.pop(context, true);
+
+                num price = model[index].price * model[index].quantity;
+
+                log("price = $price");
+                log("model[index].price = ${model[index].price}");
+                log("model[index].quantity = ${model[index].quantity}");
+
+                totalPrice = totalPrice - price;
+                model.removeAt(index);
+                setState(() {});
+
+                cartStorage.deleteCartItem(
+                    index: index, customerId: widget.customerId);
+                Provider.of<CartCounterProvider>(context, listen: false)
+                    .setCount(model.length);
+
+                log("cartItemsCount before update = $cartItemsCount");
+
+                cartItemsCount = cartItemsCount - model[index].quantity;
+                log("deleting the item and setState is fired");
+                log("cartItemsCount after update = $cartItemsCount");
+
+                updateIsDiscountApplicable();
+                setState(() {});
+
+                log("model length = ${model.length}");
+              },
+            ),
+            ElevatedButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

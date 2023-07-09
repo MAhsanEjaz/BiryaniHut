@@ -48,6 +48,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   final confirmPassCont = TextEditingController();
   final phoneCont = TextEditingController();
   final addressCont = TextEditingController();
+  final zipCont = TextEditingController();
 
   bool isEmailError = false;
   bool isfNamaeError = false;
@@ -59,6 +60,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   bool isSalonError = false;
   bool isStateError = false;
   bool isCityError = false;
+  bool isZipCodeError = false;
 
   String emailErrorString = '';
   String passErrorString = '';
@@ -70,6 +72,7 @@ class _SignUpScreenState extends State<SignUpPage> {
   String salonNameErrorString = '';
   String stateNameErrorString = '';
   String cityNameErrorString = '';
+  String zipCodeErrorString = '';
 
   Map<String, dynamic> registerByCustomerBody = {};
 
@@ -109,7 +112,7 @@ class _SignUpScreenState extends State<SignUpPage> {
 
   bool isObscure = true;
 
-  bool _isCapsOn = false;
+  // bool _isCapsOn = false;
 
   File? _image;
 
@@ -162,7 +165,7 @@ class _SignUpScreenState extends State<SignUpPage> {
 
     citiesModel =
         Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-    print('cities---->${citiesModel}');
+    print('cities---->$citiesModel');
     setState(() {});
 
     CustomLoader.hideLoader(context);
@@ -174,7 +177,7 @@ class _SignUpScreenState extends State<SignUpPage> {
 
     statesModel =
         Provider.of<StatesProvider>(context, listen: false).statesData!;
-    print('states---->${statesModel}');
+    print('states---->$statesModel');
     setState(() {});
 
     CustomLoader.hideLoader(context);
@@ -281,44 +284,40 @@ class _SignUpScreenState extends State<SignUpPage> {
                           onTap: () {
                             showModalBottomSheet(
                                 context: context,
-                                builder: (context) => Container(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ListTile(
-                                            title: const Text('Camera'),
-                                            leading:
-                                                const Icon(Icons.camera_alt),
-                                            onTap: () async {
-                                              final camImage =
-                                                  await image.pickImage(
-                                                      source:
-                                                          ImageSource.camera);
-                                              if (camImage != null) {
-                                                _image = File(camImage.path);
-                                                _convertImageToBase64();
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: const Text('Gallery'),
-                                            leading: const Icon(Icons.image),
-                                            onTap: () async {
-                                              final galImage =
-                                                  await image.pickImage(
-                                                      source:
-                                                          ImageSource.gallery);
-                                              if (galImage != null) {
-                                                _image = File(galImage.path);
-                                                _convertImageToBase64();
+                                builder: (context) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title: const Text('Camera'),
+                                          leading: const Icon(Icons.camera_alt),
+                                          onTap: () async {
+                                            final camImage =
+                                                await image.pickImage(
+                                                    source: ImageSource.camera);
+                                            if (camImage != null) {
+                                              _image = File(camImage.path);
+                                              _convertImageToBase64();
+                                              setState(() {});
+                                            }
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('Gallery'),
+                                          leading: const Icon(Icons.image),
+                                          onTap: () async {
+                                            final galImage =
+                                                await image.pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            if (galImage != null) {
+                                              _image = File(galImage.path);
+                                              _convertImageToBase64();
 
-                                                setState(() {});
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                              setState(() {});
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ));
                           },
                           child: imagePath == null
@@ -386,20 +385,59 @@ class _SignUpScreenState extends State<SignUpPage> {
                   ),
 
                   if (isSalonError) formErrorText(error: salonNameErrorString),
+                  CustomTextField(
+                      controller: addressCont,
+                      isEnabled: true,
+                      obscureText: false,
+                      isshowPasswordControls: false,
+                      hint: "Address",
+                      inputType: TextInputType.text,
+                      prefixWidget: SvgPicture.asset(
+                        "assets/icons/Location point.svg",
+                      )),
+                  if (isAddressError) formErrorText(error: addressErrorString),
 
-                  // CustomTextField(
-                  //   controller: stateCont,
-                  //   // isshowPasswordControls: true,
-                  //   isEnabled: true,
-                  //   hint: "State Name",
-                  //   prefixWidget: SvgPicture.asset(
-                  //     "assets/svg/State Icon (1).svg",
-                  //     width: 26,
-                  //     height: 26,
-                  //     alignment: Alignment.centerLeft,
-                  //   ),
-                  // ),
-                  //
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0, vertical: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: kSecondaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButton(
+                            isExpanded: true,
+                            underline: const SizedBox(),
+                            hint: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/svg/City Icon (1).svg",
+                                  color: Colors.black45,
+                                  width: 26,
+                                  height: 26,
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.centerLeft,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(cityName == null
+                                    ? 'Select City'
+                                    : cityName!),
+                              ],
+                            ),
+                            items: citiesModel.map((e) {
+                              return DropdownMenuItem(
+                                  onTap: () {
+                                    cityName = e.cityName;
+                                    setState(() {});
+                                  },
+                                  value: e.cityName,
+                                  child: Text(e.cityName.toString()));
+                            }).toList(),
+                            onChanged: (_) {}),
+                      ),
+                    ),
+                  ),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -447,48 +485,6 @@ class _SignUpScreenState extends State<SignUpPage> {
                   ),
                   if (isStateError) formErrorText(error: stateNameErrorString),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 4),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kSecondaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: DropdownButton(
-                            isExpanded: true,
-                            underline: const SizedBox(),
-                            hint: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svg/City Icon (1).svg",
-                                  color: Colors.black45,
-                                  width: 26,
-                                  height: 26,
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.centerLeft,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(cityName == null
-                                    ? 'Select City'
-                                    : cityName!),
-                              ],
-                            ),
-                            items: citiesModel.map((e) {
-                              return DropdownMenuItem(
-                                  onTap: () {
-                                    cityName = e.cityName;
-                                    setState(() {});
-                                  },
-                                  value: e.cityName,
-                                  child: Text(e.cityName.toString()));
-                            }).toList(),
-                            onChanged: (_) {}),
-                      ),
-                    ),
-                  ),
-
                   // CustomTextField(
                   //   controller: cityCont,
                   //   // isshowPasswordControls: true,
@@ -506,6 +502,20 @@ class _SignUpScreenState extends State<SignUpPage> {
                   //   ),
                   // ),
                   if (isCityError) formErrorText(error: cityNameErrorString),
+
+                  CustomTextField(
+                      controller: zipCont,
+                      isEnabled: true,
+                      obscureText: false,
+                      isshowPasswordControls: false,
+                      hint: "Zip Code",
+                      inputType: TextInputType.number,
+                      prefixWidget: SvgPicture.asset(
+                        "assets/icons/Mail.svg",
+                        //! change its icon for zipcode
+                      )),
+
+                  if (isZipCodeError) formErrorText(error: zipCodeErrorString),
 
                   CustomTextField(
                       controller: emailCont,
@@ -537,17 +547,6 @@ class _SignUpScreenState extends State<SignUpPage> {
                       )),
                   if (isPhoneError) formErrorText(error: phoneErrorString),
 
-                  CustomTextField(
-                      controller: addressCont,
-                      isEnabled: true,
-                      obscureText: false,
-                      isshowPasswordControls: false,
-                      hint: "Address",
-                      inputType: TextInputType.text,
-                      prefixWidget: SvgPicture.asset(
-                        "assets/icons/Location point.svg",
-                      )),
-                  if (isAddressError) formErrorText(error: addressErrorString),
                   if (!widget.isReseller)
                     CustomTextField(
                       controller: passCont,
@@ -573,7 +572,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                         log("passChangedVal.length = ${passChangedVal.trim().length}");
                         if (value.trim().length > passChangedVal.length) {
                           passChangedVal = value;
-                          checkCaps(capsCont: passCont);
+                          // checkCaps(capsCont: passCont);
                         }
                       },
                       prefixWidget: SvgPicture.asset(
@@ -607,7 +606,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                         log("passChangedVal.length = ${passChangedVal.trim().length}");
                         if (value.trim().length > passChangedVal.length) {
                           passChangedVal = value;
-                          checkCaps(capsCont: passCont);
+                          // checkCaps(capsCont: passCont);
                         }
                       },
                       prefixWidget: SvgPicture.asset(
@@ -798,17 +797,17 @@ class _SignUpScreenState extends State<SignUpPage> {
     return isValid;
   }
 
-  checkCaps({required TextEditingController capsCont}) {
-    _isCapsOn = capsCont.text.isNotEmpty
-        ? capsCont.text.characters.last ==
-            capsCont.text.characters.last.toUpperCase()
-        : false;
-    setState(() {});
-    if (isLetter(passCont.text.characters.last) && _isCapsOn) {
-      CustomSnackBar.showSnackBar(
-          context: context,
-          message: "Caps lock is on",
-          bgColor: Colors.black87);
-    }
-  }
+  // checkCaps({required TextEditingController capsCont}) {
+  //   _isCapsOn = capsCont.text.isNotEmpty
+  //       ? capsCont.text.characters.last ==
+  //           capsCont.text.characters.last.toUpperCase()
+  //       : false;
+  //   setState(() {});
+  //   if (isLetter(passCont.text.characters.last) && _isCapsOn) {
+  //     CustomSnackBar.showSnackBar(
+  //         context: context,
+  //         message: "Caps lock is on",
+  //         bgColor: Colors.black87);
+  //   }
+  // }
 }

@@ -218,16 +218,19 @@ class PdfInvoiceService {
                                             height: 2.2),
                                       ),
                                     ),
-                                    pw.Expanded(
-                                      flex: 1,
-                                      child: pw.Text(
-                                        "${cartModel.orderPayment[index].chequeNo}",
-                                        style: pw.TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: pw.FontWeight.normal,
-                                            height: 2.2),
+                                    if (cartModel
+                                            .orderPayment[index].chequeNo !=
+                                        null)
+                                      pw.Expanded(
+                                        flex: 1,
+                                        child: pw.Text(
+                                          "${cartModel.orderPayment[index].chequeNo}",
+                                          style: pw.TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: pw.FontWeight.normal,
+                                              height: 2.2),
+                                        ),
                                       ),
-                                    ),
                                     pw.Expanded(
                                         flex: 1,
                                         child: pw.Text(
