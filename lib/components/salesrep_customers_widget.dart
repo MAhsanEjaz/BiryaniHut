@@ -39,7 +39,7 @@ String? city;
 String? state;
 
 class SalesRepCustomersWidget extends StatefulWidget {
-  SalesrepCustomerData customers;
+  final SalesrepCustomerData customers;
 
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -99,7 +99,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
   FocusNode chequeNoNode = FocusNode();
 
-  FocusNode cashAppTransIdNode = FocusNode();
+  // FocusNode cashAppTransIdNode = FocusNode();
 
   List<String> paymentStringList = [];
 
@@ -1109,17 +1109,17 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   cashAppPaymentDesign(setStatess) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-          child: CustomTextField(
-            controller: cashAppTransId,
-            focusNode: cashAppTransIdNode,
-            hint: "Enter Transaction Id",
-            inputType: TextInputType.text,
-            isEnabled: true,
-            prefixWidget: const Icon(Icons.numbers),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        //   child: CustomTextField(
+        //     controller: cashAppTransId,
+        //     focusNode: cashAppTransIdNode,
+        //     hint: "Enter Transaction Id",
+        //     inputType: TextInputType.text,
+        //     isEnabled: true,
+        //     prefixWidget: const Icon(Icons.numbers),
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
           child: CustomTextField(
