@@ -64,6 +64,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   TextEditingController addressCont = TextEditingController();
   TextEditingController salesRepCont = TextEditingController();
   TextEditingController companyCont = TextEditingController();
+  TextEditingController zipCont = TextEditingController();
 
   LoginStorage loginStorage = LoginStorage();
 
@@ -106,6 +107,12 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                 .saleRep!
                 .companyName ??
             '';
+
+    zipCont.text = Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .postalCode ??
+        '';
 
     var customerProfile =
         Provider.of<CustomerProfileProvider>(context, listen: false)
@@ -153,6 +160,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
         salonName: saloonControl.text,
         email: emailCont.text,
         saleRepImage: imagee,
+        postalCode: zipCont.text.trim(),
         companyName: companyCont.text,
         customerId: loginStorage.getUserId(),
         state: statesName,
@@ -207,10 +215,9 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
   List<AllStatesModel> statesModel = [];
   List<AllCitiesModel> citiesModel = [];
 
-  getAllCitiesHandler(String cityCode) async {
+  getAllCitiesHandler() async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService()
-        .getAllCitiesService(context: context, cityCode: cityCode);
+    await GetAllCitiesService().getAllCitiesService(context: context);
 
     citiesModel =
         Provider.of<AllCitiesProvider>(context, listen: false).cities!;
@@ -445,7 +452,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                                           WidgetsBinding.instance
                                               .addPostFrameCallback(
                                                   (timeStamp) {
-                                            getAllCitiesHandler(e.stateCode!);
+                                            getAllCitiesHandler();
                                           });
                                           setState(() {});
                                         },
@@ -508,6 +515,14 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                             ),
                           ),
                         ),
+
+                        CustomTextField(
+                            headerText: "Zip Code",
+                            isEnabled: true,
+                            controller: addressCont,
+                            hint: "Zip Code",
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
 
                         CustomTextField(
                             headerText: "Phone # ",

@@ -303,7 +303,13 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           text: originalIndex.salonName?.toString() ?? '',
                         );
 
+                        TextEditingController zipController =
+                            TextEditingController(
+                          text: originalIndex.postalCode?.toString() ?? '',
+                        );
+
                         return SalesRepCustomersWidget(
+                          zipCont: zipController,
                           address: addressController,
                           firstName: firstNameController,
                           customers: originalIndex,
