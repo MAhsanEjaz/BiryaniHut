@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/reseller_order_time_calender_widget.dart';
@@ -22,6 +24,7 @@ import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_customer_service.dart';
+import 'package:shop_app/storages/cities_storage.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:sumup/sumup.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -199,13 +202,39 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(context);
   }
 
+  Future<void> loadCities() async {
+    final box = await Hive.openBox(
+        'cities'); // Open the Hive box for cities (you can replace 'cities' with your desired box name)
+
+    if (box.isNotEmpty) {
+      // Data exists in Hive, decode and use it
+      cityModel = box.values.map((city) => city as AllCitiesModel).toList();
+      print('hive---$cityModel');
+    } else {
+      // Data doesn't exist in Hive, fetch it from the provider
+      citiesHandler();
+    }
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // getAllStatesHandler();
-      citiesHandler();
+      var citiesRes = HiveCities().getCities();
+
+      if (citiesRes != '') {
+        cityModel =
+            Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+
+        AllCitiesModel.fromJson(jsonDecode(cityModel.toString()));
+        print('hive---${cityModel}');
+      } else {
+        citiesHandler();
+      }
     });
 
     widget.firstName.text = widget.customers.firstName!;
@@ -424,9 +453,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   ),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.email),
-                                                      controller: widget.email,
-                                                      hint: 'Email'),
+                                                          Icons.person),
+                                                      controller:
+                                                          widget.lastName,
+                                                      hint: 'Last Name'),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
                                                           Icons.home),
@@ -435,24 +465,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       hint: 'Salon Name'),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.person),
+                                                          Icons.home),
                                                       controller:
-                                                          widget.lastName,
-                                                      hint: 'Last Name'),
-                                                  CustomTextField(
-                                                      inputFormats: [
-                                                        FilteringTextInputFormatter
-                                                            .digitsOnly,
-                                                        LengthLimitingTextInputFormatter(
-                                                            12),
-                                                        PhoneInputFormatter(),
-                                                      ],
-                                                      inputType:
-                                                          TextInputType.number,
-                                                      prefixWidget: const Icon(
-                                                          Icons.phone),
-                                                      controller: widget.phone,
-                                                      hint: 'Phone'),
+                                                          widget.address,
+                                                      hint: 'Address'),
 
                                                   // DropDownClass(
                                                   //     cityData: widget.cityName,
@@ -653,8 +669,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       widget.cityName =
                                                           suggestion.cityName;
                                                       getAllStatesHandler(
-                                                          cityName!);
-                                                      controller.clear();
+                                                          widget.cityName!);
+                                                      // controller.clear();
                                                       sestate(() {});
                                                       print(
                                                           suggestion.cityName);
@@ -726,7 +742,6 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       ),
                                                     ),
                                                   ),
-
                                                   CustomTextField(
                                                       controller:
                                                           widget.zipCont,
@@ -742,12 +757,27 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                         "assets/icons/Mail.svg",
                                                         //! change its icon for zipcode
                                                       )),
+
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.home),
-                                                      controller:
-                                                          widget.address,
-                                                      hint: 'Address'),
+                                                          Icons.email),
+                                                      controller: widget.email,
+                                                      hint: 'Email'),
+
+                                                  CustomTextField(
+                                                      inputFormats: [
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly,
+                                                        LengthLimitingTextInputFormatter(
+                                                            12),
+                                                        PhoneInputFormatter(),
+                                                      ],
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget: const Icon(
+                                                          Icons.phone),
+                                                      controller: widget.phone,
+                                                      hint: 'Phone'),
                                                 ],
                                               ),
                                             ),

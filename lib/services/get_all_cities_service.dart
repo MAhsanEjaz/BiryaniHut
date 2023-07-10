@@ -6,15 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/all_cities_model.dart';
 import 'package:shop_app/providers/all_cities_provider.dart';
+import 'package:shop_app/storages/cities_storage.dart';
 
 class GetAllCitiesService {
-  Future getAllCitiesService(
-      {required BuildContext context}) async {
+  Future getAllCitiesService({required BuildContext context}) async {
     List<AllCitiesModel>? model = [];
 
     try {
-      http.Response response = await http
-          .get(Uri.parse('$apiBaseUrl/States/GetAllCities'));
+      http.Response response =
+          await http.get(Uri.parse('$apiBaseUrl/States/GetAllCities'));
 
       if (response.statusCode == 200) {
         var l = response.body;
@@ -22,6 +22,8 @@ class GetAllCitiesService {
         jsonDecode(l).forEach((element) {
           model.add(AllCitiesModel.fromJson(element));
         });
+
+        HiveCities().setCities(cities: jsonEncode(model.toString()));
 
         Provider.of<AllCitiesProvider>(context, listen: false)
             .getAllCities(newCities: model);
