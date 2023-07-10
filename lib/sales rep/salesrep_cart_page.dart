@@ -69,7 +69,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   LoginStorage loginStorage = LoginStorage();
 
   String getOrderAmount() {
-    if (isDiscountApplicable) {
+    if (getIsDiscountApplicable()) {
       if (isDiscountInPercent) {
         return (totalPrice -
                 (totalPrice * repDiscountModel!.data.discount / 100))
@@ -93,7 +93,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   int cartItemsCount = 0;
   SalesrepDiscountModel? repDiscountModel;
   bool isDiscountInPercent = false;
-  bool isDiscountApplicable = false;
+  // bool isDiscountApplicable = false;
 
   @override
   void initState() {
@@ -125,19 +125,19 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
       cartItemsCount = cartItemsCount + element.quantity;
 
-      log("new items count = $cartItemsCount");
+      log("cartItemsCount updating = $cartItemsCount");
     });
     if (model.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         accountHandler();
       });
     }
-    if (cartItemsCount >= 20) {
-      isDiscountApplicable = true;
-    }
+    // if (cartItemsCount >= 20) {
+    //   isDiscountApplicable = true;
+    // }
 
-    log('isDiscountApplicable = $isDiscountApplicable');
-    log('cartItemsCount = $cartItemsCount');
+    // log('isDiscountApplicable = $isDiscountApplicable');
+    log('cartItemsCount updated = $cartItemsCount');
   }
 
   accountHandler() async {
@@ -442,7 +442,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             }
                                             cartItemsCount--;
 
-                                            updateIsDiscountApplicable();
+                                            // updateIsDiscountApplicable();
 
                                             // updatePrices();
                                             setState(() {});
@@ -469,7 +469,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                     model[index].quantity;
                                             // updatePrices();
                                             cartItemsCount++;
-                                            updateIsDiscountApplicable();
+                                            // updateIsDiscountApplicable();
 
                                             setState(() {});
 
@@ -550,29 +550,29 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                 const EdgeInsets.symmetric(horizontal: 4.0),
                             child: Row(
                               children: [
-                                Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        openInvoice();
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        height: getProportionateScreenWidth(40),
-                                        width: getProportionateScreenWidth(40),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F6F9),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: SvgPicture.asset(
-                                            "assets/icons/receipt.svg"),
-                                      ),
-                                    ),
-                                    const Text("Invoice")
-                                  ],
-                                ),
-                                const Spacer(),
+                                // Column(
+                                //   children: [
+                                //     InkWell(
+                                //       onTap: () async {
+                                //         openInvoice();
+                                //       },
+                                //       child: Container(
+                                //         padding: const EdgeInsets.all(8),
+                                //         height: getProportionateScreenWidth(40),
+                                //         width: getProportionateScreenWidth(40),
+                                //         decoration: BoxDecoration(
+                                //           color: const Color(0xFFF5F6F9),
+                                //           borderRadius:
+                                //               BorderRadius.circular(10),
+                                //         ),
+                                //         child: SvgPicture.asset(
+                                //             "assets/icons/receipt.svg"),
+                                //       ),
+                                //     ),
+                                //     const Text("Invoice"),
+                                //   ],
+                                // ),
+                                // const Spacer(),
                                 if (data.accountBalanceModel != null)
                                   Column(
                                     crossAxisAlignment:
@@ -591,7 +591,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       //   ),di
 
                                       if (repDiscountModel != null &&
-                                          isDiscountApplicable)
+                                          getIsDiscountApplicable())
                                         Text(
                                           "Today's Order Amount : \$ " +
                                               totalPrice.toStringAsFixed(2),
@@ -599,7 +599,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                       if (repDiscountModel != null &&
-                                          isDiscountApplicable)
+                                          getIsDiscountApplicable())
                                         Text(
                                           "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
                                           style: const TextStyle(
@@ -1054,10 +1054,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   String getTotalBalance() {
     num totalBalance = 0;
-    log("getTotalBalance fired with isDiscountApplicable = $isDiscountApplicable");
+    log("getTotalBalance fired with getIsDiscountApplicable = ${getIsDiscountApplicable()}");
     log("getTotalBalance fired with isDiscountInPercent = $isDiscountInPercent");
     // totalBalance = previousBalance + totalPaid; //! before
-    if (isDiscountApplicable) {
+    if (getIsDiscountApplicable()) {
       if (isDiscountInPercent) {
         log("totalPrice * repDiscountModel!.data.discount / 100 = ${totalPrice * repDiscountModel!.data.discount / 100}");
         totalBalance = previousBalance +
@@ -1101,10 +1101,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       orderBy: 2,
       orderId: 0,
       orderProducts: model,
-      discountType: isDiscountApplicable && isDiscountInPercent
+      discountType: getIsDiscountApplicable() && isDiscountInPercent
           ? "By Percentage"
           : "By Value",
-      discount: repDiscountModel != null && isDiscountApplicable
+      discount: repDiscountModel != null && getIsDiscountApplicable()
           ? repDiscountModel!.data.discount
           : 0,
       grandTotal: totalPrice,
@@ -1119,7 +1119,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     );
 
     String discountString = '';
-    if (isDiscountApplicable) {
+    if (getIsDiscountApplicable()) {
       if (isDiscountInPercent) {
         discountString =
             "Discount in Percent = ${repDiscountModel!.data.discount}";
@@ -1132,10 +1132,11 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     log("discountString before invoice = $discountString");
 
     final data = await pdfService.createInvoice(
-      discountValue: repDiscountModel != null && isDiscountApplicable
+      discountValue: repDiscountModel != null && getIsDiscountApplicable()
           ? repDiscountModel!.data.discount.toStringAsFixed(2)
           : null,
-      isDiscountInPercent: isDiscountApplicable ? isDiscountInPercent : null,
+      isDiscountInPercent:
+          getIsDiscountApplicable() ? isDiscountInPercent : null,
       ctx: context,
       cartModel: cartModel,
       customerName: widget.customerName,
@@ -1152,15 +1153,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     number++;
   }
 
-  void updateIsDiscountApplicable() {
+  bool getIsDiscountApplicable() {
     log("cartItemsCount in updateIsDiscountApplicable= $cartItemsCount");
 
     if (cartItemsCount >= 20) {
-      isDiscountApplicable = true;
+      return true;
     } else {
-      isDiscountApplicable = false;
+      return false;
     }
-    setState(() {});
+    // setState(() {});
   }
 
   void showOrderPreviewSheet() {
@@ -1429,14 +1430,14 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                               // style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             if (repDiscountModel != null &&
-                                isDiscountApplicable)
+                                getIsDiscountApplicable())
                               Text(
                                 "Today's Order Amount : \$ " +
                                     totalPrice.toStringAsFixed(2),
                                 // style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                             if (repDiscountModel != null &&
-                                isDiscountApplicable)
+                                getIsDiscountApplicable())
                               Text(
                                 "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
                                 // style: const TextStyle(fontWeight: FontWeight.bold),
@@ -1487,16 +1488,16 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             orderId: 0,
                                             orderProducts: model,
                                             discountType:
-                                                isDiscountApplicable &&
+                                                getIsDiscountApplicable() &&
                                                         isDiscountInPercent
                                                     ? "By Percentage"
                                                     : "By Value",
-                                            discount:
-                                                repDiscountModel != null &&
-                                                        isDiscountApplicable
-                                                    ? repDiscountModel!
-                                                        .data.discount
-                                                    : 0,
+                                            discount: repDiscountModel !=
+                                                        null &&
+                                                    getIsDiscountApplicable()
+                                                ? repDiscountModel!
+                                                    .data.discount
+                                                : 0,
                                             grandTotal: totalPrice,
                                             status: '',
                                             totalPrice: totalPrice,
@@ -1525,15 +1526,15 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
                                           final data =
                                               await pdfService.createInvoice(
-                                            discountValue:
-                                                repDiscountModel != null &&
-                                                        isDiscountApplicable
-                                                    ? repDiscountModel!
-                                                        .data.discount
-                                                        .toStringAsFixed(2)
-                                                    : null,
+                                            discountValue: repDiscountModel !=
+                                                        null &&
+                                                    getIsDiscountApplicable()
+                                                ? repDiscountModel!
+                                                    .data.discount
+                                                    .toStringAsFixed(2)
+                                                : null,
                                             isDiscountInPercent:
-                                                isDiscountApplicable
+                                                getIsDiscountApplicable()
                                                     ? isDiscountInPercent
                                                     : null,
                                             ctx: context,
@@ -1643,7 +1644,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       orderBy: 2,
                                       orderId: 0,
                                       orderProducts: model,
-                                      discount: isDiscountApplicable
+                                      discount: getIsDiscountApplicable()
                                           ? repDiscountModel!.data.discount
                                           : 0,
                                       grandTotal: totalPrice,
@@ -1659,7 +1660,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                       totalBalance:
                                           double.parse(getTotalBalance()),
                                       previousBalance: previousBalance,
-                                      discountType: isDiscountApplicable &&
+                                      discountType: getIsDiscountApplicable() &&
                                               isDiscountInPercent
                                           ? "By Percentage"
                                           : "By Value",
@@ -1798,52 +1799,54 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Do you want to delete this item ?'),
-          actions: <Widget>[
-            ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-              child: const Text('Yes'),
-              onPressed: () {
-                Navigator.pop(context, true);
+        return StatefulBuilder(
+          builder: (context, setStatesss) => AlertDialog(
+            title: const Text('Do you want to delete this item ?'),
+            actions: <Widget>[
+              ElevatedButton(
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                child: const Text('Yes'),
+                onPressed: () {
+                  Navigator.pop(context, true);
 
-                num price = model[index].price * model[index].quantity;
-
-                log("price = $price");
-                log("model[index].price = ${model[index].price}");
-                log("model[index].quantity = ${model[index].quantity}");
-
-                totalPrice = totalPrice - price;
-                model.removeAt(index);
-                setState(() {});
-
-                cartStorage.deleteCartItem(
-                    index: index, customerId: widget.customerId);
-                Provider.of<CartCounterProvider>(context, listen: false)
-                    .setCount(model.length);
-
-                log("cartItemsCount before update = $cartItemsCount");
-
-                cartItemsCount = cartItemsCount - model[index].quantity;
-                log("deleting the item and setState is fired");
-                log("cartItemsCount after update = $cartItemsCount");
-
-                updateIsDiscountApplicable();
-                setState(() {});
-
-                log("model length = ${model.length}");
-              },
-            ),
-            ElevatedButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-          ],
+                  deleteItem(index);
+                },
+              ),
+              ElevatedButton(
+                child: const Text('No'),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+            ],
+          ),
         );
       },
     );
+  }
+
+  void deleteItem(int index) {
+    num price = model[index].price * model[index].quantity;
+
+    log("price = $price");
+    log("model[index].price = ${model[index].price}");
+    log("model[index].quantity = ${model[index].quantity}");
+
+    totalPrice = totalPrice - price;
+
+    log("cartItemsCount before update = $cartItemsCount");
+
+    log("deleting the item with quantity = ${model[index].quantity} and setStatesss is fired");
+    log("cartItemsCount after update = $cartItemsCount");
+
+    cartItemsCount = cartItemsCount - model[index].quantity;
+    model.removeAt(index);
+    cartStorage.deleteCartItem(index: index, customerId: widget.customerId);
+    Provider.of<CartCounterProvider>(context, listen: false)
+        .setCount(model.length);
+    setState(() {});
+
+    log("model length = ${model.length}");
   }
 }
