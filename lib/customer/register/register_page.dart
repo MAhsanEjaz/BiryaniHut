@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
@@ -37,7 +39,8 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpPage> {
+class _SignUpScreenState extends State<SignUpPage>
+    with TickerProviderStateMixin {
   final emailCont = TextEditingController();
   final passCont = TextEditingController();
   final salonNameCont = TextEditingController();
@@ -133,7 +136,7 @@ class _SignUpScreenState extends State<SignUpPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getAllStatesHandler();
+      citiesHandler();
       getResellerCustomerHandler();
     });
 
@@ -144,36 +147,23 @@ class _SignUpScreenState extends State<SignUpPage> {
 
   LoginStorage loginStorage = LoginStorage();
 
-  // String _formatPhone(String phone) {
-  //   phone = phone.replaceAll('-', '');
-  //   if (phone.length <= 3) {
-  //     return phone;
-  //   } else if (phone.length <= 6) {
-  //     return '${phone.substring(0, 3)}-${phone.substring(3)}';
-  //   } else {
-  //     return '${phone.substring(0, 3)}-${phone.substring(3, 6)}-${phone.substring(6, 10)}';
-  //   }
-  // }
-
   List<AllStatesModel> statesModel = [];
-  List<AllCitiesModel> citiesModel = [];
 
-  getAllCitiesHandler(String cityCode) async {
+  List<AllCitiesModel> cityModel = [];
+
+  citiesHandler() async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService()
-        .getAllCitiesService(context: context, cityCode: cityCode);
-
-    citiesModel =
-        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-    print('cities---->$citiesModel');
-    setState(() {});
-
+    await GetAllCitiesService().getAllCitiesService(context: context);
     CustomLoader.hideLoader(context);
+    cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print(cityModel);
+    setState(() {});
   }
 
-  getAllStatesHandler() async {
+  getAllStatesHandler(String cityName) async {
     CustomLoader.showLoader(context: context);
-    await GetAllStatesServices().getAllStatesServices(context: context);
+    await GetAllStatesServices()
+        .getAllStatesServices(context: context, cityName: cityName);
 
     statesModel =
         Provider.of<StatesProvider>(context, listen: false).statesData!;
@@ -183,8 +173,16 @@ class _SignUpScreenState extends State<SignUpPage> {
     CustomLoader.hideLoader(context);
   }
 
+  TextEditingController controller = TextEditingController();
+
+  bool expand = false;
+
   String? statesName;
   String? cityName;
+
+  String? selectedName;
+
+  final FocusNode _focusNode = FocusNode();
 
   @override
   @override
@@ -397,60 +395,66 @@ class _SignUpScreenState extends State<SignUpPage> {
                       )),
                   if (isAddressError) formErrorText(error: addressErrorString),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 4),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kSecondaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: DropdownButton(
-                            isExpanded: true,
-                            underline: const SizedBox(),
-                            hint: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svg/City Icon (1).svg",
-                                  color: Colors.black45,
-                                  width: 26,
-                                  height: 26,
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.centerLeft,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(cityName == null
-                                    ? 'Select City'
-                                    : cityName!),
-                              ],
-                            ),
-                            items: citiesModel.map((e) {
-                              return DropdownMenuItem(
-                                  onTap: () {
-                                    cityName = e.cityName;
-                                    setState(() {});
-                                  },
-                                  value: e.cityName,
-                                  child: Text(e.cityName.toString()));
-                            }).toList(),
-                            onChanged: (_) {}),
+                  // if (isStateError) formErrorText(error: stateNameErrorString),
+
+                  // if (isCityError) formErrorText(error: cityNameErrorString),
+
+                  const SizedBox(height: 10),
+
+                  TypeAheadFormField<AllCitiesModel>(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      focusNode: _focusNode,
+                      autocorrect: true,
+                      controller: controller,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(top: 9.0, left: 0),
+                          child: SvgPicture.asset(
+                            "assets/icons/city-icon.svg", height: 40,
+                            width: 40,
+                            //! change its icon for zipcode
+                          ),
+                        ),
+                        enabled: false,
+                        hintText: cityName == null ? 'Search City' : cityName!,
+                        border: InputBorder.none,
                       ),
                     ),
+                    suggestionsCallback: (pattern) async {
+                      return cityModel
+                          .where((city) => city.cityName!
+                              .toLowerCase()
+                              .contains(pattern.toLowerCase()))
+                          .toList();
+                    },
+                    itemBuilder: (context, AllCitiesModel suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.cityName!),
+                      );
+                    },
+                    onSuggestionSelected: (AllCitiesModel suggestion) {
+                      cityName = suggestion.cityName;
+                      getAllStatesHandler(cityName!);
+                      controller.clear();
+                      setState(() {});
+                      print(suggestion.cityName);
+                    },
                   ),
 
+                  const SizedBox(height: 10),
+
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       decoration: BoxDecoration(
                           color: kSecondaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8)),
+                          borderRadius: BorderRadius.circular(10)),
+                      height: 45.0,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.only(right: 10.0, left: 10),
                         child: DropdownButton(
-                            isExpanded: true,
-                            underline: const SizedBox(),
                             hint: Row(
                               children: [
                                 SvgPicture.asset(
@@ -459,50 +463,29 @@ class _SignUpScreenState extends State<SignUpPage> {
                                   height: 26,
                                   alignment: Alignment.centerLeft,
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 13),
                                 Text(statesName == null
-                                    ? 'Select State'
+                                    ? 'Select Sate'
                                     : statesName!),
                               ],
                             ),
+                            underline: const SizedBox(),
+                            padding: const EdgeInsets.all(0),
+                            isExpanded: true,
                             items: statesModel.map((e) {
                               return DropdownMenuItem(
                                   onTap: () {
                                     statesName = e.stateName;
-
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((timeStamp) {
-                                      getAllCitiesHandler(e.stateCode!);
-                                    });
                                     setState(() {});
                                   },
-                                  value: e.stateName,
-                                  child: Text(e.stateName.toString()));
+                                  value: e,
+                                  child: Text(e.stateName!));
                             }).toList(),
                             onChanged: (_) {}),
                       ),
                     ),
                   ),
-                  if (isStateError) formErrorText(error: stateNameErrorString),
-
-                  // CustomTextField(
-                  //   controller: cityCont,
-                  //   // isshowPasswordControls: true,
-                  //
-                  //   isEnabled: true,
-                  //   hint: "City Name",
-                  //
-                  //   prefixWidget: SvgPicture.asset(
-                  //     "assets/svg/City Icon (1).svg",
-                  //     color: Colors.black45,
-                  //     width: 26,
-                  //     height: 26,
-                  //     fit: BoxFit.cover,
-                  //     alignment: Alignment.centerLeft,
-                  //   ),
-                  // ),
-                  if (isCityError) formErrorText(error: cityNameErrorString),
-
+                  const SizedBox(height: 5),
                   CustomTextField(
                       controller: zipCont,
                       isEnabled: true,
@@ -651,6 +634,7 @@ class _SignUpScreenState extends State<SignUpPage> {
                             "salon_Name": salonNameCont.text.trim(),
                             // "state": stateCont.text.trim(),
                             "state": statesName,
+                            "postalCode": zipCont.text.trim(),
                             // "city": cityCont.text.trim(),
                             "city": cityName,
                             "address": addressCont.text.trim(),
@@ -797,17 +781,17 @@ class _SignUpScreenState extends State<SignUpPage> {
     return isValid;
   }
 
-  // checkCaps({required TextEditingController capsCont}) {
-  //   _isCapsOn = capsCont.text.isNotEmpty
-  //       ? capsCont.text.characters.last ==
-  //           capsCont.text.characters.last.toUpperCase()
-  //       : false;
-  //   setState(() {});
-  //   if (isLetter(passCont.text.characters.last) && _isCapsOn) {
-  //     CustomSnackBar.showSnackBar(
-  //         context: context,
-  //         message: "Caps lock is on",
-  //         bgColor: Colors.black87);
-  //   }
-  // }
+// checkCaps({required TextEditingController capsCont}) {
+//   _isCapsOn = capsCont.text.isNotEmpty
+//       ? capsCont.text.characters.last ==
+//           capsCont.text.characters.last.toUpperCase()
+//       : false;
+//   setState(() {});
+//   if (isLetter(passCont.text.characters.last) && _isCapsOn) {
+//     CustomSnackBar.showSnackBar(
+//         context: context,
+//         message: "Caps lock is on",
+//         bgColor: Colors.black87);
+//   }
+// }
 }

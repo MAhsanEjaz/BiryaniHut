@@ -6,7 +6,6 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/providers/reseller_customer_provider.dart';
-import 'package:shop_app/providers/user_data_provider.dart';
 import 'package:shop_app/storages/login_storage.dart';
 
 import '../models/resseller_customers_model.dart';

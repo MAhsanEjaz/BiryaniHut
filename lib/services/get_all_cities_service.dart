@@ -9,12 +9,12 @@ import 'package:shop_app/providers/all_cities_provider.dart';
 
 class GetAllCitiesService {
   Future getAllCitiesService(
-      {required BuildContext context, required String cityCode}) async {
+      {required BuildContext context}) async {
     List<AllCitiesModel>? model = [];
 
     try {
       http.Response response = await http
-          .get(Uri.parse('$apiBaseUrl/States/GetCitiesByStateCode/$cityCode'));
+          .get(Uri.parse('$apiBaseUrl/States/GetAllCities'));
 
       if (response.statusCode == 200) {
         var l = response.body;

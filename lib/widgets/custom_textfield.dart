@@ -71,7 +71,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         widget.headerText == null
-            ? SizedBox()
+            ? const SizedBox()
             : Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: widget.headerText == null ? 0.0 : 6.0,
@@ -87,7 +87,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           decoration: BoxDecoration(
               color: kSecondaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8.0)),
-          margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
+          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
           child: TextField(
             // maxLines: widget.maxlines == null? null:10,
             inputFormatters: widget.inputFormats,

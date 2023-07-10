@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/reseller_order_time_calender_widget.dart';
@@ -48,6 +49,7 @@ class SalesRepCustomersWidget extends StatefulWidget {
   TextEditingController address = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController saloonName = TextEditingController();
+  TextEditingController zipCont = TextEditingController();
 
   String? statesName;
   String? cityName;
@@ -65,6 +67,7 @@ class SalesRepCustomersWidget extends StatefulWidget {
       required this.address,
       required this.firstName,
       this.cityName,
+      required this.zipCont,
       this.statesName,
       required this.customers,
       this.showDialogue = true,
@@ -114,6 +117,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   //   CustomLoader.hideLoader(widget.context);
   // }
 
+  TextEditingController controller = TextEditingController();
+
   getCustomerAccountBalance({required int customerId}) async {
     CustomLoader.showLoader(context: widget.context);
     await AccountBalanceService()
@@ -134,6 +139,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
         context: context,
         address: widget.address.text,
         email: widget.email.text,
+        postalCode: widget.zipCont.text.trim(),
         salonName: widget.saloonName.text,
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
@@ -164,25 +170,26 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(context);
   }
 
+  String? statesName;
+  String? cityName;
+
   List<AllStatesModel> statesModel = [];
-  List<AllCitiesModel> citiesModel = [];
 
-  getAllCitiesHandler(String cityCode) async {
+  List<AllCitiesModel> cityModel = [];
+
+  citiesHandler() async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService()
-        .getAllCitiesService(context: context, cityCode: cityCode);
-
-    citiesModel =
-        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-    print('cities---->$citiesModel');
-    setState(() {});
-
+    await GetAllCitiesService().getAllCitiesService(context: context);
     CustomLoader.hideLoader(context);
+    cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    print(cityModel);
+    setState(() {});
   }
 
-  getAllStatesHandler() async {
+  getAllStatesHandler(String cityName) async {
     CustomLoader.showLoader(context: context);
-    await GetAllStatesServices().getAllStatesServices(context: context);
+    await GetAllStatesServices()
+        .getAllStatesServices(context: context, cityName: cityName);
 
     statesModel =
         Provider.of<StatesProvider>(context, listen: false).statesData!;
@@ -197,7 +204,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getAllStatesHandler();
+      // getAllStatesHandler();
+      citiesHandler();
     });
 
     widget.firstName.text = widget.customers.firstName!;
@@ -287,8 +295,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                     ),
                                   ));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -309,8 +317,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -330,8 +338,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
 
                               showAddPaymentDialog(context);
                             },
-                            child: Row(
-                              children: const [
+                            child: const Row(
+                              children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -376,7 +384,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       await updateCustomerHandler();
 
                                                       statesModel.clear();
-                                                      citiesModel.clear();
+                                                      cityModel.clear();
 
                                                       Navigator.pop(context);
                                                     }
@@ -451,28 +459,230 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   //     statesData:
                                                   //         widget.statesName),
 
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets
+                                                  //           .symmetric(
+                                                  //       horizontal: 6.0,
+                                                  //       vertical: 4),
+                                                  //   child: Container(
+                                                  //     decoration: BoxDecoration(
+                                                  //         color: kSecondaryColor
+                                                  //             .withOpacity(0.1),
+                                                  //         borderRadius:
+                                                  //             BorderRadius
+                                                  //                 .circular(8)),
+                                                  //     child: Padding(
+                                                  //       padding:
+                                                  //           const EdgeInsets
+                                                  //                   .symmetric(
+                                                  //               horizontal:
+                                                  //                   8.0),
+                                                  //       child: DropdownButton(
+                                                  //           isExpanded: true,
+                                                  //           underline:
+                                                  //               const SizedBox(),
+                                                  //           hint: Row(
+                                                  //             children: [
+                                                  //               SvgPicture
+                                                  //                   .asset(
+                                                  //                 "assets/svg/State Icon (1).svg",
+                                                  //                 width: 26,
+                                                  //                 height: 26,
+                                                  //                 alignment:
+                                                  //                     Alignment
+                                                  //                         .centerLeft,
+                                                  //               ),
+                                                  //               const SizedBox(
+                                                  //                   width: 10),
+                                                  //               Text(widget.statesName ==
+                                                  //                       null
+                                                  //                   ? 'Select State'
+                                                  //                   : widget
+                                                  //                       .statesName!),
+                                                  //             ],
+                                                  //           ),
+                                                  //           items: statesModel
+                                                  //               .map((e) {
+                                                  //             return DropdownMenuItem(
+                                                  //                 onTap: () {
+                                                  //                   sestate(() {
+                                                  //                     widget.statesName =
+                                                  //                         e.stateName;
+                                                  //                     WidgetsBinding
+                                                  //                         .instance
+                                                  //                         .addPostFrameCallback(
+                                                  //                             (timeStamp) {
+                                                  //                       getAllCitiesHandler(
+                                                  //                           e.stateCode!);
+                                                  //                     });
+                                                  //                   });
+                                                  //                 },
+                                                  //                 value: e
+                                                  //                     .stateName,
+                                                  //                 child: Text(e
+                                                  //                     .stateName
+                                                  //                     .toString()));
+                                                  //           }).toList(),
+                                                  //           onChanged: (_) {}),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets
+                                                  //           .symmetric(
+                                                  //       horizontal: 6.0,
+                                                  //       vertical: 4),
+                                                  //   child: Container(
+                                                  //     decoration: BoxDecoration(
+                                                  //         color: kSecondaryColor
+                                                  //             .withOpacity(0.1),
+                                                  //         borderRadius:
+                                                  //             BorderRadius
+                                                  //                 .circular(8)),
+                                                  //     child: Padding(
+                                                  //       padding:
+                                                  //           const EdgeInsets
+                                                  //                   .symmetric(
+                                                  //               horizontal:
+                                                  //                   8.0),
+                                                  //       child: DropdownButton(
+                                                  //           isExpanded: true,
+                                                  //           underline:
+                                                  //               const SizedBox(),
+                                                  //           hint: Row(
+                                                  //             children: [
+                                                  //               SvgPicture
+                                                  //                   .asset(
+                                                  //                 "assets/svg/City Icon (1).svg",
+                                                  //                 color: Colors
+                                                  //                     .black45,
+                                                  //                 width: 26,
+                                                  //                 height: 26,
+                                                  //                 fit: BoxFit
+                                                  //                     .cover,
+                                                  //                 alignment:
+                                                  //                     Alignment
+                                                  //                         .centerLeft,
+                                                  //               ),
+                                                  //               const SizedBox(
+                                                  //                   width: 10),
+                                                  //               Text(widget.cityName ==
+                                                  //                       null
+                                                  //                   ? 'Select City'
+                                                  //                   : widget
+                                                  //                       .cityName!),
+                                                  //             ],
+                                                  //           ),
+                                                  //           items: citiesModel
+                                                  //               .map((e) {
+                                                  //             return DropdownMenuItem(
+                                                  //                 onTap: () {
+                                                  //                   sestate(() {
+                                                  //                     widget.cityName =
+                                                  //                         e.cityName;
+                                                  //                   });
+                                                  //                 },
+                                                  //                 value: e
+                                                  //                     .cityName,
+                                                  //                 child: Text(e
+                                                  //                     .cityName
+                                                  //                     .toString()));
+                                                  //           }).toList(),
+                                                  //           onChanged: (_) {}),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+
+                                                  const SizedBox(height: 5),
+                                                  TypeAheadFormField<
+                                                      AllCitiesModel>(
+                                                    textFieldConfiguration:
+                                                        TextFieldConfiguration(
+                                                      controller: controller,
+                                                      autofocus: false,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        prefixIcon: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 9.0,
+                                                                  left: 0),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            "assets/icons/city-icon.svg",
+                                                            height: 40,
+                                                            width: 40,
+                                                            //! change its icon for zipcode
+                                                          ),
+                                                        ),
+                                                        enabled: false,
+                                                        hintText: widget
+                                                                    .cityName ==
+                                                                null
+                                                            ? 'Search City'
+                                                            : widget.cityName!,
+                                                        border:
+                                                            InputBorder.none,
+                                                      ),
+                                                    ),
+                                                    suggestionsCallback:
+                                                        (pattern) async {
+                                                      return cityModel
+                                                          .where((city) => city
+                                                              .cityName!
+                                                              .toLowerCase()
+                                                              .contains(pattern
+                                                                  .toLowerCase()))
+                                                          .toList();
+                                                    },
+                                                    itemBuilder: (context,
+                                                        AllCitiesModel
+                                                            suggestion) {
+                                                      return ListTile(
+                                                        title: Text(suggestion
+                                                            .cityName!),
+                                                      );
+                                                    },
+                                                    onSuggestionSelected:
+                                                        (AllCitiesModel
+                                                            suggestion) {
+                                                      widget.cityName =
+                                                          suggestion.cityName;
+                                                      getAllStatesHandler(
+                                                          cityName!);
+                                                      controller.clear();
+                                                      sestate(() {});
+                                                      print(
+                                                          suggestion.cityName);
+                                                    },
+                                                  ),
+
+                                                  const SizedBox(height: 10),
+
                                                   Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
-                                                        horizontal: 6.0,
-                                                        vertical: 4),
+                                                        horizontal: 5.0),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                           color: kSecondaryColor
                                                               .withOpacity(0.1),
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(8)),
+                                                                  .circular(
+                                                                      10)),
+                                                      height: 45.0,
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    8.0),
+                                                                    .only(
+                                                                right: 10.0,
+                                                                left: 10),
                                                         child: DropdownButton(
-                                                            isExpanded: true,
-                                                            underline:
-                                                                const SizedBox(),
                                                             hint: Row(
                                                               children: [
                                                                 SvgPicture
@@ -485,105 +695,53 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                                           .centerLeft,
                                                                 ),
                                                                 const SizedBox(
-                                                                    width: 10),
+                                                                    width: 13),
                                                                 Text(widget.statesName ==
                                                                         null
-                                                                    ? 'Select State'
+                                                                    ? 'Select Sate'
                                                                     : widget
                                                                         .statesName!),
                                                               ],
                                                             ),
+                                                            underline:
+                                                                const SizedBox(),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(0),
+                                                            isExpanded: true,
                                                             items: statesModel
                                                                 .map((e) {
                                                               return DropdownMenuItem(
                                                                   onTap: () {
-                                                                    sestate(() {
-                                                                      widget.statesName =
-                                                                          e.stateName;
-                                                                      WidgetsBinding
-                                                                          .instance
-                                                                          .addPostFrameCallback(
-                                                                              (timeStamp) {
-                                                                        getAllCitiesHandler(
-                                                                            e.stateCode!);
-                                                                      });
-                                                                    });
+                                                                    widget.statesName =
+                                                                        e.stateName;
+                                                                    sestate(
+                                                                        () {});
                                                                   },
-                                                                  value: e
-                                                                      .stateName,
+                                                                  value: e,
                                                                   child: Text(e
-                                                                      .stateName
-                                                                      .toString()));
+                                                                      .stateName!));
                                                             }).toList(),
                                                             onChanged: (_) {}),
                                                       ),
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 6.0,
-                                                        vertical: 4),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: kSecondaryColor
-                                                              .withOpacity(0.1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8)),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    8.0),
-                                                        child: DropdownButton(
-                                                            isExpanded: true,
-                                                            underline:
-                                                                const SizedBox(),
-                                                            hint: Row(
-                                                              children: [
-                                                                SvgPicture
-                                                                    .asset(
-                                                                  "assets/svg/City Icon (1).svg",
-                                                                  color: Colors
-                                                                      .black45,
-                                                                  width: 26,
-                                                                  height: 26,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerLeft,
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 10),
-                                                                Text(widget.cityName ==
-                                                                        null
-                                                                    ? 'Select City'
-                                                                    : widget
-                                                                        .cityName!),
-                                                              ],
-                                                            ),
-                                                            items: citiesModel
-                                                                .map((e) {
-                                                              return DropdownMenuItem(
-                                                                  onTap: () {
-                                                                    sestate(() {
-                                                                      widget.cityName =
-                                                                          e.cityName;
-                                                                    });
-                                                                  },
-                                                                  value: e
-                                                                      .cityName,
-                                                                  child: Text(e
-                                                                      .cityName
-                                                                      .toString()));
-                                                            }).toList(),
-                                                            onChanged: (_) {}),
-                                                      ),
-                                                    ),
-                                                  ),
+
+                                                  CustomTextField(
+                                                      controller:
+                                                          widget.zipCont,
+                                                      isEnabled: true,
+                                                      obscureText: false,
+                                                      isshowPasswordControls:
+                                                          false,
+                                                      hint: "Zip Code",
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Mail.svg",
+                                                        //! change its icon for zipcode
+                                                      )),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
                                                           Icons.home),
@@ -597,7 +755,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                         );
                                       }));
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
@@ -628,7 +786,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                   },
                                   onCancelPress: () {});
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.delete,
@@ -1373,8 +1531,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,
@@ -1434,10 +1592,9 @@ class _DropDownClassState extends State<DropDownClass> {
   List<AllStatesModel> statesModel = [];
   List<AllCitiesModel> citiesModel = [];
 
-  getAllCitiesHandler(String cityCode) async {
+  getAllCitiesHandler() async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService()
-        .getAllCitiesService(context: context, cityCode: cityCode);
+    await GetAllCitiesService().getAllCitiesService(context: context);
 
     citiesModel =
         Provider.of<AllCitiesProvider>(context, listen: false).cities!;
@@ -1506,7 +1663,7 @@ class _DropDownClassState extends State<DropDownClass> {
 
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
-                            getAllCitiesHandler(e.stateCode!);
+                            getAllCitiesHandler();
                           });
 
                           citiesModel.clear();

@@ -134,6 +134,7 @@ class Data {
   String? city;
   String? address;
   String? email;
+  String? postalCode;
   String? location;
   String? customerImagePath;
   String? customerImage;
@@ -152,6 +153,7 @@ class Data {
       this.firstName,
       this.lastName,
       this.salonName,
+      this.postalCode,
       this.state,
       this.city,
       this.address,
@@ -179,6 +181,7 @@ class Data {
     address = json['address'];
     email = json['email'];
     location = json['location'];
+    postalCode = json['postalCode'];
     customerImagePath = json['customerImagePath'];
     customerImage = json['customerImage'];
     phone = json['phone'];
@@ -199,6 +202,7 @@ class Data {
     data['lastName'] = lastName;
     data['salon_Name'] = salonName;
     data['state'] = state;
+    data['postalCode'] = postalCode;
     data['city'] = city;
     data['address'] = address;
     data['email'] = email;

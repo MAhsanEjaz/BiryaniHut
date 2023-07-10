@@ -221,7 +221,6 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
                     },
                     subTitle: 'Setup your payment methods',
                   ),
-
                 ],
               ),
             ),
