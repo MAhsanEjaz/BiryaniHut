@@ -248,9 +248,12 @@ class _TopFiveCustomersReportScreenState
                                 alignment: Alignment.bottomRight,
                                 child: TextButton(
                                   child: const Text('Apply'),
-                                  onPressed: () {
-                                    topFiveCustomersHandler();
-                                  },
+                                  onPressed:
+                                      startDate == null || endDate == null
+                                          ? null
+                                          : () {
+                                              topFiveCustomersHandler();
+                                            },
                                 ),
                               )
                             ],

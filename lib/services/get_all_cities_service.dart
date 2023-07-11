@@ -24,7 +24,7 @@ class GetAllCitiesService {
           model.add(AllCitiesModel.fromJson(element));
         });
 
-        HiveCities().setCities(cities: jsonEncode(model.toString()));
+        // HiveCities().setCities(cities: jsonEncode(model.toString()));
 
         Provider.of<AllCitiesProvider>(context, listen: false)
             .getAllCities(newCities: model);
