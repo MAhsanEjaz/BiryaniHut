@@ -205,7 +205,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                         return;
                                       }
 
-                                      /// check if the string contains only numbers
+                                      /// check if the string contains only numberscar
 
                                       else if (!isNumeric(quantityCont.text)) {
                                         showToast("Quantity not valid");
