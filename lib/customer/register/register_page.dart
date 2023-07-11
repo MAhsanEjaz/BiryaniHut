@@ -578,7 +578,7 @@ class _SignUpScreenState extends State<SignUpPage>
                               ],
                             ),
                             underline: const SizedBox(),
-                            padding: const EdgeInsets.all(0),
+                            // padding: const EdgeInsets.all(0),
                             isExpanded: true,
                             items: statesModel.map((e) {
                               return DropdownMenuItem(
