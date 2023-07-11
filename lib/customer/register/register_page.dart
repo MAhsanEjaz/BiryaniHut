@@ -53,12 +53,12 @@ class _SignUpScreenState extends State<SignUpPage>
   final zipCont = TextEditingController();
 
   bool isEmailError = false;
-  bool isfNamaeError = false;
+  bool isfNameError = false;
   bool islNameError = false;
   bool isPassError = false;
   bool isAddressError = false;
   bool isPhoneError = false;
-  bool isConfrimPassError = false;
+  bool isConfirmPassError = false;
   bool isSalonError = false;
   bool isStateError = false;
   bool isCityError = false;
@@ -66,7 +66,7 @@ class _SignUpScreenState extends State<SignUpPage>
 
   String emailErrorString = '';
   String passErrorString = '';
-  String fNamaeErrorString = '';
+  String fNameErrorString = '';
   String lNameErrorString = '';
   String phoneErrorString = '';
   String addressErrorString = '';
@@ -78,7 +78,7 @@ class _SignUpScreenState extends State<SignUpPage>
 
   Map<String, dynamic> registerByCustomerBody = {};
 
-  Map<String, dynamic> registerBySalesrepBody = {};
+  Map<String, dynamic> registerBySalesRapBody = {};
 
   registerHandler() async {
     CustomLoader.showLoader(context: context);
@@ -356,7 +356,7 @@ class _SignUpScreenState extends State<SignUpPage>
                       prefixWidget: SvgPicture.asset(
                         "assets/icons/User.svg",
                       )),
-                  if (isfNamaeError) formErrorText(error: fNamaeErrorString),
+                  if (isfNameError) formErrorText(error: fNameErrorString),
 
                   CustomTextField(
                       controller: lNameCont,
@@ -448,7 +448,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                         height: 23,
                                         width: 23,
                                       ),
-                                      SizedBox(width: 20),
+                                      const SizedBox(width: 20),
                                       Text(
                                         selectedName == null
                                             ? 'Select Cities'
@@ -508,10 +508,10 @@ class _SignUpScreenState extends State<SignUpPage>
                                                   const SizedBox(height: 10),
                                                   showSearchData == true
                                                       ? cityModel.isEmpty
-                                                          ? Center(
+                                                          ? const Center(
                                                               child: Padding(
                                                               padding:
-                                                                  const EdgeInsets
+                                                                  EdgeInsets
                                                                       .all(8.0),
                                                               child: Text(
                                                                   ('City not found')),
@@ -565,7 +565,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                   ),
                                                                 );
                                                               })
-                                                      : SizedBox(),
+                                                      : const SizedBox(),
                                                 ],
                                               ),
                                             ),
@@ -733,7 +733,7 @@ class _SignUpScreenState extends State<SignUpPage>
                         "assets/icons/Lock.svg",
                       ),
                     ),
-                  if (isConfrimPassError)
+                  if (isConfirmPassError)
                     formErrorText(error: confirmPassErrorString),
                   if (!widget.isReseller)
                     Row(
@@ -818,11 +818,11 @@ class _SignUpScreenState extends State<SignUpPage>
     isPassError = false;
 
     if (fNameCont.text.isEmpty) {
-      fNamaeErrorString = "Please enter name";
-      isfNamaeError = true;
+      fNameErrorString = "Please enter name";
+      isfNameError = true;
       isValid = false;
     } else {
-      isfNamaeError = false;
+      isfNameError = false;
     }
 
     if (lNameCont.text.isEmpty) {
@@ -899,18 +899,18 @@ class _SignUpScreenState extends State<SignUpPage>
       }
       if (confirmPassCont.text.length < 6) {
         confirmPassErrorString = "Password not correct";
-        isConfrimPassError = true;
+        isConfirmPassError = true;
         isValid = false;
       } else {
-        isConfrimPassError = false;
+        isConfirmPassError = false;
       }
 
       if (passCont.text != confirmPassCont.text) {
         confirmPassErrorString = "Password not Matched";
-        isConfrimPassError = true;
+        isConfirmPassError = true;
         isValid = false;
       } else {
-        isConfrimPassError = false;
+        isConfirmPassError = false;
       }
     }
 

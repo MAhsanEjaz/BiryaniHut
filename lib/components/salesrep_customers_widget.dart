@@ -148,8 +148,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
         customerId: widget.customers.id,
         firstName: widget.firstName.text,
         lastName: widget.lastName.text,
-        city: widget.cityName,
-        state: widget.statesName,
+        city: city,
+        state: state,
         phone: widget.phone.text);
 
     if (res == true) {
@@ -421,9 +421,6 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                   onPressed: () async {
                                                     if (customUpdateValidation()) {
                                                       await updateCustomerHandler();
-
-                                                      statesModel.clear();
-                                                      cityModel.clear();
 
                                                       Navigator.pop(context);
                                                     }
@@ -1577,151 +1574,151 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
     );
   }
 }
-
-class DropDownClass extends StatefulWidget {
-  String? statesData;
-  String? cityData;
-
-  DropDownClass({this.statesData, this.cityData});
-
-  @override
-  State<DropDownClass> createState() => _DropDownClassState();
-}
-
-class _DropDownClassState extends State<DropDownClass> {
-  List<AllStatesModel> statesModel = [];
-  List<AllCitiesModel> citiesModel = [];
-
-  getAllCitiesHandler() async {
-    CustomLoader.showLoader(context: context);
-    await GetAllCitiesService().getAllCitiesService(context: context);
-
-    citiesModel =
-        Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-    print('cities---->$citiesModel');
-    setState(() {});
-
-    CustomLoader.hideLoader(context);
-  }
-
-  getAllStatesHandler() async {
-    CustomLoader.showLoader(context: context);
-    await GetAllStatesServices().getAllStatesServices(context: context);
-
-    statesModel =
-        Provider.of<StatesProvider>(context, listen: false).statesData!;
-    print('states---->$statesModel');
-    setState(() {});
-
-    CustomLoader.hideLoader(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getAllStatesHandler();
-    });
-  }
-
-  SalesrepCustomerData? customers;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
-          child: Container(
-            decoration: BoxDecoration(
-                color: kSecondaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: DropdownButton(
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                  hint: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/svg/State Icon (1).svg",
-                        width: 26,
-                        height: 26,
-                        alignment: Alignment.centerLeft,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(state == null ? customers!.state! : state!),
-                    ],
-                  ),
-                  items: statesModel.map((e) {
-                    return DropdownMenuItem(
-                        onTap: () {
-                          state = e.stateName;
-                          setState(() {});
-                          print('dataStates----->$state');
-
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            getAllCitiesHandler();
-                          });
-
-                          citiesModel.clear();
-                          statesModel.clear();
-
-                          setState(() {});
-                        },
-                        value: e.stateName,
-                        child: Text(e.stateName.toString()));
-                  }).toList(),
-                  onChanged: (_) {}),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
-          child: Container(
-            decoration: BoxDecoration(
-                color: kSecondaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: DropdownButton(
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                  hint: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/svg/City Icon (1).svg",
-                        color: Colors.black45,
-                        width: 26,
-                        height: 26,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.centerLeft,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(city == null ? customers!.city! : city!),
-                    ],
-                  ),
-                  items: citiesModel.map((e) {
-                    return DropdownMenuItem(
-                        onTap: () {
-                          city = e.cityName;
-
-                          print('dataStates----->$city');
-
-                          citiesModel.clear();
-                          statesModel.clear();
-                          setState(() {});
-                        },
-                        value: e.cityName,
-                        child: Text(e.cityName.toString()));
-                  }).toList(),
-                  onChanged: (_) {}),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//
+// class DropDownClass extends StatefulWidget {
+//   String? statesData;
+//   String? cityData;
+//
+//   DropDownClass({this.statesData, this.cityData});
+//
+//   @override
+//   State<DropDownClass> createState() => _DropDownClassState();
+// }
+//
+// class _DropDownClassState extends State<DropDownClass> {
+//   List<AllStatesModel> statesModel = [];
+//   List<AllCitiesModel> citiesModel = [];
+//
+//   getAllCitiesHandler() async {
+//     CustomLoader.showLoader(context: context);
+//     await GetAllCitiesService().getAllCitiesService(context: context);
+//
+//     citiesModel =
+//         Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+//     print('cities---->$citiesModel');
+//     setState(() {});
+//
+//     CustomLoader.hideLoader(context);
+//   }
+//
+//   getAllStatesHandler() async {
+//     CustomLoader.showLoader(context: context);
+//     await GetAllStatesServices().getAllStatesServices(context: context);
+//
+//     statesModel =
+//         Provider.of<StatesProvider>(context, listen: false).statesData!;
+//     print('states---->$statesModel');
+//     setState(() {});
+//
+//     CustomLoader.hideLoader(context);
+//   }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+//       getAllStatesHandler();
+//     });
+//   }
+//
+//   SalesrepCustomerData? customers;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
+//           child: Container(
+//             decoration: BoxDecoration(
+//                 color: kSecondaryColor.withOpacity(0.1),
+//                 borderRadius: BorderRadius.circular(8)),
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//               child: DropdownButton(
+//                   isExpanded: true,
+//                   underline: const SizedBox(),
+//                   hint: Row(
+//                     children: [
+//                       SvgPicture.asset(
+//                         "assets/svg/State Icon (1).svg",
+//                         width: 26,
+//                         height: 26,
+//                         alignment: Alignment.centerLeft,
+//                       ),
+//                       const SizedBox(width: 10),
+//                       Text(state == null ? customers!.state! : state!),
+//                     ],
+//                   ),
+//                   items: statesModel.map((e) {
+//                     return DropdownMenuItem(
+//                         onTap: () {
+//                           state = e.stateName;
+//                           setState(() {});
+//                           print('dataStates----->$state');
+//
+//                           WidgetsBinding.instance
+//                               .addPostFrameCallback((timeStamp) {
+//                             getAllCitiesHandler();
+//                           });
+//
+//                           citiesModel.clear();
+//                           statesModel.clear();
+//
+//                           setState(() {});
+//                         },
+//                         value: e.stateName,
+//                         child: Text(e.stateName.toString()));
+//                   }).toList(),
+//                   onChanged: (_) {}),
+//             ),
+//           ),
+//         ),
+//         Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
+//           child: Container(
+//             decoration: BoxDecoration(
+//                 color: kSecondaryColor.withOpacity(0.1),
+//                 borderRadius: BorderRadius.circular(8)),
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//               child: DropdownButton(
+//                   isExpanded: true,
+//                   underline: const SizedBox(),
+//                   hint: Row(
+//                     children: [
+//                       SvgPicture.asset(
+//                         "assets/svg/City Icon (1).svg",
+//                         color: Colors.black45,
+//                         width: 26,
+//                         height: 26,
+//                         fit: BoxFit.cover,
+//                         alignment: Alignment.centerLeft,
+//                       ),
+//                       const SizedBox(width: 10),
+//                       Text(city == null ? customers!.city! : city!),
+//                     ],
+//                   ),
+//                   items: citiesModel.map((e) {
+//                     return DropdownMenuItem(
+//                         onTap: () {
+//                           city = e.cityName;
+//
+//                           print('dataStates----->$city');
+//
+//                           citiesModel.clear();
+//                           statesModel.clear();
+//                           setState(() {});
+//                         },
+//                         value: e.cityName,
+//                         child: Text(e.cityName.toString()));
+//                   }).toList(),
+//                   onChanged: (_) {}),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

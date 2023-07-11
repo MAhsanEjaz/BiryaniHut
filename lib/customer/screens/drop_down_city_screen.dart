@@ -10,6 +10,7 @@ import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 
+import '../../components/salesrep_customers_widget.dart';
 import '../../helper/custom_loader.dart';
 import '../../helper/custom_snackbar.dart';
 
@@ -121,9 +122,7 @@ class _DropDownCityScreenState extends State<DropDownCityScreen>
                               ),
                               const SizedBox(width: 20),
                               Text(
-                                widget.cityName == null
-                                    ? 'Select Cities'
-                                    : widget.cityName!,
+                                city == null ? widget.cityName : city!,
                                 style: const TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.bold),
                               ),
@@ -186,18 +185,18 @@ class _DropDownCityScreenState extends State<DropDownCityScreen>
                                                           cityModel.map((e) {
                                                         return InkWell(
                                                           onTap: () {
-                                                            widget.cityName =
-                                                                e.cityName!;
+                                                            city = e.cityName!;
                                                             // model = cities;
                                                             expand = !expand;
+                                                            print(
+                                                                'cityy===>${city}');
 
                                                             WidgetsBinding
                                                                 .instance
                                                                 .addPostFrameCallback(
                                                                     (timeStamp) {
                                                               getAllStatesHandler(
-                                                                  widget
-                                                                      .cityName);
+                                                                  city!);
                                                             });
 
                                                             setState(() {});
@@ -302,9 +301,7 @@ class _DropDownCityScreenState extends State<DropDownCityScreen>
                           alignment: Alignment.centerLeft,
                         ),
                         const SizedBox(width: 13),
-                        Text(widget.statesName == null
-                            ? 'Select Sate'
-                            : widget.statesName!),
+                        Text(state == null ? widget.statesName : state!),
                       ],
                     ),
                     underline: const SizedBox(),
@@ -315,7 +312,7 @@ class _DropDownCityScreenState extends State<DropDownCityScreen>
                     items: statesModel.map((e) {
                       return DropdownMenuItem(
                           onTap: () {
-                            widget.statesName = e.stateName!;
+                            state = e.stateName!;
                             setState(() {});
                           },
                           value: e,
