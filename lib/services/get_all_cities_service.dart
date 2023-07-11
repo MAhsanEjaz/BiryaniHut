@@ -9,12 +9,13 @@ import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/storages/cities_storage.dart';
 
 class GetAllCitiesService {
-  Future getAllCitiesService({required BuildContext context}) async {
+  Future getAllCitiesService(
+      {required BuildContext context, String? cityName}) async {
     List<AllCitiesModel>? model = [];
 
     try {
-      http.Response response =
-          await http.get(Uri.parse('$apiBaseUrl/States/GetAllCities'));
+      http.Response response = await http.get(
+          Uri.parse('$apiBaseUrl/States/GetAllCities?searchTerm=$cityName'));
 
       if (response.statusCode == 200) {
         var l = response.body;

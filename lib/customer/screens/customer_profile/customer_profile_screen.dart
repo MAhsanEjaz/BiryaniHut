@@ -519,7 +519,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen> {
                         CustomTextField(
                             headerText: "Zip Code",
                             isEnabled: true,
-                            controller: addressCont,
+                            controller: zipCont,
                             hint: "Zip Code",
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),

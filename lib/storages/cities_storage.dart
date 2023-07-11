@@ -11,7 +11,7 @@ class HiveCities {
   }
 
   String getCities() {
-    if(box.get("cities")==null){
+    if (box.get("cities") == null) {
       return '';
     }
     return box.get("cities");
