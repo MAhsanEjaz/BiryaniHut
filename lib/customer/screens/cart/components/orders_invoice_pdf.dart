@@ -120,17 +120,13 @@ class PdfOrdersInvoiceService {
                               orderStatus,
                           // style: dealStyle
                         ),
-                        pw.RichText(
-                            text: pw.TextSpan(
-                                text: "Sales Rep Company:" " ",
-                                style: dealStyle,
-                                children: [
-                              pw.TextSpan(
-                                  text: repCompanyName,
-                                  style: const pw.TextStyle(
-                                      color: PdfColor.fromInt(0xff222222),
-                                      fontSize: 12.0))
-                            ])),
+                        pw.Text(
+                          // "Dealer Name :" + "  " + usermodels!.name!,
+                          "Sales Rep Company :"
+                                  "  " +
+                              repCompanyName,
+                          // style: dealStyle
+                        ),
                         pw.RichText(
                             text: pw.TextSpan(text: "Order Time:" " ",
                                 // style: dealStyle,

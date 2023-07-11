@@ -48,7 +48,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   num grandTotal = 0;
   SalesrepDiscountModel? repDiscountModel;
   bool isDiscountInPercent = false;
-  bool isDiscountApplicable = false;
+  // bool isDiscountApplicable = false;
 
   TextEditingController amountCont = TextEditingController();
 
@@ -96,11 +96,11 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
         accountHandler();
       });
     }
-    if (cartItemsCount >= 20) {
-      isDiscountApplicable = true;
-    }
+    // if (cartItemsCount >= 20) {
+    //   isDiscountApplicable = true;
+    // }
 
-    log('isDiscountApplicable = $isDiscountApplicable');
+    // log('isDiscountApplicable = $isDiscountApplicable');
     log('cartItemsCount = $cartItemsCount');
   }
 
@@ -191,7 +191,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                             Provider.of<CartCounterProvider>(context,
                                     listen: false)
                                 .decrementCount();
-                            updateIsDiscountApplicable();
+                            // updateIsDiscountApplicable();
                             setState(() {});
                           },
                           background: Container(
@@ -304,7 +304,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                             cartStorage.updateCartItem(
                                                 item: model[index]);
                                           }
-                                          updateIsDiscountApplicable();
+                                          // updateIsDiscountApplicable();
 
                                           setState(() {});
                                         },
@@ -328,7 +328,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                               model[index].price *
                                                   model[index].quantity;
                                           // updatePrices();
-                                          updateIsDiscountApplicable();
+                                          // updateIsDiscountApplicable();
 
                                           setState(() {});
 
@@ -575,7 +575,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                     //   ),di
 
                                     if (repDiscountModel != null &&
-                                        isDiscountApplicable)
+                                        getIsDiscountApplicable())
                                       Text(
                                         "Today's Order Amount : \$ " +
                                             totalPrice.toStringAsFixed(2),
@@ -583,7 +583,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     if (repDiscountModel != null &&
-                                        isDiscountApplicable)
+                                        getIsDiscountApplicable())
                                       Text(
                                         "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
                                         style: const TextStyle(
@@ -698,7 +698,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
                                             if (isOrderPlaced) {
                                               showToast(
-                                                  "This order already placed");
+                                                  "This order is already placed");
                                               Navigator.of(context).pop();
                                               return;
                                             }
@@ -749,10 +749,11 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                               orderBy: 1,
                                               orderId: 0,
                                               orderProducts: model,
-                                              discount: isDiscountApplicable
-                                                  ? repDiscountModel!
-                                                      .data.discount
-                                                  : 0,
+                                              discount:
+                                                  getIsDiscountApplicable()
+                                                      ? repDiscountModel!
+                                                          .data.discount
+                                                      : 0,
                                               grandTotal: totalPrice,
                                               status: 'Pending',
                                               totalPrice: totalPrice,
@@ -767,7 +768,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                                   getTotalBalance()),
                                               previousBalance: previousBalance,
                                               discountType:
-                                                  isDiscountApplicable &&
+                                                  getIsDiscountApplicable() &&
                                                           isDiscountInPercent
                                                       ? "By Percentage"
                                                       : "By Value",
@@ -1067,7 +1068,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   }
 
   String getOrderAmount() {
-    if (isDiscountApplicable) {
+    if (getIsDiscountApplicable()) {
       if (isDiscountInPercent) {
         return (totalPrice -
                 (totalPrice * repDiscountModel!.data.discount / 100))
@@ -1208,13 +1209,13 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
     );
   }
 
-  void updateIsDiscountApplicable() {
+  bool getIsDiscountApplicable() {
     log("cartItemsCount in updateIsDiscountApplicable= $cartItemsCount");
 
     if (cartItemsCount >= 20) {
-      isDiscountApplicable = true;
+      return true;
     } else {
-      isDiscountApplicable = false;
+      return false;
     }
   }
 
@@ -1426,10 +1427,10 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
       orderBy: 1,
       orderId: 0,
       orderProducts: model,
-      discountType: isDiscountApplicable && isDiscountInPercent
+      discountType: getIsDiscountApplicable() && isDiscountInPercent
           ? "By Percentage"
           : "By Value",
-      discount: repDiscountModel != null && isDiscountApplicable
+      discount: repDiscountModel != null && getIsDiscountApplicable()
           ? repDiscountModel!.data.discount
           : 0,
       grandTotal: totalPrice,
@@ -1451,7 +1452,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           loginStorage.getUserLastName(),
       repName: loginStorage.getSalesRepName(),
       isOrderCompleted: false,
-      repCompanyName: '',
+      repCompanyName: loginStorage.getSalesRepCompany(),
     );
 
     pdfService.savePdfFile("invoice_$number", data);
