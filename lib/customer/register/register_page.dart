@@ -123,12 +123,12 @@ class _SignUpScreenState extends State<SignUpPage>
   String? imagePath;
   String passChangedVal = '';
 
-  getResellerCustomerHandler() async {
-    CustomLoader.showLoader(context: context);
-    await ResellerCustomerService()
-        .getCustomerList(context: context, isReport: false);
-    CustomLoader.hideLoader(context);
-  }
+  // getResellerCustomerHandler() async {
+  //   CustomLoader.showLoader(context: context);
+  //   await ResellerCustomerService()
+  //       .getCustomerList(context: context, isReport: false);
+  //   CustomLoader.hideLoader(context);
+  // }
 
   AnimationController? _controller;
   Animation<double>? _animation;
@@ -140,7 +140,7 @@ class _SignUpScreenState extends State<SignUpPage>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getResellerCustomerHandler();
+      // getResellerCustomerHandler();
     });
 
     phoneCont.addListener(() {
