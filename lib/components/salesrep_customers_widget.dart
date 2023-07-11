@@ -496,7 +496,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                   curvedAnimation);
                                                           _controller!
                                                               .forward();
-                                                          setState(() {});
+                                                          sestate(() {});
                                                         },
                                                         child:
                                                             SingleChildScrollView(
@@ -562,32 +562,40 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                 ),
                                                                                 const SizedBox(height: 10),
                                                                                 showSearchData == true
-                                                                                    ? ListView.builder(
-                                                                                        physics: const NeverScrollableScrollPhysics(),
-                                                                                        shrinkWrap: true,
-                                                                                        itemCount: cityModel.length,
-                                                                                        itemBuilder: (context, index) {
-                                                                                          return InkWell(
-                                                                                            onTap: () {
-                                                                                              selectedName = cityModel[index].cityName;
-                                                                                              // model = cities;
-                                                                                              expand = !expand;
+                                                                                    ? Container(
+                                                                                        height: 200,
+                                                                                        width: double.infinity,
+                                                                                        child: ListView.builder(
+                                                                                            physics: const NeverScrollableScrollPhysics(),
+                                                                                            shrinkWrap: true,
+                                                                                            itemCount: cityModel.length,
+                                                                                            itemBuilder: (context, index) {
+                                                                                              return Container(
+                                                                                                height: 100,
+                                                                                                width: 100,
+                                                                                                child: InkWell(
+                                                                                                  onTap: () {
+                                                                                                    selectedName = cityModel[index].cityName;
+                                                                                                    // model = cities;
+                                                                                                    expand = !expand;
 
-                                                                                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                                                                                getAllStatesHandler(selectedName!);
-                                                                                              });
+                                                                                                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                      getAllStatesHandler(selectedName!);
+                                                                                                    });
 
-                                                                                              sestate(() {});
-                                                                                            },
-                                                                                            child: Padding(
-                                                                                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                                                                                              child: Text(
-                                                                                                cityModel[index].cityName!,
-                                                                                                style: const TextStyle(fontSize: 16),
-                                                                                              ),
-                                                                                            ),
-                                                                                          );
-                                                                                        })
+                                                                                                    sestate(() {});
+                                                                                                  },
+                                                                                                  child: Padding(
+                                                                                                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                                                                                    child: Text(
+                                                                                                      cityModel[index].cityName!,
+                                                                                                      style: const TextStyle(fontSize: 16),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              );
+                                                                                            }),
+                                                                                      )
                                                                                     : SizedBox(),
                                                                               ],
                                                                             ),

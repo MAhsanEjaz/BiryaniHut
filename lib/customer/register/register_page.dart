@@ -493,7 +493,17 @@ class _SignUpScreenState extends State<SignUpPage>
                                                 ),
                                                 const SizedBox(height: 10),
                                                 showSearchData == true
-                                                    ? ListView.builder(
+                                                    ? cityModel.isEmpty
+                                                        ? Center(
+                                                            child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                                ('City not found')),
+                                                          ))
+
+                                                    : ListView.builder(
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
                                                         shrinkWrap: true,
@@ -536,8 +546,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                                               ),
                                                             ),
                                                           );
-                                                        })
-                                                    : SizedBox(),
+                                                        }): SizedBox(),
                                               ],
                                             ),
                                           ),
