@@ -583,7 +583,8 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     if (repDiscountModel != null &&
-                                        getIsDiscountApplicable())
+                                        getIsDiscountApplicable() &&
+                                        repDiscountModel!.data.discount != 0)
                                       Text(
                                         "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
                                         style: const TextStyle(

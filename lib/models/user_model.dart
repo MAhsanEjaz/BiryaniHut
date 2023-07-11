@@ -93,7 +93,7 @@ class LoginData {
     email = json['email'];
     password = json['password'];
     isActive = json['isActive'];
-    companyName = json['companyName'];
+    companyName = json['companyName'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
