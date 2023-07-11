@@ -37,15 +37,16 @@ class LoginApiService {
         storage.setUserEmail(email: userModel.data!.email!);
         storage.setAdress(adress: userModel.data!.address!);
         storage.setPhone(phone: userModel.data!.phone!);
+        storage.setSalesRepCompany(
+            company: userModel.data!.companyName.toString());
         if (userModel.data!.roleId == 1) {
           storage.setUserType(usertype: "customer");
           storage.setSalesRepId(repId: userModel.data!.saleRepId!);
           storage.setSalesRepName(repName: userModel.data!.saleRepName!);
+
           // storage.setSalesRepCompany(company: userModel.data!.!);
         } else {
           storage.setUserType(usertype: "salesrep");
-          storage.setSalesRepCompany(
-              company: userModel.data!.companyName.toString());
         }
         return true;
       } else {

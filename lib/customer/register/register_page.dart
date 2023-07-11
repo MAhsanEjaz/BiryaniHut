@@ -123,12 +123,12 @@ class _SignUpScreenState extends State<SignUpPage>
   String? imagePath;
   String passChangedVal = '';
 
-  getResellerCustomerHandler() async {
-    CustomLoader.showLoader(context: context);
-    await ResellerCustomerService()
-        .getCustomerList(context: context, isReport: false);
-    CustomLoader.hideLoader(context);
-  }
+  // getResellerCustomerHandler() async {
+  //   CustomLoader.showLoader(context: context);
+  //   await ResellerCustomerService()
+  //       .getCustomerList(context: context, isReport: false);
+  //   CustomLoader.hideLoader(context);
+  // }
 
   AnimationController? _controller;
   Animation<double>? _animation;
@@ -140,7 +140,7 @@ class _SignUpScreenState extends State<SignUpPage>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getResellerCustomerHandler();
+      // getResellerCustomerHandler();
     });
 
     phoneCont.addListener(() {
@@ -483,7 +483,8 @@ class _SignUpScreenState extends State<SignUpPage>
                                                         placeholder:
                                                             'Search Cities',
                                                         onSubmitted: (v) {
-                                                          WidgetsBinding.instance
+                                                          WidgetsBinding
+                                                              .instance
                                                               .addPostFrameCallback(
                                                                   (timeStamp) {
                                                             controller.text
@@ -497,7 +498,8 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                             'Text should be at least 3 characters long')
                                                                 : citiesHandler(
                                                                     v);
-                                                            showSearchData = true;
+                                                            showSearchData =
+                                                                true;
 
                                                             setState(() {});
                                                           });
@@ -518,16 +520,16 @@ class _SignUpScreenState extends State<SignUpPage>
                                                               physics:
                                                                   const NeverScrollableScrollPhysics(),
                                                               shrinkWrap: true,
-                                                              itemCount: cityModel
-                                                                  .length,
+                                                              itemCount:
+                                                                  cityModel
+                                                                      .length,
                                                               itemBuilder:
                                                                   (context,
                                                                       index) {
                                                                 return InkWell(
                                                                   onTap: () {
                                                                     selectedName =
-                                                                        cityModel[
-                                                                                index]
+                                                                        cityModel[index]
                                                                             .cityName;
                                                                     // model = cities;
                                                                     expand =
@@ -544,7 +546,8 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                     setState(
                                                                         () {});
                                                                   },
-                                                                  child: Padding(
+                                                                  child:
+                                                                      Padding(
                                                                     padding: const EdgeInsets
                                                                             .symmetric(
                                                                         horizontal:
