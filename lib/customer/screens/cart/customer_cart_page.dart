@@ -305,6 +305,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                                 item: model[index]);
                                           }
                                           // updateIsDiscountApplicable();
+                                          cartItemsCount--;
 
                                           setState(() {});
                                         },
@@ -329,7 +330,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                                   model[index].quantity;
                                           // updatePrices();
                                           // updateIsDiscountApplicable();
-
+                                          cartItemsCount++;
                                           setState(() {});
 
                                           log("quantity = ${model[index].quantity}");
@@ -590,12 +591,15 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                    Text(
-                                      "Order Payable Amount : \$ " +
-                                          getOrderAmount(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    if (repDiscountModel != null &&
+                                        getIsDiscountApplicable() &&
+                                        repDiscountModel!.data.discount != 0)
+                                      Text(
+                                        "Order Payable Amount : \$ " +
+                                            getOrderAmount(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     Text(
                                       "Total Balance: \$ " + getTotalBalance(),
                                       style: const TextStyle(
@@ -1214,8 +1218,11 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
     log("cartItemsCount in updateIsDiscountApplicable= $cartItemsCount");
 
     if (cartItemsCount >= 20) {
+      log("DiscountApplicable true");
       return true;
     } else {
+      log("DiscountApplicable false");
+
       return false;
     }
   }
