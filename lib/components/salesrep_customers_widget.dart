@@ -1,10 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/reseller_order_time_calender_widget.dart';
@@ -22,6 +23,7 @@ import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
 import 'package:shop_app/services/update_customer_service.dart';
+import 'package:shop_app/storages/cities_storage.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:sumup/sumup.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -79,7 +81,8 @@ class SalesRepCustomersWidget extends StatefulWidget {
       _SalesRepCustomersWidgetState();
 }
 
-class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
+class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
+    with TickerProviderStateMixin {
   int popupMenuValue = 1;
 
   LoginStorage loginStorage = LoginStorage();
@@ -173,15 +176,20 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
   String? statesName;
   String? cityName;
 
+  String? selectedName;
+
   List<AllStatesModel> statesModel = [];
 
   List<AllCitiesModel> cityModel = [];
 
-  citiesHandler() async {
+  citiesHandler(String? cityName) async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService().getAllCitiesService(context: context);
+
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityName: cityName!);
     CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+
     print(cityModel);
     setState(() {});
   }
@@ -199,14 +207,16 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
     CustomLoader.hideLoader(context);
   }
 
+  AnimationController? _controller;
+  Animation<double>? _animation;
+  bool expand = false;
+  bool showSearchData = false;
+
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // getAllStatesHandler();
-      citiesHandler();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
 
     widget.firstName.text = widget.customers.firstName!;
     widget.lastName.text = widget.customers.lastName!;
@@ -424,9 +434,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                   ),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.email),
-                                                      controller: widget.email,
-                                                      hint: 'Email'),
+                                                          Icons.person),
+                                                      controller:
+                                                          widget.lastName,
+                                                      hint: 'Last Name'),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
                                                           Icons.home),
@@ -435,234 +446,162 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       hint: 'Salon Name'),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.person),
+                                                          Icons.home),
                                                       controller:
-                                                          widget.lastName,
-                                                      hint: 'Last Name'),
-                                                  CustomTextField(
-                                                      inputFormats: [
-                                                        FilteringTextInputFormatter
-                                                            .digitsOnly,
-                                                        LengthLimitingTextInputFormatter(
-                                                            12),
-                                                        PhoneInputFormatter(),
-                                                      ],
-                                                      inputType:
-                                                          TextInputType.number,
-                                                      prefixWidget: const Icon(
-                                                          Icons.phone),
-                                                      controller: widget.phone,
-                                                      hint: 'Phone'),
-
-                                                  // DropDownClass(
-                                                  //     cityData: widget.cityName,
-                                                  //     statesData:
-                                                  //         widget.statesName),
-
-                                                  // Padding(
-                                                  //   padding: const EdgeInsets
-                                                  //           .symmetric(
-                                                  //       horizontal: 6.0,
-                                                  //       vertical: 4),
-                                                  //   child: Container(
-                                                  //     decoration: BoxDecoration(
-                                                  //         color: kSecondaryColor
-                                                  //             .withOpacity(0.1),
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(8)),
-                                                  //     child: Padding(
-                                                  //       padding:
-                                                  //           const EdgeInsets
-                                                  //                   .symmetric(
-                                                  //               horizontal:
-                                                  //                   8.0),
-                                                  //       child: DropdownButton(
-                                                  //           isExpanded: true,
-                                                  //           underline:
-                                                  //               const SizedBox(),
-                                                  //           hint: Row(
-                                                  //             children: [
-                                                  //               SvgPicture
-                                                  //                   .asset(
-                                                  //                 "assets/svg/State Icon (1).svg",
-                                                  //                 width: 26,
-                                                  //                 height: 26,
-                                                  //                 alignment:
-                                                  //                     Alignment
-                                                  //                         .centerLeft,
-                                                  //               ),
-                                                  //               const SizedBox(
-                                                  //                   width: 10),
-                                                  //               Text(widget.statesName ==
-                                                  //                       null
-                                                  //                   ? 'Select State'
-                                                  //                   : widget
-                                                  //                       .statesName!),
-                                                  //             ],
-                                                  //           ),
-                                                  //           items: statesModel
-                                                  //               .map((e) {
-                                                  //             return DropdownMenuItem(
-                                                  //                 onTap: () {
-                                                  //                   sestate(() {
-                                                  //                     widget.statesName =
-                                                  //                         e.stateName;
-                                                  //                     WidgetsBinding
-                                                  //                         .instance
-                                                  //                         .addPostFrameCallback(
-                                                  //                             (timeStamp) {
-                                                  //                       getAllCitiesHandler(
-                                                  //                           e.stateCode!);
-                                                  //                     });
-                                                  //                   });
-                                                  //                 },
-                                                  //                 value: e
-                                                  //                     .stateName,
-                                                  //                 child: Text(e
-                                                  //                     .stateName
-                                                  //                     .toString()));
-                                                  //           }).toList(),
-                                                  //           onChanged: (_) {}),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                  // Padding(
-                                                  //   padding: const EdgeInsets
-                                                  //           .symmetric(
-                                                  //       horizontal: 6.0,
-                                                  //       vertical: 4),
-                                                  //   child: Container(
-                                                  //     decoration: BoxDecoration(
-                                                  //         color: kSecondaryColor
-                                                  //             .withOpacity(0.1),
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(8)),
-                                                  //     child: Padding(
-                                                  //       padding:
-                                                  //           const EdgeInsets
-                                                  //                   .symmetric(
-                                                  //               horizontal:
-                                                  //                   8.0),
-                                                  //       child: DropdownButton(
-                                                  //           isExpanded: true,
-                                                  //           underline:
-                                                  //               const SizedBox(),
-                                                  //           hint: Row(
-                                                  //             children: [
-                                                  //               SvgPicture
-                                                  //                   .asset(
-                                                  //                 "assets/svg/City Icon (1).svg",
-                                                  //                 color: Colors
-                                                  //                     .black45,
-                                                  //                 width: 26,
-                                                  //                 height: 26,
-                                                  //                 fit: BoxFit
-                                                  //                     .cover,
-                                                  //                 alignment:
-                                                  //                     Alignment
-                                                  //                         .centerLeft,
-                                                  //               ),
-                                                  //               const SizedBox(
-                                                  //                   width: 10),
-                                                  //               Text(widget.cityName ==
-                                                  //                       null
-                                                  //                   ? 'Select City'
-                                                  //                   : widget
-                                                  //                       .cityName!),
-                                                  //             ],
-                                                  //           ),
-                                                  //           items: citiesModel
-                                                  //               .map((e) {
-                                                  //             return DropdownMenuItem(
-                                                  //                 onTap: () {
-                                                  //                   sestate(() {
-                                                  //                     widget.cityName =
-                                                  //                         e.cityName;
-                                                  //                   });
-                                                  //                 },
-                                                  //                 value: e
-                                                  //                     .cityName,
-                                                  //                 child: Text(e
-                                                  //                     .cityName
-                                                  //                     .toString()));
-                                                  //           }).toList(),
-                                                  //           onChanged: (_) {}),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-
+                                                          widget.address,
+                                                      hint: 'Address'),
                                                   const SizedBox(height: 5),
-                                                  TypeAheadFormField<
-                                                      AllCitiesModel>(
-                                                    textFieldConfiguration:
-                                                        TextFieldConfiguration(
-                                                      controller: controller,
-                                                      autofocus: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .all(0),
-                                                        prefixIcon: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 9.0,
-                                                                  left: 0),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            "assets/icons/city-icon.svg",
-                                                            height: 40,
-                                                            width: 40,
-                                                            //! change its icon for zipcode
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: Card(
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          side: BorderSide(
+                                                              color: expand ==
+                                                                      true
+                                                                  ? Colors
+                                                                      .black26
+                                                                  : Colors
+                                                                      .transparent)),
+                                                      elevation: 2,
+                                                      child: InkWell(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        onTap: () {
+                                                          expand = !expand;
+                                                          _controller =
+                                                              AnimationController(
+                                                                  duration:
+                                                                      const Duration(
+                                                                          seconds:
+                                                                              1),
+                                                                  vsync: this);
+                                                          // Define the animation curve
+                                                          final curvedAnimation =
+                                                              CurvedAnimation(
+                                                                  parent:
+                                                                      _controller!,
+                                                                  curve: Curves
+                                                                      .easeInExpo);
+
+                                                          // Define the animation values (e.g., from 0.0 to 1.0)
+                                                          _animation = Tween<
+                                                                      double>(
+                                                                  begin: 0.0,
+                                                                  end: 1.0)
+                                                              .animate(
+                                                                  curvedAnimation);
+                                                          _controller!
+                                                              .forward();
+                                                          setState(() {});
+                                                        },
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        20.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      selectedName ==
+                                                                              null
+                                                                          ? 'Select Cities'
+                                                                          : selectedName!,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                    const Spacer(),
+                                                                    Icon(expand ==
+                                                                            true
+                                                                        ? Icons
+                                                                            .arrow_drop_up_outlined
+                                                                        : Icons
+                                                                            .arrow_drop_down)
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              expand == true
+                                                                  ? AnimatedBuilder(
+                                                                      animation:
+                                                                          _animation!,
+                                                                      builder: (BuildContext
+                                                                              context,
+                                                                          Widget?
+                                                                              child) {
+                                                                        return Opacity(
+                                                                          opacity:
+                                                                              _animation!.value,
+                                                                          child:
+                                                                              SingleChildScrollView(
+                                                                            child:
+                                                                                Column(
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                                                                  child: CupertinoTextField(
+                                                                                      controller: controller,
+                                                                                      placeholder: 'Search Cities',
+                                                                                      onSubmitted: (v) {
+                                                                                        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                          controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
+                                                                                          showSearchData = true;
+
+                                                                                          sestate(() {});
+                                                                                        });
+                                                                                      }),
+                                                                                ),
+                                                                                const SizedBox(height: 10),
+                                                                                showSearchData == true
+                                                                                    ? ListView.builder(
+                                                                                        physics: const NeverScrollableScrollPhysics(),
+                                                                                        shrinkWrap: true,
+                                                                                        itemCount: cityModel.length,
+                                                                                        itemBuilder: (context, index) {
+                                                                                          return InkWell(
+                                                                                            onTap: () {
+                                                                                              selectedName = cityModel[index].cityName;
+                                                                                              // model = cities;
+                                                                                              expand = !expand;
+
+                                                                                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                getAllStatesHandler(selectedName!);
+                                                                                              });
+
+                                                                                              sestate(() {});
+                                                                                            },
+                                                                                            child: Padding(
+                                                                                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                                                                              child: Text(
+                                                                                                cityModel[index].cityName!,
+                                                                                                style: const TextStyle(fontSize: 16),
+                                                                                              ),
+                                                                                            ),
+                                                                                          );
+                                                                                        })
+                                                                                    : SizedBox(),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      })
+                                                                  : const SizedBox()
+                                                            ],
                                                           ),
                                                         ),
-                                                        enabled: false,
-                                                        hintText: widget
-                                                                    .cityName ==
-                                                                null
-                                                            ? 'Search City'
-                                                            : widget.cityName!,
-                                                        border:
-                                                            InputBorder.none,
                                                       ),
                                                     ),
-                                                    suggestionsCallback:
-                                                        (pattern) async {
-                                                      return cityModel
-                                                          .where((city) => city
-                                                              .cityName!
-                                                              .toLowerCase()
-                                                              .contains(pattern
-                                                                  .toLowerCase()))
-                                                          .toList();
-                                                    },
-                                                    itemBuilder: (context,
-                                                        AllCitiesModel
-                                                            suggestion) {
-                                                      return ListTile(
-                                                        title: Text(suggestion
-                                                            .cityName!),
-                                                      );
-                                                    },
-                                                    onSuggestionSelected:
-                                                        (AllCitiesModel
-                                                            suggestion) {
-                                                      widget.cityName =
-                                                          suggestion.cityName;
-                                                      getAllStatesHandler(
-                                                          cityName!);
-                                                      controller.clear();
-                                                      sestate(() {});
-                                                      print(
-                                                          suggestion.cityName);
-                                                    },
                                                   ),
-
                                                   const SizedBox(height: 10),
-
                                                   Padding(
                                                     padding: const EdgeInsets
                                                             .symmetric(
@@ -696,11 +635,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                                 ),
                                                                 const SizedBox(
                                                                     width: 13),
-                                                                Text(widget.statesName ==
+                                                                Text(statesName ==
                                                                         null
                                                                     ? 'Select Sate'
-                                                                    : widget
-                                                                        .statesName!),
+                                                                    : statesName!),
                                                               ],
                                                             ),
                                                             underline:
@@ -713,7 +651,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                                 .map((e) {
                                                               return DropdownMenuItem(
                                                                   onTap: () {
-                                                                    widget.statesName =
+                                                                    statesName =
                                                                         e.stateName;
                                                                     sestate(
                                                                         () {});
@@ -726,7 +664,6 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       ),
                                                     ),
                                                   ),
-
                                                   CustomTextField(
                                                       controller:
                                                           widget.zipCont,
@@ -744,10 +681,23 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget> {
                                                       )),
                                                   CustomTextField(
                                                       prefixWidget: const Icon(
-                                                          Icons.home),
-                                                      controller:
-                                                          widget.address,
-                                                      hint: 'Address'),
+                                                          Icons.email),
+                                                      controller: widget.email,
+                                                      hint: 'Email'),
+                                                  CustomTextField(
+                                                      inputFormats: [
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly,
+                                                        LengthLimitingTextInputFormatter(
+                                                            12),
+                                                        PhoneInputFormatter(),
+                                                      ],
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget: const Icon(
+                                                          Icons.phone),
+                                                      controller: widget.phone,
+                                                      hint: 'Phone'),
                                                 ],
                                               ),
                                             ),

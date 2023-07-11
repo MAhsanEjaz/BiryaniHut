@@ -56,6 +56,7 @@ void main() async {
   await Hive.openBox('login_hive');
   await Hive.openBox('customer_cart_box');
   await Hive.openBox('salesrep_cart_box');
+  await Hive.openBox('cities_hive');
 
   runApp(Builder(builder: (BuildContext context) {
     return MultiProvider(

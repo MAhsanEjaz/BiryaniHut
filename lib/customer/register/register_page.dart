@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
@@ -131,12 +130,16 @@ class _SignUpScreenState extends State<SignUpPage>
     CustomLoader.hideLoader(context);
   }
 
+  AnimationController? _controller;
+  Animation<double>? _animation;
+  bool expand = false;
+  bool showSearchData = false;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      citiesHandler();
       getResellerCustomerHandler();
     });
 
@@ -151,11 +154,14 @@ class _SignUpScreenState extends State<SignUpPage>
 
   List<AllCitiesModel> cityModel = [];
 
-  citiesHandler() async {
+  citiesHandler(String? cityName) async {
     CustomLoader.showLoader(context: context);
-    await GetAllCitiesService().getAllCitiesService(context: context);
+
+    await GetAllCitiesService()
+        .getAllCitiesService(context: context, cityName: cityName!);
     CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+
     print(cityModel);
     setState(() {});
   }
@@ -175,14 +181,10 @@ class _SignUpScreenState extends State<SignUpPage>
 
   TextEditingController controller = TextEditingController();
 
-  bool expand = false;
-
   String? statesName;
   String? cityName;
 
   String? selectedName;
-
-  final FocusNode _focusNode = FocusNode();
 
   @override
   @override
@@ -401,46 +403,152 @@ class _SignUpScreenState extends State<SignUpPage>
 
                   const SizedBox(height: 10),
 
-                  TypeAheadFormField<AllCitiesModel>(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      focusNode: _focusNode,
-                      autocorrect: true,
-                      controller: controller,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(0),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(top: 9.0, left: 0),
-                          child: SvgPicture.asset(
-                            "assets/icons/city-icon.svg", height: 40,
-                            width: 40,
-                            //! change its icon for zipcode
+                  SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(
+                              color: expand == true
+                                  ? Colors.black26
+                                  : Colors.transparent)),
+                      elevation: 2,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          expand = !expand;
+                          _controller = AnimationController(
+                              duration: const Duration(seconds: 1),
+                              vsync: this);
+                          // Define the animation curve
+                          final curvedAnimation = CurvedAnimation(
+                              parent: _controller!, curve: Curves.easeInExpo);
+
+                          // Define the animation values (e.g., from 0.0 to 1.0)
+                          _animation = Tween<double>(begin: 0.0, end: 1.0)
+                              .animate(curvedAnimation);
+                          _controller!.forward();
+                          setState(() {});
+                        },
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      selectedName == null
+                                          ? 'Select Cities'
+                                          : selectedName!,
+                                      style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    Icon(expand == true
+                                        ? Icons.arrow_drop_up_outlined
+                                        : Icons.arrow_drop_down)
+                                  ],
+                                ),
+                              ),
+                              expand == true
+                                  ? AnimatedBuilder(
+                                      animation: _animation!,
+                                      builder: (BuildContext context,
+                                          Widget? child) {
+                                        return Opacity(
+                                          opacity: _animation!.value,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 16.0),
+                                                  child: CupertinoTextField(
+                                                      controller: controller,
+                                                      placeholder:
+                                                          'Search Cities',
+                                                      onSubmitted: (v) {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (timeStamp) {
+                                                          controller.text
+                                                                      .length <
+                                                                  3
+                                                              ? CustomSnackBar
+                                                                  .failedSnackBar(
+                                                                      context:
+                                                                          context,
+                                                                      message:
+                                                                          'Text should be at least 3 characters long')
+                                                              : citiesHandler(
+                                                                  v);
+                                                          showSearchData = true;
+
+                                                          setState(() {});
+                                                        });
+                                                      }),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                showSearchData == true
+                                                    ? ListView.builder(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount:
+                                                            cityModel.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return InkWell(
+                                                            onTap: () {
+                                                              selectedName =
+                                                                  cityModel[
+                                                                          index]
+                                                                      .cityName;
+                                                              // model = cities;
+                                                              expand = !expand;
+
+                                                              WidgetsBinding
+                                                                  .instance
+                                                                  .addPostFrameCallback(
+                                                                      (timeStamp) {
+                                                                getAllStatesHandler(
+                                                                    selectedName!);
+                                                              });
+
+                                                              setState(() {});
+                                                            },
+                                                            child: Padding(
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20.0,
+                                                                  vertical: 10),
+                                                              child: Text(
+                                                                cityModel[index]
+                                                                    .cityName!,
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        })
+                                                    : SizedBox(),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                  : const SizedBox()
+                            ],
                           ),
                         ),
-                        enabled: false,
-                        hintText: cityName == null ? 'Search City' : cityName!,
-                        border: InputBorder.none,
                       ),
                     ),
-                    suggestionsCallback: (pattern) async {
-                      return cityModel
-                          .where((city) => city.cityName!
-                              .toLowerCase()
-                              .contains(pattern.toLowerCase()))
-                          .toList();
-                    },
-                    itemBuilder: (context, AllCitiesModel suggestion) {
-                      return ListTile(
-                        title: Text(suggestion.cityName!),
-                      );
-                    },
-                    onSuggestionSelected: (AllCitiesModel suggestion) {
-                      cityName = suggestion.cityName;
-                      getAllStatesHandler(cityName!);
-                      controller.clear();
-                      setState(() {});
-                      print(suggestion.cityName);
-                    },
                   ),
 
                   const SizedBox(height: 10),
