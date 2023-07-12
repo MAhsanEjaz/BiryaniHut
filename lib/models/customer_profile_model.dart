@@ -109,19 +109,9 @@ class CustomerProfileModel {
   CustomerProfileModel({this.data, this.statusCode, this.message});
 
   CustomerProfileModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     statusCode = json['statusCode'];
     message = json['message'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    return data;
   }
 }
 
@@ -140,35 +130,30 @@ class Data {
   String? customerImage;
   String? customerImageFile;
   String? phone;
-  num? accountBalance;
+  double? accountBalance;
   int? saleRepID;
   SaleRep? saleRep;
   int? loginId;
-  Null? deleteStatus;
-  Null? deletedDate;
-  Null? deletedBy;
 
-  Data(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.salonName,
-      this.postalCode,
-      this.state,
-      this.city,
-      this.address,
-      this.email,
-      this.location,
-      this.customerImagePath,
-      this.customerImage,
-      this.phone,
-      this.accountBalance,
-      this.saleRepID,
-      this.saleRep,
-      this.loginId,
-      this.deleteStatus,
-      this.deletedDate,
-      this.deletedBy});
+  Data({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.salonName,
+    this.postalCode,
+    this.state,
+    this.city,
+    this.address,
+    this.email,
+    this.location,
+    this.customerImagePath,
+    this.customerImage,
+    this.phone,
+    this.accountBalance,
+    this.saleRepID,
+    this.saleRep,
+    this.loginId,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -187,39 +172,14 @@ class Data {
     phone = json['phone'];
     accountBalance = json['accountBalance'];
     saleRepID = json['saleRepID'];
-    saleRep =
-        json['saleRep'] != null ? new SaleRep.fromJson(json['saleRep']) : null;
+    saleRep = json['saleRep'] != null
+        ? SaleRep.fromJson(json['saleRep'])
+        : SaleRep(
+            firstName: "Not Assigned",
+            lastName: "Yet",
+            id: 0,
+          );
     loginId = json['loginId'];
-    deleteStatus = json['deleteStatus'];
-    deletedDate = json['deletedDate'];
-    deletedBy = json['deletedBy'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = id;
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['salon_Name'] = salonName;
-    data['state'] = state;
-    data['postalCode'] = postalCode;
-    data['city'] = city;
-    data['address'] = address;
-    data['email'] = email;
-    data['location'] = location;
-    data['customerImagePath'] = customerImagePath;
-    data['customerImage'] = customerImage;
-    data['phone'] = phone;
-    data['accountBalance'] = accountBalance;
-    data['saleRepID'] = saleRepID;
-    if (saleRep != null) {
-      data['saleRep'] = saleRep!.toJson();
-    }
-    data['loginId'] = loginId;
-    data['deleteStatus'] = deleteStatus;
-    data['deletedDate'] = deletedDate;
-    data['deletedBy'] = deletedBy;
-    return data;
   }
 }
 
@@ -233,20 +193,10 @@ class SaleRep {
   SaleRep({this.id, this.firstName, this.lastName, this.saleRepImagePath});
 
   SaleRep.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    companyName = json['companyName']??'';
+    id = json['id'] ?? 0;
+    firstName = json['firstName'] ?? "";
+    lastName = json['lastName'] ?? "";
+    companyName = json['companyName'] ?? "";
     saleRepImagePath = json['saleRepImagePath'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = < String, dynamic>{};
-    data['id'] = id;
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['companyName'] = companyName??'';
-    data['saleRepImagePath'] = saleRepImagePath;
-    return data;
   }
 }

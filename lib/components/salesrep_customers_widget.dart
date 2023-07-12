@@ -948,19 +948,19 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              PaymentCard(
-                                boxHeight: 45,
-                                boxWidth: 45,
-                                image: getSumupImageUrl(),
-                                color: selectedPaymentIndex == 1 ? true : false,
-                                onTap: () {
-                                  selectedPaymentIndex = 1;
+                              // PaymentCard(
+                              //   boxHeight: 45,
+                              //   boxWidth: 45,
+                              //   image: getSumupImageUrl(),
+                              //   color: selectedPaymentIndex == 1 ? true : false,
+                              //   onTap: () {
+                              //     selectedPaymentIndex = 1;
 
-                                  handleSumupClick(setStatess);
-                                  setStatess(() {});
-                                },
-                                paymentName: 'SumUp',
-                              ),
+                              //     handleSumupClick(setStatess);
+                              //     setStatess(() {});
+                              //   },
+                              //   paymentName: 'SumUp',
+                              // ),
                               //! payment by cash
                               PaymentCard(
                                 boxHeight: 45,
@@ -1253,7 +1253,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
             FocusScope.of(widget.context).unfocus();
             setStatess(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1331,7 +1331,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
             FocusScope.of(widget.context).unfocus();
             setStatess(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1398,7 +1398,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
             FocusScope.of(widget.context).unfocus();
             setStatess(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],

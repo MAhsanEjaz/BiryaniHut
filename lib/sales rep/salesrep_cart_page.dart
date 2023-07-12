@@ -906,7 +906,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             FocusScope.of(context).unfocus();
             setStatesss(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -985,7 +985,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             FocusScope.of(context).unfocus();
             setStatesss(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1052,7 +1052,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
             FocusScope.of(context).unfocus();
             setStatesss(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1764,17 +1764,13 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                     String jsonnn = cartModelToJson(cartModel);
                                     await addToCartHandler(jsonnn);
                                     log("jsonnn  /// = $jsonnn");
+                                    log("isOrderPlaced after order = $isOrderPlaced");
                                     if (isOrderPlaced) {
                                       await updateCustomerBalanceHandler(
                                         widget.customerId,
-                                        getPreviousBalance(), //! setting it to 0 because previous balance was added into
-                                        //! totalPaid and if total paid is more than total price then
-                                        //! murtaza will again add this extra to customer's wallet
+                                        getPreviousBalance(),
                                       );
                                       openInvoice();
-
-                                      //! clearing full sales rep box
-                                      //! because delete is not working for a particular key
 
                                       // Hive.box("salesrep_cart_box").clear();
                                       cartStorage.clearAnyCustomerCart(
