@@ -1207,7 +1207,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
             FocusScope.of(context).unfocus();
             setState(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1299,7 +1299,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
             FocusScope.of(context).unfocus();
             setState(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1366,7 +1366,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
             FocusScope.of(context).unfocus();
             setState(() {});
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1493,7 +1493,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
               makePayment(amountCont.text.trim());
             }
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
@@ -1588,7 +1588,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
               );
             }
           },
-          text: "Save",
+          text: "Pay",
           width: getProportionateScreenWidth(100),
         )
       ],
