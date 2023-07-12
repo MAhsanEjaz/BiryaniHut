@@ -166,7 +166,7 @@ class _SignUpScreenState extends State<SignUpPage>
     setState(() {});
   }
 
-  getAllStatesHandler(String cityName) async {
+  void getAllStatesHandler() async {
     CustomLoader.showLoader(context: context);
     await GetAllStatesServices()
         .getAllStatesServices(context: context, cityName: cityName);
@@ -184,7 +184,7 @@ class _SignUpScreenState extends State<SignUpPage>
   String? statesName;
   String? cityName;
 
-  String? selectedName;
+  // String? selectedName;
 
   @override
   @override
@@ -450,9 +450,9 @@ class _SignUpScreenState extends State<SignUpPage>
                                       ),
                                       const SizedBox(width: 20),
                                       Text(
-                                        selectedName == null
-                                            ? 'Select Cities'
-                                            : selectedName!,
+                                        cityName == null
+                                            ? 'Select City'
+                                            : cityName!,
                                         style: const TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
@@ -528,9 +528,9 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                       index) {
                                                                 return InkWell(
                                                                   onTap: () {
-                                                                    selectedName =
-                                                                        cityModel[index]
-                                                                            .cityName;
+                                                                    cityName = cityModel[
+                                                                            index]
+                                                                        .cityName;
                                                                     // model = cities;
                                                                     expand =
                                                                         !expand;
@@ -539,8 +539,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                         .instance
                                                                         .addPostFrameCallback(
                                                                             (timeStamp) {
-                                                                      getAllStatesHandler(
-                                                                          selectedName!);
+                                                                      getAllStatesHandler();
                                                                     });
 
                                                                     setState(
@@ -763,6 +762,7 @@ class _SignUpScreenState extends State<SignUpPage>
                   DefaultButton(
                       text: "Register",
                       press: () {
+                        log("Register clicked");
                         if (isLoginValidated()) {
                           registerByCustomerBody = {
                             "id": 0,
@@ -818,7 +818,7 @@ class _SignUpScreenState extends State<SignUpPage>
     isPassError = false;
 
     if (fNameCont.text.isEmpty) {
-      fNameErrorString = "Please enter name";
+      fNameErrorString = "Please enter First Name";
       isfNameError = true;
       isValid = false;
     } else {
@@ -826,7 +826,7 @@ class _SignUpScreenState extends State<SignUpPage>
     }
 
     if (lNameCont.text.isEmpty) {
-      lNameErrorString = "Please enter last name";
+      lNameErrorString = "Please enter Last Name";
       islNameError = true;
       isValid = false;
     } else {
@@ -842,7 +842,7 @@ class _SignUpScreenState extends State<SignUpPage>
     }
 
     if (phoneCont.text.characters.length < 12) {
-      phoneErrorString = "Please enter phone number";
+      phoneErrorString = "Please enter valid phone #";
       isPhoneError = true;
       isValid = false;
     } else {
@@ -850,7 +850,7 @@ class _SignUpScreenState extends State<SignUpPage>
     }
 
     if (salonNameCont.text.isEmpty) {
-      salonNameErrorString = "Please enter saloon name";
+      salonNameErrorString = "Please enter Saloon Name";
       isSalonError = true;
       isValid = false;
     } else {
@@ -866,7 +866,7 @@ class _SignUpScreenState extends State<SignUpPage>
     }
 
     if (cityName == null) {
-      cityNameErrorString = "Please select City Name";
+      cityNameErrorString = "Please Select City Name";
       isCityError = true;
       isValid = false;
     } else {
@@ -898,7 +898,7 @@ class _SignUpScreenState extends State<SignUpPage>
         isPassError = false;
       }
       if (confirmPassCont.text.length < 6) {
-        confirmPassErrorString = "Password not correct";
+        confirmPassErrorString = "Confirm Password not matched";
         isConfirmPassError = true;
         isValid = false;
       } else {

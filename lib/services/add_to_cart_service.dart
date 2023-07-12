@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:http/http.dart' as http;
@@ -24,13 +25,16 @@ class AddToCartService {
         return true;
       } else {
         // log("Unsuccessfull");
+        showToast("Order could not be Placed");
         CustomSnackBar.failedSnackBar(
             context: context, message: "Order could not be Placed");
         return false;
       }
     } catch (err) {
+      showToast("Internet or Server Issue");
+
       CustomSnackBar.failedSnackBar(
-          context: context, message: "Something went wrong");
+          context: context, message: "Internet or Server Issue");
 
       return false;
     }

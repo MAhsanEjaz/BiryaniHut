@@ -1745,8 +1745,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                       width: double.infinity,
                                                       child: ElevatedButton(
                                                         onPressed: () {
-                                                          // close bottom sheet and also navigate
+                                                          // close the both bottom sheets and also navigate
                                                           // to previous page.
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           Navigator.of(context)
                                                               .pop();
                                                           Navigator.of(context)
