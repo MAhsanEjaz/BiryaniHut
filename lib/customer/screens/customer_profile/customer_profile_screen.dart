@@ -247,8 +247,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
 
   String? statesName;
   String? cityName;
-
-  String? selectedName;
+  String? selectCityName;
 
   @override
   Widget build(BuildContext context) {
@@ -561,6 +560,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                                                                             onTap:
                                                                                 () {
                                                                               cityName = cityModel[index].cityName;
+                                                                              selectCityName = cityModel[index].cityName;
                                                                               // model = cities;
                                                                               expand = !expand;
 
@@ -628,8 +628,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                                         alignment: Alignment.centerLeft,
                                       ),
                                       const SizedBox(width: 13),
-                                      Text(statesName == null
-                                          ? 'Select Sate'
+                                      Text(selectCityName != null
+                                          ? 'Select'
                                           : statesName!),
                                     ],
                                   ),
@@ -640,6 +640,8 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                                     return DropdownMenuItem(
                                         onTap: () {
                                           statesName = e.stateName;
+                                          selectCityName = null;
+
                                           setState(() {});
                                         },
                                         value: e,
