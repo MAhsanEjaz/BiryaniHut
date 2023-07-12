@@ -89,6 +89,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               borderRadius: BorderRadius.circular(8.0)),
           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
           child: TextField(
+            textCapitalization: TextCapitalization.sentences,
             // maxLines: widget.maxlines == null? null:10,
             inputFormatters: widget.inputFormats,
             // maxLines: widget.isObscure == false ? widget.maxlines : null,

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive/hive.dart';
+import 'package:pdf/pdf.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/helper/custom_loader.dart';
@@ -18,6 +20,7 @@ import 'package:shop_app/services/update_customer_balance_service.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/storages/salesrep_cart_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
+import 'package:sms_mms/sms_mms.dart';
 import 'package:sumup/sumup.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../components/default_button.dart';
@@ -29,6 +32,7 @@ import '../models/salesrep_get_discount_model.dart';
 import '../providers/counter_provider.dart';
 import '../services/account_balance_service.dart';
 import '../services/add_to_cart_service.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class SalesRepCartPage extends StatefulWidget {
   final int customerId;
@@ -61,6 +65,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   FocusNode amountNode = FocusNode();
   FocusNode chequeNoNode = FocusNode();
+
   // FocusNode cashAppTransIdNode = FocusNode();
 
   // List<num> pricelist = [];
@@ -93,12 +98,13 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   int cartItemsCount = 0;
   SalesrepDiscountModel? repDiscountModel;
   bool isDiscountInPercent = false;
+
   // bool isDiscountApplicable = false;
 
   @override
   void initState() {
     super.initState();
-
+    requestSmsPermission();
     log(widget.customerName);
     log(widget.email);
     log(widget.phone);
@@ -201,22 +207,22 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     CustomLoader.hideLoader(context);
   }
 
-  void sendSMS(String number) async {
-    String message = 'Order Details:\n';
-    for (var product in model) {
-      message += '\nProduct Name: ${product.productName}\n'
-          'Quantity: ${product.quantity}\n'
-          'Price: ${product.price}\n';
-    }
-
-    final url = Uri.parse('sms:$number?body=${Uri.encodeComponent(message)}');
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // void sendSMS(String number) async {
+  //   String message = 'Order Details:\n';
+  //   for (var product in model) {
+  //     message += '\nProduct Name: ${product.productName}\n'
+  //         'Quantity: ${product.quantity}\n'
+  //         'Price: ${product.price}\n';
+  //   }
+  //
+  //   final url = Uri.parse('sms:$number?body=${Uri.encodeComponent(message)}');
+  //
+  //   if (await canLaunchUrl(url)) {
+  //     await launchUrl(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   Future<void> sendEmail(List<String> path) async {
     final Email email = Email(
@@ -237,6 +243,25 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   }
 
   bool isDeleteProductAllowed = false;
+
+  List<String> recipientsList = [];
+
+  Future<void> sendMessage(String file, String number) async {
+    if (number.isNotEmpty) {
+      await SmsMms.send(
+        recipients: [number],
+        message: '',
+        filePath: file,
+      );
+    } else {
+      // Fluttertoast.showToast(msg: 'Please add at-least one recipient');
+    }
+  }
+
+  Future<void> requestSmsPermission() async {
+    var status = await Permission.sms.request();
+    print('SMS Permission status: $status');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1573,8 +1598,88 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(0))),
-                                        onPressed: () {
-                                          sendSMS(widget.phone);
+                                        onPressed: () async {
+                                          // sendSMS(widget.phone);
+
+                                          CartModel cartModel = CartModel(
+                                            orderPayment: paymentsList,
+                                            customerId: widget.customerId,
+                                            dateTime: DateTime.now(),
+                                            orderBy: 2,
+                                            orderId: 0,
+                                            orderProducts: model,
+                                            discountType:
+                                                getIsDiscountApplicable() &&
+                                                        isDiscountInPercent
+                                                    ? "By Percentage"
+                                                    : "By Value",
+                                            discount: repDiscountModel !=
+                                                        null &&
+                                                    getIsDiscountApplicable()
+                                                ? repDiscountModel!
+                                                    .data.discount
+                                                : 0,
+                                            grandTotal: totalPrice,
+                                            status: '',
+                                            totalPrice: totalPrice,
+                                            orderPaidAmount: totalPaid,
+                                            orderPendingAmount: double.parse(
+                                                getRemainigBalance()),
+                                            remainingBalance: double.parse(
+                                                getRemainigBalance()),
+                                            totalBalance:
+                                                double.parse(getTotalBalance()),
+                                            previousBalance: previousBalance,
+                                            netTotal:
+                                                double.parse(getOrderAmount()),
+                                          );
+
+                                          // String discountString = '';
+                                          // if (isDiscountApplicable) {
+                                          //   if (isDiscountInPercent) {
+                                          //     discountString =
+                                          //         "Discount in Percent = ${repDiscountModel!.data.discount}";
+                                          //   } else {
+                                          //     discountString =
+                                          //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
+                                          //   }
+                                          // }
+
+                                          final data =
+                                              await pdfService.createInvoice(
+                                            discountValue: repDiscountModel !=
+                                                        null &&
+                                                    getIsDiscountApplicable()
+                                                ? repDiscountModel!
+                                                    .data.discount
+                                                    .toStringAsFixed(2)
+                                                : null,
+                                            isDiscountInPercent:
+                                                getIsDiscountApplicable()
+                                                    ? isDiscountInPercent
+                                                    : null,
+                                            ctx: context,
+                                            cartModel: cartModel,
+                                            customerName: widget.customerName,
+                                            repName: loginStorage
+                                                    .getUserFirstName() +
+                                                " " +
+                                                loginStorage.getUserLastName(),
+                                            isOrderCompleted: false,
+                                            repCompanyName: loginStorage
+                                                .getSalesRepCompany(),
+                                          );
+
+                                          log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+
+                                          final filePath =
+                                              await pdfService.savePdfFile(
+                                                  "invoice_$number", data);
+                                          print('PDF File Path: $filePath');
+
+                                          // send(filePath);
+                                          sendMessage(filePath, widget.phone);
+                                          setState(() {});
                                         },
                                         child: const Text(
                                           'Share via Text Message',

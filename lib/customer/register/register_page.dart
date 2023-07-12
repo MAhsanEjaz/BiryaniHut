@@ -209,6 +209,7 @@ class _SignUpScreenState extends State<SignUpPage>
                   // SizedBox(
                   //   height: getProportionateScreenHeight(20),
                   // ),
+
                   Image.asset(
                     "assets/images/Influance-logo.png",
                     height: getProportionateScreenHeight(130),

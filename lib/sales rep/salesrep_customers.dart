@@ -65,10 +65,12 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
         final lastName = element.lastName!.trim().toLowerCase();
         final fullName = '$firstName $lastName';
         final email = element.email;
+        final phone = element.phone;
 
         return saloonName.contains(queryLower) ||
             fullName.contains(queryLower) ||
-            email!.contains(queryLower);
+            email!.contains(queryLower) ||
+            phone!.contains(queryLower);
       }).toList();
     });
   }
