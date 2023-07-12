@@ -25,7 +25,6 @@ class AddToCartService {
             context: context, message: "Order Placed Successfully");
         return true;
       } else {
-        // log("Unsuccessfull");
         showToast("Order could not be Placed");
         CustomSnackBar.failedSnackBar(
             context: context, message: "Order could not be Placed");

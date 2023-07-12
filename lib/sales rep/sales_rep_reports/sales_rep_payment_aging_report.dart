@@ -22,8 +22,9 @@ class _SalesRepPaymentAgingReportState
 
   paymentAgingHandler() async {
     CustomLoader.showLoader(context: context);
-    await SalesRepCustomerPaymentAgingService()
-        .getPayments(context: context, saleRepId: 1);
+    await SalesRepCustomerPaymentAgingService().getPayments(
+      context: context,
+    );
     agingList = Provider.of<SalesRepCustomerPaymentAgingProvider>(context,
             listen: false)
         .paymentsAging!;
@@ -33,7 +34,6 @@ class _SalesRepPaymentAgingReportState
 
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       paymentAgingHandler();
     });
