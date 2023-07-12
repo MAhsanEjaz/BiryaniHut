@@ -19,6 +19,7 @@ class AddToCartService {
       log("addToCart response body = ${response.body}");
       Map json = jsonDecode(response.body);
       if (json["message"] == "Order Placed successfully!") {
+        showToast("Order Placed Successfully");
         // log("Add To Cart Successfully");
         CustomSnackBar.showSnackBar(
             context: context, message: "Order Placed Successfully");

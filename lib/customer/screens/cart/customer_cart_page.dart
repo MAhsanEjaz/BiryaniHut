@@ -664,7 +664,8 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                 press: () async {
                                   var res = customer.customerProfileModel;
 
-                                  res!.data!.saleRep?.id == null
+                                  res!.data!.saleRep?.id == 0 ||
+                                          res.data!.saleRep?.id == null
                                       ? showAwesomeAlert(
                                           context: context,
                                           msg:

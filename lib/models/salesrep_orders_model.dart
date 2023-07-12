@@ -422,7 +422,7 @@ class OrderProducts {
   num? salePrice;
   num? price;
   num? regularPrice;
-  int? quantity;
+  num? quantity;
   num? cost;
   num? totalCost;
   num? discount;

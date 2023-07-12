@@ -198,8 +198,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                             child: CustomTextField(
                               suffixWidget: searchCont.text.isNotEmpty
                                   ? InkWell(
-                                      onTap: onClear, child: Icon(Icons.clear))
-                                  : SizedBox(),
+                                      onTap: onClear,
+                                      child: const Icon(Icons.clear))
+                                  : const SizedBox.shrink(),
                               controller: searchCont,
                               hint: "Search Products",
                               prefixWidget: const Icon(Icons.search),
@@ -262,7 +263,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: getProportionateScreenWidth(10)),
-                          const DiscountBanner(),
+                          // const DiscountBanner(),
                           // const Categories(),
                           // SpecialOffers(),
                           // SizedBox(height: getProportionateScreenWidth(10)),
