@@ -104,7 +104,6 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   @override
   void initState() {
     super.initState();
-    requestSmsPermission();
     log(widget.customerName);
     log(widget.email);
     log(widget.phone);
@@ -1497,6 +1496,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                               children: [
                                 Expanded(
                                     child: ElevatedButton(
+                                      
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: appColor,
                                             elevation: 0,
@@ -1600,6 +1600,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                     BorderRadius.circular(0))),
                                         onPressed: () async {
                                           // sendSMS(widget.phone);
+                                          Navigator.pop(context);
 
                                           CartModel cartModel = CartModel(
                                             orderPayment: paymentsList,
@@ -1634,17 +1635,6 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                                 double.parse(getOrderAmount()),
                                           );
 
-                                          // String discountString = '';
-                                          // if (isDiscountApplicable) {
-                                          //   if (isDiscountInPercent) {
-                                          //     discountString =
-                                          //         "Discount in Percent = ${repDiscountModel!.data.discount}";
-                                          //   } else {
-                                          //     discountString =
-                                          //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
-                                          //   }
-                                          // }
-
                                           final data =
                                               await pdfService.createInvoice(
                                             discountValue: repDiscountModel !=
@@ -1678,6 +1668,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                           print('PDF File Path: $filePath');
 
                                           // send(filePath);
+                                          await requestSmsPermission();
                                           sendMessage(filePath, widget.phone);
                                           setState(() {});
                                         },

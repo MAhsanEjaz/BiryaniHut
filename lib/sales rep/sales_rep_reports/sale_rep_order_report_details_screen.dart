@@ -8,6 +8,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/helper/custom_loader.dart';
@@ -18,6 +19,7 @@ import 'package:shop_app/services/salerep_order_report_details_service.dart';
 import 'package:shop_app/services/update_order_by_salesrep.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/multiline_custom_textfield.dart';
+import 'package:sms_mms/sms_mms.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
 import '../../customer/screens/cart/components/orders_invoice_pdf.dart';
@@ -67,6 +69,23 @@ class _SaleRepOrderReportDetailsScreenState
     CustomLoader.hideLoader(context);
   }
 
+  Future<void> sendMessage(String file, String number) async {
+    if (number.isNotEmpty) {
+      await SmsMms.send(
+        recipients: [number],
+        message: '',
+        filePath: file,
+      );
+    } else {
+      // Fluttertoast.showToast(msg: 'Please add at-least one recipient');
+    }
+  }
+
+  Future<void> requestSmsPermission() async {
+    var status = await Permission.sms.request();
+    print('SMS Permission status: $status');
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -87,22 +106,22 @@ class _SaleRepOrderReportDetailsScreenState
     return filePath;
   }
 
-  void newSendSms(List<OrderProduct> productList, String number) async {
-    String message = 'Order Details:\n';
-    for (var product in productList) {
-      message += '\nProduct Name: ${product.productName}\n'
-          'Quantity: ${product.quantity}\n'
-          'Price: ${product.price}\n';
-    }
-
-    final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
-
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // void newSendSms(List<OrderProduct> productList, String number) async {
+  //   String message = 'Order Details:\n';
+  //   for (var product in productList) {
+  //     message += '\nProduct Name: ${product.productName}\n'
+  //         'Quantity: ${product.quantity}\n'
+  //         'Price: ${product.price}\n';
+  //   }
+  //
+  //   final url = 'sms:$number?body=${Uri.encodeComponent(message)}';
+  //
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   Future<void> _sendEmail(List<String> path) async {
     final Email email = Email(
@@ -177,12 +196,45 @@ class _SaleRepOrderReportDetailsScreenState
                                             children: [
                                               ListTile(
                                                 leading: const Icon(Icons.sms),
-                                                onTap: () {
+                                                onTap: () async {
                                                   Navigator.pop(context);
-                                                  newSendSms(
-                                                      data.reportDetailsModel!
-                                                          .data!.orderProducts,
-                                                      widget.phone);
+                                                  // newSendSms(
+                                                  //     data.reportDetailsModel!
+                                                  //         .data!.orderProducts,
+                                                  //     widget.phone);
+
+                                                  final data =
+                                                      await PdfOrdersInvoiceService()
+                                                          .createInvoice(
+                                                    ctx: context,
+                                                    order: widget.orders,
+                                                    customerName: widget
+                                                            .orders.firstName! +
+                                                        " " +
+                                                        widget.orders.lastName!,
+                                                    isOrderCompleted:
+                                                        widget.orders.status ==
+                                                                "Pending"
+                                                            ? false
+                                                            : true,
+                                                    repName: storage
+                                                            .getUserFirstName() +
+                                                        " " +
+                                                        storage
+                                                            .getUserLastName(),
+                                                    repCompanyName: loginStorage
+                                                        .getSalesRepCompany(),
+                                                  );
+
+                                                  final filePath =
+                                                      await _savePDF(
+                                                          "Influance Invoice",
+                                                          data);
+
+                                                  await requestSmsPermission();
+                                                  sendMessage(
+                                                      filePath, widget.phone);
+
                                                   setState(() {});
                                                 },
                                                 title: const Text('Message'),
