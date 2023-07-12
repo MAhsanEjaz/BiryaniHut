@@ -140,7 +140,7 @@ class Data {
   String? customerImage;
   String? customerImageFile;
   String? phone;
-  double? accountBalance;
+  num? accountBalance;
   int? saleRepID;
   SaleRep? saleRep;
   int? loginId;
@@ -236,7 +236,7 @@ class SaleRep {
     id = json['id'];
     firstName = json['firstName'];
     lastName = json['lastName'];
-    companyName = json['companyName'];
+    companyName = json['companyName']??'';
     saleRepImagePath = json['saleRepImagePath'];
   }
 
@@ -245,7 +245,7 @@ class SaleRep {
     data['id'] = id;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
-    data['companyName'] = companyName;
+    data['companyName'] = companyName??'';
     data['saleRepImagePath'] = saleRepImagePath;
     return data;
   }

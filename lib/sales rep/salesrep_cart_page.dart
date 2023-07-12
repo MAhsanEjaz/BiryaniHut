@@ -1496,7 +1496,6 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                               children: [
                                 Expanded(
                                     child: ElevatedButton(
-                                      
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: appColor,
                                             elevation: 0,

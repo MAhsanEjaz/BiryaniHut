@@ -248,8 +248,6 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
   String? statesName;
   String? cityName;
 
-  String? selectedName;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<CustomerProfileProvider>(builder: (context, data, _) {
