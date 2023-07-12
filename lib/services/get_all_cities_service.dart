@@ -23,7 +23,6 @@ class GetAllCitiesService {
         jsonDecode(l).forEach((element) {
           model.add(AllCitiesModel.fromJson(element));
         });
-
         // HiveCities().setCities(cities: jsonEncode(model.toString()));
 
         Provider.of<AllCitiesProvider>(context, listen: false)
