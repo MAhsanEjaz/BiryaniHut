@@ -1562,7 +1562,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                           // number++;
                                         },
                                         child: const Text(
-                                          'Share with Gmail',
+                                          'Share via Email',
                                           style: TextStyle(color: Colors.white),
                                         ))),
                                 Expanded(
@@ -1577,7 +1577,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                           sendSMS(widget.phone);
                                         },
                                         child: const Text(
-                                          'Share with SMS',
+                                          'Share via Text Message',
                                           style: TextStyle(color: Colors.white),
                                         ))),
                               ],
