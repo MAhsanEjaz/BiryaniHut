@@ -76,16 +76,17 @@ class _SignUpScreenState extends State<SignUpPage>
   String cityNameErrorString = '';
   String zipCodeErrorString = '';
 
-  Map<String, dynamic> registerByCustomerBody = {};
+  Map<String, dynamic> registerCustomerBody = {};
 
-  Map<String, dynamic> registerBySalesRapBody = {};
+  // Map<String, dynamic> registerBySalesRapBody = {};
 
-  registerHandler() async {
+  void registerHandler() async {
+    log("registerCustomerBody = $registerCustomerBody");
     CustomLoader.showLoader(context: context);
     bool isRegistered = await RegisterService().registerService(
         context: context,
         isReseller: widget.isReseller,
-        body: registerByCustomerBody);
+        body: registerCustomerBody);
     CustomLoader.hideLoader(context);
     String? message = '';
     if (isRegistered) {
@@ -765,12 +766,12 @@ class _SignUpScreenState extends State<SignUpPage>
                       press: () {
                         log("Register clicked");
                         if (isLoginValidated()) {
-                          registerByCustomerBody = {
+                          registerCustomerBody = {
                             "id": 0,
                             "firstName": fNameCont.text.trim(),
                             "lastName": lNameCont.text.trim(),
                             "salon_Name": salonNameCont.text.trim(),
-                            "state": stateCont.text.trim(),
+                            "state": statesName,
                             "postalCode": zipCont.text.trim(),
                             "city": cityName,
                             "address": addressCont.text.trim(),
@@ -780,7 +781,7 @@ class _SignUpScreenState extends State<SignUpPage>
                             "phone": phoneCont.text.trim(),
                             "saleRepID": widget.isReseller == true
                                 ? loginStorage.getUserId()
-                                : 1,
+                                : 0,
                             "email": emailCont.text.trim(),
                             "password": passCont.text.trim(),
                             "roleId": 0
