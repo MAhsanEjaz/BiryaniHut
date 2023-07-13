@@ -311,7 +311,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                     ),
                                   ));
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
@@ -333,7 +333,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
@@ -354,7 +354,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
                               showAddPaymentDialog(context);
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
@@ -1180,7 +1180,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                               //           );
                               //         }));
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
@@ -1211,7 +1211,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                   },
                                   onCancelPress: () {});
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 Icon(
                                   Icons.delete,
@@ -1960,7 +1960,7 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: const Row(
+                      child: Row(
                         children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(
