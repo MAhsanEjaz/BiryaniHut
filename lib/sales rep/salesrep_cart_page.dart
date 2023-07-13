@@ -1489,194 +1489,233 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Share Invoice :",
-                                style: titleStyle,
+                                style: TextStyle(color: appColor),
                               ),
                             ),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: appColor,
-                                            elevation: 0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(0))),
-                                        onPressed: () async {
-                                          // Create the cartModel and generate the discountString
-                                          CartModel cartModel = CartModel(
-                                            orderPayment: paymentsList,
-                                            customerId: widget.customerId,
-                                            dateTime: DateTime.now(),
-                                            orderBy: 2,
-                                            orderId: 0,
-                                            orderProducts: model,
-                                            discountType:
-                                                getIsDiscountApplicable() &&
-                                                        isDiscountInPercent
-                                                    ? "By Percentage"
-                                                    : "By Value",
-                                            discount: repDiscountModel !=
-                                                        null &&
-                                                    getIsDiscountApplicable()
-                                                ? repDiscountModel!
-                                                    .data.discount
-                                                : 0,
-                                            grandTotal: totalPrice,
-                                            status: '',
-                                            totalPrice: totalPrice,
-                                            orderPaidAmount: totalPaid,
-                                            orderPendingAmount: double.parse(
-                                                getRemainigBalance()),
-                                            remainingBalance: double.parse(
-                                                getRemainigBalance()),
-                                            totalBalance:
-                                                double.parse(getTotalBalance()),
-                                            previousBalance: previousBalance,
-                                            netTotal:
-                                                double.parse(getOrderAmount()),
-                                          );
+                            SizedBox(height: 10),
+                            InkWell(
+                                onTap: () async {
+                                  // Create the cartModel and generate the discountString
+                                  CartModel cartModel = CartModel(
+                                    orderPayment: paymentsList,
+                                    customerId: widget.customerId,
+                                    dateTime: DateTime.now(),
+                                    orderBy: 2,
+                                    orderId: 0,
+                                    orderProducts: model,
+                                    discountType: getIsDiscountApplicable() &&
+                                            isDiscountInPercent
+                                        ? "By Percentage"
+                                        : "By Value",
+                                    discount: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                        : 0,
+                                    grandTotal: totalPrice,
+                                    status: '',
+                                    totalPrice: totalPrice,
+                                    orderPaidAmount: totalPaid,
+                                    orderPendingAmount:
+                                        double.parse(getRemainigBalance()),
+                                    remainingBalance:
+                                        double.parse(getRemainigBalance()),
+                                    totalBalance:
+                                        double.parse(getTotalBalance()),
+                                    previousBalance: previousBalance,
+                                    netTotal: double.parse(getOrderAmount()),
+                                  );
 
-                                          // String discountString = '';
-                                          // if (isDiscountApplicable) {
-                                          //   if (isDiscountInPercent) {
-                                          //     discountString =
-                                          //         "Discount in Percent = ${repDiscountModel!.data.discount}";
-                                          //   } else {
-                                          //     discountString =
-                                          //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
-                                          //   }
-                                          // }
+                                  // String discountString = '';
+                                  // if (isDiscountApplicable) {
+                                  //   if (isDiscountInPercent) {
+                                  //     discountString =
+                                  //         "Discount in Percent = ${repDiscountModel!.data.discount}";
+                                  //   } else {
+                                  //     discountString =
+                                  //         "Discount in Dollars = ${repDiscountModel!.data.discount}";
+                                  //   }
+                                  // }
 
-                                          final data =
-                                              await pdfService.createInvoice(
-                                            discountValue: repDiscountModel !=
-                                                        null &&
-                                                    getIsDiscountApplicable()
-                                                ? repDiscountModel!
-                                                    .data.discount
-                                                    .toStringAsFixed(2)
-                                                : null,
-                                            isDiscountInPercent:
-                                                getIsDiscountApplicable()
-                                                    ? isDiscountInPercent
-                                                    : null,
-                                            ctx: context,
-                                            cartModel: cartModel,
-                                            customerName: widget.customerName,
-                                            repName: loginStorage
-                                                    .getUserFirstName() +
-                                                " " +
-                                                loginStorage.getUserLastName(),
-                                            isOrderCompleted: false,
-                                            repCompanyName: loginStorage
-                                                .getSalesRepCompany(),
-                                          );
+                                  final data = await pdfService.createInvoice(
+                                    discountValue: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                            .toStringAsFixed(2)
+                                        : null,
+                                    isDiscountInPercent:
+                                        getIsDiscountApplicable()
+                                            ? isDiscountInPercent
+                                            : null,
+                                    ctx: context,
+                                    cartModel: cartModel,
+                                    customerName: widget.customerName,
+                                    repName: loginStorage.getUserFirstName() +
+                                        " " +
+                                        loginStorage.getUserLastName(),
+                                    isOrderCompleted: false,
+                                    repCompanyName:
+                                        loginStorage.getSalesRepCompany(),
+                                  );
 
-                                          log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+                                  log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
 
-                                          final filePath =
-                                              await pdfService.savePdfFile(
-                                                  "invoice_$number", data);
-                                          print('PDF File Path: $filePath');
+                                  final filePath = await pdfService.savePdfFile(
+                                      "invoice_$number", data);
+                                  print('PDF File Path: $filePath');
 
-                                          Navigator.pop(context);
+                                  Navigator.pop(context);
 
-                                          await sendEmail([filePath]);
-                                          // number++;
-                                        },
-                                        child: const Text(
-                                          'Share via Email',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
-                                Expanded(
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: appColor,
-                                            elevation: 0,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(0))),
-                                        onPressed: () async {
-                                          // sendSMS(widget.phone);
-                                          Navigator.pop(context);
+                                  await sendEmail([filePath]);
+                                  // number++;
+                                },
+                                child: Text(
+                                  'Share via Email',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
 
-                                          CartModel cartModel = CartModel(
-                                            orderPayment: paymentsList,
-                                            customerId: widget.customerId,
-                                            dateTime: DateTime.now(),
-                                            orderBy: 2,
-                                            orderId: 0,
-                                            orderProducts: model,
-                                            discountType:
-                                                getIsDiscountApplicable() &&
-                                                        isDiscountInPercent
-                                                    ? "By Percentage"
-                                                    : "By Value",
-                                            discount: repDiscountModel !=
-                                                        null &&
-                                                    getIsDiscountApplicable()
-                                                ? repDiscountModel!
-                                                    .data.discount
-                                                : 0,
-                                            grandTotal: totalPrice,
-                                            status: '',
-                                            totalPrice: totalPrice,
-                                            orderPaidAmount: totalPaid,
-                                            orderPendingAmount: double.parse(
-                                                getRemainigBalance()),
-                                            remainingBalance: double.parse(
-                                                getRemainigBalance()),
-                                            totalBalance:
-                                                double.parse(getTotalBalance()),
-                                            previousBalance: previousBalance,
-                                            netTotal:
-                                                double.parse(getOrderAmount()),
-                                          );
+                            SizedBox(height: 10),
 
-                                          final data =
-                                              await pdfService.createInvoice(
-                                            discountValue: repDiscountModel !=
-                                                        null &&
-                                                    getIsDiscountApplicable()
-                                                ? repDiscountModel!
-                                                    .data.discount
-                                                    .toStringAsFixed(2)
-                                                : null,
-                                            isDiscountInPercent:
-                                                getIsDiscountApplicable()
-                                                    ? isDiscountInPercent
-                                                    : null,
-                                            ctx: context,
-                                            cartModel: cartModel,
-                                            customerName: widget.customerName,
-                                            repName: loginStorage
-                                                    .getUserFirstName() +
-                                                " " +
-                                                loginStorage.getUserLastName(),
-                                            isOrderCompleted: false,
-                                            repCompanyName: loginStorage
-                                                .getSalesRepCompany(),
-                                          );
+                            InkWell(
+                                onTap: () async {
+                                  // sendSMS(widget.phone);
+                                  Navigator.pop(context);
 
-                                          log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+                                  CartModel cartModel = CartModel(
+                                    orderPayment: paymentsList,
+                                    customerId: widget.customerId,
+                                    dateTime: DateTime.now(),
+                                    orderBy: 2,
+                                    orderId: 0,
+                                    orderProducts: model,
+                                    discountType: getIsDiscountApplicable() &&
+                                            isDiscountInPercent
+                                        ? "By Percentage"
+                                        : "By Value",
+                                    discount: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                        : 0,
+                                    grandTotal: totalPrice,
+                                    status: '',
+                                    totalPrice: totalPrice,
+                                    orderPaidAmount: totalPaid,
+                                    orderPendingAmount:
+                                        double.parse(getRemainigBalance()),
+                                    remainingBalance:
+                                        double.parse(getRemainigBalance()),
+                                    totalBalance:
+                                        double.parse(getTotalBalance()),
+                                    previousBalance: previousBalance,
+                                    netTotal: double.parse(getOrderAmount()),
+                                  );
 
-                                          final filePath =
-                                              await pdfService.savePdfFile(
-                                                  "invoice_$number", data);
-                                          print('PDF File Path: $filePath');
+                                  final data = await pdfService.createInvoice(
+                                    discountValue: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                            .toStringAsFixed(2)
+                                        : null,
+                                    isDiscountInPercent:
+                                        getIsDiscountApplicable()
+                                            ? isDiscountInPercent
+                                            : null,
+                                    ctx: context,
+                                    cartModel: cartModel,
+                                    customerName: widget.customerName,
+                                    repName: loginStorage.getUserFirstName() +
+                                        " " +
+                                        loginStorage.getUserLastName(),
+                                    isOrderCompleted: false,
+                                    repCompanyName:
+                                        loginStorage.getSalesRepCompany(),
+                                  );
 
-                                          // send(filePath);
-                                          await requestSmsPermission();
-                                          sendMessage(filePath, widget.phone);
-                                          setState(() {});
-                                        },
-                                        child: const Text(
-                                          'Share via Text Message',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
-                              ],
-                            ),
+                                  log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+
+                                  final filePath = await pdfService.savePdfFile(
+                                      "invoice_$number", data);
+                                  print('PDF File Path: $filePath');
+
+                                  // send(filePath);
+                                  await requestSmsPermission();
+                                  sendMessage(filePath, widget.phone);
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  'Share via Text Message',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            SizedBox(height: 10),
+
+                            InkWell(
+                                onTap: () async {
+                                  // sendSMS(widget.phone);
+                                  Navigator.pop(context);
+
+                                  CartModel cartModel = CartModel(
+                                    orderPayment: paymentsList,
+                                    customerId: widget.customerId,
+                                    dateTime: DateTime.now(),
+                                    orderBy: 2,
+                                    orderId: 0,
+                                    orderProducts: model,
+                                    discountType: getIsDiscountApplicable() &&
+                                            isDiscountInPercent
+                                        ? "By Percentage"
+                                        : "By Value",
+                                    discount: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                        : 0,
+                                    grandTotal: totalPrice,
+                                    status: '',
+                                    totalPrice: totalPrice,
+                                    orderPaidAmount: totalPaid,
+                                    orderPendingAmount:
+                                        double.parse(getRemainigBalance()),
+                                    remainingBalance:
+                                        double.parse(getRemainigBalance()),
+                                    totalBalance:
+                                        double.parse(getTotalBalance()),
+                                    previousBalance: previousBalance,
+                                    netTotal: double.parse(getOrderAmount()),
+                                  );
+
+                                  final data = await pdfService.createInvoice(
+                                    discountValue: repDiscountModel != null &&
+                                            getIsDiscountApplicable()
+                                        ? repDiscountModel!.data.discount
+                                            .toStringAsFixed(2)
+                                        : null,
+                                    isDiscountInPercent:
+                                        getIsDiscountApplicable()
+                                            ? isDiscountInPercent
+                                            : null,
+                                    ctx: context,
+                                    cartModel: cartModel,
+                                    customerName: widget.customerName,
+                                    repName: loginStorage.getUserFirstName() +
+                                        " " +
+                                        loginStorage.getUserLastName(),
+                                    isOrderCompleted: false,
+                                    repCompanyName:
+                                        loginStorage.getSalesRepCompany(),
+                                  );
+
+                                  log("loginStorage.getSalesRepCompany() = ${loginStorage.getSalesRepCompany()}");
+
+                                  final filePath = await pdfService.savePdfFile(
+                                      "invoice_$number", data);
+                                  print('PDF File Path: $filePath');
+
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  'View invoice only',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            SizedBox(height: 10),
+
                             DefaultButton(
                               buttonColor: appColor,
                               press: () {

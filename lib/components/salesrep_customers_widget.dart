@@ -58,21 +58,20 @@ class SalesRepCustomersWidget extends StatefulWidget {
   bool showDialogue;
   BuildContext context;
 
-  SalesRepCustomersWidget(
-      {Key? key,
-      required this.phone,
-      required this.lastName,
-      required this.email,
-      required this.saloonName,
-      required this.solonName,
-      required this.address,
-      required this.firstName,
-      this.cityName,
-      required this.zipCont,
-      this.statesName,
-      required this.customers,
-      this.showDialogue = true,
-      required this.context})
+  SalesRepCustomersWidget({Key? key,
+    required this.phone,
+    required this.lastName,
+    required this.email,
+    required this.saloonName,
+    required this.solonName,
+    required this.address,
+    required this.firstName,
+    this.cityName,
+    required this.zipCont,
+    this.statesName,
+    required this.customers,
+    this.showDialogue = true,
+    required this.context})
       : super(key: key);
 
   @override
@@ -186,7 +185,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
         .getAllCitiesService(context: context, cityName: cityName!);
 
     CustomLoader.hideLoader(context);
-    cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
+    cityModel = Provider
+        .of<AllCitiesProvider>(context, listen: false)
+        .cities!;
     stateName = null;
     log("new stateName = $stateName");
     print(cityModel);
@@ -201,7 +202,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
         .getAllStatesServices(context: context, cityName: cityName);
 
     statesModel =
-        Provider.of<StatesProvider>(context, listen: false).statesData!;
+    Provider
+        .of<StatesProvider>(context, listen: false)
+        .statesData!;
     print('states---->$statesModel');
     setState(() {});
 
@@ -235,7 +238,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.pink,
           content:
-              Text('Request to delete customer send to admin for approval')));
+          Text('Request to delete customer send to admin for approval')));
     }
   }
 
@@ -277,13 +280,15 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                         text: "Customer Id:" " ",
                         style: custStyle,
                         children: [
-                      TextSpan(text: "${widget.customers.id}", style: idStyle)
-                    ])),
+                          TextSpan(
+                              text: "${widget.customers.id}", style: idStyle)
+                        ])),
                 PopupMenuButton<int>(
                   // onSelected: (value) {
                   //
                   // },
-                  itemBuilder: (context) => [
+                  itemBuilder: (context) =>
+                  [
                     PopupMenuItem(
                       value: popupMenuValue + 1,
                       onTap: () {},
@@ -297,18 +302,21 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SalesRepProductsPage(
-                                      isReseller: true,
-                                      //! using false here to show cart option with all products
-                                      //! if sales rep wants to order for any of its customer.
-                                      customerName:
+                                    builder: (context) =>
+                                        SalesRepProductsPage(
+                                          isReseller: true,
+                                          //! using false here to show cart option with all products
+                                          //! if sales rep wants to order for any of its customer.
+                                          customerName:
                                           widget.customers.firstName! +
                                               " " +
                                               widget.customers.lastName!,
-                                      customerId: widget.customers.id!,
-                                      email: widget.customers.email.toString(),
-                                      phone: widget.customers.phone.toString(),
-                                    ),
+                                          customerId: widget.customers.id!,
+                                          email: widget.customers.email
+                                              .toString(),
+                                          phone: widget.customers.phone
+                                              .toString(),
+                                        ),
                                   ));
                             },
                             child: const Row(
@@ -328,9 +336,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllOrdersScreen(
+                                      builder: (context) =>
+                                          AllOrdersScreen(
                                             customerId:
-                                                widget.customers.id ?? 0,
+                                            widget.customers.id ?? 0,
                                           )));
                             },
                             child: const Row(
@@ -372,53 +381,53 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                   .addPostFrameCallback((timeStamp) {
                                 CustomNavigationService()
                                     .customNavigationService(
-                                        context: context,
-                                        child: BounceInDown(
-                                          animate: true,
-                                          child: MyClassCustom(
-                                              widget: BackdropFilter(
+                                    context: context,
+                                    child: BounceInDown(
+                                      animate: true,
+                                      child: MyClassCustom(
+                                          widget: BackdropFilter(
                                             filter: ImageFilter.blur(
                                                 sigmaX: 10, sigmaY: 10),
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(15.0),
+                                              const EdgeInsets.all(15.0),
                                               child: Scaffold(
                                                 backgroundColor:
-                                                    Colors.transparent,
+                                                Colors.transparent,
                                                 body: StatefulBuilder(
                                                   builder:
                                                       (context, setStatee) {
                                                     return Center(
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                        const EdgeInsets
+                                                            .all(8.0),
                                                         child: Container(
                                                           decoration:
-                                                              BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  border: Border
-                                                                      .all(
-                                                                    color:
-                                                                        appColor,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              25)),
+                                                          BoxDecoration(
+                                                              color: Colors
+                                                                  .white,
+                                                              border: Border
+                                                                  .all(
+                                                                color:
+                                                                appColor,
+                                                              ),
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  25)),
                                                           child:
-                                                              SingleChildScrollView(
+                                                          SingleChildScrollView(
                                                             child: Column(
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                               crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                               mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
+                                                              MainAxisSize
+                                                                  .min,
                                                               children: [
                                                                 Container(
                                                                   height: 50,
@@ -426,10 +435,11 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                       .infinity,
                                                                   decoration: BoxDecoration(
                                                                       color:
-                                                                          appColor,
-                                                                      border: Border.all(
+                                                                      appColor,
+                                                                      border: Border
+                                                                          .all(
                                                                           color:
-                                                                              appColor)),
+                                                                          appColor)),
                                                                   child: Row(
                                                                     children: [
                                                                       const Spacer(),
@@ -437,20 +447,26 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                         'Update Customer',
                                                                         style: TextStyle(
                                                                             color:
-                                                                                Colors.white,
-                                                                            fontWeight: FontWeight.bold),
+                                                                            Colors
+                                                                                .white,
+                                                                            fontWeight: FontWeight
+                                                                                .bold),
                                                                       ),
                                                                       const Spacer(),
                                                                       IconButton(
                                                                           onPressed:
                                                                               () {
-                                                                            Navigator.pop(context);
+                                                                            Navigator
+                                                                                .pop(
+                                                                                context);
                                                                           },
                                                                           icon:
-                                                                              const Icon(
-                                                                            Icons.close,
+                                                                          const Icon(
+                                                                            Icons
+                                                                                .close,
                                                                             color:
-                                                                                Colors.white,
+                                                                            Colors
+                                                                                .white,
                                                                           ))
                                                                     ],
                                                                   ),
@@ -460,61 +476,88 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
                                                                 CustomTextField(
                                                                   prefixWidget:
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .person),
+                                                                  SvgPicture
+                                                                      .asset(
+                                                                    "assets/icons/User.svg",
+                                                                  ),
                                                                   controller: widget
                                                                       .firstName,
                                                                   hint:
-                                                                      'First Name',
+                                                                  'First Name',
                                                                 ),
                                                                 CustomTextField(
                                                                     prefixWidget:
-                                                                        const Icon(Icons
-                                                                            .person),
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/User.svg",
+                                                                    ),
                                                                     controller:
-                                                                        widget
-                                                                            .lastName,
+                                                                    widget
+                                                                        .lastName,
                                                                     hint:
-                                                                        'Last Name'),
+                                                                    'Last Name'),
                                                                 CustomTextField(
                                                                     prefixWidget:
-                                                                        const Icon(Icons
-                                                                            .home),
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/svg/Salon Name.svg",
+                                                                      color: Colors
+                                                                          .black45,
+                                                                      width: 26,
+                                                                      height:
+                                                                      26,
+                                                                      clipBehavior:
+                                                                      Clip
+                                                                          .antiAlias,
+                                                                      alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                    ),
                                                                     controller:
-                                                                        widget
-                                                                            .saloonName,
+                                                                    widget
+                                                                        .saloonName,
                                                                     hint:
-                                                                        'Salon Name'),
+                                                                    'Salon Name'),
                                                                 CustomTextField(
                                                                     prefixWidget:
-                                                                        const Icon(Icons
-                                                                            .home),
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/Location point.svg",
+                                                                    ),
                                                                     controller:
-                                                                        widget
-                                                                            .address,
+                                                                    widget
+                                                                        .address,
                                                                     hint:
-                                                                        'Address'),
+                                                                    'Address'),
                                                                 const SizedBox(
                                                                     height: 5),
                                                                 Padding(
                                                                   padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      8.0),
                                                                   child: Column(
                                                                     children: [
                                                                       Padding(
                                                                         padding:
-                                                                            const EdgeInsets.symmetric(horizontal: 3.0),
+                                                                        const EdgeInsets
+                                                                            .symmetric(
+                                                                            horizontal: 3.0),
                                                                         child:
-                                                                            SizedBox(
+                                                                        SizedBox(
                                                                           width:
-                                                                              double.infinity,
+                                                                          double
+                                                                              .infinity,
                                                                           child:
-                                                                              Container(
+                                                                          Container(
                                                                             decoration:
-                                                                                BoxDecoration(color: kSecondaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                                                                            BoxDecoration(
+                                                                                color: kSecondaryColor
+                                                                                    .withOpacity(
+                                                                                    0.1),
+                                                                                borderRadius: BorderRadius
+                                                                                    .circular(
+                                                                                    10)),
                                                                             // shape: RoundedRectangleBorder(
                                                                             //     borderRadius: BorderRadius.circular(15),
                                                                             //     side: BorderSide(
@@ -523,119 +566,216 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                             //             : Colors.transparent)),
                                                                             // elevation: 2,
                                                                             child:
-                                                                                InkWell(
-                                                                              borderRadius: BorderRadius.circular(10),
+                                                                            InkWell(
+                                                                              borderRadius: BorderRadius
+                                                                                  .circular(
+                                                                                  10),
                                                                               onTap: () {
                                                                                 setStatee(() {
-                                                                                  expand = !expand;
+                                                                                  expand =
+                                                                                  !expand;
                                                                                 });
-                                                                                _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+                                                                                _controller =
+                                                                                    AnimationController(
+                                                                                        duration: const Duration(
+                                                                                            seconds: 1),
+                                                                                        vsync: this);
                                                                                 // Define the animation curve
-                                                                                final curvedAnimation = CurvedAnimation(parent: _controller!, curve: Curves.easeInExpo);
+                                                                                final curvedAnimation = CurvedAnimation(
+                                                                                    parent: _controller!,
+                                                                                    curve: Curves
+                                                                                        .easeInExpo);
 
                                                                                 // Define the animation values (e.g., from 0.0 to 1.0)
-                                                                                _animation = Tween<double>(begin: 0.0, end: 1.0).animate(curvedAnimation);
-                                                                                _controller!.forward();
+                                                                                _animation =
+                                                                                    Tween<
+                                                                                        double>(
+                                                                                        begin: 0.0,
+                                                                                        end: 1.0)
+                                                                                        .animate(
+                                                                                        curvedAnimation);
+                                                                                _controller!
+                                                                                    .forward();
                                                                                 setStatee(() {});
                                                                               },
                                                                               child: SingleChildScrollView(
                                                                                 child: Column(
                                                                                   children: [
                                                                                     Padding(
-                                                                                      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
+                                                                                      padding: const EdgeInsets
+                                                                                          .symmetric(
+                                                                                          horizontal: 14.0,
+                                                                                          vertical: 12),
                                                                                       child: Row(
                                                                                         children: [
-                                                                                          SvgPicture.asset(
+                                                                                          SvgPicture
+                                                                                              .asset(
                                                                                             "assets/svg/City Icon (1).svg",
                                                                                             height: 23,
                                                                                             width: 23,
                                                                                           ),
-                                                                                          const SizedBox(width: 20),
+                                                                                          const SizedBox(
+                                                                                              width: 20),
                                                                                           Text(
-                                                                                            widget.cityName == null ? 'Select Cities' : widget.cityName!,
-                                                                                            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                                                                                            overflow: TextOverflow.ellipsis,
+                                                                                            widget
+                                                                                                .cityName ==
+                                                                                                null
+                                                                                                ? 'Select Cities'
+                                                                                                : widget
+                                                                                                .cityName!,
+                                                                                            style: const TextStyle(
+                                                                                                fontSize: 17,
+                                                                                                fontWeight: FontWeight
+                                                                                                    .bold),
+                                                                                            overflow: TextOverflow
+                                                                                                .ellipsis,
                                                                                           ),
                                                                                           const Spacer(),
-                                                                                          Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
+                                                                                          Icon(
+                                                                                              expand ==
+                                                                                                  true
+                                                                                                  ? Icons
+                                                                                                  .arrow_drop_up_outlined
+                                                                                                  : Icons
+                                                                                                  .arrow_drop_down)
                                                                                         ],
                                                                                       ),
                                                                                     ),
-                                                                                    expand == true
+                                                                                    expand ==
+                                                                                        true
                                                                                         ? AnimatedBuilder(
-                                                                                            animation: _animation!,
-                                                                                            builder: (BuildContext context, Widget? child) {
-                                                                                              return Opacity(
-                                                                                                opacity: _animation!.value,
-                                                                                                child: SingleChildScrollView(
-                                                                                                  child: Column(
-                                                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                    children: [
-                                                                                                      Padding(
-                                                                                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                                                                                        child: CupertinoTextField(
-                                                                                                            controller: controller,
-                                                                                                            placeholder: 'Search Cities',
-                                                                                                            onSubmitted: (v) async {
-                                                                                                              setStatee(() {
-                                                                                                                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                                                                                                  controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
-                                                                                                                  showSearchData = true;
-                                                                                                                });
-                                                                                                              });
+                                                                                        animation: _animation!,
+                                                                                        builder: (
+                                                                                            BuildContext context,
+                                                                                            Widget? child) {
+                                                                                          return Opacity(
+                                                                                            opacity: _animation!
+                                                                                                .value,
+                                                                                            child: SingleChildScrollView(
+                                                                                              child: Column(
+                                                                                                mainAxisAlignment: MainAxisAlignment
+                                                                                                    .start,
+                                                                                                crossAxisAlignment: CrossAxisAlignment
+                                                                                                    .start,
+                                                                                                children: [
+                                                                                                  Padding(
+                                                                                                    padding: const EdgeInsets
+                                                                                                        .symmetric(
+                                                                                                        horizontal: 16.0),
+                                                                                                    child: CupertinoTextField(
+                                                                                                        controller: controller,
+                                                                                                        placeholder: 'Search Cities',
+                                                                                                        onSubmitted: (
+                                                                                                            v) async {
+                                                                                                          setStatee(() {
+                                                                                                            WidgetsBinding
+                                                                                                                .instance
+                                                                                                                .addPostFrameCallback((
+                                                                                                                timeStamp) {
+                                                                                                              controller
+                                                                                                                  .text
+                                                                                                                  .length <
+                                                                                                                  3
+                                                                                                                  ? CustomSnackBar
+                                                                                                                  .failedSnackBar(
+                                                                                                                  context: context,
+                                                                                                                  message: 'Text should be at least 3 characters long')
+                                                                                                                  : citiesHandler(
+                                                                                                                  v);
+                                                                                                              showSearchData =
+                                                                                                              true;
+                                                                                                            });
+                                                                                                          });
 
-                                                                                                              await Future.delayed(const Duration(seconds: 1));
-                                                                                                              citiesHandler(v);
-                                                                                                              setStatee(() {});
-                                                                                                            }),
-                                                                                                      ),
-                                                                                                      const SizedBox(height: 10),
-                                                                                                      showSearchData == true
-                                                                                                          ? cityModel.isEmpty
-                                                                                                              ? const Center(
-                                                                                                                  child: Padding(
-                                                                                                                  padding: EdgeInsets.all(8.0),
-                                                                                                                  child: Text(('City not found')),
-                                                                                                                ))
-                                                                                                              : Column(
-                                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                                  children: cityModel.map((e) {
-                                                                                                                    return InkWell(
-                                                                                                                      onTap: () async {
-                                                                                                                        widget.cityName = e.cityName!;
-                                                                                                                        mySelectCity = e.cityName;
-                                                                                                                        widget.statesName = null;
-                                                                                                                        // model = cities;
-                                                                                                                        expand = !expand;
-
-                                                                                                                        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                                                                                                          getAllStatesHandler(widget.cityName!);
-                                                                                                                        });
-
-                                                                                                                        setStatee(() {});
-
-                                                                                                                        await Future.delayed(const Duration(seconds: 1));
-                                                                                                                        getAllStatesHandler(widget.cityName!);
-                                                                                                                        setStatee(() {});
-                                                                                                                      },
-                                                                                                                      child: Padding(
-                                                                                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                                                                                                                        child: Text(
-                                                                                                                          e.cityName!,
-                                                                                                                          style: const TextStyle(fontSize: 16),
-                                                                                                                        ),
-                                                                                                                      ),
-                                                                                                                    );
-                                                                                                                  }).toList(),
-                                                                                                                )
-                                                                                                          : const SizedBox(),
-                                                                                                    ],
+                                                                                                          await Future
+                                                                                                              .delayed(
+                                                                                                              const Duration(
+                                                                                                                  seconds: 1));
+                                                                                                          await citiesHandler(
+                                                                                                              v);
+                                                                                                          setStatee(() {});
+                                                                                                        }),
                                                                                                   ),
-                                                                                                ),
-                                                                                              );
-                                                                                            })
+                                                                                                  const SizedBox(
+                                                                                                      height: 10),
+                                                                                                  showSearchData ==
+                                                                                                      true
+                                                                                                      ? cityModel
+                                                                                                      .isEmpty
+                                                                                                      ? const Center(
+                                                                                                      child: Padding(
+                                                                                                        padding: EdgeInsets
+                                                                                                            .all(
+                                                                                                            8.0),
+                                                                                                        child: Text(
+                                                                                                            ('City not found')),
+                                                                                                      ))
+                                                                                                      : Column(
+                                                                                                    mainAxisAlignment: MainAxisAlignment
+                                                                                                        .start,
+                                                                                                    crossAxisAlignment: CrossAxisAlignment
+                                                                                                        .start,
+                                                                                                    children: cityModel
+                                                                                                        .map((
+                                                                                                        e) {
+                                                                                                      return InkWell(
+                                                                                                        onTap: () async {
+                                                                                                          widget
+                                                                                                              .cityName =
+                                                                                                          e
+                                                                                                              .cityName!;
+                                                                                                          mySelectCity =
+                                                                                                              e
+                                                                                                                  .cityName;
+                                                                                                          widget
+                                                                                                              .statesName =
+                                                                                                          null;
+                                                                                                          // model = cities;
+                                                                                                          expand =
+                                                                                                          !expand;
+
+                                                                                                          WidgetsBinding
+                                                                                                              .instance
+                                                                                                              .addPostFrameCallback((
+                                                                                                              timeStamp) {
+                                                                                                            getAllStatesHandler(
+                                                                                                                widget
+                                                                                                                    .cityName!);
+                                                                                                          });
+
+                                                                                                          setStatee(() {});
+
+                                                                                                          await Future
+                                                                                                              .delayed(
+                                                                                                              const Duration(
+                                                                                                                  seconds: 1));
+                                                                                                          await getAllStatesHandler(
+                                                                                                              widget
+                                                                                                                  .cityName!);
+                                                                                                          setStatee(() {});
+                                                                                                        },
+                                                                                                        child: Padding(
+                                                                                                          padding: const EdgeInsets
+                                                                                                              .symmetric(
+                                                                                                              horizontal: 20.0,
+                                                                                                              vertical: 10),
+                                                                                                          child: Text(
+                                                                                                            e
+                                                                                                                .cityName!,
+                                                                                                            style: const TextStyle(
+                                                                                                                fontSize: 16),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      );
+                                                                                                    })
+                                                                                                        .toList(),
+                                                                                                  )
+                                                                                                      : const SizedBox(),
+                                                                                                ],
+                                                                                              ),
+                                                                                            ),
+                                                                                          );
+                                                                                        })
                                                                                         : const SizedBox()
                                                                                   ],
                                                                                 ),
@@ -646,32 +786,50 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                       ),
                                                                       const SizedBox(
                                                                           height:
-                                                                              10),
+                                                                          10),
                                                                       Padding(
                                                                         padding:
-                                                                            const EdgeInsets.symmetric(horizontal: 5.0),
+                                                                        const EdgeInsets
+                                                                            .symmetric(
+                                                                            horizontal: 5.0),
                                                                         child:
-                                                                            Container(
+                                                                        Container(
                                                                           decoration: BoxDecoration(
-                                                                              color: kSecondaryColor.withOpacity(0.1),
-                                                                              borderRadius: BorderRadius.circular(10)),
+                                                                              color: kSecondaryColor
+                                                                                  .withOpacity(
+                                                                                  0.1),
+                                                                              borderRadius: BorderRadius
+                                                                                  .circular(
+                                                                                  10)),
                                                                           height:
-                                                                              45.0,
+                                                                          45.0,
                                                                           child:
-                                                                              Padding(
+                                                                          Padding(
                                                                             padding:
-                                                                                const EdgeInsets.only(right: 10.0, left: 10),
+                                                                            const EdgeInsets
+                                                                                .only(
+                                                                                right: 10.0,
+                                                                                left: 10),
                                                                             child: DropdownButton(
                                                                                 hint: Row(
                                                                                   children: [
-                                                                                    SvgPicture.asset(
+                                                                                    SvgPicture
+                                                                                        .asset(
                                                                                       "assets/svg/State Icon (1).svg",
                                                                                       width: 26,
                                                                                       height: 26,
-                                                                                      alignment: Alignment.centerLeft,
+                                                                                      alignment: Alignment
+                                                                                          .centerLeft,
                                                                                     ),
-                                                                                    const SizedBox(width: 13),
-                                                                                    Text(widget.statesName == null ? 'Select Sate' : widget.statesName!),
+                                                                                    const SizedBox(
+                                                                                        width: 13),
+                                                                                    Text(
+                                                                                        widget
+                                                                                            .statesName ==
+                                                                                            null
+                                                                                            ? 'Select Sate'
+                                                                                            : widget
+                                                                                            .statesName!),
                                                                                   ],
                                                                                 ),
                                                                                 underline: const SizedBox(),
@@ -679,17 +837,27 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                 //     const EdgeInsets
                                                                                 //         .all(0),
                                                                                 isExpanded: true,
-                                                                                items: statesModel.map((e) {
+                                                                                items: statesModel
+                                                                                    .map((
+                                                                                    e) {
                                                                                   return DropdownMenuItem(
                                                                                       onTap: () {
-                                                                                        widget.statesName = e.stateName;
-                                                                                        mySelectCity = null;
+                                                                                        widget
+                                                                                            .statesName =
+                                                                                            e
+                                                                                                .stateName;
+                                                                                        mySelectCity =
+                                                                                        null;
                                                                                         setStatee(() {});
                                                                                       },
                                                                                       value: e,
-                                                                                      child: Text(e.stateName!));
-                                                                                }).toList(),
-                                                                                onChanged: (_) {}),
+                                                                                      child: Text(
+                                                                                          e
+                                                                                              .stateName!));
+                                                                                })
+                                                                                    .toList(),
+                                                                                onChanged: (
+                                                                                    _) {}),
                                                                           ),
                                                                         ),
                                                                       ),
@@ -702,34 +870,39 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                 // ),
                                                                 CustomTextField(
                                                                     controller:
-                                                                        widget
-                                                                            .zipCont,
+                                                                    widget
+                                                                        .zipCont,
                                                                     isEnabled:
-                                                                        true,
+                                                                    true,
                                                                     obscureText:
-                                                                        false,
+                                                                    false,
                                                                     isshowPasswordControls:
-                                                                        false,
+                                                                    false,
                                                                     hint:
-                                                                        "Zip Code",
+                                                                    "Zip Code",
                                                                     inputType:
-                                                                        TextInputType
-                                                                            .number,
+                                                                    TextInputType
+                                                                        .number,
                                                                     prefixWidget:
-                                                                        SvgPicture
-                                                                            .asset(
-                                                                      "assets/icons/Mail.svg",
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/svg/zipcode.svg",
+                                                                      height:
+                                                                      40,
+                                                                      width: 40,
                                                                       //! change its icon for zipcode
                                                                     )),
                                                                 CustomTextField(
                                                                     prefixWidget:
-                                                                        const Icon(Icons
-                                                                            .email),
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/Mail.svg",
+                                                                    ),
                                                                     controller:
-                                                                        widget
-                                                                            .email,
+                                                                    widget
+                                                                        .email,
                                                                     hint:
-                                                                        'Email'),
+                                                                    'Email'),
                                                                 CustomTextField(
                                                                     inputFormats: [
                                                                       FilteringTextInputFormatter
@@ -739,46 +912,52 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                       PhoneInputFormatter(),
                                                                     ],
                                                                     inputType:
-                                                                        TextInputType
-                                                                            .number,
+                                                                    TextInputType
+                                                                        .number,
                                                                     prefixWidget:
-                                                                        const Icon(Icons
-                                                                            .phone),
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/Phone.svg",
+                                                                    ),
                                                                     controller:
-                                                                        widget
-                                                                            .phone,
+                                                                    widget
+                                                                        .phone,
                                                                     hint:
-                                                                        'Phone'),
+                                                                    'Phone'),
                                                                 Align(
                                                                   alignment:
-                                                                      Alignment
-                                                                          .centerRight,
+                                                                  Alignment
+                                                                      .centerRight,
                                                                   child:
-                                                                      Padding(
+                                                                  Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
                                                                     child:
-                                                                        SizedBox(
+                                                                    SizedBox(
                                                                       width:
-                                                                          100,
+                                                                      100,
                                                                       height:
-                                                                          40,
+                                                                      40,
                                                                       child:
-                                                                          ElevatedButton(
+                                                                      ElevatedButton(
                                                                         onPressed:
                                                                             () async {
                                                                           if (customUpdateValidation()) {
                                                                             await updateCustomerHandler();
 
-                                                                            Navigator.pop(context);
+                                                                            Navigator
+                                                                                .pop(
+                                                                                context);
                                                                           }
                                                                         },
                                                                         child: const Text(
                                                                             'Update'),
-                                                                        style: ElevatedButton.styleFrom(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
                                                                             backgroundColor:
-                                                                                appColor),
+                                                                            appColor),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -796,7 +975,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                               ),
                                             ),
                                           )),
-                                        ));
+                                    ));
                               });
 
                               // Navigator.pop(context);
@@ -1253,7 +1432,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
               leading: CircleAvatar(
                 maxRadius: 25.0,
                 backgroundImage: widget.customers.customerImageFile == "" ||
-                        widget.customers.customerImageFile == null
+                    widget.customers.customerImageFile == null
                     ? NetworkImage(userDummyUrl)
                     : NetworkImage(widget.customers.customerImageFile!),
               ),
@@ -1361,21 +1540,24 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                         ),
                         Consumer<AccountBalanceProvider>(
                             builder: (context, data, _) {
-                          if (data.accountBalanceModel!.data!.accountBalance !=
-                              null) {
-                            return Padding(
-                              padding:
+                              if (data.accountBalanceModel!.data!
+                                  .accountBalance !=
+                                  null) {
+                                return Padding(
+                                  padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                "Previous Balance : \$ ${data.accountBalanceModel!.data!.accountBalance!}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
+                                  child: Text(
+                                    "Previous Balance : \$ ${data
+                                        .accountBalanceModel!.data!
+                                        .accountBalance!}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
 
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -1399,7 +1581,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+                                'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
                                 color: selectedPaymentIndex == 2 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 2;
@@ -1413,7 +1595,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
+                                'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
                                 color: selectedPaymentIndex == 3 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 3;
@@ -1427,7 +1609,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                 boxHeight: 45,
                                 boxWidth: 45,
                                 image:
-                                    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
                                 color: selectedPaymentIndex == 4 ? true : false,
                                 onTap: () {
                                   selectedPaymentIndex = 4;
@@ -1461,7 +1643,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 4.0, bottom: 4),
+                                const EdgeInsets.only(top: 4.0, bottom: 4),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -1532,7 +1714,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     print(init);
     var login = await Sumup.login();
     var loginToken =
-        await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
+    await Sumup.loginWithToken("sup_afk_7bFSqnU1VA3FlagwNEA1Jw3XQU7NXwy");
 
     var settings = await Sumup.openSettings();
     var prepare = await Sumup.wakeUpTerminal();
@@ -1639,7 +1821,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
               showAwesomeAlert(
                   context: widget.context, msg: "Cheque No can't be empty");
               return;
-            } else if (amountCont.text.trim().isEmpty) {
+            } else if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -1721,7 +1905,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -1788,7 +1974,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
         DefaultButton(
           buttonColor: appColor,
           press: () {
-            if (amountCont.text.trim().isEmpty) {
+            if (amountCont.text
+                .trim()
+                .isEmpty) {
               amountNode.requestFocus();
               showAwesomeAlert(
                   context: widget.context, msg: "Please Enter amount first");
@@ -1932,31 +2120,34 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                         text: "Customer Id:" " ",
                         style: custStyle,
                         children: [
-                      TextSpan(text: "${customerSearchData.id}", style: idStyle)
-                    ])),
+                          TextSpan(
+                              text: "${customerSearchData.id}", style: idStyle)
+                        ])),
                 PopupMenuButton<int>(
                   onSelected: (value) {
                     if (value == 1) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SalesRepProductsPage(
-                              isReseller: false,
-                              //! using false here to show cart option with all products
-                              //! if sales rep wants to order for any of its customer.
-                              customerName: customerSearchData.firstName! +
-                                  " " +
-                                  customerSearchData.lastName!,
-                              customerId: customerSearchData.id!,
-                              email: customerSearchData.email.toString(),
-                              phone: customerSearchData.phone.toString(),
-                            ),
+                            builder: (context) =>
+                                SalesRepProductsPage(
+                                  isReseller: false,
+                                  //! using false here to show cart option with all products
+                                  //! if sales rep wants to order for any of its customer.
+                                  customerName: customerSearchData.firstName! +
+                                      " " +
+                                      customerSearchData.lastName!,
+                                  customerId: customerSearchData.id!,
+                                  email: customerSearchData.email.toString(),
+                                  phone: customerSearchData.phone.toString(),
+                                ),
                           ));
                     } else {
                       log("nothing to do here");
                     }
                   },
-                  itemBuilder: (context) => [
+                  itemBuilder: (context) =>
+                  [
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},

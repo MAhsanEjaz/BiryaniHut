@@ -654,7 +654,9 @@ class _SignUpScreenState extends State<SignUpPage>
                       hint: "Zip Code",
                       inputType: TextInputType.number,
                       prefixWidget: SvgPicture.asset(
-                        "assets/icons/Mail.svg",
+                        height: 40,
+                        width: 40,
+                        "assets/svg/zipcode.svg",
                         //! change its icon for zipcode
                       )),
 
