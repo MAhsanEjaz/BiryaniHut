@@ -173,10 +173,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     CustomLoader.hideLoader(context);
   }
 
-  String? statesName;
+  String? stateName;
   String? cityName;
-
-  String? selectedName;
 
   List<AllStatesModel> statesModel = [];
 
@@ -187,15 +185,19 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
     await GetAllCitiesService()
         .getAllCitiesService(context: context, cityName: cityName!);
+
     CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-
+    stateName = null;
+    log("new stateName = $stateName");
     print(cityModel);
     setState(() {});
   }
 
   getAllStatesHandler(String cityName) async {
     CustomLoader.showLoader(context: context);
+    stateName = null;
+
     await GetAllStatesServices()
         .getAllStatesServices(context: context, cityName: cityName);
 
@@ -207,8 +209,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     CustomLoader.hideLoader(context);
   }
 
-  AnimationController? _controller;
-  Animation<double>? _animation;
+  // AnimationController? _controller;
+  // Animation<double>? _animation;
   bool expand = false;
   bool showSearchData = false;
 
@@ -451,27 +453,42 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                 children: [
                                                   const Divider(),
                                                   CustomTextField(
-                                                    prefixWidget: const Icon(
-                                                        Icons.person),
+                                                    prefixWidget:
+                                                        SvgPicture.asset(
+                                                      "assets/icons/User.svg",
+                                                    ),
                                                     controller:
                                                         widget.firstName,
                                                     hint: 'First Name',
                                                   ),
                                                   CustomTextField(
-                                                      prefixWidget: const Icon(
-                                                          Icons.person),
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/User.svg",
+                                                      ),
                                                       controller:
                                                           widget.lastName,
                                                       hint: 'Last Name'),
                                                   CustomTextField(
-                                                      prefixWidget: const Icon(
-                                                          Icons.home),
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/svg/Salon Name.svg",
+                                                        color: Colors.black45,
+                                                        width: 26,
+                                                        height: 26,
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                      ),
                                                       controller:
                                                           widget.saloonName,
                                                       hint: 'Salon Name'),
                                                   CustomTextField(
-                                                      prefixWidget: const Icon(
-                                                          Icons.home),
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Location point.svg",
+                                                      ),
                                                       controller:
                                                           widget.address,
                                                       hint: 'Address'),
@@ -726,8 +743,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                         //! change its icon for zipcode
                                                       )),
                                                   CustomTextField(
-                                                      prefixWidget: const Icon(
-                                                          Icons.email),
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Mail.svg",
+                                                      ),
                                                       controller: widget.email,
                                                       hint: 'Email'),
                                                   CustomTextField(
@@ -740,8 +759,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                       ],
                                                       inputType:
                                                           TextInputType.number,
-                                                      prefixWidget: const Icon(
-                                                          Icons.phone),
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Phone.svg",
+                                                      ),
                                                       controller: widget.phone,
                                                       hint: 'Phone'),
                                                 ],
