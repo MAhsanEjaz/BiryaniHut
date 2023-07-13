@@ -95,7 +95,8 @@ class _SignUpScreenState extends State<SignUpPage>
           .message;
     }
 
-    if (message == 'User with provided email already exists.') {
+    if (message == 'User with provided email already exists.' ||
+        message == "Record Already Exists") {
       showToast('Customer Already Exists');
     } else if (isRegistered) {
       showToast('Customer Registered Successfully');
