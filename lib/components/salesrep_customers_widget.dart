@@ -789,7 +789,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                       child:
                                                                           ElevatedButton(
                                                                         onPressed:
-                                                                            () {
+                                                                            () async {
                                                                           if (controller
                                                                               .text
                                                                               .isNotEmpty) {
@@ -797,7 +797,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                 context: context,
                                                                                 message: 'Please Enter Valid City');
                                                                           } else if (customUpdateValidation()) {
-                                                                            updateCustomerHandler();
+                                                                           await updateCustomerHandler();
                                                                             setStatee(() {});
                                                                             Navigator.pop(context);
                                                                           }
