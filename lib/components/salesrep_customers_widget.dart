@@ -578,6 +578,9 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
                                                                                                             await Future.delayed(Duration(seconds: 2));
                                                                                                             citiesHandler(v);
+                                                                                                            setStatee((){
+
+                                                                                                            });
                                                                                                           }),
                                                                                                     ),
                                                                                                     const SizedBox(height: 10),
