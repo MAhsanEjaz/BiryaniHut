@@ -1492,7 +1492,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                 style: TextStyle(color: appColor),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             InkWell(
                                 onTap: () async {
                                   // Create the cartModel and generate the discountString
@@ -1568,12 +1568,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   await sendEmail([filePath]);
                                   // number++;
                                 },
-                                child: Text(
+                                child: const Text(
                                   'Share via Email',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
 
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
                             InkWell(
                                 onTap: () async {
@@ -1641,11 +1641,11 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                   sendMessage(filePath, widget.phone);
                                   setState(() {});
                                 },
-                                child: Text(
+                                child: const Text(
                                   'Share via Text Message',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
                             InkWell(
                                 onTap: () async {
@@ -1710,11 +1710,11 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
                                   setState(() {});
                                 },
-                                child: Text(
+                                child: const Text(
                                   'View invoice only',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
                             DefaultButton(
                               buttonColor: appColor,
