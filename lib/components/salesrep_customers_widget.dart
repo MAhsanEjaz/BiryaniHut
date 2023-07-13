@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:ui';
+import 'package:animate_do/animate_do.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -250,6 +251,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
   AnimationController? _controller;
   Animation<double>? _animation;
 
+  String? mySelectCity;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -364,426 +367,435 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                           const Divider(),
                           InkWell(
                             onTap: () {
+                              Navigator.pop(context);
                               WidgetsBinding.instance
                                   .addPostFrameCallback((timeStamp) {
                                 CustomNavigationService()
                                     .customNavigationService(
                                         context: context,
-                                        child: MyClassCustom(
-                                            widget: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 10, sigmaY: 10),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Scaffold(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              body: StatefulBuilder(
-                                                builder: (context, setStatee) {
-                                                  return Center(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black)),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              Container(
-                                                                height: 50,
-                                                                width: double
-                                                                    .infinity,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        color: Colors
-                                                                            .pink),
-                                                                child: Row(
-                                                                  children: [
-                                                                    const Spacer(),
-                                                                    const Text(
-                                                                      'Update Customer',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                    const Spacer(),
-                                                                    IconButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        icon:
-                                                                            const Icon(
-                                                                          Icons
-                                                                              .close,
+                                        child: BounceInDown(
+                                          animate: true,
+                                          child: MyClassCustom(
+                                              widget: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 10, sigmaY: 10),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
+                                              child: Scaffold(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                body: StatefulBuilder(
+                                                  builder:
+                                                      (context, setStatee) {
+                                                    return Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  border: Border
+                                                                      .all(
+                                                                    color:
+                                                                        appColor,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              25)),
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Container(
+                                                                  height: 50,
+                                                                  width: double
+                                                                      .infinity,
+                                                                  decoration: BoxDecoration(
+                                                                      color:
+                                                                          appColor,
+                                                                      border: Border.all(
                                                                           color:
-                                                                              Colors.white,
-                                                                        ))
-                                                                  ],
+                                                                              appColor)),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Spacer(),
+                                                                      const Text(
+                                                                        'Update Customer',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.bold),
+                                                                      ),
+                                                                      const Spacer(),
+                                                                      IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          icon:
+                                                                              const Icon(
+                                                                            Icons.close,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ))
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 10),
+                                                                const SizedBox(
+                                                                    height: 10),
 
-                                                              CustomTextField(
-                                                                prefixWidget:
-                                                                    const Icon(Icons
-                                                                        .person),
-                                                                controller: widget
-                                                                    .firstName,
-                                                                hint:
-                                                                    'First Name',
-                                                              ),
-                                                              CustomTextField(
+                                                                CustomTextField(
                                                                   prefixWidget:
                                                                       const Icon(
                                                                           Icons
                                                                               .person),
                                                                   controller: widget
-                                                                      .lastName,
+                                                                      .firstName,
                                                                   hint:
-                                                                      'Last Name'),
-                                                              CustomTextField(
-                                                                  prefixWidget:
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .home),
-                                                                  controller: widget
-                                                                      .saloonName,
-                                                                  hint:
-                                                                      'Salon Name'),
-                                                              CustomTextField(
-                                                                  prefixWidget:
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .home),
-                                                                  controller:
-                                                                      widget
-                                                                          .address,
-                                                                  hint:
-                                                                      'Address'),
-                                                              const SizedBox(
-                                                                  height: 5),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              3.0),
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width: double
-                                                                            .infinity,
+                                                                      'First Name',
+                                                                ),
+                                                                CustomTextField(
+                                                                    prefixWidget:
+                                                                        const Icon(Icons
+                                                                            .person),
+                                                                    controller:
+                                                                        widget
+                                                                            .lastName,
+                                                                    hint:
+                                                                        'Last Name'),
+                                                                CustomTextField(
+                                                                    prefixWidget:
+                                                                        const Icon(Icons
+                                                                            .home),
+                                                                    controller:
+                                                                        widget
+                                                                            .saloonName,
+                                                                    hint:
+                                                                        'Salon Name'),
+                                                                CustomTextField(
+                                                                    prefixWidget:
+                                                                        const Icon(Icons
+                                                                            .home),
+                                                                    controller:
+                                                                        widget
+                                                                            .address,
+                                                                    hint:
+                                                                        'Address'),
+                                                                const SizedBox(
+                                                                    height: 5),
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 3.0),
                                                                         child:
-                                                                            Container(
-                                                                          decoration: BoxDecoration(
-                                                                              color: kSecondaryColor.withOpacity(0.1),
-                                                                              borderRadius: BorderRadius.circular(10)),
-                                                                          // shape: RoundedRectangleBorder(
-                                                                          //     borderRadius: BorderRadius.circular(15),
-                                                                          //     side: BorderSide(
-                                                                          //         color: expand == true
-                                                                          //             ? Colors.black26
-                                                                          //             : Colors.transparent)),
-                                                                          // elevation: 2,
+                                                                            SizedBox(
+                                                                          width:
+                                                                              double.infinity,
                                                                           child:
-                                                                              InkWell(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
-                                                                            onTap:
-                                                                                () {
-                                                                              setStatee(() {
-                                                                                expand = !expand;
-                                                                              });
-                                                                              _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
-                                                                              // Define the animation curve
-                                                                              final curvedAnimation = CurvedAnimation(parent: _controller!, curve: Curves.easeInExpo);
-
-                                                                              // Define the animation values (e.g., from 0.0 to 1.0)
-                                                                              _animation = Tween<double>(begin: 0.0, end: 1.0).animate(curvedAnimation);
-                                                                              _controller!.forward();
-                                                                              setStatee(() {});
-                                                                            },
+                                                                              Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: kSecondaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                                                                            // shape: RoundedRectangleBorder(
+                                                                            //     borderRadius: BorderRadius.circular(15),
+                                                                            //     side: BorderSide(
+                                                                            //         color: expand == true
+                                                                            //             ? Colors.black26
+                                                                            //             : Colors.transparent)),
+                                                                            // elevation: 2,
                                                                             child:
-                                                                                SingleChildScrollView(
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
-                                                                                    child: Row(
-                                                                                      children: [
-                                                                                        SvgPicture.asset(
-                                                                                          "assets/svg/City Icon (1).svg",
-                                                                                          height: 23,
-                                                                                          width: 23,
-                                                                                        ),
-                                                                                        const SizedBox(width: 20),
-                                                                                        Text(
-                                                                                          widget.cityName == null ? 'Select Cities' : widget.cityName!,
-                                                                                          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                        ),
-                                                                                        const Spacer(),
-                                                                                        Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
-                                                                                      ],
+                                                                                InkWell(
+                                                                              borderRadius: BorderRadius.circular(10),
+                                                                              onTap: () {
+                                                                                setStatee(() {
+                                                                                  expand = !expand;
+                                                                                });
+                                                                                _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+                                                                                // Define the animation curve
+                                                                                final curvedAnimation = CurvedAnimation(parent: _controller!, curve: Curves.easeInExpo);
+
+                                                                                // Define the animation values (e.g., from 0.0 to 1.0)
+                                                                                _animation = Tween<double>(begin: 0.0, end: 1.0).animate(curvedAnimation);
+                                                                                _controller!.forward();
+                                                                                setStatee(() {});
+                                                                              },
+                                                                              child: SingleChildScrollView(
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
+                                                                                      child: Row(
+                                                                                        children: [
+                                                                                          SvgPicture.asset(
+                                                                                            "assets/svg/City Icon (1).svg",
+                                                                                            height: 23,
+                                                                                            width: 23,
+                                                                                          ),
+                                                                                          const SizedBox(width: 20),
+                                                                                          Text(
+                                                                                            widget.cityName == null ? 'Select Cities' : widget.cityName!,
+                                                                                            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                                                                            overflow: TextOverflow.ellipsis,
+                                                                                          ),
+                                                                                          const Spacer(),
+                                                                                          Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  expand == true
-                                                                                      ? AnimatedBuilder(
-                                                                                          animation: _animation!,
-                                                                                          builder: (BuildContext context, Widget? child) {
-                                                                                            return Opacity(
-                                                                                              opacity: _animation!.value,
-                                                                                              child: SingleChildScrollView(
-                                                                                                child: Column(
-                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                  children: [
-                                                                                                    Padding(
-                                                                                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                                                                                      child: CupertinoTextField(
-                                                                                                          controller: controller,
-                                                                                                          placeholder: 'Search Cities',
-                                                                                                          onSubmitted: (v) async {
-                                                                                                            setStatee(() {
-                                                                                                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                                                                                                controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
-                                                                                                                showSearchData = true;
+                                                                                    expand == true
+                                                                                        ? AnimatedBuilder(
+                                                                                            animation: _animation!,
+                                                                                            builder: (BuildContext context, Widget? child) {
+                                                                                              return Opacity(
+                                                                                                opacity: _animation!.value,
+                                                                                                child: SingleChildScrollView(
+                                                                                                  child: Column(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                    children: [
+                                                                                                      Padding(
+                                                                                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                                                                                        child: CupertinoTextField(
+                                                                                                            controller: controller,
+                                                                                                            placeholder: 'Search Cities',
+                                                                                                            onSubmitted: (v) async {
+                                                                                                              setStatee(() {
+                                                                                                                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                                  controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
+                                                                                                                  showSearchData = true;
+                                                                                                                });
                                                                                                               });
-                                                                                                            });
 
-                                                                                                            await Future.delayed(Duration(seconds: 2));
-                                                                                                            citiesHandler(v);
-                                                                                                            setStatee((){
+                                                                                                              await Future.delayed(const Duration(seconds: 1));
+                                                                                                              citiesHandler(v);
+                                                                                                              setStatee(() {});
+                                                                                                            }),
+                                                                                                      ),
+                                                                                                      const SizedBox(height: 10),
+                                                                                                      showSearchData == true
+                                                                                                          ? cityModel.isEmpty
+                                                                                                              ? const Center(
+                                                                                                                  child: Padding(
+                                                                                                                  padding: EdgeInsets.all(8.0),
+                                                                                                                  child: Text(('City not found')),
+                                                                                                                ))
+                                                                                                              : Column(
+                                                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                                  children: cityModel.map((e) {
+                                                                                                                    return InkWell(
+                                                                                                                      onTap: () async {
+                                                                                                                        widget.cityName = e.cityName!;
+                                                                                                                        mySelectCity = e.cityName;
+                                                                                                                        // model = cities;
+                                                                                                                        expand = !expand;
 
-                                                                                                            });
-                                                                                                          }),
-                                                                                                    ),
-                                                                                                    const SizedBox(height: 10),
-                                                                                                    showSearchData == true
-                                                                                                        ? cityModel.isEmpty
-                                                                                                            ? const Center(
-                                                                                                                child: Padding(
-                                                                                                                padding: EdgeInsets.all(8.0),
-                                                                                                                child: Text(('City not found')),
-                                                                                                              ))
-                                                                                                            : Column(
-                                                                                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                                children: cityModel.map((e) {
-                                                                                                                  return InkWell(
-                                                                                                                    onTap: () {
-                                                                                                                      widget.cityName = e.cityName!;
-                                                                                                                      // model = cities;
-                                                                                                                      expand = !expand;
+                                                                                                                        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                                          getAllStatesHandler(widget.cityName!);
+                                                                                                                        });
 
-                                                                                                                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                                        setStatee(() {});
+
+                                                                                                                        await Future.delayed(const Duration(seconds: 1));
                                                                                                                         getAllStatesHandler(widget.cityName!);
-                                                                                                                      });
-
-                                                                                                                      setStatee(() {});
-                                                                                                                    },
-                                                                                                                    child: Padding(
-                                                                                                                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                                                                                                                      child: Text(
-                                                                                                                        e.cityName!,
-                                                                                                                        style: const TextStyle(fontSize: 16),
+                                                                                                                        setStatee(() {});
+                                                                                                                      },
+                                                                                                                      child: Padding(
+                                                                                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                                                                                                        child: Text(
+                                                                                                                          e.cityName!,
+                                                                                                                          style: const TextStyle(fontSize: 16),
+                                                                                                                        ),
                                                                                                                       ),
-                                                                                                                    ),
-                                                                                                                  );
-                                                                                                                }).toList(),
-                                                                                                              )
-                                                                                                        : const SizedBox(),
-                                                                                                  ],
+                                                                                                                    );
+                                                                                                                  }).toList(),
+                                                                                                                )
+                                                                                                          : const SizedBox(),
+                                                                                                    ],
+                                                                                                  ),
                                                                                                 ),
-                                                                                              ),
-                                                                                            );
-                                                                                          })
-                                                                                      : const SizedBox()
-                                                                                ],
+                                                                                              );
+                                                                                            })
+                                                                                        : const SizedBox()
+                                                                                  ],
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                        height:
-                                                                            10),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              5.0),
-                                                                      child:
-                                                                          Container(
-                                                                        decoration: BoxDecoration(
-                                                                            color:
-                                                                                kSecondaryColor.withOpacity(0.1),
-                                                                            borderRadius: BorderRadius.circular(10)),
-                                                                        height:
-                                                                            45.0,
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              10),
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 5.0),
                                                                         child:
-                                                                            Padding(
-                                                                          padding: const EdgeInsets.only(
-                                                                              right: 10.0,
-                                                                              left: 10),
-                                                                          child: DropdownButton(
-                                                                              hint: Row(
-                                                                                children: [
-                                                                                  SvgPicture.asset(
-                                                                                    "assets/svg/State Icon (1).svg",
-                                                                                    width: 26,
-                                                                                    height: 26,
-                                                                                    alignment: Alignment.centerLeft,
-                                                                                  ),
-                                                                                  const SizedBox(width: 13),
-                                                                                  Text(widget.statesName == null ? 'Select Sate' : widget.statesName!),
-                                                                                ],
-                                                                              ),
-                                                                              underline: const SizedBox(),
-                                                                              // padding:
-                                                                              //     const EdgeInsets
-                                                                              //         .all(0),
-                                                                              isExpanded: true,
-                                                                              items: statesModel.map((e) {
-                                                                                return DropdownMenuItem(
-                                                                                    onTap: () {
-                                                                                      widget.statesName = e.stateName;
-                                                                                      setStatee(() {});
-                                                                                    },
-                                                                                    value: e,
-                                                                                    child: Text(e.stateName!));
-                                                                              }).toList(),
-                                                                              onChanged: (_) {}),
+                                                                            Container(
+                                                                          decoration: BoxDecoration(
+                                                                              color: kSecondaryColor.withOpacity(0.1),
+                                                                              borderRadius: BorderRadius.circular(10)),
+                                                                          height:
+                                                                              45.0,
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(right: 10.0, left: 10),
+                                                                            child: DropdownButton(
+                                                                                hint: Row(
+                                                                                  children: [
+                                                                                    SvgPicture.asset(
+                                                                                      "assets/svg/State Icon (1).svg",
+                                                                                      width: 26,
+                                                                                      height: 26,
+                                                                                      alignment: Alignment.centerLeft,
+                                                                                    ),
+                                                                                    const SizedBox(width: 13),
+                                                                                    Text(mySelectCity != null ? 'Select Sate' : widget.statesName!),
+                                                                                  ],
+                                                                                ),
+                                                                                underline: const SizedBox(),
+                                                                                // padding:
+                                                                                //     const EdgeInsets
+                                                                                //         .all(0),
+                                                                                isExpanded: true,
+                                                                                items: statesModel.map((e) {
+                                                                                  return DropdownMenuItem(
+                                                                                      onTap: () {
+                                                                                        widget.statesName = e.stateName;
+                                                                                        mySelectCity = null;
+                                                                                        setStatee(() {});
+                                                                                      },
+                                                                                      value: e,
+                                                                                      child: Text(e.stateName!));
+                                                                                }).toList(),
+                                                                                onChanged: (_) {}),
+                                                                          ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              // DropDownCityScreen(
-                                                              //   cityName: widget.cityName!,
-                                                              //   statesName: widget.statesName!,
-                                                              // ),
-                                                              CustomTextField(
-                                                                  controller:
-                                                                      widget
-                                                                          .zipCont,
-                                                                  isEnabled:
-                                                                      true,
-                                                                  obscureText:
-                                                                      false,
-                                                                  isshowPasswordControls:
-                                                                      false,
-                                                                  hint:
-                                                                      "Zip Code",
-                                                                  inputType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  prefixWidget:
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                    "assets/icons/Mail.svg",
-                                                                    //! change its icon for zipcode
-                                                                  )),
-                                                              CustomTextField(
-                                                                  prefixWidget:
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .email),
-                                                                  controller:
-                                                                      widget
-                                                                          .email,
-                                                                  hint:
-                                                                      'Email'),
-                                                              CustomTextField(
-                                                                  inputFormats: [
-                                                                    FilteringTextInputFormatter
-                                                                        .digitsOnly,
-                                                                    LengthLimitingTextInputFormatter(
-                                                                        12),
-                                                                    PhoneInputFormatter(),
-                                                                  ],
-                                                                  inputType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  prefixWidget:
-                                                                      const Icon(
-                                                                          Icons
-                                                                              .phone),
-                                                                  controller:
-                                                                      widget
-                                                                          .phone,
-                                                                  hint:
-                                                                      'Phone'),
-                                                              Align(
-                                                                alignment: Alignment
-                                                                    .centerRight,
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
+                                                                // DropDownCityScreen(
+                                                                //   cityName: widget.cityName!,
+                                                                //   statesName: widget.statesName!,
+                                                                // ),
+                                                                CustomTextField(
+                                                                    controller:
+                                                                        widget
+                                                                            .zipCont,
+                                                                    isEnabled:
+                                                                        true,
+                                                                    obscureText:
+                                                                        false,
+                                                                    isshowPasswordControls:
+                                                                        false,
+                                                                    hint:
+                                                                        "Zip Code",
+                                                                    inputType:
+                                                                        TextInputType
+                                                                            .number,
+                                                                    prefixWidget:
+                                                                        SvgPicture
+                                                                            .asset(
+                                                                      "assets/icons/Mail.svg",
+                                                                      //! change its icon for zipcode
+                                                                    )),
+                                                                CustomTextField(
+                                                                    prefixWidget:
+                                                                        const Icon(Icons
+                                                                            .email),
+                                                                    controller:
+                                                                        widget
+                                                                            .email,
+                                                                    hint:
+                                                                        'Email'),
+                                                                CustomTextField(
+                                                                    inputFormats: [
+                                                                      FilteringTextInputFormatter
+                                                                          .digitsOnly,
+                                                                      LengthLimitingTextInputFormatter(
+                                                                          12),
+                                                                      PhoneInputFormatter(),
+                                                                    ],
+                                                                    inputType:
+                                                                        TextInputType
+                                                                            .number,
+                                                                    prefixWidget:
+                                                                        const Icon(Icons
+                                                                            .phone),
+                                                                    controller:
+                                                                        widget
+                                                                            .phone,
+                                                                    hint:
+                                                                        'Phone'),
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerRight,
                                                                   child:
-                                                                      SizedBox(
-                                                                    width: 180,
-                                                                    height: 45,
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
                                                                     child:
-                                                                        ElevatedButton(
-                                                                      onPressed:
-                                                                          () async {
-                                                                        if (customUpdateValidation()) {
-                                                                          await updateCustomerHandler();
+                                                                        SizedBox(
+                                                                      width:
+                                                                          100,
+                                                                      height:
+                                                                          40,
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          if (customUpdateValidation()) {
+                                                                            await updateCustomerHandler();
 
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        }
-                                                                      },
-                                                                      child: const Text(
-                                                                          'Update'),
-                                                                      style: ElevatedButton.styleFrom(
-                                                                          backgroundColor:
-                                                                              appColor),
+                                                                            Navigator.pop(context);
+                                                                          }
+                                                                        },
+                                                                        child: const Text(
+                                                                            'Update'),
+                                                                        style: ElevatedButton.styleFrom(
+                                                                            backgroundColor:
+                                                                                appColor),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                                SizedBox(
+                                                                    height: 10)
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        )));
+                                          )),
+                                        ));
                               });
 
                               // Navigator.pop(context);
@@ -2151,5 +2163,26 @@ class _MyClassCustomState extends State<MyClassCustom> {
   @override
   Widget build(BuildContext context) {
     return widget.widget!;
+  }
+}
+
+class BounceScreen extends StatefulWidget {
+  const BounceScreen({super.key});
+
+  @override
+  State<BounceScreen> createState() => _BounceScreenState();
+}
+
+class _BounceScreenState extends State<BounceScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: Column(
+          children: [],
+        ),
+      ),
+    );
   }
 }

@@ -60,6 +60,7 @@ dependencies:
   flutter_sms: ^2.3.3
   permission_handler: ^10.4.2
   sms_mms: ^0.0.2+1
+  animate_do: ^2.1.0
 #  flutter_typeahead: ^4.6.2
   # dropdown_search: ^5.0.6
   
