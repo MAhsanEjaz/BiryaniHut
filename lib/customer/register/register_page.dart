@@ -374,6 +374,7 @@ class _SignUpScreenState extends State<SignUpPage>
                   if (isfNameError) formErrorText(error: fNameErrorString),
 
                   CustomTextField(
+
                       controller: lNameCont,
                       isEnabled: true,
                       obscureText: false,

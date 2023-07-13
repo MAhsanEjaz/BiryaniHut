@@ -157,6 +157,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
       widget.customers.lastName = widget.lastName.text;
       widget.customers.email = widget.email.text;
       widget.customers.phone = widget.phone.text;
+      widget.customers.salonName = widget.saloonName.text;
 
       setState(() {});
     } else {
@@ -442,6 +443,27 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                           onPressed:
                                                                               () {
                                                                             Navigator.pop(context);
+
+                                                                            widget.firstName.text =
+                                                                                widget.customers.firstName!;
+                                                                            widget.lastName.text =
+                                                                                widget.customers.lastName!;
+                                                                            widget.phone.text =
+                                                                                widget.customers.phone!;
+                                                                            widget.saloonName.text =
+                                                                                widget.customers.salonName!;
+                                                                            widget.zipCont.text =
+                                                                                widget.customers.postalCode!;
+                                                                            widget.email.text =
+                                                                                widget.customers.email!;
+                                                                            widget.address.text =
+                                                                                widget.customers.address!;
+                                                                            widget.cityName =
+                                                                                widget.customers.city!;
+                                                                            widget.statesName =
+                                                                                widget.customers.state!;
+
+                                                                            setStatee(() {});
                                                                           },
                                                                           icon:
                                                                               const Icon(
@@ -797,7 +819,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                 context: context,
                                                                                 message: 'Please Enter Valid City');
                                                                           } else if (customUpdateValidation()) {
-                                                                           await updateCustomerHandler();
+                                                                            await updateCustomerHandler();
                                                                             setStatee(() {});
                                                                             Navigator.pop(context);
                                                                           }
