@@ -338,7 +338,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: appColor,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
                 return const SignUpPage(
                   isReseller: true,
                 );

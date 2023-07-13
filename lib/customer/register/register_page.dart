@@ -101,16 +101,25 @@ class _SignUpScreenState extends State<SignUpPage>
       showToast('Customer Registered Successfully');
 
       if (widget.isReseller) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ResellerCustomersPage()));
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const ResellerCustomersPage()),
+          (Route<dynamic> route) => route.isFirst,
+        );
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginPage()));
       }
+
+      //   Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => const ResellerCustomersPage()));
+      // }
     } else {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Customer Registration Failed");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginPage()));
+
       // showToast('Customer Registration Failed');
     }
   }
