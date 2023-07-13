@@ -200,6 +200,12 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                       getCartItems();
                                       int quantity =
                                           int.parse(quantityCont.text);
+
+                                      if (quantity > 9999999) {
+                                        showToast("Please Add Valid Quantity");
+                                        return;
+                                      }
+
                                       if (quantityCont.text.isEmpty) {
                                         showToast("Please add some quantity");
                                         return;
@@ -489,6 +495,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                     child: TextField(
                       focusNode: quantityNode,
                       keyboardType: TextInputType.number,
+                      // maxLength: 7,
                       controller: quantityCont,
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
