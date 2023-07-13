@@ -606,6 +606,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                                                       onTap: () async {
                                                                                                                         widget.cityName = e.cityName!;
                                                                                                                         mySelectCity = e.cityName;
+                                                                                                                        widget.statesName = null;
                                                                                                                         // model = cities;
                                                                                                                         expand = !expand;
 
@@ -670,7 +671,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                       alignment: Alignment.centerLeft,
                                                                                     ),
                                                                                     const SizedBox(width: 13),
-                                                                                    Text(mySelectCity != null ? 'Select Sate' : widget.statesName!),
+                                                                                    Text(widget.statesName == null ? 'Select Sate' : widget.statesName!),
                                                                                   ],
                                                                                 ),
                                                                                 underline: const SizedBox(),
@@ -1318,6 +1319,10 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     } else if (widget.address.text.isEmpty) {
       CustomSnackBar.failedSnackBar(
           context: context, message: 'Enter you address');
+      return false;
+    } else if (widget.statesName == null) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Select your state');
       return false;
     } else {
       return true;
