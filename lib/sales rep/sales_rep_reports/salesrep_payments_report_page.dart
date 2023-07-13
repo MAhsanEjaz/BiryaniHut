@@ -32,7 +32,7 @@ class _OrderReportPageState extends State<SalesrepPaymentsReportPage> {
   List<SalesRepAllCustomersList>? allCustLists = [];
   bool showSingleCustomerData = false;
   //////initial Handler
-  salerepAllCustPayHandler() async {
+  allCustomersPaymentsHandler() async {
     CustomLoader.showLoader(context: context);
     await SalesRepAllCustomersPaymentsService().getCustomersPaymentsList(
         context: context, saleRepId: LoginStorage().getUserId(), days: 0);
@@ -43,8 +43,8 @@ class _OrderReportPageState extends State<SalesrepPaymentsReportPage> {
     CustomLoader.hideLoader(context);
   }
 
-  ///On Change
-  paymentsReportHandler(int customerId) async {
+  //! on changing the drop down of customers
+  particularCustomerPaymentsHandler(int customerId) async {
     CustomLoader.showLoader(context: context);
     await SaleRepPaymentsReportService()
         .getPayments(context: context, customerId: customerId, days: 0);
@@ -71,7 +71,7 @@ class _OrderReportPageState extends State<SalesrepPaymentsReportPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // paymentsReportHandler(1072);
-      salerepAllCustPayHandler();
+      allCustomersPaymentsHandler();
       getResellerCustomerListHandler();
     });
     super.initState();
@@ -129,11 +129,12 @@ class _OrderReportPageState extends State<SalesrepPaymentsReportPage> {
                           if (value == 1084) {
                             selectedCustomerId = value;
                             showSingleCustomerData = false;
-                            salerepAllCustPayHandler();
+                            allCustomersPaymentsHandler();
                           } else {
                             selectedCustomerId = value;
                             showSingleCustomerData = true;
-                            paymentsReportHandler(selectedCustomerId!);
+                            particularCustomerPaymentsHandler(
+                                selectedCustomerId!);
 
                             setState(() {});
                           }

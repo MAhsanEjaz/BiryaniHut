@@ -19,7 +19,6 @@ import 'package:shop_app/providers/all_cities_provider.dart';
 import 'package:shop_app/providers/states_provider.dart';
 import 'package:shop_app/sales%20rep/all_orders_screen.dart';
 import 'package:shop_app/sales%20rep/salesrep_products_page.dart';
-import 'package:shop_app/services/custom_navigation_service.dart';
 import 'package:shop_app/services/get_all_cities_service.dart';
 import 'package:shop_app/services/get_all_states_services.dart';
 import 'package:shop_app/services/phone_format_service.dart';
@@ -174,10 +173,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     CustomLoader.hideLoader(context);
   }
 
-  String? statesName;
+  String? stateName;
   String? cityName;
-
-  String? selectedName;
 
   List<AllStatesModel> statesModel = [];
 
@@ -188,15 +185,19 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
     await GetAllCitiesService()
         .getAllCitiesService(context: context, cityName: cityName!);
+
     CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
-
+    stateName = null;
+    log("new stateName = $stateName");
     print(cityModel);
     setState(() {});
   }
 
   getAllStatesHandler(String cityName) async {
     CustomLoader.showLoader(context: context);
+    stateName = null;
+
     await GetAllStatesServices()
         .getAllStatesServices(context: context, cityName: cityName);
 
@@ -208,8 +209,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
     CustomLoader.hideLoader(context);
   }
 
-  AnimationController? _controller;
-  Animation<double>? _animation;
+  // AnimationController? _controller;
+  // Animation<double>? _animation;
   bool expand = false;
   bool showSearchData = false;
 
@@ -334,8 +335,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                     ),
                                   ));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
                                   width: 10,
@@ -356,8 +357,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
                                   width: 10,
@@ -377,8 +378,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
                               showAddPaymentDialog(context);
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
                                   width: 10,
@@ -390,659 +391,389 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                           const Divider(),
                           InkWell(
                             onTap: () {
-                              CustomNavigationService().customNavigationService(
-                                context: context,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Divider(),
-                                    CustomTextField(
-                                      prefixWidget: const Icon(Icons.person),
-                                      controller: widget.firstName,
-                                      hint: 'First Name',
-                                    ),
-                                    CustomTextField(
-                                        prefixWidget: const Icon(Icons.person),
-                                        controller: widget.lastName,
-                                        hint: 'Last Name'),
-                                    CustomTextField(
-                                        prefixWidget: const Icon(Icons.home),
-                                        controller: widget.saloonName,
-                                        hint: 'Salon Name'),
-                                    CustomTextField(
-                                        prefixWidget: const Icon(Icons.home),
-                                        controller: widget.address,
-                                        hint: 'Address'),
-                                    const SizedBox(height: 5),
-                                    // Padding(
-                                    //   padding:
-                                    //       const EdgeInsets
-                                    //           .all(8.0),
-                                    //   child: Column(
-                                    //     children: [
-                                    //       Padding(
-                                    //         padding: const EdgeInsets
-                                    //                 .symmetric(
-                                    //             horizontal:
-                                    //                 3.0),
-                                    //         child: SizedBox(
-                                    //           width: double
-                                    //               .infinity,
-                                    //           child:
-                                    //               Container(
-                                    //             decoration: BoxDecoration(
-                                    //                 color: kSecondaryColor
-                                    //                     .withOpacity(
-                                    //                         0.1),
-                                    //                 borderRadius:
-                                    //                     BorderRadius.circular(
-                                    //                         10)),
-                                    //             // shape: RoundedRectangleBorder(
-                                    //             //     borderRadius: BorderRadius.circular(15),
-                                    //             //     side: BorderSide(
-                                    //             //         color: expand == true
-                                    //             //             ? Colors.black26
-                                    //             //             : Colors.transparent)),
-                                    //             // elevation: 2,
-                                    //             child:
-                                    //                 InkWell(
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(
-                                    //                       10),
-                                    //               onTap: () {
-                                    //                 expand =
-                                    //                     !expand;
-                                    //                 _controller = AnimationController(
-                                    //                     duration: const Duration(
-                                    //                         seconds:
-                                    //                             1),
-                                    //                     vsync:
-                                    //                         this);
-                                    //                 // Define the animation curve
-                                    //                 final curvedAnimation = CurvedAnimation(
-                                    //                     parent:
-                                    //                         _controller!,
-                                    //                     curve:
-                                    //                         Curves.easeInExpo);
-                                    //
-                                    //                 // Define the animation values (e.g., from 0.0 to 1.0)
-                                    //                 _animation = Tween<double>(
-                                    //                         begin: 0.0,
-                                    //                         end: 1.0)
-                                    //                     .animate(curvedAnimation);
-                                    //                 _controller!
-                                    //                     .forward();
-                                    //                 sestate(
-                                    //                     () {});
-                                    //               },
-                                    //               child:
-                                    //                   SingleChildScrollView(
-                                    //                 child:
-                                    //                     Column(
-                                    //                   children: [
-                                    //                     Padding(
-                                    //                       padding:
-                                    //                           const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
-                                    //                       child:
-                                    //                           Row(
-                                    //                         children: [
-                                    //                           SvgPicture.asset(
-                                    //                             "assets/svg/City Icon (1).svg",
-                                    //                             height: 23,
-                                    //                             width: 23,
-                                    //                           ),
-                                    //                           SizedBox(width: 20),
-                                    //                           Text(
-                                    //                             widget.cityName == null ? 'Select Cities' : widget.cityName!,
-                                    //                             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                                    //                             overflow: TextOverflow.ellipsis,
-                                    //                           ),
-                                    //                           const Spacer(),
-                                    //                           Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
-                                    //                         ],
-                                    //                       ),
-                                    //                     ),
-                                    //                     expand == true
-                                    //                         ? AnimatedBuilder(
-                                    //                             animation: _animation!,
-                                    //                             builder: (BuildContext context, Widget? child) {
-                                    //                               return Opacity(
-                                    //                                 opacity: _animation!.value,
-                                    //                                 child: SingleChildScrollView(
-                                    //                                   child: Column(
-                                    //                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    //                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    //                                     children: [
-                                    //                                       Padding(
-                                    //                                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                    //                                         child: CupertinoTextField(
-                                    //                                             controller: controller,
-                                    //                                             placeholder: 'Search Cities',
-                                    //                                             onSubmitted: (v) {
-                                    //                                               sestate(() {
-                                    //                                                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                    //                                                   controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
-                                    //                                                   showSearchData = true;
-                                    //
-                                    //                                                   sestate(() {});
-                                    //                                                 });
-                                    //                                               });
-                                    //                                             }),
-                                    //                                       ),
-                                    //                                       const SizedBox(height: 10),
-                                    //                                       showSearchData == true
-                                    //                                           ? cityModel.isEmpty
-                                    //                                               ? Center(
-                                    //                                                   child: Padding(
-                                    //                                                   padding: const EdgeInsets.all(8.0),
-                                    //                                                   child: Text(('City not found')),
-                                    //                                                 ))
-                                    //                                               : Column(
-                                    //                                                   mainAxisAlignment: MainAxisAlignment.start,
-                                    //                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                    //                                                   children: cityModel.map((e) {
-                                    //                                                     return InkWell(
-                                    //                                                       onTap: () {
-                                    //                                                         widget.cityName = e.cityName!;
-                                    //                                                         // model = cities;
-                                    //                                                         expand = !expand;
-                                    //
-                                    //                                                         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                                    //                                                           getAllStatesHandler(widget.cityName!);
-                                    //                                                         });
-                                    //
-                                    //                                                         sestate(() {});
-                                    //                                                       },
-                                    //                                                       child: Padding(
-                                    //                                                         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                                    //                                                         child: Text(
-                                    //                                                           e.cityName!,
-                                    //                                                           style: const TextStyle(fontSize: 16),
-                                    //                                                         ),
-                                    //                                                       ),
-                                    //                                                     );
-                                    //                                                   }).toList(),
-                                    //                                                 )
-                                    //                                           : SizedBox(),
-                                    //                                     ],
-                                    //                                   ),
-                                    //                                 ),
-                                    //                               );
-                                    //                             })
-                                    //                         : const SizedBox()
-                                    //                   ],
-                                    //                 ),
-                                    //               ),
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //       const SizedBox(
-                                    //           height: 10),
-                                    //       Padding(
-                                    //         padding: const EdgeInsets
-                                    //                 .symmetric(
-                                    //             horizontal:
-                                    //                 5.0),
-                                    //         child: Container(
-                                    //           decoration: BoxDecoration(
-                                    //               color: kSecondaryColor
-                                    //                   .withOpacity(
-                                    //                       0.1),
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(
-                                    //                       10)),
-                                    //           height: 45.0,
-                                    //           child: Padding(
-                                    //             padding: const EdgeInsets
-                                    //                     .only(
-                                    //                 right:
-                                    //                     10.0,
-                                    //                 left: 10),
-                                    //             child: DropdownButton(
-                                    //                 hint: Row(
-                                    //                   children: [
-                                    //                     SvgPicture
-                                    //                         .asset(
-                                    //                       "assets/svg/State Icon (1).svg",
-                                    //                       width:
-                                    //                           26,
-                                    //                       height:
-                                    //                           26,
-                                    //                       alignment:
-                                    //                           Alignment.centerLeft,
-                                    //                     ),
-                                    //                     const SizedBox(
-                                    //                         width: 13),
-                                    //                     Text(widget.statesName == null
-                                    //                         ? 'Select Sate'
-                                    //                         : widget.statesName!),
-                                    //                   ],
-                                    //                 ),
-                                    //                 underline: const SizedBox(),
-                                    //                 // padding:
-                                    //                 //     const EdgeInsets
-                                    //                 //         .all(0),
-                                    //                 isExpanded: true,
-                                    //                 items: statesModel.map((e) {
-                                    //                   return DropdownMenuItem(
-                                    //                       onTap:
-                                    //                           () {
-                                    //                         widget.statesName = e.stateName;
-                                    //                         setState(() {});
-                                    //                       },
-                                    //                       value:
-                                    //                           e,
-                                    //                       child:
-                                    //                           Text(e.stateName!));
-                                    //                 }).toList(),
-                                    //                 onChanged: (_) {}),
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    DropDownCityScreen(
-                                      cityName: widget.cityName!,
-                                      statesName: widget.statesName!,
-                                    ),
-                                    CustomTextField(
-                                        controller: widget.zipCont,
-                                        isEnabled: true,
-                                        obscureText: false,
-                                        isshowPasswordControls: false,
-                                        hint: "Zip Code",
-                                        inputType: TextInputType.number,
-                                        prefixWidget: SvgPicture.asset(
-                                          "assets/icons/Mail.svg",
-                                          //! change its icon for zipcode
-                                        )),
-                                    CustomTextField(
-                                        prefixWidget: const Icon(Icons.email),
-                                        controller: widget.email,
-                                        hint: 'Email'),
-                                    CustomTextField(
-                                        inputFormats: [
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                          LengthLimitingTextInputFormatter(12),
-                                          PhoneInputFormatter(),
-                                        ],
-                                        inputType: TextInputType.number,
-                                        prefixWidget: const Icon(Icons.phone),
-                                        controller: widget.phone,
-                                        hint: 'Phone'),
-                                  ],
-                                ),
-                              );
+                              Navigator.pop(context);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => StatefulBuilder(
+                                          builder: (context, sestate) {
+                                        return BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaY: 10, sigmaX: 10),
+                                          child: AlertDialog(
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            icon: Align(
+                                                alignment: Alignment.topRight,
+                                                child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Card(
+                                                        elevation: 5.0,
+                                                        child: Icon(
+                                                            Icons.close)))),
+                                            actions: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20.0),
+                                                child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    if (customUpdateValidation()) {
+                                                      await updateCustomerHandler();
 
-                              // Navigator.pop(context);
-                              // showDialog(
-                              //     context: context,
-                              //     builder: (context) => StatefulBuilder(
-                              //             builder: (context, sestate) {
-                              //           return BackdropFilter(
-                              //             filter: ImageFilter.blur(
-                              //                 sigmaY: 10, sigmaX: 10),
-                              //             child: AlertDialog(
-                              //               elevation: 0,
-                              //               shape: RoundedRectangleBorder(
-                              //                   borderRadius:
-                              //                       BorderRadius.circular(15)),
-                              //               icon: Align(
-                              //                   alignment: Alignment.topRight,
-                              //                   child: InkWell(
-                              //                       onTap: () {
-                              //                         Navigator.pop(context);
-                              //                       },
-                              //                       child: const Card(
-                              //                           elevation: 5.0,
-                              //                           child: Icon(
-                              //                               Icons.close)))),
-                              //               actions: [
-                              //                 Padding(
-                              //                   padding: const EdgeInsets.only(
-                              //                       right: 20.0),
-                              //                   child: ElevatedButton(
-                              //                     onPressed: () async {
-                              //                       if (customUpdateValidation()) {
-                              //                         await updateCustomerHandler();
-                              //
-                              //                         Navigator.pop(context);
-                              //                       }
-                              //                     },
-                              //                     child: const Text('Update'),
-                              //                     style:
-                              //                         ElevatedButton.styleFrom(
-                              //                             backgroundColor:
-                              //                                 appColor),
-                              //                   ),
-                              //                 )
-                              //               ],
-                              //               title: const Align(
-                              //                   alignment: Alignment.topLeft,
-                              //                   child: Text(
-                              //                     'Update Profile',
-                              //                     style: TextStyle(
-                              //                         color: appColor,
-                              //                         fontWeight:
-                              //                             FontWeight.bold),
-                              //                   )),
-                              //               content: SingleChildScrollView(
-                              //                 child: Column(
-                              //                   mainAxisAlignment:
-                              //                       MainAxisAlignment.start,
-                              //                   crossAxisAlignment:
-                              //                       CrossAxisAlignment.start,
-                              //                   mainAxisSize: MainAxisSize.min,
-                              //                   children: [
-                              //                     const Divider(),
-                              //                     CustomTextField(
-                              //                       prefixWidget: const Icon(
-                              //                           Icons.person),
-                              //                       controller:
-                              //                           widget.firstName,
-                              //                       hint: 'First Name',
-                              //                     ),
-                              //                     CustomTextField(
-                              //                         prefixWidget: const Icon(
-                              //                             Icons.person),
-                              //                         controller:
-                              //                             widget.lastName,
-                              //                         hint: 'Last Name'),
-                              //                     CustomTextField(
-                              //                         prefixWidget: const Icon(
-                              //                             Icons.home),
-                              //                         controller:
-                              //                             widget.saloonName,
-                              //                         hint: 'Salon Name'),
-                              //                     CustomTextField(
-                              //                         prefixWidget: const Icon(
-                              //                             Icons.home),
-                              //                         controller:
-                              //                             widget.address,
-                              //                         hint: 'Address'),
-                              //                     const SizedBox(height: 5),
-                              //                     // Padding(
-                              //                     //   padding:
-                              //                     //       const EdgeInsets
-                              //                     //           .all(8.0),
-                              //                     //   child: Column(
-                              //                     //     children: [
-                              //                     //       Padding(
-                              //                     //         padding: const EdgeInsets
-                              //                     //                 .symmetric(
-                              //                     //             horizontal:
-                              //                     //                 3.0),
-                              //                     //         child: SizedBox(
-                              //                     //           width: double
-                              //                     //               .infinity,
-                              //                     //           child:
-                              //                     //               Container(
-                              //                     //             decoration: BoxDecoration(
-                              //                     //                 color: kSecondaryColor
-                              //                     //                     .withOpacity(
-                              //                     //                         0.1),
-                              //                     //                 borderRadius:
-                              //                     //                     BorderRadius.circular(
-                              //                     //                         10)),
-                              //                     //             // shape: RoundedRectangleBorder(
-                              //                     //             //     borderRadius: BorderRadius.circular(15),
-                              //                     //             //     side: BorderSide(
-                              //                     //             //         color: expand == true
-                              //                     //             //             ? Colors.black26
-                              //                     //             //             : Colors.transparent)),
-                              //                     //             // elevation: 2,
-                              //                     //             child:
-                              //                     //                 InkWell(
-                              //                     //               borderRadius:
-                              //                     //                   BorderRadius.circular(
-                              //                     //                       10),
-                              //                     //               onTap: () {
-                              //                     //                 expand =
-                              //                     //                     !expand;
-                              //                     //                 _controller = AnimationController(
-                              //                     //                     duration: const Duration(
-                              //                     //                         seconds:
-                              //                     //                             1),
-                              //                     //                     vsync:
-                              //                     //                         this);
-                              //                     //                 // Define the animation curve
-                              //                     //                 final curvedAnimation = CurvedAnimation(
-                              //                     //                     parent:
-                              //                     //                         _controller!,
-                              //                     //                     curve:
-                              //                     //                         Curves.easeInExpo);
-                              //                     //
-                              //                     //                 // Define the animation values (e.g., from 0.0 to 1.0)
-                              //                     //                 _animation = Tween<double>(
-                              //                     //                         begin: 0.0,
-                              //                     //                         end: 1.0)
-                              //                     //                     .animate(curvedAnimation);
-                              //                     //                 _controller!
-                              //                     //                     .forward();
-                              //                     //                 sestate(
-                              //                     //                     () {});
-                              //                     //               },
-                              //                     //               child:
-                              //                     //                   SingleChildScrollView(
-                              //                     //                 child:
-                              //                     //                     Column(
-                              //                     //                   children: [
-                              //                     //                     Padding(
-                              //                     //                       padding:
-                              //                     //                           const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
-                              //                     //                       child:
-                              //                     //                           Row(
-                              //                     //                         children: [
-                              //                     //                           SvgPicture.asset(
-                              //                     //                             "assets/svg/City Icon (1).svg",
-                              //                     //                             height: 23,
-                              //                     //                             width: 23,
-                              //                     //                           ),
-                              //                     //                           SizedBox(width: 20),
-                              //                     //                           Text(
-                              //                     //                             widget.cityName == null ? 'Select Cities' : widget.cityName!,
-                              //                     //                             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                              //                     //                             overflow: TextOverflow.ellipsis,
-                              //                     //                           ),
-                              //                     //                           const Spacer(),
-                              //                     //                           Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
-                              //                     //                         ],
-                              //                     //                       ),
-                              //                     //                     ),
-                              //                     //                     expand == true
-                              //                     //                         ? AnimatedBuilder(
-                              //                     //                             animation: _animation!,
-                              //                     //                             builder: (BuildContext context, Widget? child) {
-                              //                     //                               return Opacity(
-                              //                     //                                 opacity: _animation!.value,
-                              //                     //                                 child: SingleChildScrollView(
-                              //                     //                                   child: Column(
-                              //                     //                                     mainAxisAlignment: MainAxisAlignment.start,
-                              //                     //                                     crossAxisAlignment: CrossAxisAlignment.start,
-                              //                     //                                     children: [
-                              //                     //                                       Padding(
-                              //                     //                                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              //                     //                                         child: CupertinoTextField(
-                              //                     //                                             controller: controller,
-                              //                     //                                             placeholder: 'Search Cities',
-                              //                     //                                             onSubmitted: (v) {
-                              //                     //                                               sestate(() {
-                              //                     //                                                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                              //                     //                                                   controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
-                              //                     //                                                   showSearchData = true;
-                              //                     //
-                              //                     //                                                   sestate(() {});
-                              //                     //                                                 });
-                              //                     //                                               });
-                              //                     //                                             }),
-                              //                     //                                       ),
-                              //                     //                                       const SizedBox(height: 10),
-                              //                     //                                       showSearchData == true
-                              //                     //                                           ? cityModel.isEmpty
-                              //                     //                                               ? Center(
-                              //                     //                                                   child: Padding(
-                              //                     //                                                   padding: const EdgeInsets.all(8.0),
-                              //                     //                                                   child: Text(('City not found')),
-                              //                     //                                                 ))
-                              //                     //                                               : Column(
-                              //                     //                                                   mainAxisAlignment: MainAxisAlignment.start,
-                              //                     //                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                              //                     //                                                   children: cityModel.map((e) {
-                              //                     //                                                     return InkWell(
-                              //                     //                                                       onTap: () {
-                              //                     //                                                         widget.cityName = e.cityName!;
-                              //                     //                                                         // model = cities;
-                              //                     //                                                         expand = !expand;
-                              //                     //
-                              //                     //                                                         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                              //                     //                                                           getAllStatesHandler(widget.cityName!);
-                              //                     //                                                         });
-                              //                     //
-                              //                     //                                                         sestate(() {});
-                              //                     //                                                       },
-                              //                     //                                                       child: Padding(
-                              //                     //                                                         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                              //                     //                                                         child: Text(
-                              //                     //                                                           e.cityName!,
-                              //                     //                                                           style: const TextStyle(fontSize: 16),
-                              //                     //                                                         ),
-                              //                     //                                                       ),
-                              //                     //                                                     );
-                              //                     //                                                   }).toList(),
-                              //                     //                                                 )
-                              //                     //                                           : SizedBox(),
-                              //                     //                                     ],
-                              //                     //                                   ),
-                              //                     //                                 ),
-                              //                     //                               );
-                              //                     //                             })
-                              //                     //                         : const SizedBox()
-                              //                     //                   ],
-                              //                     //                 ),
-                              //                     //               ),
-                              //                     //             ),
-                              //                     //           ),
-                              //                     //         ),
-                              //                     //       ),
-                              //                     //       const SizedBox(
-                              //                     //           height: 10),
-                              //                     //       Padding(
-                              //                     //         padding: const EdgeInsets
-                              //                     //                 .symmetric(
-                              //                     //             horizontal:
-                              //                     //                 5.0),
-                              //                     //         child: Container(
-                              //                     //           decoration: BoxDecoration(
-                              //                     //               color: kSecondaryColor
-                              //                     //                   .withOpacity(
-                              //                     //                       0.1),
-                              //                     //               borderRadius:
-                              //                     //                   BorderRadius.circular(
-                              //                     //                       10)),
-                              //                     //           height: 45.0,
-                              //                     //           child: Padding(
-                              //                     //             padding: const EdgeInsets
-                              //                     //                     .only(
-                              //                     //                 right:
-                              //                     //                     10.0,
-                              //                     //                 left: 10),
-                              //                     //             child: DropdownButton(
-                              //                     //                 hint: Row(
-                              //                     //                   children: [
-                              //                     //                     SvgPicture
-                              //                     //                         .asset(
-                              //                     //                       "assets/svg/State Icon (1).svg",
-                              //                     //                       width:
-                              //                     //                           26,
-                              //                     //                       height:
-                              //                     //                           26,
-                              //                     //                       alignment:
-                              //                     //                           Alignment.centerLeft,
-                              //                     //                     ),
-                              //                     //                     const SizedBox(
-                              //                     //                         width: 13),
-                              //                     //                     Text(widget.statesName == null
-                              //                     //                         ? 'Select Sate'
-                              //                     //                         : widget.statesName!),
-                              //                     //                   ],
-                              //                     //                 ),
-                              //                     //                 underline: const SizedBox(),
-                              //                     //                 // padding:
-                              //                     //                 //     const EdgeInsets
-                              //                     //                 //         .all(0),
-                              //                     //                 isExpanded: true,
-                              //                     //                 items: statesModel.map((e) {
-                              //                     //                   return DropdownMenuItem(
-                              //                     //                       onTap:
-                              //                     //                           () {
-                              //                     //                         widget.statesName = e.stateName;
-                              //                     //                         setState(() {});
-                              //                     //                       },
-                              //                     //                       value:
-                              //                     //                           e,
-                              //                     //                       child:
-                              //                     //                           Text(e.stateName!));
-                              //                     //                 }).toList(),
-                              //                     //                 onChanged: (_) {}),
-                              //                     //           ),
-                              //                     //         ),
-                              //                     //       ),
-                              //                     //     ],
-                              //                     //   ),
-                              //                     // ),
-                              //                     DropDownCityScreen(
-                              //                       cityName: widget.cityName!,
-                              //                       statesName:
-                              //                           widget.statesName!,
-                              //                     ),
-                              //                     CustomTextField(
-                              //                         controller:
-                              //                             widget.zipCont,
-                              //                         isEnabled: true,
-                              //                         obscureText: false,
-                              //                         isshowPasswordControls:
-                              //                             false,
-                              //                         hint: "Zip Code",
-                              //                         inputType:
-                              //                             TextInputType.number,
-                              //                         prefixWidget:
-                              //                             SvgPicture.asset(
-                              //                           "assets/icons/Mail.svg",
-                              //                           //! change its icon for zipcode
-                              //                         )),
-                              //                     CustomTextField(
-                              //                         prefixWidget: const Icon(
-                              //                             Icons.email),
-                              //                         controller: widget.email,
-                              //                         hint: 'Email'),
-                              //                     CustomTextField(
-                              //                         inputFormats: [
-                              //                           FilteringTextInputFormatter
-                              //                               .digitsOnly,
-                              //                           LengthLimitingTextInputFormatter(
-                              //                               12),
-                              //                           PhoneInputFormatter(),
-                              //                         ],
-                              //                         inputType:
-                              //                             TextInputType.number,
-                              //                         prefixWidget: const Icon(
-                              //                             Icons.phone),
-                              //                         controller: widget.phone,
-                              //                         hint: 'Phone'),
-                              //                   ],
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           );
-                              //         }));
+                                                      Navigator.pop(context);
+                                                    }
+                                                  },
+                                                  child: const Text('Update'),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              appColor),
+                                                ),
+                                              )
+                                            ],
+                                            title: const Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  'Update Profile',
+                                                  style: TextStyle(
+                                                      color: appColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const Divider(),
+                                                  CustomTextField(
+                                                    prefixWidget:
+                                                        SvgPicture.asset(
+                                                      "assets/icons/User.svg",
+                                                    ),
+                                                    controller:
+                                                        widget.firstName,
+                                                    hint: 'First Name',
+                                                  ),
+                                                  CustomTextField(
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/User.svg",
+                                                      ),
+                                                      controller:
+                                                          widget.lastName,
+                                                      hint: 'Last Name'),
+                                                  CustomTextField(
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/svg/Salon Name.svg",
+                                                        color: Colors.black45,
+                                                        width: 26,
+                                                        height: 26,
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                      ),
+                                                      controller:
+                                                          widget.saloonName,
+                                                      hint: 'Salon Name'),
+                                                  CustomTextField(
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Location point.svg",
+                                                      ),
+                                                      controller:
+                                                          widget.address,
+                                                      hint: 'Address'),
+                                                  const SizedBox(height: 5),
+                                                  // Padding(
+                                                  //   padding:
+                                                  //       const EdgeInsets
+                                                  //           .all(8.0),
+                                                  //   child: Column(
+                                                  //     children: [
+                                                  //       Padding(
+                                                  //         padding: const EdgeInsets
+                                                  //                 .symmetric(
+                                                  //             horizontal:
+                                                  //                 3.0),
+                                                  //         child: SizedBox(
+                                                  //           width: double
+                                                  //               .infinity,
+                                                  //           child:
+                                                  //               Container(
+                                                  //             decoration: BoxDecoration(
+                                                  //                 color: kSecondaryColor
+                                                  //                     .withOpacity(
+                                                  //                         0.1),
+                                                  //                 borderRadius:
+                                                  //                     BorderRadius.circular(
+                                                  //                         10)),
+                                                  //             // shape: RoundedRectangleBorder(
+                                                  //             //     borderRadius: BorderRadius.circular(15),
+                                                  //             //     side: BorderSide(
+                                                  //             //         color: expand == true
+                                                  //             //             ? Colors.black26
+                                                  //             //             : Colors.transparent)),
+                                                  //             // elevation: 2,
+                                                  //             child:
+                                                  //                 InkWell(
+                                                  //               borderRadius:
+                                                  //                   BorderRadius.circular(
+                                                  //                       10),
+                                                  //               onTap: () {
+                                                  //                 expand =
+                                                  //                     !expand;
+                                                  //                 _controller = AnimationController(
+                                                  //                     duration: const Duration(
+                                                  //                         seconds:
+                                                  //                             1),
+                                                  //                     vsync:
+                                                  //                         this);
+                                                  //                 // Define the animation curve
+                                                  //                 final curvedAnimation = CurvedAnimation(
+                                                  //                     parent:
+                                                  //                         _controller!,
+                                                  //                     curve:
+                                                  //                         Curves.easeInExpo);
+                                                  //
+                                                  //                 // Define the animation values (e.g., from 0.0 to 1.0)
+                                                  //                 _animation = Tween<double>(
+                                                  //                         begin: 0.0,
+                                                  //                         end: 1.0)
+                                                  //                     .animate(curvedAnimation);
+                                                  //                 _controller!
+                                                  //                     .forward();
+                                                  //                 sestate(
+                                                  //                     () {});
+                                                  //               },
+                                                  //               child:
+                                                  //                   SingleChildScrollView(
+                                                  //                 child:
+                                                  //                     Column(
+                                                  //                   children: [
+                                                  //                     Padding(
+                                                  //                       padding:
+                                                  //                           const EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
+                                                  //                       child:
+                                                  //                           Row(
+                                                  //                         children: [
+                                                  //                           SvgPicture.asset(
+                                                  //                             "assets/svg/City Icon (1).svg",
+                                                  //                             height: 23,
+                                                  //                             width: 23,
+                                                  //                           ),
+                                                  //                           SizedBox(width: 20),
+                                                  //                           Text(
+                                                  //                             widget.cityName == null ? 'Select Cities' : widget.cityName!,
+                                                  //                             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                                  //                             overflow: TextOverflow.ellipsis,
+                                                  //                           ),
+                                                  //                           const Spacer(),
+                                                  //                           Icon(expand == true ? Icons.arrow_drop_up_outlined : Icons.arrow_drop_down)
+                                                  //                         ],
+                                                  //                       ),
+                                                  //                     ),
+                                                  //                     expand == true
+                                                  //                         ? AnimatedBuilder(
+                                                  //                             animation: _animation!,
+                                                  //                             builder: (BuildContext context, Widget? child) {
+                                                  //                               return Opacity(
+                                                  //                                 opacity: _animation!.value,
+                                                  //                                 child: SingleChildScrollView(
+                                                  //                                   child: Column(
+                                                  //                                     mainAxisAlignment: MainAxisAlignment.start,
+                                                  //                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                                  //                                     children: [
+                                                  //                                       Padding(
+                                                  //                                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                                  //                                         child: CupertinoTextField(
+                                                  //                                             controller: controller,
+                                                  //                                             placeholder: 'Search Cities',
+                                                  //                                             onSubmitted: (v) {
+                                                  //                                               sestate(() {
+                                                  //                                                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                  //                                                   controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
+                                                  //                                                   showSearchData = true;
+                                                  //
+                                                  //                                                   sestate(() {});
+                                                  //                                                 });
+                                                  //                                               });
+                                                  //                                             }),
+                                                  //                                       ),
+                                                  //                                       const SizedBox(height: 10),
+                                                  //                                       showSearchData == true
+                                                  //                                           ? cityModel.isEmpty
+                                                  //                                               ? Center(
+                                                  //                                                   child: Padding(
+                                                  //                                                   padding: const EdgeInsets.all(8.0),
+                                                  //                                                   child: Text(('City not found')),
+                                                  //                                                 ))
+                                                  //                                               : Column(
+                                                  //                                                   mainAxisAlignment: MainAxisAlignment.start,
+                                                  //                                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                                  //                                                   children: cityModel.map((e) {
+                                                  //                                                     return InkWell(
+                                                  //                                                       onTap: () {
+                                                  //                                                         widget.cityName = e.cityName!;
+                                                  //                                                         // model = cities;
+                                                  //                                                         expand = !expand;
+                                                  //
+                                                  //                                                         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                  //                                                           getAllStatesHandler(widget.cityName!);
+                                                  //                                                         });
+                                                  //
+                                                  //                                                         sestate(() {});
+                                                  //                                                       },
+                                                  //                                                       child: Padding(
+                                                  //                                                         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                                  //                                                         child: Text(
+                                                  //                                                           e.cityName!,
+                                                  //                                                           style: const TextStyle(fontSize: 16),
+                                                  //                                                         ),
+                                                  //                                                       ),
+                                                  //                                                     );
+                                                  //                                                   }).toList(),
+                                                  //                                                 )
+                                                  //                                           : SizedBox(),
+                                                  //                                     ],
+                                                  //                                   ),
+                                                  //                                 ),
+                                                  //                               );
+                                                  //                             })
+                                                  //                         : const SizedBox()
+                                                  //                   ],
+                                                  //                 ),
+                                                  //               ),
+                                                  //             ),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //       const SizedBox(
+                                                  //           height: 10),
+                                                  //       Padding(
+                                                  //         padding: const EdgeInsets
+                                                  //                 .symmetric(
+                                                  //             horizontal:
+                                                  //                 5.0),
+                                                  //         child: Container(
+                                                  //           decoration: BoxDecoration(
+                                                  //               color: kSecondaryColor
+                                                  //                   .withOpacity(
+                                                  //                       0.1),
+                                                  //               borderRadius:
+                                                  //                   BorderRadius.circular(
+                                                  //                       10)),
+                                                  //           height: 45.0,
+                                                  //           child: Padding(
+                                                  //             padding: const EdgeInsets
+                                                  //                     .only(
+                                                  //                 right:
+                                                  //                     10.0,
+                                                  //                 left: 10),
+                                                  //             child: DropdownButton(
+                                                  //                 hint: Row(
+                                                  //                   children: [
+                                                  //                     SvgPicture
+                                                  //                         .asset(
+                                                  //                       "assets/svg/State Icon (1).svg",
+                                                  //                       width:
+                                                  //                           26,
+                                                  //                       height:
+                                                  //                           26,
+                                                  //                       alignment:
+                                                  //                           Alignment.centerLeft,
+                                                  //                     ),
+                                                  //                     const SizedBox(
+                                                  //                         width: 13),
+                                                  //                     Text(widget.statesName == null
+                                                  //                         ? 'Select Sate'
+                                                  //                         : widget.statesName!),
+                                                  //                   ],
+                                                  //                 ),
+                                                  //                 underline: const SizedBox(),
+                                                  //                 // padding:
+                                                  //                 //     const EdgeInsets
+                                                  //                 //         .all(0),
+                                                  //                 isExpanded: true,
+                                                  //                 items: statesModel.map((e) {
+                                                  //                   return DropdownMenuItem(
+                                                  //                       onTap:
+                                                  //                           () {
+                                                  //                         widget.statesName = e.stateName;
+                                                  //                         setState(() {});
+                                                  //                       },
+                                                  //                       value:
+                                                  //                           e,
+                                                  //                       child:
+                                                  //                           Text(e.stateName!));
+                                                  //                 }).toList(),
+                                                  //                 onChanged: (_) {}),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                  DropDownCityScreen(
+                                                    cityName: widget.cityName!,
+                                                    statesName:
+                                                        widget.statesName!,
+                                                  ),
+                                                  CustomTextField(
+                                                      controller:
+                                                          widget.zipCont,
+                                                      isEnabled: true,
+                                                      obscureText: false,
+                                                      isshowPasswordControls:
+                                                          false,
+                                                      hint: "Zip Code",
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Mail.svg",
+                                                        //! change its icon for zipcode
+                                                      )),
+                                                  CustomTextField(
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Mail.svg",
+                                                      ),
+                                                      controller: widget.email,
+                                                      hint: 'Email'),
+                                                  CustomTextField(
+                                                      inputFormats: [
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly,
+                                                        LengthLimitingTextInputFormatter(
+                                                            12),
+                                                        PhoneInputFormatter(),
+                                                      ],
+                                                      inputType:
+                                                          TextInputType.number,
+                                                      prefixWidget:
+                                                          SvgPicture.asset(
+                                                        "assets/icons/Phone.svg",
+                                                      ),
+                                                      controller: widget.phone,
+                                                      hint: 'Phone'),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }));
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
                                 Text('Update Profile')
@@ -1072,8 +803,8 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                   },
                                   onCancelPress: () {});
                             },
-                            child: const Row(
-                              children: [
+                            child: Row(
+                              children: const [
                                 Icon(
                                   Icons.delete,
                                   color: Colors.redAccent,
@@ -1817,8 +1548,8 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: const Row(
-                        children: [
+                      child: Row(
+                        children: const [
                           Icon(Icons.shopping_basket),
                           SizedBox(
                             width: 10,

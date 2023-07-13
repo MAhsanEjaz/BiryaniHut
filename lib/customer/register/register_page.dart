@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpPage>
           .message;
     }
 
-    if (message == 'Record Already Exists') {
+    if (message == 'User with provided email already exists.') {
       showToast('Customer Already Exists');
     } else if (isRegistered) {
       showToast('Customer Registered Successfully');
@@ -109,6 +109,8 @@ class _SignUpScreenState extends State<SignUpPage>
     } else {
       CustomSnackBar.failedSnackBar(
           context: context, message: "Customer Registration Failed");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
       // showToast('Customer Registration Failed');
     }
   }
@@ -139,6 +141,7 @@ class _SignUpScreenState extends State<SignUpPage>
   @override
   void initState() {
     super.initState();
+    // widget.isReseller ?? false;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // getResellerCustomerHandler();
@@ -182,7 +185,7 @@ class _SignUpScreenState extends State<SignUpPage>
 
   TextEditingController controller = TextEditingController();
 
-  String? statesName;
+  String? stateName;
   String? cityName;
 
   // String? selectedName;
@@ -483,7 +486,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                                     child: CupertinoTextField(
                                                         controller: controller,
                                                         placeholder:
-                                                            'Search Cities',
+                                                            'Search City',
                                                         onSubmitted: (v) {
                                                           WidgetsBinding
                                                               .instance
@@ -497,7 +500,7 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                         context:
                                                                             context,
                                                                         message:
-                                                                            'Text should be at least 3 characters long')
+                                                                            'Atleast Add Characters to Search')
                                                                 : citiesHandler(
                                                                     v);
                                                             showSearchData =
@@ -534,6 +537,8 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                             index]
                                                                         .cityName;
                                                                     // model = cities;
+                                                                    stateName =
+                                                                        null;
                                                                     expand =
                                                                         !expand;
 
@@ -567,12 +572,18 @@ class _SignUpScreenState extends State<SignUpPage>
                                                                 );
                                                               })
                                                       : const SizedBox(),
+                                                  if (isCityError)
+                                                    formErrorText(
+                                                        error:
+                                                            cityNameErrorString),
                                                 ],
                                               ),
                                             ),
                                           );
                                         })
-                                    : const SizedBox()
+                                    : const SizedBox(),
+                                if (isCityError)
+                                  formErrorText(error: cityNameErrorString),
                               ],
                             ),
                           ),
@@ -602,18 +613,18 @@ class _SignUpScreenState extends State<SignUpPage>
                                   alignment: Alignment.centerLeft,
                                 ),
                                 const SizedBox(width: 13),
-                                Text(statesName == null
-                                    ? 'Select Sate'
-                                    : statesName!),
+                                Text(stateName == null
+                                    ? 'Select State'
+                                    : stateName!),
                               ],
                             ),
-                            underline: const SizedBox(),
+                            underline: const SizedBox.shrink(),
                             // padding: const EdgeInsets.all(0),
                             isExpanded: true,
                             items: statesModel.map((e) {
                               return DropdownMenuItem(
                                   onTap: () {
-                                    statesName = e.stateName;
+                                    stateName = e.stateName;
                                     setState(() {});
                                   },
                                   value: e,
@@ -623,6 +634,8 @@ class _SignUpScreenState extends State<SignUpPage>
                       ),
                     ),
                   ),
+                  if (isStateError) formErrorText(error: stateNameErrorString),
+
                   const SizedBox(height: 5),
                   CustomTextField(
                       controller: zipCont,
@@ -648,7 +661,6 @@ class _SignUpScreenState extends State<SignUpPage>
                       prefixWidget: SvgPicture.asset(
                         "assets/icons/Mail.svg",
                       )),
-                  //! email error string
                   if (isEmailError) formErrorText(error: emailErrorString),
 
                   CustomTextField(
@@ -745,7 +757,7 @@ class _SignUpScreenState extends State<SignUpPage>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LoginPage(),
+                                    builder: (context) => const LoginPage(),
                                   ));
                             },
                             child: const Padding(
@@ -771,7 +783,7 @@ class _SignUpScreenState extends State<SignUpPage>
                             "firstName": fNameCont.text.trim(),
                             "lastName": lNameCont.text.trim(),
                             "salon_Name": salonNameCont.text.trim(),
-                            "state": statesName,
+                            "state": stateName,
                             "postalCode": zipCont.text.trim(),
                             "city": cityName,
                             "address": addressCont.text.trim(),
@@ -817,6 +829,10 @@ class _SignUpScreenState extends State<SignUpPage>
     isEmailError = false;
     isPassError = false;
 
+    log("zipcode = ${zipCont.text}");
+    log("city name = $cityName");
+    log("state name = $stateName");
+
     if (fNameCont.text.isEmpty) {
       fNameErrorString = "Please enter First Name";
       isfNameError = true;
@@ -841,14 +857,6 @@ class _SignUpScreenState extends State<SignUpPage>
       isAddressError = false;
     }
 
-    if (phoneCont.text.characters.length < 12) {
-      phoneErrorString = "Please enter valid phone #";
-      isPhoneError = true;
-      isValid = false;
-    } else {
-      isPhoneError = false;
-    }
-
     if (salonNameCont.text.isEmpty) {
       salonNameErrorString = "Please enter Saloon Name";
       isSalonError = true;
@@ -857,7 +865,15 @@ class _SignUpScreenState extends State<SignUpPage>
       isSalonError = false;
     }
 
-    if (statesName == null) {
+    if (cityName == null) {
+      cityNameErrorString = "Please Select City Name";
+      isCityError = true;
+      isValid = false;
+    } else {
+      isCityError = false;
+    }
+
+    if (stateName == null) {
       stateNameErrorString = "Please select State Name";
       isStateError = true;
       isValid = false;
@@ -865,12 +881,12 @@ class _SignUpScreenState extends State<SignUpPage>
       isStateError = false;
     }
 
-    if (cityName == null) {
-      cityNameErrorString = "Please Select City Name";
-      isCityError = true;
+    if (zipCont.text.isEmpty) {
+      zipCodeErrorString = "Please Enter Zip Code";
+      isZipCodeError = true;
       isValid = false;
     } else {
-      isCityError = false;
+      isZipCodeError = false;
     }
 
     if (emailCont.text.isEmpty) {
@@ -887,6 +903,13 @@ class _SignUpScreenState extends State<SignUpPage>
       isValid = false;
     } else {
       isEmailError = false;
+    }
+    if (phoneCont.text.characters.length < 12) {
+      phoneErrorString = "Please enter valid phone #";
+      isPhoneError = true;
+      isValid = false;
+    } else {
+      isPhoneError = false;
     }
 
     if (!widget.isReseller) {

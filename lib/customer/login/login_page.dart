@@ -21,7 +21,7 @@ import 'package:shop_app/size_config.dart';
 import '../../components/common_widgets.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginScreenState();
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginPage> {
                       // }
                     },
                   ),
-                  const Text("Version 5.0.0"),
+                  const Text("Version 6.0.0"),
 
                   SizedBox(
                     height: getProportionateScreenHeight(20),

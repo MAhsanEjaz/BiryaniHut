@@ -105,7 +105,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
     if (res) {
       CustomSnackBar.showSnackBar(
-          context: context, message: 'Discount added successfully');
+          context: context, message: 'Discount Added Successfully!');
     }
   }
 
@@ -291,12 +291,12 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
                         TextEditingController addressController =
                             TextEditingController(
-                          text: originalIndex.phone?.toString() ?? '',
+                          text: originalIndex.address?.toString() ?? '',
                         );
 
                         TextEditingController phoneController =
                             TextEditingController(
-                          text: originalIndex.address?.toString() ?? '',
+                          text: originalIndex.phone?.toString() ?? '',
                         );
                         TextEditingController emailController =
                             TextEditingController(

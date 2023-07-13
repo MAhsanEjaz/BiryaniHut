@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         // Navigator.pushNamed(context, HomePage.routeName);
                       },
                     ),
-                    const Text("Version 5.0.0"),
+                    const Text("Version 6.0.0"),
                     const Spacer(),
                   ],
                 ),
