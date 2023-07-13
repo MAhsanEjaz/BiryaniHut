@@ -98,6 +98,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             minLines: widget.minlines,
             controller: widget.controller,
             enabled: widget.isEnabled,
+          
             keyboardType: widget.inputType ?? TextInputType.text,
             obscureText: widget.obscureText,
             onChanged: widget.onChange,
@@ -123,5 +124,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ],
     );
     ;
+  }
+}
+
+class CustomTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return newValue.copyWith(
+      text: newValue.text.capitalizeFirstLetter(),
+      selection: newValue.selection,
+    );
+  }
+}
+
+extension StringExtension on String {
+  String capitalizeFirstLetter() {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1);
   }
 }
