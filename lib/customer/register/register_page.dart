@@ -180,6 +180,18 @@ class _SignUpScreenState extends State<SignUpPage>
     setState(() {});
   }
 
+  String _capitalizeText(String text) {
+    List<String> words = text.split(' ');
+
+    for (int i = 0; i < words.length; i++) {
+      if (words[i].isNotEmpty) {
+        words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+      }
+    }
+
+    return words.join(' ');
+  }
+
   void getAllStatesHandler() async {
     CustomLoader.showLoader(context: context);
     await GetAllStatesServices()
@@ -366,6 +378,14 @@ class _SignUpScreenState extends State<SignUpPage>
                       isEnabled: true,
                       obscureText: false,
                       isshowPasswordControls: false,
+                      onChange: (text) {
+                        setState(() {
+                          fNameCont.text = _capitalizeText(text);
+                          fNameCont.selection = TextSelection.fromPosition(
+                            TextPosition(offset: fNameCont.text.length),
+                          );
+                        });
+                      },
                       hint: "First Name",
                       inputType: TextInputType.text,
                       prefixWidget: SvgPicture.asset(
@@ -374,9 +394,16 @@ class _SignUpScreenState extends State<SignUpPage>
                   if (isfNameError) formErrorText(error: fNameErrorString),
 
                   CustomTextField(
-
                       controller: lNameCont,
                       isEnabled: true,
+                      onChange: (text) {
+                        setState(() {
+                          lNameCont.text = _capitalizeText(text);
+                          lNameCont.selection = TextSelection.fromPosition(
+                            TextPosition(offset: lNameCont.text.length),
+                          );
+                        });
+                      },
                       obscureText: false,
                       isshowPasswordControls: false,
                       hint: "Last Name",
@@ -390,6 +417,14 @@ class _SignUpScreenState extends State<SignUpPage>
                     // isshowPasswordControls: true,
                     isEnabled: true,
                     hint: "Salon Name",
+                    onChange: (text) {
+                      setState(() {
+                        salonNameCont.text = _capitalizeText(text);
+                        salonNameCont.selection = TextSelection.fromPosition(
+                          TextPosition(offset: salonNameCont.text.length),
+                        );
+                      });
+                    },
                     prefixWidget: SvgPicture.asset(
                       "assets/svg/Salon Name.svg",
                       color: Colors.black45,
@@ -405,6 +440,14 @@ class _SignUpScreenState extends State<SignUpPage>
                       controller: addressCont,
                       isEnabled: true,
                       obscureText: false,
+                      onChange: (text) {
+                        setState(() {
+                          addressCont.text = _capitalizeText(text);
+                          addressCont.selection = TextSelection.fromPosition(
+                            TextPosition(offset: addressCont.text.length),
+                          );
+                        });
+                      },
                       isshowPasswordControls: false,
                       hint: "Address",
                       inputType: TextInputType.text,
