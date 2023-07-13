@@ -203,6 +203,10 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
     CustomLoader.showLoader(context: context);
     isOrderPlaced =
         await AddToCartService().addToCart(context: context, cart: cart);
+    log("isOrderPlaced = $isOrderPlaced");
+    // Navigator.of(context).pop();
+    // Navigator.of(context, rootNavigator: true).pop();
+
     CustomLoader.hideLoader(context);
   }
 
