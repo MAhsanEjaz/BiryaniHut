@@ -169,11 +169,11 @@ class _SignUpScreenState extends State<SignUpPage>
   List<AllCitiesModel> cityModel = [];
 
   citiesHandler(String? cityName) async {
-    CustomLoader.showLoader(context: context);
+    // CustomLoader.showLoader(context: context);
 
     await GetAllCitiesService()
         .getAllCitiesService(context: context, cityName: cityName!);
-    CustomLoader.hideLoader(context);
+    // CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
 
     print(cityModel);
@@ -538,6 +538,28 @@ class _SignUpScreenState extends State<SignUpPage>
                                                             .symmetric(
                                                         horizontal: 16.0),
                                                     child: CupertinoTextField(
+                                                      onChanged: (v){
+                                                        WidgetsBinding
+                                                            .instance
+                                                            .addPostFrameCallback(
+                                                                (timeStamp) {
+                                                              controller.text
+                                                                  .length <
+                                                                  3
+                                                                  ? CustomSnackBar
+                                                                  .failedSnackBar(
+                                                                  context:
+                                                                  context,
+                                                                  message:
+                                                                  'Atleast Add Characters to Search')
+                                                                  : citiesHandler(
+                                                                  v);
+                                                              showSearchData =
+                                                              true;
+
+                                                              setState(() {});
+                                                            });
+                                                      },
                                                         controller: controller,
                                                         placeholder:
                                                             'Search City',
