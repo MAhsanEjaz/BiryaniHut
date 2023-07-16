@@ -269,6 +269,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                         addtoCart(widget.productData, context,
                                             quantity);
                                       }
+                                      quantityCont.clear();
                                       quantityNode.unfocus();
                                       Provider.of<ProductsProvider>(context,
                                               listen: false)
