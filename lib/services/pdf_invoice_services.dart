@@ -382,6 +382,20 @@ class PdfInvoiceService {
                                   pw.MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
+                                pw.Text("Order Payable Amount :" " ",
+                                    style: pdfHeaderStyle),
+                                pw.Text(
+                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                                    //
+                                    cartModel.remainingBalance
+                                        .toStringAsFixed(2),
+                                    style: pdfStyle),
+                              ]),
+                          pw.Row(
+                              mainAxisAlignment:
+                                  pw.MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
                                 pw.Text("Today's Payments :" " ",
                                     style: pdfHeaderStyle),
                                 pw.Text(

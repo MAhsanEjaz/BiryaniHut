@@ -409,7 +409,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
                         CustomTextField(
-                            headerText: "Company Name",
+                            headerText: "SaleRep Company Name",
                             controller: companyCont,
                             isEnabled: false,
                             hint: 'Company Name',

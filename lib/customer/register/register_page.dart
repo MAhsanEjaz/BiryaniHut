@@ -538,53 +538,53 @@ class _SignUpScreenState extends State<SignUpPage>
                                                             .symmetric(
                                                         horizontal: 16.0),
                                                     child: CupertinoTextField(
-                                                      onChanged: (v){
-                                                        WidgetsBinding
-                                                            .instance
+                                                      onChanged: (v) {
+                                                        WidgetsBinding.instance
                                                             .addPostFrameCallback(
                                                                 (timeStamp) {
-                                                              controller.text
-                                                                  .length <
+                                                          controller.text
+                                                                      .length <
                                                                   3
-                                                                  ? CustomSnackBar
-                                                                  .failedSnackBar(
-                                                                  context:
-                                                                  context,
-                                                                  message:
-                                                                  'Atleast Add Characters to Search')
-                                                                  : citiesHandler(
+                                                              ? ''
+                                                              // CustomSnackBar
+                                                              //     .failedSnackBar(
+                                                              //     context:
+                                                              //     context,
+                                                              //     message:
+                                                              //     'Atleast Add 3 Characters to Search')
+                                                              : citiesHandler(
                                                                   v);
-                                                              showSearchData =
-                                                              true;
+                                                          showSearchData = true;
 
-                                                              setState(() {});
-                                                            });
+                                                          setState(() {});
+                                                        });
                                                       },
-                                                        controller: controller,
-                                                        placeholder:
-                                                            'Search City',
-                                                        onSubmitted: (v) {
-                                                          WidgetsBinding
-                                                              .instance
-                                                              .addPostFrameCallback(
-                                                                  (timeStamp) {
-                                                            controller.text
-                                                                        .length <
-                                                                    3
-                                                                ? CustomSnackBar
-                                                                    .failedSnackBar(
-                                                                        context:
-                                                                            context,
-                                                                        message:
-                                                                            'Atleast Add Characters to Search')
-                                                                : citiesHandler(
-                                                                    v);
-                                                            showSearchData =
-                                                                true;
-
-                                                            setState(() {});
-                                                          });
-                                                        }),
+                                                      controller: controller,
+                                                      placeholder:
+                                                          'Search City',
+                                                      // onSubmitted: (v) {
+                                                      //   WidgetsBinding
+                                                      //       .instance
+                                                      //       .addPostFrameCallback(
+                                                      //           (timeStamp) {
+                                                      //     controller.text
+                                                      //                 .length <
+                                                      //             3
+                                                      //         ? CustomSnackBar
+                                                      //             .failedSnackBar(
+                                                      //                 context:
+                                                      //                     context,
+                                                      //                 message:
+                                                      //                     'Atleast Add Characters to Search')
+                                                      //         : citiesHandler(
+                                                      //             v);
+                                                      //     showSearchData =
+                                                      //         true;
+                                                      //
+                                                      //     setState(() {});
+                                                      //   });
+                                                      // }
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 10),
                                                   showSearchData == true

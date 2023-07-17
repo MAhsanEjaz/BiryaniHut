@@ -228,7 +228,7 @@ class _SaleRepOrderReportDetailsScreenState
 
                                                   final filePath =
                                                       await _savePDF(
-                                                          "Influance Invoice",
+                                                          "Influence Invoice",
                                                           data);
 
                                                   await requestSmsPermission();
@@ -237,7 +237,8 @@ class _SaleRepOrderReportDetailsScreenState
 
                                                   setState(() {});
                                                 },
-                                                title: const Text('Message'),
+                                                title: const Text(
+                                                    'Share via Text Message'),
                                               ),
                                               ListTile(
                                                   leading:
@@ -277,7 +278,8 @@ class _SaleRepOrderReportDetailsScreenState
 
                                                     _sendEmail([filePath]);
                                                   },
-                                                  title: const Text('Gmail')),
+                                                  title: const Text(
+                                                      'Share via Email')),
                                             ],
                                           ))));
                         },
@@ -1216,7 +1218,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                         style: orderStyle,
                       ),
                       Text(
-                        widget.orders.data!.discount.toStringAsFixed(2),
+                        '${widget.orders.data!.discount.toStringAsFixed(2)}%',
                         style: orderStyle,
                       ),
                     ],

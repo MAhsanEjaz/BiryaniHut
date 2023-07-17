@@ -46,11 +46,13 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
       getSaleOrders = searchSaleOrders.where((element) {
         final name = element.firstName!.trim().toLowerCase();
         final saloon = element.salonName!.trim().toLowerCase();
+        final email = element.email!.trim().toLowerCase();
         final lastName = element.lastName!.trim().toLowerCase();
         final address = element.address!.trim().toLowerCase();
         final fullName = '$name $lastName';
         final saleRepName = element.saleRepName!.trim().toLowerCase();
         return name.contains(lowerQuery) ||
+            email.contains(lowerQuery) ||
             saloon.contains(lowerQuery) ||
             lastName.contains(lowerQuery) ||
             address.contains(lowerQuery) ||
@@ -84,7 +86,11 @@ class _SalesrepOrdersPageState extends State<SalesrepOrdersPage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
         child: AppBar(
-          actions: [NavigatorWidget(color: appColor,)],
+          actions: [
+            NavigatorWidget(
+              color: appColor,
+            )
+          ],
           backgroundColor: Colors.white,
           centerTitle: false,
           flexibleSpace: Row(
