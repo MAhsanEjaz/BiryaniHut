@@ -368,7 +368,8 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
   Future<void> getRepDiscountHandler() async {
     CustomLoader.showLoader(context: context);
-    await SalesrepGetDiscountService().getRepDiscount(context: context);
+    await SalesrepGetDiscountService()
+        .getRepDiscount(context: context, repId: loginStorage.getUserId());
 
     CustomLoader.hideLoader(context);
   }

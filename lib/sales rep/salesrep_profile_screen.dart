@@ -222,9 +222,12 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                                 .clear();
 
                             Hive.box("login_hive").clear();
+                            Hive.box("customer_cart_box").clear();
+                            Hive.box("salesrep_cart_box").clear();
+                            // Hive.box("login_hive").clear();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
+                                    builder: (context) => const LoginPage()),
                                 (Route route) => false);
                           },
                           child: const Text("Sign out")),

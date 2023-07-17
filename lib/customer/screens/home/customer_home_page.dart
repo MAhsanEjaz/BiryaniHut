@@ -81,6 +81,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _getCustFavProdHandler();
       initializeStripe();
+      // customerGetDataHandler();
       if (cartStorage.getCartItems() != null) {
         list = cartStorage.getCartItems()!;
         log("list length = ${list.length}");
@@ -389,5 +390,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       print("Exception in get products service $err");
       return ProductsModel(status: 0, message: "Something went wrong");
     }
+  }
+
+  customerGetDataHandler() async {
+    CustomLoader.showLoader(context: context);
+    await CustomerGetService()
+        .customerGetService(context: context, id: loginStorage.getUserId());
+
+    // Provider.of<CustomerProfileProvider>(context, listen: false)
+    //     .customerProfileModel;
+
+    CustomLoader.hideLoader(context);
   }
 }

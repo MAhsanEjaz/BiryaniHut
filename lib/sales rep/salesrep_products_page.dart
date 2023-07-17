@@ -313,7 +313,7 @@ class _SalesRepProductsPageState extends State<SalesRepProductsPage> {
                           )
                       ],
                     ),
-                  if (isLoading)
+                  if (isLoading && data.searchCont.text.isEmpty)
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: CircularProgressIndicator(
