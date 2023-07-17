@@ -8,4 +8,9 @@ class CustomerProfileProvider extends ChangeNotifier {
     customerProfileModel = newcCustomerProfileModel;
     notifyListeners();
   }
+
+  clearData() {
+    customerProfileModel = null;
+    notifyListeners();
+  }
 }

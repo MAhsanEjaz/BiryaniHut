@@ -111,13 +111,18 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
                                       .publishableTestKey ==
                                   null
                           ? () {
-                              paymentHandler(
-                                  data.paymentKeyGetModel!.data!.id!);
+                              if (validation()) {
+                                paymentHandler(
+                                    data.paymentKeyGetModel!.data!.id!);
+                              }
                             }
                           : () {
                               updateKey = true;
-                              paymentHandler(
-                                  data.paymentKeyGetModel!.data!.id!);
+
+                              if (validation()) {
+                                paymentHandler(
+                                    data.paymentKeyGetModel!.data!.id!);
+                              }
                             },
                       text: data.paymentKeyGetModel!.data == null ||
                               data.paymentKeyGetModel!.data!
@@ -180,6 +185,16 @@ class _SalesrepPanelPageState extends State<SalesrepPanelPage> {
             ],
           ));
     });
+  }
+
+  bool validation() {
+    if (stripeController.text.length < 80) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Key is invalid');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   restartApp(BuildContext context) async {

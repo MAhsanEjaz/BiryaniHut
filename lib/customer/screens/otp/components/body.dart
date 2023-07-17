@@ -65,13 +65,13 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.bold, color: Colors.black)),
               ])),
               const SizedBox(height: 5),
-              buildTimer(),
+              // buildTimer(),
               // OtpForm(),
 
               const SizedBox(height: 20),
               OTPTextField(
-                length: 5,
-                outlineBorderRadius: 5,
+                length: 6,
+                outlineBorderRadius: 6,
                 width: MediaQuery.of(context).size.width,
                 style: const TextStyle(fontSize: 17),
                 textFieldAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,15 +83,15 @@ class _BodyState extends State<Body> {
                 },
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.1),
-              GestureDetector(
-                onTap: () {
-                  // OTP code resend
-                },
-                child: const Text(
-                  "Resend OTP Code",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
+              // GestureDetector(
+              //   onTap: () {
+              //
+              //   },
+              //   child: const Text(
+              //     "Resend OTP Code",
+              //     style: TextStyle(decoration: TextDecoration.underline),
+              //   ),
+              // )
             ],
           ),
         ),

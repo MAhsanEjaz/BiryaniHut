@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/customer/login/login_page.dart';
 import 'package:shop_app/helper/custom_loader.dart';
+import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/services/change_password_service.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
 
@@ -26,13 +28,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   changePasswordHandler() async {
     CustomLoader.showLoader(context: context);
 
-    await ChangePasswordService().changePasswordService(
+    bool res = await ChangePasswordService().changePasswordService(
         context: context,
         email: widget.email,
         newPassword: confirmPassword.text,
         otp: widget.otp);
 
     CustomLoader.hideLoader(context);
+
+    if (res) {
+      CustomSnackBar.showSnackBar(
+          context: context, message: 'Password Changed Successfully');
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    }
   }
 
   @override
@@ -72,6 +82,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   height: 10,
                 ),
                 CustomTextField(
+                  controller: newPassword,
                   obscureText: isView,
                   suffixWidget: InkWell(
                       onTap: () {
@@ -88,6 +99,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   height: 5,
                 ),
                 CustomTextField(
+                  controller: confirmPassword,
                   obscureText: isView,
                   suffixWidget: InkWell(
                       onTap: () {
@@ -104,7 +116,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 DefaultButton(
                     text: 'Change Password',
                     press: () {
-                      changePasswordHandler();
+                      if (validation()) {
+                        changePasswordHandler();
+                      }
                     })
               ],
             ),
@@ -112,5 +126,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
       ),
     );
+  }
+
+  bool validation() {
+    if (newPassword.text.isEmpty) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Enter your password');
+      return false;
+    } else if (confirmPassword.text.isEmpty ||
+        newPassword.text != confirmPassword.text) {
+      CustomSnackBar.failedSnackBar(
+          context: context, message: 'Password not matched');
+      return false;
+    } else {
+      return true;
+    }
   }
 }

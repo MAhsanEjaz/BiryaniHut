@@ -8,4 +8,9 @@ class SalesrepProfileProvider extends ChangeNotifier {
     repProfileModel = model;
     notifyListeners();
   }
+
+  clearData() {
+    repProfileModel = null;
+    notifyListeners();
+  }
 }

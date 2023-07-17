@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/helper/custom_post_request.dart';
+import 'package:shop_app/helper/custom_snackbar.dart';
 
 class ChangePasswordService {
   Future changePasswordService(
@@ -16,10 +17,13 @@ class ChangePasswordService {
           url: '$apiBaseUrl/login/UpdatePassword',
           body: body);
 
-      if (res != null) {
-        return true;
-      } else {
+      if (res['statusCode'] == 400) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: 'OTP has expired');
+
         return false;
+      } else {
+        return true;
       }
     } catch (err) {
       print(err);

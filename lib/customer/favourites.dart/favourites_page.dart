@@ -70,8 +70,10 @@ class _FavouritesScreenState extends State<FavouritesPage> {
                       }
 
                       await _getCustFavProdHandler();
-                      product.favProd!
-                          .removeAt(product.favProd!.indexOf(element));
+                      // product.favProd!
+                      //     .removeAt(product.favProd!.indexOf(element));
+
+                      product.deleteData(product.favProd!.indexOf(element));
                       setState(() {});
 
                       CustomLoader.hideLoader(context);

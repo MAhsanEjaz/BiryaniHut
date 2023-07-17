@@ -960,6 +960,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                   // // applePay: true,
                   // // googlePay: true,
                   // testEnv: false,
+
                   style: ThemeMode.system,
                   // appearance: PaymentSheetAppearance(
                   //     colors: PaymentSheetAppearanceColors(
@@ -1058,7 +1059,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           body: body,
           headers: {
             'Authorization':
-                'Bearer sk_test_51Mt7WuFPO4xgbPFkao5mxU8gWMnltxu32FtUhcIdONFqmENpIPIhlRU3xMEfwztAgJsgp5QE5GDriiMjQysxa9pT00xTUcsYEN',
+            'Bearer sk_test_51Mt7WuFPO4xgbPFkao5mxU8gWMnltxu32FtUhcIdONFqmENpIPIhlRU3xMEfwztAgJsgp5QE5GDriiMjQysxa9pT00xTUcsYEN',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
       print('Create Intent reponse ===> ${response.body.toString()}');

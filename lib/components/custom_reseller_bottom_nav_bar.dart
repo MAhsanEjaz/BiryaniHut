@@ -5,7 +5,9 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/customer/login/login_page.dart';
 import 'package:shop_app/enums.dart';
+import 'package:shop_app/providers/all_orders_provider.dart';
 import 'package:shop_app/providers/sale_rep_orders_provider.dart';
+import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import '../constants.dart';
 import '../sales rep/salesrep_profile_screen.dart';
 
@@ -65,9 +67,13 @@ class CustomResellerBottomNavBar extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
+                  Provider.of<SalesrepProfileProvider>(context, listen: false)
+                      .clearData();
                   Provider.of<SaleRepOrdersProvider>(context, listen: false)
                       .repOrder!
                       .clear();
+                  Provider.of<AllOrdersProvider>(context, listen: false)
+                      .clearList();
                   Hive.box("login_hive").clear();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {

@@ -170,131 +170,147 @@ class _SaleRepOrderReportDetailsScreenState
                 Consumer<OrderReportDetailsProvider>(
                     builder: (context, order, _) {
                   return order.reportDetailsModel != null
-                      ? OrderReportDetailsWidget(
-                          orders: order.reportDetailsModel!,
-                        )
+                      ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OrderReportDetailsWidget(
+                            orders: order.reportDetailsModel!,
+                          ),
+                      )
                       : const SizedBox();
                 }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: appColor),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () async {
-                          //! share invoice
-                          showCupertinoDialog(
-                              barrierDismissible: true,
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                  content: StatefulBuilder(
-                                      builder: (context, setStatess) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ListTile(
-                                                leading: const Icon(Icons.sms),
-                                                onTap: () async {
-                                                  Navigator.pop(context);
-                                                  // newSendSms(
-                                                  //     data.reportDetailsModel!
-                                                  //         .data!.orderProducts,
-                                                  //     widget.phone);
+                widget.isCustomer == true
+                    ? SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: appColor),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () async {
+                                //! share invoice
+                                showCupertinoDialog(
+                                    barrierDismissible: true,
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                        content: StatefulBuilder(
+                                            builder: (context, setStatess) =>
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      leading:
+                                                          const Icon(Icons.sms),
+                                                      onTap: () async {
+                                                        Navigator.pop(context);
+                                                        // newSendSms(
+                                                        //     data.reportDetailsModel!
+                                                        //         .data!.orderProducts,
+                                                        //     widget.phone);
 
-                                                  final data =
-                                                      await PdfOrdersInvoiceService()
-                                                          .createInvoice(
-                                                    ctx: context,
-                                                    order: widget.orders,
-                                                    customerName: widget
-                                                            .orders.firstName! +
-                                                        " " +
-                                                        widget.orders.lastName!,
-                                                    isOrderCompleted:
-                                                        widget.orders.status ==
-                                                                "Pending"
-                                                            ? false
-                                                            : true,
-                                                    repName: storage
-                                                            .getUserFirstName() +
-                                                        " " +
-                                                        storage
-                                                            .getUserLastName(),
-                                                    repCompanyName: loginStorage
-                                                        .getSalesRepCompany(),
-                                                  );
-
-                                                  final filePath =
-                                                      await _savePDF(
-                                                          "Influence Invoice",
-                                                          data);
-
-                                                  await requestSmsPermission();
-                                                  sendMessage(
-                                                      filePath, widget.phone);
-
-                                                  setState(() {});
-                                                },
-                                                title: const Text(
-                                                    'Share via Text Message'),
-                                              ),
-                                              ListTile(
-                                                  leading:
-                                                      const Icon(Icons.mail),
-                                                  onTap: () async {
-                                                    Navigator.pop(context);
-                                                    final data =
-                                                        await PdfOrdersInvoiceService()
-                                                            .createInvoice(
-                                                      ctx: context,
-                                                      order: widget.orders,
-                                                      customerName: widget
-                                                              .orders
-                                                              .firstName! +
-                                                          " " +
-                                                          widget
-                                                              .orders.lastName!,
-                                                      isOrderCompleted: widget
+                                                        final data =
+                                                            await PdfOrdersInvoiceService()
+                                                                .createInvoice(
+                                                          ctx: context,
+                                                          order: widget.orders,
+                                                          customerName: widget
                                                                   .orders
-                                                                  .status ==
-                                                              "Pending"
-                                                          ? false
-                                                          : true,
-                                                      repName: storage
-                                                              .getUserFirstName() +
-                                                          " " +
-                                                          storage
-                                                              .getUserLastName(),
-                                                      repCompanyName: loginStorage
-                                                          .getSalesRepCompany(),
-                                                    );
+                                                                  .firstName! +
+                                                              " " +
+                                                              widget.orders
+                                                                  .lastName!,
+                                                          isOrderCompleted: widget
+                                                                      .orders
+                                                                      .status ==
+                                                                  "Pending"
+                                                              ? false
+                                                              : true,
+                                                          repName: storage
+                                                                  .getUserFirstName() +
+                                                              " " +
+                                                              storage
+                                                                  .getUserLastName(),
+                                                          repCompanyName:
+                                                              loginStorage
+                                                                  .getSalesRepCompany(),
+                                                        );
 
-                                                    final filePath =
-                                                        await _savePDF(
-                                                            "Influance Invoice",
-                                                            data);
+                                                        final filePath =
+                                                            await _savePDF(
+                                                                "Influence Invoice",
+                                                                data);
 
-                                                    _sendEmail([filePath]);
-                                                  },
-                                                  title: const Text(
-                                                      'Share via Email')),
-                                            ],
-                                          ))));
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(Icons.share),
-                            SizedBox(width: 10),
-                            Text("Share")
-                          ],
+                                                        await requestSmsPermission();
+                                                        sendMessage(filePath,
+                                                            widget.phone);
+
+                                                        setState(() {});
+                                                      },
+                                                      title: const Text(
+                                                          'Share via Text Message'),
+                                                    ),
+                                                    ListTile(
+                                                        leading: const Icon(
+                                                            Icons.mail),
+                                                        onTap: () async {
+                                                          Navigator.pop(
+                                                              context);
+                                                          final data =
+                                                              await PdfOrdersInvoiceService()
+                                                                  .createInvoice(
+                                                            ctx: context,
+                                                            order:
+                                                                widget.orders,
+                                                            customerName: widget
+                                                                    .orders
+                                                                    .firstName! +
+                                                                " " +
+                                                                widget.orders
+                                                                    .lastName!,
+                                                            isOrderCompleted: widget
+                                                                        .orders
+                                                                        .status ==
+                                                                    "Pending"
+                                                                ? false
+                                                                : true,
+                                                            repName: storage
+                                                                    .getUserFirstName() +
+                                                                " " +
+                                                                storage
+                                                                    .getUserLastName(),
+                                                            repCompanyName:
+                                                                loginStorage
+                                                                    .getSalesRepCompany(),
+                                                          );
+
+                                                          final filePath =
+                                                              await _savePDF(
+                                                                  "Influance Invoice",
+                                                                  data);
+
+                                                          _sendEmail(
+                                                              [filePath]);
+                                                        },
+                                                        title: const Text(
+                                                            'Share via Email')),
+                                                  ],
+                                                ))));
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.share),
+                                  SizedBox(width: 10),
+                                  Text("Share")
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                )
+                      )
               ],
             ),
           ),
