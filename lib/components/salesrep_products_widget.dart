@@ -206,10 +206,10 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                         return;
                                       }
 
-                                      if (quantityCont.text.isEmpty) {
-                                        showToast("Please add some quantity");
-                                        return;
-                                      }
+                                      // if (quantityCont.text.isEmpty) {
+                                      //   showToast("Please add some quantity");
+                                      //   return;
+                                      // }
 
                                       /// check if the string contains only numberscar
 
@@ -270,6 +270,8 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                             quantity);
                                       }
                                       quantityCont.clear();
+                                      //! was showing quantity with any other product add to cart in search
+                                      //! so, i cleared it add to cart time.
                                       quantityNode.unfocus();
                                       Provider.of<ProductsProvider>(context,
                                               listen: false)
@@ -614,10 +616,10 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
 }
 
 class RowWithImage extends StatefulWidget {
-  String? image;
-  String? name;
+  final String image;
+  final String name;
 
-  RowWithImage({Key? key, required this.image, required this.name})
+  const RowWithImage({Key? key, required this.image, required this.name})
       : super(key: key);
 
   @override
@@ -640,7 +642,7 @@ class _RowWithImageState extends State<RowWithImage> {
               width: 50,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(widget.image!), fit: BoxFit.cover),
+                      image: NetworkImage(widget.image), fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(10)),
             ),
             const SizedBox(width: 10),

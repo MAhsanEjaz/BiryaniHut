@@ -10,10 +10,10 @@ import '../storages/login_storage.dart';
 class SalesrepGetDiscountService {
   LoginStorage storage = LoginStorage();
 
-  Future getRepDiscount({required BuildContext context}) async {
+  Future getRepDiscount(
+      {required BuildContext context, required int repId}) async {
     try {
-      String apiUrl =
-          "$apiBaseUrl/SaleRep/GetSaleRepDicount?SaleRepId=${storage.getUserId()}";
+      String apiUrl = "$apiBaseUrl/SaleRep/GetSaleRepDicount?SaleRepId=$repId";
 
       log("SalesrepGetDiscountService api = $apiUrl");
       var res = await CustomGetRequestService().httpGetRequest(

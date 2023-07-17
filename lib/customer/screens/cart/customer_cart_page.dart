@@ -65,9 +65,6 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       customerGetDataHandler();
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getRepDiscountHandler();
     });
 
@@ -133,7 +130,8 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
   Future<void> getRepDiscountHandler() async {
     CustomLoader.showLoader(context: context);
-    await SalesrepGetDiscountService().getRepDiscount(context: context);
+    await SalesrepGetDiscountService().getRepDiscount(
+        context: context, repId: loginStorage.getSalesRepId() ?? 0);
 
     CustomLoader.hideLoader(context);
   }
@@ -696,7 +694,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                       showAwesomeAlert(
                                           context: context,
                                           msg:
-                                              'Do you want to place the order?',
+                                              'Do you want to place the order ?',
                                           animType: AnimType.topSlide,
                                           dialogType: DialogType.info,
                                           onOkPress: () async {

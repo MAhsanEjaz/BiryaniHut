@@ -43,8 +43,7 @@ class LoginApiService {
           storage.setUserType(usertype: "customer");
           storage.setSalesRepId(repId: userModel.data!.saleRepId!);
           storage.setSalesRepName(repName: userModel.data!.saleRepName!);
-
-          // storage.setSalesRepCompany(company: userModel.data!.!);
+          storage.setSalesRepCompany(company: userModel.data!.companyName!);
         } else {
           storage.setUserType(usertype: "salesrep");
         }
