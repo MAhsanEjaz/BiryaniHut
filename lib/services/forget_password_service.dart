@@ -12,9 +12,9 @@ class ForgetPasswordService {
           url: '$apiBaseUrl/login/forgetPassword?email=$email',
           body: {});
 
-      if (res['data'] != null) {
+      if (res['message'] == 'Success') {
         return true;
-      } else if (res['data'] == null) {
+      } else if (res['message'] == 'Email is not Exist') {
         CustomSnackBar.failedSnackBar(
             context: context, message: 'Email not Exists');
         return false;

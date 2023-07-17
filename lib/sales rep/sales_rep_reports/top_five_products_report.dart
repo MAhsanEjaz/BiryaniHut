@@ -11,7 +11,6 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/cost_of_good_sale_model.dart';
 import 'package:shop_app/models/top_five_product_model.dart';
 
-
 class TopFivePdfService {
   Future<Uint8List> createReport({
     required BuildContext context,
@@ -22,10 +21,6 @@ class TopFivePdfService {
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return <pw.Widget>[
-
-
-
-
             pw.Table(
               border: pw.TableBorder.all(
                   color: const PdfColor.fromInt(0x000000), width: .5),
@@ -38,22 +33,12 @@ class TopFivePdfService {
                     textAlign: pw.TextAlign.center,
                   ),
                   pw.Text(
-                    'Name',
+                    'Product Name',
                     style: pdfTitleStyle,
                     textAlign: pw.TextAlign.center,
                   ),
                   pw.Text(
-                    'Cost',
-                    style: pdfTitleStyle,
-                    textAlign: pw.TextAlign.center,
-                  ),
-                  pw.Text(
-                    'Revenue',
-                    style: pdfTitleStyle,
-                    textAlign: pw.TextAlign.center,
-                  ),
-                  pw.Text(
-                    "Profit Margin",
+                    "Orders",
                     style: pdfTitleStyle,
                     textAlign: pw.TextAlign.center,
                   ),
@@ -91,7 +76,6 @@ class TopFivePdfService {
                                   // style: tableStyle,
                                   textAlign: pw.TextAlign.center,
                                 ))),
-
                       ],
                     ),
                     pw.Divider()

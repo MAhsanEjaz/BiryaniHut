@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/customer/favourites.dart/favourites_page.dart';
+import 'package:shop_app/providers/cust_favourites_product_provider.dart';
 import '../constants.dart';
 import '../customer/login/login_page.dart';
 import '../customer/screens/order_history/customer_orders_page.dart';
@@ -54,18 +56,32 @@ class CustomCustomBottomNavBar extends StatelessWidget {
 //                         builder: (context) => CustomerHomePage(),
 //                       ));
                   }),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  // showToast("under development");
+              Stack(
+                children: [
+                  IconButton(
+                    icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      // showToast("under development");
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FavouritesPage(),
-                      ));
-                },
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FavouritesPage(),
+                          ));
+                    },
+                  ),
+                  Consumer<CustFavouritesProductsProvider>(
+                      builder: (context, data, _) {
+                    return Text(
+                      data.favProd!.length == 0
+                          ? ''
+                          : data.favProd!.length.toString(),
+                      style: const TextStyle(
+                          color: appColor, fontWeight: FontWeight.bold),
+                    );
+                  })
+                ],
               ),
               IconButton(
                 icon: SvgPicture.asset(
@@ -98,7 +114,7 @@ class CustomCustomBottomNavBar extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                            const CustomerProfileScreen()));
+                                const CustomerProfileScreen()));
                   }),
               // Navigator.pushNamed(context, ProfileScreen.routeName),
               // Navigator.push(

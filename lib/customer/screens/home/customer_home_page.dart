@@ -1,16 +1,18 @@
-import 'dart:developer';
+// ignore_for_file: empty_catches
 
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/customer_custom_bottom_nav_bar.dart';
-import 'package:shop_app/customer/screens/home/components/discount_banner.dart';
 import 'package:shop_app/enums.dart';
 import 'package:shop_app/components/customer_products_widget.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
+import 'package:shop_app/helper/custom_snackbar.dart';
 import 'package:shop_app/providers/payment_get_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/services/customer_favourtes_products_service.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
 import 'package:shop_app/services/get_payment_service.dart';
 import 'package:shop_app/size_config.dart';
@@ -67,9 +69,17 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   LoginStorage loginStorage = LoginStorage();
 
+  _getCustFavProdHandler() async {
+    CustomLoader.showLoader(context: context);
+    await CustFavProductsService().getCustFavProd(
+        context: context, customerId: LoginStorage().getUserId());
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _getCustFavProdHandler();
       initializeStripe();
       // customerGetDataHandler();
       if (cartStorage.getCartItems() != null) {
@@ -134,41 +144,28 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 
   Future<void> initializeStripe() async {
-    log("loginStorage.getUsertype() = ${loginStorage.getUsertype()}");
-    if (loginStorage.getUsertype() == "customer") {
-      await saleRepGetPaymentKeyHandler();
-
+    try {
+      WidgetsFlutterBinding.ensureInitialized();
       String? stripeApiKey;
-
       var paymentProvider =
           Provider.of<PaymentGetProvider?>(context, listen: false);
 
       if (paymentProvider != null &&
-          paymentProvider.paymentKeyGetModel != null) {
+          paymentProvider.paymentKeyGetModel != null &&
+          paymentProvider.paymentKeyGetModel!.data!.publishableTestKey !=
+              null) {
         stripeApiKey =
             paymentProvider.paymentKeyGetModel!.data!.publishableTestKey;
-
-        // Stripe.publishableKey = stripeApiKey.toString();
+        Stripe.publishableKey = stripeApiKey!;
+        await Stripe.instance.applySettings();
+        print('stripeApiKey$stripeApiKey');
+      } else {
         Stripe.publishableKey =
             'pk_test_51Mt7WuFPO4xgbPFkTVVahnMEIb9IZPgkOkPIVL68Nj6nBeJVJD9gIJcekJuHNh35QV6JH6hQ01VJY7ytkvrxISre00U8vrdKF1';
         await Stripe.instance.applySettings();
-
-        if (stripeApiKey == null || stripeApiKey.isEmpty) {
-          log('Stripe publishable key is null or empty');
-          return;
-        } else {
-          try {
-            Stripe.publishableKey = stripeApiKey.toString();
-            await Stripe.instance.applySettings();
-
-            log('stripe--->$stripeApiKey');
-          } catch (e) {
-            log("exception in setting stripe key = ${e.toString()}");
-          }
-        }
-      } else {
-        print('PaymentGetProvider or paymentKeyGetModel is null');
       }
+    } catch (err) {
+      print(err);
     }
   }
 
@@ -368,7 +365,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         productsList = prod.data;
 
         if (productsList!.isNotEmpty) {
-          productsList!.forEach((element) {
+          for (var element in productsList!) {
             log(" element price = ${element.salePrice}");
             widgets.add(CustomerProductsWidget(
               isReseller: false,
@@ -378,7 +375,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             // widgets.add(Container(
             //   color: Colors.redAccent,
             // ));
-          });
+          }
         }
         CustomLoader.hideLoader(context);
 

@@ -178,12 +178,12 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
   List<AllCitiesModel> cityModel = [];
 
   citiesHandler(String? cityName) async {
-    CustomLoader.showLoader(context: context);
+    // CustomLoader.showLoader(context: context);
 
     await GetAllCitiesService()
         .getAllCitiesService(context: context, cityName: cityName!);
 
-    CustomLoader.hideLoader(context);
+    // CustomLoader.hideLoader(context);
     cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
     stateName = null;
     log("new stateName = $stateName");
@@ -309,7 +309,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                     ),
                                   ));
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(Icons.shopping_basket),
                                 SizedBox(
@@ -331,7 +331,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                 widget.customers.id ?? 0,
                                           )));
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(Icons.shopping_cart_checkout),
                                 SizedBox(
@@ -352,7 +352,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
 
                               showAddPaymentDialog(context);
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(Icons.monetization_on),
                                 SizedBox(
@@ -611,6 +611,18 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                                                                                       Padding(
                                                                                                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                                                                                         child: CupertinoTextField(
+                                                                                                            onChanged: (v) async {
+                                                                                                              setStatee(() {
+                                                                                                                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                                                  controller.text.length < 3 ? CustomSnackBar.failedSnackBar(context: context, message: 'Text should be at least 3 characters long') : citiesHandler(v);
+                                                                                                                  showSearchData = true;
+                                                                                                                });
+                                                                                                              });
+
+                                                                                                              await Future.delayed(const Duration(seconds: 1));
+                                                                                                              controller.text.length < 3 ? const SizedBox() : citiesHandler(v);
+                                                                                                              setStatee(() {});
+                                                                                                            },
                                                                                                             controller: controller,
                                                                                                             placeholder: 'Search Cities',
                                                                                                             onSubmitted: (v) async {
@@ -1230,7 +1242,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                               //           );
                               //         }));
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(Icons.update),
                                 SizedBox(width: 10),
@@ -1261,7 +1273,7 @@ class _SalesRepCustomersWidgetState extends State<SalesRepCustomersWidget>
                                   },
                                   onCancelPress: () {});
                             },
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.delete,
@@ -2010,7 +2022,7 @@ class SalesRapCustomerSearchWidget extends StatelessWidget {
                     PopupMenuItem(
                       value: popupMenuValue,
                       onTap: () {},
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.shopping_basket),
                           SizedBox(

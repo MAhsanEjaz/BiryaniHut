@@ -50,6 +50,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
         productId: widget.product.productId,
         date: "$currentDate");
 
+    _getCustFavProdHandler();
+
     CustomLoader.hideLoader(context);
   }
 
@@ -75,7 +77,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
   Widget build(BuildContext context) {
     return Consumer<CustFavouritesProductsProvider>(
         builder: (context, data, _) {
-          List<Widget> widgets = [];
+      List<Widget> widgets = [];
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -99,7 +101,6 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               productId: widget.product.productId);
 
                       await _getCustFavProdHandler();
-
 
                       if (res == true) {
                         showToast('Product removed from Favourites');

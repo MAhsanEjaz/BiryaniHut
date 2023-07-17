@@ -57,10 +57,10 @@ class ProductData {
   int productId;
   String productName;
   num salePrice;
-  int quantity;
-  int? lowStockthreshold;
+  num quantity;
+  num? lowStockthreshold;
   num? regularPrice;
-  int? productWaight;
+  num? productWaight;
   String? productCode;
   String? productTrackingNo;
   String? stockStatus;
