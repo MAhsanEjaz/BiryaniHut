@@ -196,13 +196,19 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                         quantityCont.text = "1";
                                       }
 
+                                      if (quantityCont.text.length > 5) {
+                                        showToast(
+                                            "Please Enter Valid Quantity");
+                                      }
+
                                       totalPrice = 0;
                                       getCartItems();
                                       int quantity =
                                           int.parse(quantityCont.text);
 
-                                      if (quantity > 10000) {
-                                        showToast("Please Add Valid Quantity");
+                                      if (quantity > 99999) {
+                                        showToast(
+                                            "Please Enter Valid Quantity");
                                         return;
                                       }
 

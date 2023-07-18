@@ -131,10 +131,25 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                         )),
                                                     CupertinoActionSheetAction(
                                                         onPressed: () {
+                                                          if (quantityCont
+                                                                  .text.length >
+                                                              5) {
+                                                            showToast(
+                                                                "Please Enter Valid Quantity");
+                                                          }
+
                                                           int quantity =
                                                               int.parse(
                                                                   quantityCont
                                                                       .text);
+
+                                                          if (quantity >
+                                                              99999) {
+                                                            showToast(
+                                                                "Please Enter Valid Quantity");
+                                                            return;
+                                                          }
+
                                                           if (quantityCont
                                                               .text.isEmpty) {
                                                             showToast(

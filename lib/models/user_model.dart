@@ -85,7 +85,7 @@ class LoginData {
     phone = json['phone'];
     rating = json['rating'];
     discount = json['discount'] ?? 0;
-    saleRepId = json['saleRepId'];
+    saleRepId = json['saleRepId']; //saleRepId
     saleRepName = json['saleRepName'];
     token = json['token'];
     loginId = json['loginId'];

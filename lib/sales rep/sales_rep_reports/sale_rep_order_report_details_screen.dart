@@ -171,11 +171,11 @@ class _SaleRepOrderReportDetailsScreenState
                     builder: (context, order, _) {
                   return order.reportDetailsModel != null
                       ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: OrderReportDetailsWidget(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OrderReportDetailsWidget(
                             orders: order.reportDetailsModel!,
                           ),
-                      )
+                        )
                       : const SizedBox();
                 }),
                 widget.isCustomer == true
@@ -1183,7 +1183,8 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                   style: orderStyle,
                 ),
                 Text(
-                  widget.orders.data!.previousBalance.toStringAsFixed(2),
+                  "\$ " +
+                      widget.orders.data!.previousBalance.toStringAsFixed(2),
                   style: orderStyle,
                 )
               ],
@@ -1198,7 +1199,8 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                   style: orderStyle,
                 ),
                 Text(
-                  widget.orders.data!.orderPaidAmount.toStringAsFixed(2),
+                  "\$ " +
+                      widget.orders.data!.orderPaidAmount.toStringAsFixed(2),
                   style: orderStyle,
                 )
               ],
@@ -1213,7 +1215,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                   style: orderStyle,
                 ),
                 Text(
-                  widget.orders.data!.grandTotal.toStringAsFixed(2),
+                  "\$ " + widget.orders.data!.grandTotal.toStringAsFixed(2),
                   style: orderStyle,
                 )
               ],
@@ -1233,10 +1235,15 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                         "Discount",
                         style: orderStyle,
                       ),
-                      Text(
-                        '${widget.orders.data!.discount.toStringAsFixed(2)}%',
-                        style: orderStyle,
-                      ),
+                      widget.orders.data!.discountType == "By Value"
+                          ? Text(
+                              "\$ ${widget.orders.data!.discount.toStringAsFixed(2)}",
+                              style: orderStyle,
+                            )
+                          : Text(
+                              "${widget.orders.data!.discount.toStringAsFixed(2)} %",
+                              style: orderStyle,
+                            ),
                     ],
                   )
                 : const SizedBox(),
@@ -1255,7 +1262,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                         style: orderStyle,
                       ),
                       Text(
-                        widget.orders.data!.netTotal.toString(),
+                        "\$ " + widget.orders.data!.netTotal.toString(),
                         style: orderStyle,
                       )
                     ],
@@ -1271,7 +1278,9 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                   style: orderStyle,
                 ),
                 Text(
-                  widget.orders.data!.orderPendingPayment.toStringAsFixed(2),
+                  "\$ " +
+                      widget.orders.data!.orderPendingPayment
+                          .toStringAsFixed(2),
                   style: orderStyle,
                 )
               ],

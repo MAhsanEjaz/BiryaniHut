@@ -10,44 +10,34 @@ class OrderReportDetailsModel {
     statusCode = json['statusCode'];
     message = json['message'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    return data;
-  }
 }
 
 class OrderReports {
-  OrderReports({
-    required this.firstName,
-    required this.lastName,
-    required this.salonName,
-    required this.address,
-    required this.location,
-    required this.customerImagePath,
-    this.customerImage,
-    this.netTotal,
-    required this.saleRepName,
-    required this.rating,
-    required this.orderProducts,
-    required this.orderPayment,
-    required this.orderId,
-    required this.totalPrice,
-    required this.discount,
-    required this.grandTotal,
-    required this.dateTime,
-    required this.status,
-    required this.orderPendingPayment,
-    required this.orderPaidAmount,
-    required this.totalBalance,
-    required this.orderBy,
-    required this.previousBalance,
-  });
+  OrderReports(
+      {required this.firstName,
+      required this.lastName,
+      required this.salonName,
+      required this.address,
+      required this.location,
+      required this.customerImagePath,
+      this.customerImage,
+      this.netTotal,
+      required this.saleRepName,
+      required this.rating,
+      required this.orderProducts,
+      required this.orderPayment,
+      required this.orderId,
+      required this.totalPrice,
+      required this.discount,
+      required this.grandTotal,
+      required this.dateTime,
+      required this.status,
+      required this.orderPendingPayment,
+      required this.orderPaidAmount,
+      required this.totalBalance,
+      required this.orderBy,
+      required this.previousBalance,
+      this.discountType});
 
   String firstName;
   String lastName;
@@ -63,6 +53,7 @@ class OrderReports {
   int orderId;
   num totalPrice;
   num discount;
+  String? discountType;
   num? netTotal;
   num grandTotal;
   String dateTime;
@@ -98,36 +89,10 @@ class OrderReports {
         orderPaidAmount: json["orderPaidAmount"],
         orderBy: json["orderBy"],
         totalBalance: json["totalBalance"],
+        discountType: json["discountType"] ?? "",
         previousBalance:
             json["previousBalance"] == -0 ? 0 : json["previousBalance"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "firstName": firstName,
-        "lastName": lastName,
-        "salon_Name": salonName,
-        "address": address,
-        "netTotal": netTotal,
-        "location": location,
-        "customerImagePath": customerImagePath,
-        "customerImage": customerImage,
-        "saleRepName": saleRepName,
-        "rating": rating,
-        "orderProducts":
-            List<dynamic>.from(orderProducts.map((x) => x.toJson())),
-        "orderPayment": List<dynamic>.from(orderPayment.map((x) => x.toJson())),
-        "orderId": orderId,
-        "totalPrice": totalPrice,
-        "discount": discount,
-        "grandTotal": grandTotal,
-        "dateTime": dateTime,
-        "status": status,
-        "orderPendingPayment": orderPendingPayment,
-        "orderPaidAmount": orderPaidAmount,
-        "totalBalance": totalBalance,
-        "previousBalance": previousBalance,
-        "orderBy": orderBy,
-      };
 }
 
 class OrderPayment {
