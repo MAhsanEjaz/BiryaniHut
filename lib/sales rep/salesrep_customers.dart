@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -313,19 +314,21 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
                           text: originalIndex.postalCode?.toString() ?? '',
                         );
 
-                        return SalesRepCustomersWidget(
-                          zipCont: zipController,
-                          address: addressController,
-                          firstName: firstNameController,
-                          customers: originalIndex,
-                          context: context,
-                          phone: phoneController,
-                          lastName: lastNameController,
-                          cityName: city,
-                          statesName: state,
-                          solonName: saloonNameController,
-                          email: emailController,
-                          saloonName: saloonController,
+                        return ElasticInLeft(
+                          child: SalesRepCustomersWidget(
+                            zipCont: zipController,
+                            address: addressController,
+                            firstName: firstNameController,
+                            customers: originalIndex,
+                            context: context,
+                            phone: phoneController,
+                            lastName: lastNameController,
+                            cityName: city,
+                            statesName: state,
+                            solonName: saloonNameController,
+                            email: emailController,
+                            saloonName: saloonController,
+                          ),
                         );
                       })
                 else if (searchCont.text.isNotEmpty && searchList.isEmpty)
