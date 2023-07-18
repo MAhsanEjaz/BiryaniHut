@@ -344,7 +344,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.edit),

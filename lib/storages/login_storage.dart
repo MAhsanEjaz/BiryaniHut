@@ -113,11 +113,12 @@ class LoginStorage {
   }
 
   void setSalesRepId({required int repId}) {
-    log("user avatar in hive = $repId");
+    log("setSalesRepId in hive = $repId");
     box.put("repid", repId);
   }
 
   int? getSalesRepId() {
+    log("id to return = ${box.get("repid")}");
     return box.get("repid");
   }
 
