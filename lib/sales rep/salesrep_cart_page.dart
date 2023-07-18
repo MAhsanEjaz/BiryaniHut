@@ -37,10 +37,10 @@ import 'package:flutter_sms/flutter_sms.dart';
 class SalesRepCartPage extends StatefulWidget {
   final int customerId;
   final String customerName;
-  String phone;
-  String email;
+  final String phone;
+  final String email;
 
-  SalesRepCartPage({
+  const SalesRepCartPage({
     Key? key,
     required this.customerId,
     required this.phone,
@@ -90,6 +90,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
   Future<void> getRepDiscountHandler() async {
     CustomLoader.showLoader(context: context);
+
     await SalesrepGetDiscountService()
         .getRepDiscount(context: context, repId: loginStorage.getUserId());
 
@@ -124,8 +125,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
 
     //! calculate initial values
     model.forEach((element) {
-      totalDiscount =
-          totalDiscount + element.discount * element.quantity; //! needs testing
+      totalDiscount = totalDiscount + element.discount * element.quantity;
       totalPrice = totalPrice + element.price * element.quantity;
       log("totalPrice /// = $totalPrice");
 
@@ -341,11 +341,12 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                         child: Dismissible(
                             key: isDeleteProductAllowed
                                 ? Key(model[index].productId.toString())
-                                : const Key("0"),
+                                : UniqueKey(), //! it resolved the problem i.e.
                             direction: DismissDirection.endToStart,
                             confirmDismiss: (direction) async {
-                              return await deleteProductFromCart(index);
+                              return deleteProductFromCart(index);
                             },
+
                             // onDismissed: (direction) {
 
                             // },
@@ -1932,6 +1933,7 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
   }
 
   deleteProductFromCart(int index) {
+    log("index to delete = $index");
     return showDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -1945,9 +1947,11 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                     ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
                 child: const Text('Yes'),
                 onPressed: () {
+// getCartItems()
+                  deleteItem(index);
                   Navigator.pop(context, true);
 
-                  deleteItem(index);
+                  // Navigator.pop(context, false);
                 },
               ),
               ElevatedButton(

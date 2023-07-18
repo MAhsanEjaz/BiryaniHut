@@ -201,7 +201,7 @@ class _SalesrepProductsWidgetState extends State<SalesrepProductsWidget> {
                                       int quantity =
                                           int.parse(quantityCont.text);
 
-                                      if (quantity > 9999999) {
+                                      if (quantity > 10000) {
                                         showToast("Please Add Valid Quantity");
                                         return;
                                       }
