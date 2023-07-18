@@ -65,18 +65,22 @@ class _FavouritesScreenState extends State<FavouritesPage> {
                               customerId: loginStorage.getUserId(),
                               productId: element.productId);
 
+                      CustomLoader.hideLoader(context);
                       if (res == true) {
                         showToast('Product removed from Favourites');
                       }
 
-                      await _getCustFavProdHandler();
+
+                      await CustFavProductsService().getCustFavProd(
+                          context: context,
+                          customerId: LoginStorage().getUserId());
                       // product.favProd!
                       //     .removeAt(product.favProd!.indexOf(element));
 
                       product.deleteData(product.favProd!.indexOf(element));
                       setState(() {});
 
-                      CustomLoader.hideLoader(context);
+
                     },
                     heartColor: true,
                     isReseller: false,
