@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -93,135 +94,137 @@ class _SalesRepDashboardPageState extends State<SalesRepDashboardPage> {
             //       ))
             // ],
           ),
-          body: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 23.0, vertical: 15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  data.repProfileModel == null
-                      ? const CupertinoActivityIndicator()
-                      : Text(
-                          "Welcome ${data.repProfileModel!.data.firstName} " +
-                              data.repProfileModel!.data.lastName,
-                          style: welStyle,
-                        ),
+          body: Roulette(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 23.0, vertical: 15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    data.repProfileModel == null
+                        ? const CupertinoActivityIndicator()
+                        : Text(
+                            "Welcome ${data.repProfileModel!.data.firstName} " +
+                                data.repProfileModel!.data.lastName,
+                            style: welStyle,
+                          ),
 
-                  const Text(
-                    "Today is perfect day for beginning",
-                    style: dayStyle,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Consumer<TimeLinesProvider>(builder: (context, data, _) {
-                        return ResellerHorizontalDashboardWidget(
-                          imageUrl: "assets/icons/timelines_icon.svg",
-                          title: "Timeline",
+                    const Text(
+                      "Today is perfect day for beginning",
+                      style: dayStyle,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<TimeLinesProvider>(builder: (context, data, _) {
+                          return ResellerHorizontalDashboardWidget(
+                            imageUrl: "assets/icons/timelines_icon.svg",
+                            title: "Timeline",
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TimelinesPage()));
+                            },
+                          );
+                        }),
+                        ResellerHorizontalDashboardWidget(
+                          imageUrl: "assets/svg/Orders (2).svg"
+                              "",
+                          title: "Orders",
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const TimelinesPage()));
+                                        const SalesrepOrdersPage()));
                           },
-                        );
-                      }),
-                      ResellerHorizontalDashboardWidget(
-                        imageUrl: "assets/svg/Orders (2).svg"
-                            "",
-                        title: "Orders",
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SalesrepOrdersPage()));
-                        },
-                      ),
-                      ResellerHorizontalDashboardWidget(
-                        imageUrl: "assets/icons/customer_icon.svg",
-                        title: "Customers",
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ResellerCustomersPage()));
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15.0,
-                  ),
-                  ResellerDashboardVerticalCardWidget(
-                    title: 'Products',
-                    imageUrl: "assets/icons/products_icon.svg",
-                    subTitle: "Find the perfect item for your needs.",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SalesRepProductsPage(
-                                    email: "",
-                                    phone: "",
-                                    customerId: 0,
-                                    isReseller: false,
-                                    customerName: "",
-                                  )));
-                    },
-                  ),
-                  // ResellerDashboardVerticalCardWidget(
-                  //   title: 'Custom Order',
-                  //   imageUrl: "assets/icons/products_icon.svg",
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => ResellerProductsPage()));
-                  //   },
-                  // ),
-                  ResellerDashboardVerticalCardWidget(
-                    title: 'Review & Comments',
-                    imageUrl: "assets/icons/review_comments_icon.svg",
-                    subTitle:
-                        "Peruse the feedback and opinions shared by customers",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const SalesRepReviewsPage()));
-                    },
-                  ),
-                  ResellerDashboardVerticalCardWidget(
-                    imageUrl: "assets/icons/reposts.svg",
-                    title: "Reports",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SaleRepReportPage()));
-                    },
-                    subTitle: 'View Your Reports',
-                  ),
+                        ),
+                        ResellerHorizontalDashboardWidget(
+                          imageUrl: "assets/icons/customer_icon.svg",
+                          title: "Customers",
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ResellerCustomersPage()));
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    ResellerDashboardVerticalCardWidget(
+                      title: 'Products',
+                      imageUrl: "assets/icons/products_icon.svg",
+                      subTitle: "Find the perfect item for your needs.",
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SalesRepProductsPage(
+                                      email: "",
+                                      phone: "",
+                                      customerId: 0,
+                                      isReseller: false,
+                                      customerName: "",
+                                    )));
+                      },
+                    ),
+                    // ResellerDashboardVerticalCardWidget(
+                    //   title: 'Custom Order',
+                    //   imageUrl: "assets/icons/products_icon.svg",
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => ResellerProductsPage()));
+                    //   },
+                    // ),
+                    ResellerDashboardVerticalCardWidget(
+                      title: 'Review & Comments',
+                      imageUrl: "assets/icons/review_comments_icon.svg",
+                      subTitle:
+                          "Peruse the feedback and opinions shared by customers",
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SalesRepReviewsPage()));
+                      },
+                    ),
+                    ResellerDashboardVerticalCardWidget(
+                      imageUrl: "assets/icons/reposts.svg",
+                      title: "Reports",
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SaleRepReportPage()));
+                      },
+                      subTitle: 'View Your Reports',
+                    ),
 
-                  ResellerDashboardVerticalCardWidget(
-                    imageUrl: "assets/icons/reposts.svg",
-                    title: "Payment Setup",
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SalesrepPanelPage()));
-                    },
-                    subTitle: 'Setup your payment methods',
-                  ),
-                ],
+                    ResellerDashboardVerticalCardWidget(
+                      imageUrl: "assets/icons/reposts.svg",
+                      title: "Payment Setup",
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SalesrepPanelPage()));
+                      },
+                      subTitle: 'Setup your payment methods',
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
