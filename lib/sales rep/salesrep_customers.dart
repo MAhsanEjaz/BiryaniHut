@@ -69,7 +69,7 @@ class _ResellerCustomersPageState extends State<ResellerCustomersPage> {
 
         return saloonName.contains(queryLower) ||
             fullName.contains(queryLower) ||
-            email!.contains(queryLower) ||
+            email.contains(queryLower) ||
             phone!.contains(queryLower);
       }).toList();
     });
