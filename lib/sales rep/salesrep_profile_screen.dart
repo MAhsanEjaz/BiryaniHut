@@ -59,13 +59,16 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
         saleRepImage: imagePathh,
         phone: phoneCont.text);
 
-    loginStorage.setUserFirstName(fName: firstNameCont.text);
-    loginStorage.setUserLastName(lName: lastNameCont.text);
-    loginStorage.setSalesRepCompany(company: companyCont.text);
+    if (res = true) {
+      loginStorage.setUserFirstName(fName: firstNameCont.text);
+      loginStorage.setUserLastName(lName: lastNameCont.text);
+      loginStorage.setSalesRepCompany(company: companyCont.text);
+      getSalesrepProfileDataHandler();
 
-    getSalesrepProfileDataHandler();
+      log(loginStorage.getSalesRepId().toString());
+    }
 
-    log(loginStorage.getSalesRepId().toString());
+
 
     if (res == true) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -286,7 +289,7 @@ class _CustomerProfileScreenState extends State<SalesrepProfileScreen> {
                         width: MediaQuery.of(context).size.width / 2,
                         verticalMargin: 10.0,
                         text: "Update",
-                        press: () {
+                        press: () async {
                           updateCustomerHandler();
                         },
                       ),

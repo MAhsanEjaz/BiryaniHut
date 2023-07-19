@@ -86,7 +86,7 @@ class PaymentReportPdfService {
                     textAlign: pw.TextAlign.center,
                   ),
                   pw.Text(
-                    showCust ? 'Payment Method' : 'Amount Paid',
+                     'Amount Paid',
                     style: pdfTitleStyle,
                     textAlign: pw.TextAlign.center,
                   ),
