@@ -141,6 +141,11 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
     return Consumer2<SalesrepDiscountProvider, CustomerProfileProvider>(
         builder: (context, data, customer, _) {
       repDiscountModel = data.repDiscountModel;
+      if (repDiscountModel!.data.discountType == "By Percentage") {
+        isDiscountInPercent = true;
+      } else {
+        isDiscountInPercent = false;
+      }
       return Scaffold(
         appBar: AppBar(
           title: Column(
@@ -584,11 +589,16 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                     if (repDiscountModel != null &&
                                         getIsDiscountApplicable() &&
                                         repDiscountModel!.data.discount != 0)
-                                      Text(
-                                        "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      isDiscountInPercent
+                                          ? Text(
+                                              "Discount on Order :  ${repDiscountModel!.data.discount} %",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold))
+                                          : Text(
+                                              "Discount on Order : \$ ${repDiscountModel!.data.discount}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+
                                     if (repDiscountModel != null &&
                                         getIsDiscountApplicable() &&
                                         repDiscountModel!.data.discount != 0)
@@ -1057,7 +1067,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
           body: body,
           headers: {
             'Authorization':
-            'Bearer sk_test_51Mt7WuFPO4xgbPFkao5mxU8gWMnltxu32FtUhcIdONFqmENpIPIhlRU3xMEfwztAgJsgp5QE5GDriiMjQysxa9pT00xTUcsYEN',
+                'Bearer sk_test_51Mt7WuFPO4xgbPFkao5mxU8gWMnltxu32FtUhcIdONFqmENpIPIhlRU3xMEfwztAgJsgp5QE5GDriiMjQysxa9pT00xTUcsYEN',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
       print('Create Intent reponse ===> ${response.body.toString()}');
@@ -1406,9 +1416,21 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
 
   String getTotalBalance() {
     num totalBalance = 0;
-
+    log("getTotalBalance fired with getIsDiscountApplicable = ${getIsDiscountApplicable()}");
+    log("getTotalBalance fired with isDiscountInPercent = $isDiscountInPercent");
     // totalBalance = previousBalance + totalPaid; //! before
-    totalBalance = previousBalance + totalPrice;
+    if (getIsDiscountApplicable()) {
+      if (isDiscountInPercent) {
+        log("totalPrice * repDiscountModel!.data.discount / 100 = ${totalPrice * repDiscountModel!.data.discount / 100}");
+        totalBalance = previousBalance +
+            (totalPrice - totalPrice * repDiscountModel!.data.discount / 100);
+      } else {
+        totalBalance =
+            previousBalance + (totalPrice - repDiscountModel!.data.discount);
+      }
+    } else {
+      totalBalance = previousBalance + totalPrice;
+    }
 
     return totalBalance.toStringAsFixed(2);
   }
@@ -1445,25 +1467,28 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
       status: '',
       totalPrice: totalPrice,
       orderPaidAmount: totalPaid,
+      netTotal: double.parse(getOrderAmount()),
       orderPendingAmount: double.parse(getRemainigBalance()),
       remainingBalance: double.parse(getRemainigBalance()),
       totalBalance: double.parse(getTotalBalance()),
       previousBalance: previousBalance,
-      netTotal: double.parse(getOrderAmount()),
     );
 
     final data = await pdfService.createInvoice(
-      ctx: context,
-      cartModel: cartModel,
-      customerName: loginStorage.getUserFirstName() +
-          " " +
-          loginStorage.getUserLastName(),
-      repName: loginStorage.getSalesRepName(),
-      isOrderCompleted: false,
-      repCompanyName: loginStorage.getSalesRepCompany(),
-    );
+        ctx: context,
+        cartModel: cartModel,
+        customerName: loginStorage.getUserFirstName() +
+            " " +
+            loginStorage.getUserLastName(),
+        repName: loginStorage.getSalesRepName(),
+        isOrderCompleted: false,
+        repCompanyName: loginStorage.getSalesRepCompany(),
+        discountValue: repDiscountModel != null && getIsDiscountApplicable()
+            ? repDiscountModel!.data.discount.toStringAsFixed(2)
+            : '0',
+        isDiscountInPercent: isDiscountInPercent);
 
-    pdfService.savePdfFile("invoice_$number", data);
+    pdfService.savePdfFile("invoice", data);
     number++;
   }
 

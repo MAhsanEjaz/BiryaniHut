@@ -34,7 +34,7 @@ class PdfOrdersInvoiceService {
       required String customerName,
       required String repCompanyName,
       required bool isOrderCompleted,
-      // required bool isDiscountApplicable,
+      required bool isDiscountApplicable,
 
       // PdfViewModel? view,
       required BuildContext ctx}) async {
@@ -48,21 +48,12 @@ class PdfOrdersInvoiceService {
     log("discount = " + order.discount.toString());
 
     final List<CustomRow> elements = [
-      // for (int i = 0; i < view!.order!.length; i++)
-      // for (int i = 0; i < 3; i++)
-      //   CustomRow(
-      //     "Influance Antiseptic",
-      //     getValue(1000),
-      //     getValue(2535561),
-      //   )
       for (int i = 0; i < order.orderProducts!.length; i++)
         CustomRow(
-          // Methods().getFormatedDate(ledgerDetails[i].date!),
           order.orderProducts![i].productName ?? "",
           "  "
           "${order.orderProducts![i].quantity.toString()}",
           getValue(order.orderProducts![i].price!.toDouble()),
-          // "${item[i].productDescription??""}",
         )
     ];
 
@@ -98,13 +89,13 @@ class PdfOrdersInvoiceService {
                           // style: dealStyle
                         ),
 
-                        // pw.Text(
-                        //   // "Dealer Name :" + "  " + usermodels!.name!,
-                        //   "Customer Name :"
-                        //           "  " +
-                        //       customerName,
-                        //   // style: dealStyle
-                        // ),
+                        pw.Text(
+                          // "Dealer Name :" + "  " + usermodels!.name!,
+                          "Customer Name :"
+                                  "  " +
+                              customerName,
+                          // style: dealStyle
+                        ),
 
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
@@ -350,12 +341,14 @@ class PdfOrdersInvoiceService {
                                     pw.MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
-                                  pw.Text("Discount :" " ",
+                                  pw.Text("Discount on Order:" " ",
                                       style: pdfHeaderStyle),
                                   pw.Text(
                                       // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
                                       //
-                                      order.discount!.toStringAsFixed(2),
+                                      order.discountType == "By Value"
+                                          ? "\$ ${order.discount!.toStringAsFixed(2)}"
+                                          : "${order.discount!.toStringAsFixed(2)} %",
                                       style: pdfStyle),
                                 ]),
                           if (order.discount! > 0 &&

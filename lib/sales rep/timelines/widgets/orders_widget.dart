@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/storages/login_storage.dart';
 
 import '../../../components/reseller_order_time_calender_widget.dart';
 import '../../../models/salesrep_orders_model.dart';
@@ -24,6 +25,7 @@ class SalesrepOrderWidget2 extends StatefulWidget {
 }
 
 class _SalesrepOrderWidget2State extends State<SalesrepOrderWidget2> {
+  LoginStorage loginStorage = LoginStorage();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,8 +87,12 @@ class _SalesrepOrderWidget2State extends State<SalesrepOrderWidget2> {
                                         '${widget.repOrders.email}',
                                     orders: widget.repOrders,
                                     date: widget.repOrders.dateTime!,
-                                    name: widget.repOrders.firstName! +
-                                        widget.repOrders.lastName!,
+                                    name: widget.isCustomer
+                                        ? loginStorage.getUserFirstName() +
+                                            " " +
+                                            loginStorage.getUserLastName()
+                                        : widget.repOrders.firstName! +
+                                            widget.repOrders.lastName!,
                                     orderId: widget.repOrders.orderId!,
                                     // showScaffold: true,
                                   )));
