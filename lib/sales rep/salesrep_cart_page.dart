@@ -630,11 +630,17 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                                         ),
                                       if (repDiscountModel != null &&
                                           getIsDiscountApplicable())
-                                        Text(
-                                          "Discount in ${isDiscountInPercent ? 'Percent' : 'Dollar'} : \$ ${repDiscountModel!.data.discount}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                        isDiscountInPercent
+                                            ? Text(
+                                                "Discount on Order :  ${repDiscountModel!.data.discount} %",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold))
+                                            : Text(
+                                                "Discount on Order : \$ ${repDiscountModel!.data.discount}",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                       Text(
                                         "Order Payable Amount : \$ " +
                                             getOrderAmount(),

@@ -93,6 +93,8 @@ class _OrdersDetailsPageState extends State<OrdersDetailsPage> {
                         storage.getUserLastName();
                   }
                   final data = await PdfOrdersInvoiceService().createInvoice(
+                    isDiscountApplicable:
+                        widget.orders.discount! > 0 ? true : false,
                     ctx: context,
                     order: widget.orders,
                     customerName: widget.orders.firstName! +

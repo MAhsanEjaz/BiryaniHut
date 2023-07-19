@@ -250,8 +250,8 @@ class PdfInvoiceService {
 
             pw.Container(
                 width: double.infinity,
-                padding: pw.EdgeInsets.symmetric(vertical: 10),
-                decoration: pw.BoxDecoration(
+                padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                decoration: const pw.BoxDecoration(
                   color: PdfColor.fromInt(0xFFFFFF),
                 ),
                 child: pw.Column(
@@ -305,13 +305,14 @@ class PdfInvoiceService {
                       pw.Container(
                         width: double.infinity,
                         height: 1,
-                        color: PdfColor.fromInt(0xF5F5F5),
+                        color: const PdfColor.fromInt(0xF5F5F5),
                       ),
                     ])),
 
             itemColumn(elements),
             pw.Padding(
-              padding: pw.EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+              padding: const pw.EdgeInsets.symmetric(
+                  horizontal: 15.0, vertical: 8.0),
               child: pw.Align(
                   alignment: pw.Alignment.topRight,
                   child: pw.Container(
@@ -387,8 +388,7 @@ class PdfInvoiceService {
                                 pw.Text(
                                     // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
                                     //
-                                    cartModel.remainingBalance
-                                        .toStringAsFixed(2),
+                                    cartModel.netTotal.toStringAsFixed(2),
                                     style: pdfStyle),
                               ]),
                           pw.Row(
@@ -491,10 +491,10 @@ class PdfInvoiceService {
                 //       color: PdfColor.fromInt(0xFF1cbcb3),
                 //     )),
                 pw.Container(
-                  margin: pw.EdgeInsets.symmetric(vertical: 5),
+                  margin: const pw.EdgeInsets.symmetric(vertical: 5),
                   width: double.infinity,
                   height: 1,
-                  color: PdfColor.fromInt(0x999999),
+                  color: const PdfColor.fromInt(0x999999),
                 ),
               ]),
       ],

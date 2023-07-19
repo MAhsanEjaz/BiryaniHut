@@ -88,6 +88,7 @@ class _SaleRepOrderReportDetailsScreenState
 
   @override
   void initState() {
+    widget.isCustomer ?? false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       repOrderReportDetailsHandler();
       log("orderid in salesrep orders report detail page = ${widget.orderId}");
@@ -214,6 +215,12 @@ class _SaleRepOrderReportDetailsScreenState
                                                         final data =
                                                             await PdfOrdersInvoiceService()
                                                                 .createInvoice(
+                                                          isDiscountApplicable:
+                                                              widget.orders
+                                                                          .discount! >
+                                                                      0
+                                                                  ? true
+                                                                  : false,
                                                           ctx: context,
                                                           order: widget.orders,
                                                           customerName: widget
@@ -228,11 +235,15 @@ class _SaleRepOrderReportDetailsScreenState
                                                                   "Pending"
                                                               ? false
                                                               : true,
-                                                          repName: storage
-                                                                  .getUserFirstName() +
-                                                              " " +
-                                                              storage
-                                                                  .getUserLastName(),
+                                                          repName: !widget
+                                                                  .isCustomer!
+                                                              ? loginStorage
+                                                                      .getUserFirstName() +
+                                                                  " " +
+                                                                  loginStorage
+                                                                      .getUserLastName()
+                                                              : loginStorage
+                                                                  .getSalesRepName(),
                                                           repCompanyName:
                                                               loginStorage
                                                                   .getSalesRepCompany(),
@@ -261,6 +272,12 @@ class _SaleRepOrderReportDetailsScreenState
                                                           final data =
                                                               await PdfOrdersInvoiceService()
                                                                   .createInvoice(
+                                                            isDiscountApplicable:
+                                                                widget.orders
+                                                                            .discount! >
+                                                                        0
+                                                                    ? true
+                                                                    : false,
                                                             ctx: context,
                                                             order:
                                                                 widget.orders,
@@ -328,6 +345,8 @@ class _SaleRepOrderReportDetailsScreenState
                         storage.getUserLastName();
                   }
                   final data = await PdfOrdersInvoiceService().createInvoice(
+                    isDiscountApplicable:
+                        widget.orders.discount! > 0 ? true : false,
                     repCompanyName: loginStorage.getSalesRepCompany(),
                     ctx: context,
                     order: widget.orders,
@@ -406,6 +425,8 @@ class _SaleRepOrderReportDetailsScreenState
                             }
                             final data =
                                 await PdfOrdersInvoiceService().createInvoice(
+                              isDiscountApplicable:
+                                  widget.orders.discount! > 0 ? true : false,
                               repCompanyName: loginStorage.getSalesRepCompany(),
                               ctx: context,
                               order: widget.orders,
@@ -556,6 +577,10 @@ class _SaleRepOrderReportDetailsScreenState
                                   onTap: () async {
                                     final data = await PdfOrdersInvoiceService()
                                         .createInvoice(
+                                            isDiscountApplicable:
+                                                widget.orders.discount! > 0
+                                                    ? true
+                                                    : false,
                                             repCompanyName: loginStorage
                                                 .getSalesRepCompany(),
                                             ctx: context,
@@ -716,6 +741,10 @@ class _SaleRepOrderReportDetailsScreenState
                                   onTap: () async {
                                     final data = await PdfOrdersInvoiceService()
                                         .createInvoice(
+                                      isDiscountApplicable:
+                                          widget.orders.discount! > 0
+                                              ? true
+                                              : false,
                                       repCompanyName:
                                           loginStorage.getSalesRepCompany(),
                                       ctx: context,
@@ -877,6 +906,10 @@ class _SaleRepOrderReportDetailsScreenState
                                 onTap: () async {
                                   final data = await PdfOrdersInvoiceService()
                                       .createInvoice(
+                                    isDiscountApplicable:
+                                        widget.orders.discount! > 0
+                                            ? true
+                                            : false,
                                     repCompanyName:
                                         loginStorage.getSalesRepCompany(),
                                     ctx: context,
@@ -1164,7 +1197,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                             style: orderStyle,
                           ),
                           Text(
-                            "${widget.orders.data!.orderPayment[index].paymentAmount}",
+                            "\$ ${widget.orders.data!.orderPayment[index].paymentAmount}",
                             style: orderStyle,
                           )
                         ],
@@ -1232,7 +1265,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Discount",
+                        "Discount on Order",
                         style: orderStyle,
                       ),
                       widget.orders.data!.discountType == "By Value"
@@ -1258,7 +1291,7 @@ class _OrderReportDetailsWidgetState extends State<OrderReportDetailsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Net Total",
+                        "Order's Payable Amount",
                         style: orderStyle,
                       ),
                       Text(
