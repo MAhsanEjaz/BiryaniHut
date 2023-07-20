@@ -77,88 +77,77 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
         .customerGetService(context: context, id: loginStorage.getUserId());
 
     firstNameCont.text =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
+        Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
             .firstName
             .toString();
     emailCont.text =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
+        Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
             .email
             .toString();
 
     saloonControl.text =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
+        Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
             .salonName
             .toString();
 
     lastNameCont.text =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
+        Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel!
             .data!
             .lastName
             .toString();
 
     companyCont.text =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
-            .customerProfileModel!
-            .data!
-            .saleRep!
-            .companyName ??
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+                .customerProfileModel!
+                .data!
+                .saleRep!
+                .companyName ??
             '';
 
-    zipCont.text = Provider
-        .of<CustomerProfileProvider>(context, listen: false)
-        .customerProfileModel!
-        .data!
-        .postalCode ??
+    zipCont.text = Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .postalCode ??
         '';
 
     var customerProfile =
-        Provider
-            .of<CustomerProfileProvider>(context, listen: false)
+        Provider.of<CustomerProfileProvider>(context, listen: false)
             .customerProfileModel;
 
     if (customerProfile != null &&
         customerProfile.data != null &&
         customerProfile.data!.saleRep != null) {
       salesRepCont.text = (customerProfile.data!.saleRep!.firstName! +
-          " " +
-          customerProfile.data!.saleRep!.lastName!)
+              " " +
+              customerProfile.data!.saleRep!.lastName!)
           .toString();
     } else {
       salesRepCont.text = 'Not Assigned yet';
     }
     phoneCont.text =
-    Provider
-        .of<CustomerProfileProvider>(context, listen: false)
-        .customerProfileModel!
-        .data!
-        .phone!;
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .phone!;
 
     addressCont.text =
-    Provider
-        .of<CustomerProfileProvider>(context, listen: false)
-        .customerProfileModel!
-        .data!
-        .address!;
+        Provider.of<CustomerProfileProvider>(context, listen: false)
+            .customerProfileModel!
+            .data!
+            .address!;
 
-    statesName = Provider
-        .of<CustomerProfileProvider>(context, listen: false)
+    statesName = Provider.of<CustomerProfileProvider>(context, listen: false)
         .customerProfileModel!
         .data!
         .state;
-    cityName = Provider
-        .of<CustomerProfileProvider>(context, listen: false)
+    cityName = Provider.of<CustomerProfileProvider>(context, listen: false)
         .customerProfileModel!
         .data!
         .city;
@@ -226,14 +215,12 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
   List<AllCitiesModel> cityModel = [];
 
   citiesHandler(String? cityName) async {
-    CustomLoader.showLoader(context: context);
+    // CustomLoader.showLoader(context: context);
 
     await GetAllCitiesService()
         .getAllCitiesService(context: context, cityName: cityName!);
-    CustomLoader.hideLoader(context);
-    cityModel = Provider
-        .of<AllCitiesProvider>(context, listen: false)
-        .cities!;
+    // CustomLoader.hideLoader(context);
+    cityModel = Provider.of<AllCitiesProvider>(context, listen: false).cities!;
 
     print(cityModel);
     setState(() {});
@@ -245,9 +232,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
         .getAllStatesServices(context: context, cityName: cityName);
 
     statesModel =
-    Provider
-        .of<StatesProvider>(context, listen: false)
-        .statesData!;
+        Provider.of<StatesProvider>(context, listen: false).statesData!;
     print('states---->$statesModel');
     setState(() {});
 
@@ -280,479 +265,465 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
         body: data.customerProfileModel == null
             ? const Center(child: CupertinoActivityIndicator())
             : SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: imagePath == null
-                              ? null
-                              : data.customerProfileModel!.data!
-                              .customerImagePath!.isEmpty
-                              ? Colors.grey
-                              : Colors.transparent,
-                          image: imagePath != null
-                              ? DecorationImage(
-                              image: FileImage(imagePath!),
-                              fit: BoxFit.cover)
-                              : DecorationImage(
-                              image: NetworkImage(data
-                                  .customerProfileModel!
-                                  .data!
-                                  .customerImagePath
-                                  .toString()),
-                              fit: BoxFit.cover)),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          InkWell(
-                              onTap: () async {
-                                final prefs =
-                                await SharedPreferences.getInstance();
-                                prefs.clear();
-
-                                final camImage = await image.pickImage(
-                                    source: ImageSource.gallery);
-                                if (camImage != null) {
-                                  imagePath = File(camImage.path);
-                                  _convertImageToBase64();
-                                  setState(() {});
-                                }
-                              },
-                              child: Center(
-                                child: Padding(
-                                  padding:
-                                  const EdgeInsets.only(bottom: 8.0),
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.edit),
-                      SizedBox(width: 5),
-                      Text('Edit Profile')
-                    ],
-                  ),
-                  const SizedBox(height: 3),
-                  data.customerProfileModel == null
-                      ? const CupertinoActivityIndicator(radius: 10)
-                      : Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Hey there ${data.customerProfileModel!.data!
-                          .firstName}!",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          color: Colors.black87),
-                    ),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Hive.box("login_hive").clear();
-                        Hive.box("customer_cart_box").clear();
-
-
-                        // Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return LoginPage();
-                        // }));
-
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
-                                (Route route) => false);
-                      },
-                      child: const Align(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        Align(
                           alignment: Alignment.center,
-                          child: Text("Sign out"))),
-
-                  CustomTextField(
-                      headerText: "First Name",
-                      controller: firstNameCont,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-
-                  CustomTextField(
-                      headerText: "Last Name",
-                      controller: lastNameCont,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-
-                  CustomTextField(
-                      headerText: "Salon Name",
-                      controller: saloonControl,
-                      isEnabled: true,
-                      hint: 'Name',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Sale Rep Name",
-                      controller: salesRepCont,
-                      isEnabled: false,
-                      hint: 'Sales rep Name',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-                  // CustomTextField(
-                  //     isEnabled: true,
-                  //     hint: 'Saloon',
-                  //     hintTextStyle: TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Email",
-                      controller: emailCont,
-                      // isEnabled: false,
-                      hint: 'Email',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "SaleRep Company Name",
-                      controller: companyCont,
-                      isEnabled: false,
-                      hint: 'Company Name',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 4.0),
-                    child: Text(
-                      "Select City",
-                      style: titleStyle,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: kSecondaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(10)),
-                        // shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(15),
-                        //     side: BorderSide(
-                        //         color: expand == true
-                        //             ? Colors.black26
-                        //             : Colors.transparent)),
-                        // elevation: 2,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(10),
-                          onTap: () {
-                            expand = !expand;
-                            _controller = AnimationController(
-                                duration: const Duration(seconds: 1),
-                                vsync: this);
-                            // Define the animation curve
-                            final curvedAnimation = CurvedAnimation(
-                                parent: _controller!,
-                                curve: Curves.easeInExpo);
-
-                            // Define the animation values (e.g., from 0.0 to 1.0)
-                            _animation =
-                                Tween<double>(begin: 0.0, end: 1.0)
-                                    .animate(curvedAnimation);
-                            _controller!.forward();
-                            setState(() {});
-                          },
-                          child: SingleChildScrollView(
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: imagePath == null
+                                    ? null
+                                    : data.customerProfileModel!.data!
+                                            .customerImagePath!.isEmpty
+                                        ? Colors.grey
+                                        : Colors.transparent,
+                                image: imagePath != null
+                                    ? DecorationImage(
+                                        image: FileImage(imagePath!),
+                                        fit: BoxFit.cover)
+                                    : DecorationImage(
+                                        image: NetworkImage(data
+                                            .customerProfileModel!
+                                            .data!
+                                            .customerImagePath
+                                            .toString()),
+                                        fit: BoxFit.cover)),
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 14.0, vertical: 12),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/svg/City Icon (1).svg",
-                                        height: 23,
-                                        width: 23,
-                                      ),
-                                      const SizedBox(width: 20),
-                                      Text(
-                                        cityName == null
-                                            ? 'Select Cities'
-                                            : cityName!,
-                                        style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      const Spacer(),
-                                      Icon(expand == true
-                                          ? Icons.arrow_drop_up_outlined
-                                          : Icons.arrow_drop_down)
-                                    ],
-                                  ),
-                                ),
-                                expand == true
-                                    ? AnimatedBuilder(
-                                    animation: _animation!,
-                                    builder: (BuildContext context,
-                                        Widget? child) {
-                                      return Opacity(
-                                        opacity: _animation!.value,
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal:
-                                                    16.0),
-                                                child:
-                                                CupertinoTextField(
-                                                    controller:
-                                                    controller,
-                                                    onChanged:  (v) {
-                                                      WidgetsBinding
-                                                          .instance
-                                                          .addPostFrameCallback(
-                                                              (timeStamp) {
-                                                            controller.text
-                                                                .length <
-                                                                3
-                                                                ? CustomSnackBar
-                                                                .failedSnackBar(
-                                                                context: context,
-                                                                message: 'Text should be at least 3 characters long')
-                                                                : citiesHandler(
-                                                                v);
-                                                            showSearchData =
-                                                            true;
+                                const Spacer(),
+                                InkWell(
+                                    onTap: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.clear();
 
-                                                            setState(
-                                                                    () {});
-                                                          });
-                                                    },
-                                                    placeholder:
-                                                    'Search Cities',
-                                                    onSubmitted:
-                                                        (v) {
-                                                      WidgetsBinding
-                                                          .instance
-                                                          .addPostFrameCallback(
-                                                              (timeStamp) {
-                                                            controller.text
-                                                                .length <
-                                                                3
-                                                                ? CustomSnackBar
-                                                                .failedSnackBar(
-                                                                context: context,
-                                                                message: 'Text should be at least 3 characters long')
-                                                                : citiesHandler(
-                                                                v);
-                                                            showSearchData =
-                                                            true;
-
-                                                            setState(
-                                                                    () {});
-                                                          });
-                                                    }),
-                                              ),
-                                              const SizedBox(
-                                                  height: 10),
-                                              showSearchData == true
-                                                  ? cityModel.isEmpty
-                                                  ? const Center(
-                                                  child:
-                                                  Padding(
-                                                    padding:
-                                                    EdgeInsets.all(
-                                                        8.0),
-                                                    child: Text(
-                                                        ('City not found')),
-                                                  ))
-                                                  : ListView
-                                                  .builder(
-                                                  physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                                  shrinkWrap:
-                                                  true,
-                                                  itemCount:
-                                                  cityModel
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context,
-                                                      index) {
-                                                    return InkWell(
-                                                      onTap:
-                                                          () {
-                                                        cityName =
-                                                            cityModel[index]
-                                                                .cityName;
-                                                        selectCityName =
-                                                            cityModel[index]
-                                                                .cityName;
-                                                        // model = cities;
-                                                        expand = !expand;
-
-                                                        WidgetsBinding.instance
-                                                            .addPostFrameCallback((
-                                                            timeStamp) {
-                                                          getAllStatesHandler(
-                                                              cityName!);
-                                                        });
-
-                                                        setState(() {});
-                                                      },
-                                                      child:
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(
-                                                            horizontal: 20.0,
-                                                            vertical: 10),
-                                                        child: Text(
-                                                          cityModel[index]
-                                                              .cityName!,
-                                                          style: const TextStyle(
-                                                              fontSize: 16),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  })
-                                                  : const SizedBox(),
-                                            ],
-                                          ),
+                                      final camImage = await image.pickImage(
+                                          source: ImageSource.gallery);
+                                      if (camImage != null) {
+                                        imagePath = File(camImage.path);
+                                        _convertImageToBase64();
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8.0),
+                                        child: Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.grey.shade300,
                                         ),
-                                      );
-                                    })
-                                    : const SizedBox()
+                                      ),
+                                    )),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 6.0, vertical: 4.0),
-                    child: Text(
-                      "Select State",
-                      style: titleStyle,
-                    ),
-                  ),
-
-                  const SizedBox(height: 5),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kSecondaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(10)),
-                      height: 45.0,
-                      child: Padding(
-                        padding:
-                        const EdgeInsets.only(right: 10.0, left: 10),
-                        child: DropdownButton(
-                            hint: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svg/State Icon (1).svg",
-                                  width: 26,
-                                  height: 26,
-                                  alignment: Alignment.centerLeft,
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.edit),
+                            SizedBox(width: 5),
+                            Text('Edit Profile')
+                          ],
+                        ),
+                        const SizedBox(height: 3),
+                        data.customerProfileModel == null
+                            ? const CupertinoActivityIndicator(radius: 10)
+                            : Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Hey there ${data.customerProfileModel!.data!.firstName}!",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: Colors.black87),
                                 ),
-                                const SizedBox(width: 13),
-                                Text(selectCityName != null
-                                    ? 'Select'
-                                    : statesName!),
-                              ],
+                              ),
+                        TextButton(
+                            onPressed: () {
+                              Hive.box("login_hive").clear();
+                              Hive.box("customer_cart_box").clear();
+
+                              // Navigator.pushReplacement(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   return LoginPage();
+                              // }));
+
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginPage()),
+                                  (Route route) => false);
+                            },
+                            child: const Align(
+                                alignment: Alignment.center,
+                                child: Text("Sign out"))),
+
+                        CustomTextField(
+                            headerText: "First Name",
+                            controller: firstNameCont,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        CustomTextField(
+                            headerText: "Last Name",
+                            controller: lastNameCont,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        CustomTextField(
+                            headerText: "Salon Name",
+                            controller: saloonControl,
+                            isEnabled: true,
+                            hint: 'Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Sale Rep Name",
+                            controller: salesRepCont,
+                            isEnabled: false,
+                            hint: 'Sales rep Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        // CustomTextField(
+                        //     isEnabled: true,
+                        //     hint: 'Saloon',
+                        //     hintTextStyle: TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Email",
+                            controller: emailCont,
+                            // isEnabled: false,
+                            hint: 'Email',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "SaleRep Company Name",
+                            controller: companyCont,
+                            isEnabled: false,
+                            hint: 'Company Name',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.0, vertical: 4.0),
+                          child: Text(
+                            "Select City",
+                            style: titleStyle,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: kSecondaryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              // shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.circular(15),
+                              //     side: BorderSide(
+                              //         color: expand == true
+                              //             ? Colors.black26
+                              //             : Colors.transparent)),
+                              // elevation: 2,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {
+                                  expand = !expand;
+                                  _controller = AnimationController(
+                                      duration: const Duration(seconds: 1),
+                                      vsync: this);
+                                  // Define the animation curve
+                                  final curvedAnimation = CurvedAnimation(
+                                      parent: _controller!,
+                                      curve: Curves.easeInExpo);
+
+                                  // Define the animation values (e.g., from 0.0 to 1.0)
+                                  _animation =
+                                      Tween<double>(begin: 0.0, end: 1.0)
+                                          .animate(curvedAnimation);
+                                  _controller!.forward();
+                                  setState(() {});
+                                },
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14.0, vertical: 12),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/svg/City Icon (1).svg",
+                                              height: 23,
+                                              width: 23,
+                                            ),
+                                            const SizedBox(width: 20),
+                                            Text(
+                                              cityName == null
+                                                  ? 'Select Cities'
+                                                  : cityName!,
+                                              style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const Spacer(),
+                                            Icon(expand == true
+                                                ? Icons.arrow_drop_up_outlined
+                                                : Icons.arrow_drop_down)
+                                          ],
+                                        ),
+                                      ),
+                                      expand == true
+                                          ? AnimatedBuilder(
+                                              animation: _animation!,
+                                              builder: (BuildContext context,
+                                                  Widget? child) {
+                                                return Opacity(
+                                                  opacity: _animation!.value,
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      16.0),
+                                                          child:
+                                                              CupertinoTextField(
+                                                                  controller:
+                                                                      controller,
+                                                                  onChanged:
+                                                                      (v) {
+                                                                    WidgetsBinding
+                                                                        .instance
+                                                                        .addPostFrameCallback(
+                                                                            (timeStamp) {
+                                                                      controller.text.length <
+                                                                              3
+                                                                          ? CustomSnackBar.failedSnackBar(
+                                                                              context: context,
+                                                                              message: 'Text should be at least 3 characters long')
+                                                                          : citiesHandler(v);
+                                                                      showSearchData =
+                                                                          true;
+
+                                                                      setState(
+                                                                          () {});
+                                                                    });
+                                                                  },
+                                                                  placeholder:
+                                                                      'Search Cities',
+                                                                  onSubmitted:
+                                                                      (v) {
+                                                                    WidgetsBinding
+                                                                        .instance
+                                                                        .addPostFrameCallback(
+                                                                            (timeStamp) {
+                                                                      controller.text.length <
+                                                                              3
+                                                                          ? CustomSnackBar.failedSnackBar(
+                                                                              context: context,
+                                                                              message: 'Text should be at least 3 characters long')
+                                                                          : citiesHandler(v);
+                                                                      showSearchData =
+                                                                          true;
+
+                                                                      setState(
+                                                                          () {});
+                                                                    });
+                                                                  }),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 10),
+                                                        showSearchData == true
+                                                            ? cityModel.isEmpty
+                                                                ? const Center(
+                                                                    child:
+                                                                        Padding(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Text(
+                                                                        ('City not found')),
+                                                                  ))
+                                                                : ListView
+                                                                    .builder(
+                                                                        physics:
+                                                                            const NeverScrollableScrollPhysics(),
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        itemCount:
+                                                                            cityModel
+                                                                                .length,
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                index) {
+                                                                          return InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              cityName = cityModel[index].cityName;
+                                                                              selectCityName = cityModel[index].cityName;
+                                                                              // model = cities;
+                                                                              expand = !expand;
+
+                                                                              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                                                                getAllStatesHandler(cityName!);
+                                                                              });
+
+                                                                              setState(() {});
+                                                                            },
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                                                                              child: Text(
+                                                                                cityModel[index].cityName!,
+                                                                                style: const TextStyle(fontSize: 16),
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        })
+                                                            : const SizedBox(),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              })
+                                          : const SizedBox()
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            underline: const SizedBox(),
-                            // padding: const EdgeInsets.all(0),
-                            isExpanded: true,
-                            items: statesModel.map((e) {
-                              return DropdownMenuItem(
-                                  onTap: () {
-                                    statesName = e.stateName;
-                                    selectCityName = null;
+                          ),
+                        ),
 
-                                    setState(() {});
-                                  },
-                                  value: e,
-                                  child: Text(e.stateName!));
-                            }).toList(),
-                            onChanged: (_) {}),
-                      ),
-                    ),
-                  ),
+                        const SizedBox(height: 10),
 
-                  const SizedBox(height: 7),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.0, vertical: 4.0),
+                          child: Text(
+                            "Select State",
+                            style: titleStyle,
+                          ),
+                        ),
 
-                  CustomTextField(
-                      headerText: "Zip Code",
-                      isEnabled: true,
-                      controller: zipCont,
-                      hint: "Zip Code",
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 5),
 
-                  CustomTextField(
-                      headerText: "Phone # ",
-                      isEnabled: true,
-                      inputFormats: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(12),
-                        PhoneInputFormatter()
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: kSecondaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10)),
+                            height: 45.0,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 10.0, left: 10),
+                              child: DropdownButton(
+                                  hint: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/svg/State Icon (1).svg",
+                                        width: 26,
+                                        height: 26,
+                                        alignment: Alignment.centerLeft,
+                                      ),
+                                      const SizedBox(width: 13),
+                                      Text(selectCityName != null
+                                          ? 'Select'
+                                          : statesName!),
+                                    ],
+                                  ),
+                                  underline: const SizedBox(),
+                                  // padding: const EdgeInsets.all(0),
+                                  isExpanded: true,
+                                  items: statesModel.map((e) {
+                                    return DropdownMenuItem(
+                                        onTap: () {
+                                          statesName = e.stateName;
+                                          selectCityName = null;
+
+                                          setState(() {});
+                                        },
+                                        value: e,
+                                        child: Text(e.stateName!));
+                                  }).toList(),
+                                  onChanged: (_) {}),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 7),
+
+                        CustomTextField(
+                            headerText: "Zip Code",
+                            isEnabled: true,
+                            controller: zipCont,
+                            hint: "Zip Code",
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+
+                        CustomTextField(
+                            headerText: "Phone # ",
+                            isEnabled: true,
+                            inputFormats: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(12),
+                              PhoneInputFormatter()
+                            ],
+                            inputType: TextInputType.phone,
+                            controller: phoneCont,
+                            hint: 'Phone #',
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        CustomTextField(
+                            headerText: "Address",
+                            isEnabled: true,
+                            controller: addressCont,
+                            hint: "Address",
+                            hintTextStyle:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        Align(
+                          alignment: Alignment.center,
+                          child: DefaultButton(
+                            verticalMargin: 10.0,
+                            text: "Update",
+                            width: getProportionateScreenWidth(200),
+                            press: () {
+                              if (controller.text.isEmpty) {
+                                CustomSnackBar.failedSnackBar(
+                                    context: context, message: "Select state");
+                              } else {
+                                updateCustomerHandler();
+                              }
+                            },
+                          ),
+                        ),
                       ],
-                      inputType: TextInputType.phone,
-                      controller: phoneCont,
-                      hint: 'Phone #',
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-                  CustomTextField(
-                      headerText: "Address",
-                      isEnabled: true,
-                      controller: addressCont,
-                      hint: "Address",
-                      hintTextStyle:
-                      const TextStyle(fontWeight: FontWeight.bold)),
-                  Align(
-                    alignment: Alignment.center,
-                    child: DefaultButton(
-                      verticalMargin: 10.0,
-                      text: "Update",
-                      width: getProportionateScreenWidth(200),
-                      press: () {
-                        updateCustomerHandler();
-                      },
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       );
     });
   }
