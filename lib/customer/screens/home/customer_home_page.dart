@@ -186,7 +186,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     catModel =
         Provider.of<NewCategoriesProvider>(context, listen: false).model!;
 
-    print('categoriesData--->${catModel}');
+    print('categoriesData--->$catModel');
     CustomLoader.hideLoader(context);
   }
 
@@ -290,10 +290,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
+                          SizedBox(width: 5),
                           for (int i = 0; i < catModel.length; i++)
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 10),
+                                  horizontal: 9.0, vertical: 10),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -309,14 +310,17 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.blue.shade100),
-                                      color: Colors.black12,
+                                      // border: Border.all(
+                                      //     color: Colors.blue.shade100),
+                                      color: Colors.primaries[i].shade200,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0, vertical: 10),
-                                    child: Text(catModel[i].categoryName!),
+                                        horizontal: 20.0, vertical: 15),
+                                    child: Text(
+                                      catModel[i].categoryName!,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
