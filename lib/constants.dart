@@ -33,9 +33,9 @@ class NavigatorWidget extends StatelessWidget {
 }
 
 const kPrimaryColor = Colors.black;
-const Color appColor = Color(0xFF990D38);
+const Color appColor = Color(0xff29aae1);
 const kPrimaryLightColor = Color(0xFFFFECDF);
-const whiteColor = Colors.white;
+const whiteColor = Colors.white;    
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
@@ -47,8 +47,8 @@ const lightBlackColor = Colors.black12;
 const kAnimationDuration = Duration(milliseconds: 200);
 
 // String customerUrl = "http://173.208.142.67:8060/api/Customer";
-const String apiBaseUrl = "http://38.17.51.206:8070/api"; //!client
-// const String apiBaseUrl = "http://38.17.51.206:8050/api"; //!client
+// const String apiBaseUrl = "http://38.17.51.206:8070/api"; //!client
+const String apiBaseUrl = "http://38.17.51.206:8050/api"; //!client
 // const String apiBaseUrl = "https://firstsparklymouse88.conveyor.cloud/api";
 
 // const String apiBaseUrl = "http://38.17.51.206:8073/api"; //! Dev

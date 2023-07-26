@@ -260,7 +260,7 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
             'Profile',
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: appColor,
+          backgroundColor: Color(0xff29aae1),
         ),
         body: data.customerProfileModel == null
             ? const Center(child: CupertinoActivityIndicator())
@@ -385,20 +385,20 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
 
-                        CustomTextField(
-                            headerText: "Salon Name",
-                            controller: saloonControl,
-                            isEnabled: true,
-                            hint: 'Name',
-                            hintTextStyle:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                        CustomTextField(
-                            headerText: "Sale Rep Name",
-                            controller: salesRepCont,
-                            isEnabled: false,
-                            hint: 'Sales rep Name',
-                            hintTextStyle:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                        // CustomTextField(
+                        //     headerText: "Salon Name",
+                        //     controller: saloonControl,
+                        //     isEnabled: true,
+                        //     hint: 'Name',
+                        //     hintTextStyle:
+                        //         const TextStyle(fontWeight: FontWeight.bold)),
+                        // CustomTextField(
+                        //     headerText: "Sale Rep Name",
+                        //     controller: salesRepCont,
+                        //     isEnabled: false,
+                        //     hint: 'Sales rep Name',
+                        //     hintTextStyle:
+                        //         const TextStyle(fontWeight: FontWeight.bold)),
                         // CustomTextField(
                         //     isEnabled: true,
                         //     hint: 'Saloon',
@@ -410,13 +410,13 @@ class _CustomerProfileScreenState extends State<CustomerProfileScreen>
                             hint: 'Email',
                             hintTextStyle:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        CustomTextField(
-                            headerText: "SaleRep Company Name",
-                            controller: companyCont,
-                            isEnabled: false,
-                            hint: 'Company Name',
-                            hintTextStyle:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                        // CustomTextField(
+                        //     headerText: "SaleRep Company Name",
+                        //     controller: companyCont,
+                        //     isEnabled: false,
+                        //     hint: 'Company Name',
+                        //     hintTextStyle:
+                        //         const TextStyle(fontWeight: FontWeight.bold)),
 
                         const Padding(
                           padding: EdgeInsets.symmetric(

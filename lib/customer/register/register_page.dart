@@ -352,7 +352,8 @@ class _SignUpScreenState extends State<SignUpPage>
                                   height: 30,
                                   width: 30,
                                   decoration: const BoxDecoration(
-                                      shape: BoxShape.circle, color: appColor),
+                                      shape: BoxShape.circle,
+                                      color: Color(0xff29aae1)),
                                   child: const Icon(
                                     Icons.add,
                                     color: Colors.white,
@@ -855,30 +856,31 @@ class _SignUpScreenState extends State<SignUpPage>
                       text: "Register",
                       press: () {
                         log("Register clicked");
-                        if (isLoginValidated()) {
-                          registerCustomerBody = {
-                            "id": 0,
-                            "firstName": fNameCont.text.trim(),
-                            "lastName": lNameCont.text.trim(),
-                            "salon_Name": salonNameCont.text.trim(),
-                            "state": stateName,
-                            "postalCode": zipCont.text.trim(),
-                            "city": cityName,
-                            "address": addressCont.text.trim(),
-                            "location": "",
-                            "customerImage":
-                                imagePath == null ? null : imagePath!,
-                            "phone": phoneCont.text.trim(),
-                            "saleRepID": widget.isReseller == true
-                                ? loginStorage.getUserId()
-                                : 0,
-                            "email": emailCont.text.trim(),
-                            "password": passCont.text.trim(),
-                            "roleId": 0
-                          };
-                          registerHandler();
-                        }
-                      }),
+                        // if (isLoginValidated()) {
+                        registerCustomerBody = {
+                          "id": 0,
+                          "firstName": fNameCont.text.trim(),
+                          "lastName": lNameCont.text.trim(),
+                          "salon_Name": salonNameCont.text.trim(),
+                          "state": "stateName",
+                          "postalCode": zipCont.text.trim(),
+                          "city": "cityName",
+                          "address": addressCont.text.trim(),
+                          "location": "",
+                          "customerImage":
+                              imagePath == null ? null : imagePath!,
+                          "phone": phoneCont.text.trim(),
+                          "saleRepID": widget.isReseller == true
+                              ? loginStorage.getUserId()
+                              : 0,
+                          "email": emailCont.text.trim(),
+                          "password": passCont.text.trim(),
+                          "roleId": 0
+                        };
+                        registerHandler();
+                      }
+                      // }
+                      ),
                   SizedBox(
                     height: getProportionateScreenHeight(20),
                   ),

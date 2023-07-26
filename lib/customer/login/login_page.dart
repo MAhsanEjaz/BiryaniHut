@@ -58,29 +58,37 @@ class _LoginScreenState extends State<LoginPage> {
 
     CustomLoader.hideLoader(context);
 
-    if (res) {
-      role = Provider.of<UserDataProvider>(context, listen: false)
-          .user!
-          .data!
-          .roleId;
-      print("Role $role");
-      // String message =
-      //     Provider.of<UserDataProvider>(context, listen: false).user!.message;
-      if (role == 1) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CustomerHomePage(),
-            ));
-        showToast("Login Successfully");
-      } else if (role == 2) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SalesRepDashboardPage(),
-            ));
-        showToast("Login Successfully");
-      }
+    if (res == true) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CustomerHomePage(),
+          ));
+
+      showToast("Login Successfully");
+
+      // role = Provider.of<UserDataProvider>(context, listen: false)
+      //     .user!
+      //     .data!
+      //     .roleId;
+      // print("Role $role");
+      // // String message =
+      // //     Provider.of<UserDataProvider>(context, listen: false).user!.message;
+      // if (role == 1) {
+      //   Navigator.pushReplacement(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => const CustomerHomePage(),
+      //       ));
+      //   showToast("Login Successfully");
+      // } else if (role == 2) {
+      //   // Navigator.pushReplacement(
+      //   //     context,
+      //   //     MaterialPageRoute(
+      //   //       builder: (context) => const SalesRepDashboardPage(),
+      //   //     ));
+      //   showToast("Login Successfully");
+      // }
     } else {
       showToast("Credentials Invalid");
     }
@@ -88,6 +96,7 @@ class _LoginScreenState extends State<LoginPage> {
 
   bool _capsOn = false;
   bool isObscure = true;
+
   @override
   void initState() {
     super.initState();
@@ -117,159 +126,168 @@ class _LoginScreenState extends State<LoginPage> {
         //   ),
         // ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: getProportionateScreenHeight(.30),
-                  ),
-                  Image.asset(
-                    "assets/images/Influance-logo.png",
-                    height: 200,
-                    width: 499,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Lets Sign You In",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(28),
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Welcome Back!",
-                      style: TextStyle(
-                        fontSize: getProportionateScreenWidth(16),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "You have been missed alot",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(16),
-                          color: kSecondaryColor),
-                    ),
-                  ),
-                  CustomTextField(
-                      controller: emailCont,
-                      isEnabled: true,
-                      obscureText: false,
-                      isshowPasswordControls: false,
-                      hint: "Email",
-                      inputType: TextInputType.emailAddress,
-                      prefixWidget: SvgPicture.asset(
-                        "assets/icons/Mail.svg",
-                      )),
-                  //! email error string
-                  if (isEmailError) formErrorText(error: emailErrorString),
-                  CustomTextField(
-                    controller: passCont,
-                    obscureText: isObscure,
-                    isshowPasswordControls: true,
-                    isEnabled: true,
-                    inputType: TextInputType.visiblePassword,
-                    hint: "Password",
-                    suffixWidget: IconButton(
-                      onPressed: () {
-                        isObscure = !isObscure;
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        isObscure ? Icons.visibility_off : Icons.visibility,
-                        color: isObscure ? appColor : kPrimaryColor,
-                      ),
-                    ),
-                    onChange: (value) {
-                      _checkCaps();
-                    },
-                    prefixWidget: SvgPicture.asset(
-                      "assets/icons/Lock.svg",
-                    ),
-                  ),
-                  //! password error string
-                  if (isPassError) formErrorText(error: passErrorString),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            children: [
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(20)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignUpPage(
-                                    isReseller: false,
-                                  ),
-                                ));
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Don't have Account ?",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                      // SizedBox(
+                      //   height: getProportionateScreenHeight(.0),
+                      // ),
+
+                      SizedBox(height: 30),
+
+                      Image.asset(
+                        "assets/images/biryani.png",
+                        height: 200,
+                        width: 499,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Lets Sign You In",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(28),
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Welcome Back!",
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(16),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "You have been missed alot",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(16),
+                              color: kSecondaryColor),
+                        ),
+                      ),
+                      CustomTextField(
+                          controller: emailCont,
+                          isEnabled: true,
+                          obscureText: false,
+                          isshowPasswordControls: false,
+                          hint: "Email",
+                          inputType: TextInputType.emailAddress,
+                          prefixWidget: SvgPicture.asset(
+                            "assets/icons/Mail.svg",
                           )),
-                      InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ForgetPasswordPage(),
-                                ));
+                      //! email error string
+                      if (isEmailError) formErrorText(error: emailErrorString),
+                      CustomTextField(
+                        controller: passCont,
+                        obscureText: isObscure,
+                        isshowPasswordControls: true,
+                        isEnabled: true,
+                        inputType: TextInputType.visiblePassword,
+                        hint: "Password",
+                        suffixWidget: IconButton(
+                          onPressed: () {
+                            isObscure = !isObscure;
+                            setState(() {});
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Forget Password ?",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )),
+                          icon: Icon(
+                              isObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: appColor),
+                        ),
+                        onChange: (value) {
+                          _checkCaps();
+                        },
+                        prefixWidget: SvgPicture.asset(
+                          "assets/icons/Lock.svg",
+                        ),
+                      ),
+                      //! password error string
+                      if (isPassError) formErrorText(error: passErrorString),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SignUpPage(
+                                        isReseller: false,
+                                      ),
+                                    ));
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Don't have Account ?",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgetPasswordPage(),
+                                    ));
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Forget Password ?",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+
+                      DefaultButton(
+                        text: "Login",
+                        press: () {
+                          // // if (isLoginValidated()) {
+                          // log('isLoginValid valid');
+                          // body = {"email": emailCont.text, "password": passCont.text};
+
+                          // print(body);
+                          if (isLoginValidated()) {
+                            _loginHandler();
+                          }
+                          // } else {
+                          //   log('isLoginValid not valid');
+                          // }
+                        },
+                      ),
+
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
                     ],
                   ),
-
-                  SizedBox(
-                    height: getProportionateScreenHeight(20),
-                  ),
-
-                  DefaultButton(
-                    text: "Login",
-                    press: () {
-                      // // if (isLoginValidated()) {
-                      // log('isLoginValid valid');
-                      // body = {"email": emailCont.text, "password": passCont.text};
-
-                      // print(body);
-                      if (isLoginValidated()) {
-                        _loginHandler();
-                      }
-                      // } else {
-                      //   log('isLoginValid not valid');
-                      // }
-                    },
-                  ),
-                  const Text("Version 7.0.0"),
-
-                  SizedBox(
-                    height: getProportionateScreenHeight(20),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              )),
+              const Text("Version 1.0.0"),
+              SizedBox(height: 10),
+            ],
           ),
         ),
       ),

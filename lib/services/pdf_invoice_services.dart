@@ -66,10 +66,9 @@ class PdfInvoiceService {
         )
     ];
 
-    final influnanceLogo =
-        (await rootBundle.load("assets/images/Influance-logo.png"))
-            .buffer
-            .asUint8List();
+    final influnanceLogo = (await rootBundle.load("assets/images/biryani.png"))
+        .buffer
+        .asUint8List();
 
     pdf.addPage(
       pw.MultiPage(
@@ -90,20 +89,20 @@ class PdfInvoiceService {
                       mainAxisAlignment: pw.MainAxisAlignment.start,
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
-                        pw.Text(
-                            // "Dealer Name :" + "  " + usermodels!.name!,
-                            "Sales Rep Name:"
-                                    "  " +
-                                repName
-                            // style: dealStyle
-                            ),
-                        pw.Text(
-                            // "Dealer Name :" + "  " + usermodels!.name!,
-                            "Sales Rep Company:"
-                                    "  " +
-                                repCompanyName
-                            // style: dealStyle
-                            ),
+                        // pw.Text(
+                        //     // "Dealer Name :" + "  " + usermodels!.name!,
+                        //     "Sales Rep Name:"
+                        //             "  " +
+                        //         repName
+                        //     // style: dealStyle
+                        //     ),
+                        // pw.Text(
+                        //     // "Dealer Name :" + "  " + usermodels!.name!,
+                        //     "Sales Rep Company:"
+                        //             "  " +
+                        //         repCompanyName
+                        //     // style: dealStyle
+                        //     ),
                         pw.Text(
                           // "Dealer Name :" + "  " + usermodels!.name!,
                           "Customer Name :"
@@ -112,13 +111,13 @@ class PdfInvoiceService {
                           // style: dealStyle
                         ),
 
-                        pw.Text(
-                          // "Dealer Name :" + "  " + usermodels!.name!,
-                          "Order Status :"
-                                  "  " +
-                              orderStatus,
-                          // style: dealStyle
-                        ),
+                        // pw.Text(
+                        //   // "Dealer Name :" + "  " + usermodels!.name!,
+                        //   "Order Status :"
+                        //           "  " +
+                        //       orderStatus,
+                        //   // style: dealStyle
+                        // ),
                         // pw.RichText(
                         //     text: pw.TextSpan(
                         //         text: "Dealer Name:" + " ",
@@ -178,7 +177,7 @@ class PdfInvoiceService {
                     mainAxisAlignment: pw.MainAxisAlignment.start,
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text("Influance Invoice",
+                      pw.Text("Biryani Hut Invoice",
                           style: pw.TextStyle(
                             fontSize: 18,
                             fontWeight: pw.FontWeight.bold,
@@ -321,20 +320,20 @@ class PdfInvoiceService {
                         mainAxisAlignment: pw.MainAxisAlignment.start,
                         crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text("Previous Balance :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    cartModel.previousBalance
-                                        .toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
+                          // pw.Row(
+                          //     mainAxisAlignment:
+                          //         pw.MainAxisAlignment.spaceBetween,
+                          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //     children: [
+                          //       pw.Text("Previous Balance :" " ",
+                          //           style: pdfHeaderStyle),
+                          //       pw.Text(
+                          //           // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                          //           //
+                          //           cartModel.previousBalance
+                          //               .toStringAsFixed(2),
+                          //           style: pdfStyle),
+                          //     ]),
                           pw.Row(
                               mainAxisAlignment:
                                   pw.MainAxisAlignment.spaceBetween,
@@ -348,77 +347,77 @@ class PdfInvoiceService {
                                     cartModel.totalPrice.toStringAsFixed(2),
                                     style: pdfStyle),
                               ]),
-                          if (isDiscountInPercent != null &&
-                              discountValue != null)
-                            pw.Row(
-                                mainAxisAlignment:
-                                    pw.MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                                children: [
-                                  pw.Text("Discount on Order :" " ",
-                                      style: pdfHeaderStyle),
-                                  pw.Text(
-                                      isDiscountInPercent
-                                          ? "$discountValue %"
-                                          : "$discountValue \$",
-                                      style: pdfStyle),
-                                ]),
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text("Total Balance :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    (cartModel.totalPrice +
-                                            cartModel.previousBalance)
-                                        .toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text("Order Payable Amount :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    cartModel.netTotal.toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text("Today's Payments :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    cartModel.orderPaidAmount
-                                        .toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
-                          pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text("Remaining Balance :" " ",
-                                    style: pdfHeaderStyle),
-                                pw.Text(
-                                    // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
-                                    //
-                                    cartModel.remainingBalance
-                                        .toStringAsFixed(2),
-                                    style: pdfStyle),
-                              ]),
+                          // if (isDiscountInPercent != null &&
+                          //     discountValue != null)
+                          //   pw.Row(
+                          //       mainAxisAlignment:
+                          //           pw.MainAxisAlignment.spaceBetween,
+                          //       crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //       children: [
+                          //         pw.Text("Discount on Order :" " ",
+                          //             style: pdfHeaderStyle),
+                          //         pw.Text(
+                          //             isDiscountInPercent
+                          //                 ? "$discountValue %"
+                          //                 : "$discountValue \$",
+                          //             style: pdfStyle),
+                          //       ]),
+                          // pw.Row(
+                          //     mainAxisAlignment:
+                          //         pw.MainAxisAlignment.spaceBetween,
+                          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //     children: [
+                          //       pw.Text("Total Balance :" " ",
+                          //           style: pdfHeaderStyle),
+                          //       pw.Text(
+                          //           // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                          //           //
+                          //           (cartModel.totalPrice +
+                          //                   cartModel.previousBalance)
+                          //               .toStringAsFixed(2),
+                          //           style: pdfStyle),
+                          //     ]),
+                          // pw.Row(
+                          //     mainAxisAlignment:
+                          //         pw.MainAxisAlignment.spaceBetween,
+                          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //     children: [
+                          //       pw.Text("Order Payable Amount :" " ",
+                          //           style: pdfHeaderStyle),
+                          //       pw.Text(
+                          //           // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                          //           //
+                          //           cartModel.netTotal.toStringAsFixed(2),
+                          //           style: pdfStyle),
+                          //     ]),
+                          // pw.Row(
+                          //     mainAxisAlignment:
+                          //         pw.MainAxisAlignment.spaceBetween,
+                          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //     children: [
+                          //       pw.Text("Today's Payments :" " ",
+                          //           style: pdfHeaderStyle),
+                          //       pw.Text(
+                          //           // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                          //           //
+                          //           cartModel.orderPaidAmount
+                          //               .toStringAsFixed(2),
+                          //           style: pdfStyle),
+                          //     ]),
+                          // pw.Row(
+                          //     mainAxisAlignment:
+                          //         pw.MainAxisAlignment.spaceBetween,
+                          //     crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          //     children: [
+                          //       pw.Text("Remaining Balance :" " ",
+                          //           style: pdfHeaderStyle),
+                          //       pw.Text(
+                          //           // Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
+                          //           //
+                          //           cartModel.remainingBalance
+                          //               .toStringAsFixed(2),
+                          //           style: pdfStyle),
+                          //     ]),
                         ]),
                   )),
             ),

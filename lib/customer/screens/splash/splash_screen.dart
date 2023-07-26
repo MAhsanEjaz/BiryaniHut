@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to Influance Hair Care, Let’s shop!",
+      "text": "Welcome to Biryani Hut Care, Let’s shop!",
       "image": "assets/images/Updated Products Everyday.svg"
     },
     {

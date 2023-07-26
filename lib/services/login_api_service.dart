@@ -26,7 +26,7 @@ class LoginApiService {
 
       log("login responce = $res");
 
-      if (res["data"] != null) {
+      if (res != null) {
         UserModel userModel = UserModel.fromJson(res);
         Provider.of<UserDataProvider>(context, listen: false)
             .updateUser(newUser: userModel);
@@ -38,11 +38,11 @@ class LoginApiService {
         storage.setAdress(adress: userModel.data!.address!);
         storage.setPhone(phone: userModel.data!.phone!);
         storage.setSalesRepCompany(
-            company: userModel.data!.companyName.toString());
+            company: userModel.data!.companyName ?? 'name');
         if (userModel.data!.roleId == 1) {
           storage.setUserType(usertype: "customer");
-          storage.setSalesRepId(repId: userModel.data!.saleRepId!);
-          storage.setSalesRepName(repName: userModel.data!.saleRepName!);
+          // storage.setSalesRepId(repId: userModel.data!.saleRepId!);
+          // storage.setSalesRepName(repName: userModel.data!.saleRepName!);
           storage.setSalesRepCompany(company: userModel.data!.companyName!);
         } else {
           storage.setUserType(usertype: "salesrep");

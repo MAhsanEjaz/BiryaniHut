@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/customer/screens/cart/components/google_play_button.dart';
 import 'package:shop_app/customer/screens/cart/components/payment_card.dart';
@@ -48,6 +50,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   num grandTotal = 0;
   SalesrepDiscountModel? repDiscountModel;
   bool isDiscountInPercent = false;
+
   // bool isDiscountApplicable = false;
 
   TextEditingController amountCont = TextEditingController();
@@ -63,9 +66,16 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   void initState() {
     super.initState();
 
+    _markers.add(
+      const Marker(
+        markerId: MarkerId('SelectedLocation'),
+        position: LatLng(24.774265, 46.738586),
+      ),
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       customerGetDataHandler();
-      getRepDiscountHandler();
+      // getRepDiscountHandler();
     });
 
     if (cartStorage.getCartItems() != null) {
@@ -128,786 +138,748 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
   // String googleOrApplePaymentString = '';
   // String cashAppPaymentString = '';
 
-  Future<void> getRepDiscountHandler() async {
-    CustomLoader.showLoader(context: context);
-    await SalesrepGetDiscountService().getRepDiscount(
-        context: context, repId: loginStorage.getSalesRepId() ?? 0);
+  // Future<void> getRepDiscountHandler() async {
+  //   CustomLoader.showLoader(context: context);
+  //   await SalesrepGetDiscountService().getRepDiscount(
+  //       context: context, repId: loginStorage.getSalesRepId() ?? 0);
+  //
+  //   CustomLoader.hideLoader(context);
+  // }
 
-    CustomLoader.hideLoader(context);
-  }
+  GoogleMapController? _mapController;
+  final Set<Marker> _markers = {};
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<SalesrepDiscountProvider, CustomerProfileProvider>(
-        builder: (context, data, customer, _) {
-      repDiscountModel = data.repDiscountModel;
-      if (repDiscountModel!.data.discountType == "By Percentage") {
-        isDiscountInPercent = true;
-      } else {
-        isDiscountInPercent = false;
-      }
+    return Consumer<CustomerProfileProvider>(builder: (context, customer, _) {
+      // repDiscountModel = data.repDiscountModel;
+      // if (repDiscountModel!.data.discountType == "By Percentage") {
+      //   isDiscountInPercent = true;
+      // } else {
+      //   isDiscountInPercent = false;
+      // }
       return Scaffold(
-        appBar: AppBar(
-          title: Column(
-            children: [
-              const Text(
-                "Your Cart",
-                style: TextStyle(color: Colors.black),
-              ),
-              Text(
-                "${model.length} items",
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ],
+          appBar: AppBar(
+            title: Column(
+              children: [
+                const Text(
+                  "Your Cart",
+                  style: TextStyle(color: Colors.black),
+                ),
+                Text(
+                  "${model.length} items",
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ],
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: model.length,
-                  itemBuilder: (context, index) {
-                    // final item = model[index];
-                    // int quantity = item.quantity;
-                    // model[index].quantity=;
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenWidth(20)),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: model.length,
+                    itemBuilder: (context, index) {
+                      // final item = model[index];
+                      // int quantity = item.quantity;
+                      // model[index].quantity=;
 
-                    // log("image url = ${model[index].productImagePath}");
+                      // log("image url = ${model[index].productImagePath}");
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Dismissible(
-                          key: Key(model[index].productId.toString()),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (direction) {
-                            num price =
-                                model[index].price * model[index].quantity;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Dismissible(
+                            key: Key(model[index].productId.toString()),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) {
+                              num price =
+                                  model[index].price * model[index].quantity;
 
-                            totalPrice = totalPrice - price;
-                            model.removeAt(index);
-                            cartStorage.deleteCartItem(index: index);
-                            Provider.of<CartCounterProvider>(context,
-                                    listen: false)
-                                .decrementCount();
-                            // updateIsDiscountApplicable();
-                            setState(() {});
-                          },
-                          background: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFE6E6),
-                              borderRadius: BorderRadius.circular(15),
+                              totalPrice = totalPrice - price;
+                              model.removeAt(index);
+                              cartStorage.deleteCartItem(index: index);
+                              Provider.of<CartCounterProvider>(context,
+                                      listen: false)
+                                  .decrementCount();
+                              // updateIsDiscountApplicable();
+                              setState(() {});
+                            },
+                            background: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFE6E6),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Spacer(),
+                                  SvgPicture.asset("assets/icons/Trash.svg"),
+                                ],
+                              ),
                             ),
                             child: Row(
                               children: [
-                                const Spacer(),
-                                SvgPicture.asset("assets/icons/Trash.svg"),
-                              ],
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 88,
-                                child: AspectRatio(
-                                  aspectRatio: 0.88,
-                                  child: Container(
-                                    padding: EdgeInsets.all(
-                                        getProportionateScreenWidth(10)),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFF5F6F9),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    // child: Image.network(cart.product.images[0]),
-                                    child: Image.network(model[index]
-                                                    .productImage ==
-                                                "" ||
-                                            // ignore: unnecessary_null_comparison
-                                            model[index].productImage == null
-                                        ? dummyImageUrl
-                                        : model[index].productImage),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.8,
-                                    child: Text(
-                                      model[index].productName,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 2,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: "\$${model[index].price}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: kPrimaryColor),
-                                      children: [
-                                        TextSpan(
-                                            // text: " x${cart.numOfItem}",
-                                            text: " x ${model[index].quantity}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1),
-                                        TextSpan(
-                                            // text: " x${cart.numOfItem}",
-                                            text: " = \$" +
-                                                (model[index].price *
-                                                        model[index].quantity)
-                                                    .toStringAsFixed(2),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1),
-                                      ],
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      RoundedIconBtn(
-                                        icon: Icons.remove,
-                                        showShadow: true,
-                                        press: () {
-                                          totalPrice = totalPrice -
-                                              model[index].price *
-                                                  model[index].quantity;
-
-                                          model[index].quantity--;
-                                          //! if quantity is less than 1 then remove item from cart
-                                          if (model[index].quantity < 1) {
-                                            cartStorage.deleteCartItem(
-                                                index: index);
-                                            model.removeAt(index);
-                                            Provider.of<CartCounterProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .decrementCount();
-                                          } else {
-                                            totalPrice = totalPrice +
-                                                model[index].price *
-                                                    model[index].quantity;
-
-                                            cartStorage.updateCartItem(
-                                                item: model[index]);
-                                          }
-                                          // updateIsDiscountApplicable();
-                                          cartItemsCount--;
-
-                                          setState(() {});
-                                        },
-                                      ),
-                                      SizedBox(
-                                          width:
-                                              getProportionateScreenWidth(20)),
-                                      RoundedIconBtn(
-                                        icon: Icons.add,
-                                        showShadow: true,
-                                        press: () {
-                                          totalPrice = totalPrice -
-                                              model[index].price *
-                                                  model[index].quantity;
-
-                                          model[index].quantity++;
-                                          cartStorage.updateCartItem(
-                                              item: model[index]);
-
-                                          totalPrice = totalPrice +
-                                              model[index].price *
-                                                  model[index].quantity;
-                                          // updatePrices();
-                                          // updateIsDiscountApplicable();
-                                          cartItemsCount++;
-                                          setState(() {});
-
-                                          log("quantity = ${model[index].quantity}");
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
-                          )),
-                    );
-                  },
-                ),
-              ),
-
-              ListView.builder(
-                itemCount: paymentStringList.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 4.0, bottom: 4),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Image.asset(
-                            'assets/images/payment_done.png',
-                            height: 30,
-                            width: 30,
-                          ),
-                        ),
-                        Expanded(
-                            flex: 3,
-                            child: Text(paymentStringList[index],
-                                style: nameStyle)),
-                      ],
-                    ),
-                  );
-                },
-              ),
-
-              if (model.isEmpty)
-                const Center(
-                  child: Text(
-                    "Your Cart is empty yet",
-                    style: nameStyle,
-                  ),
-                ),
-              if (model.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 100,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        //! payment by cash
-                        PaymentCard(
-                          image:
-                              'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
-                          color: selectedPaymentIndex == 1 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 1;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash',
-                        ),
-
-                        //! payment with cheque
-                        PaymentCard(
-                          image:
-                              'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
-                          color: selectedPaymentIndex == 2 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 2;
-                            setState(() {});
-                          },
-                          paymentName: 'Cheque',
-                        ),
-
-                        //! payment with cash app
-                        PaymentCard(
-                          image:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
-                          color: selectedPaymentIndex == 3 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 3;
-                            setState(() {});
-                          },
-                          paymentName: 'Cash App',
-                        ),
-
-                        PaymentCard(
-                          image:
-                              'http://assets.stickpng.com/thumbs/62a382de6209494ec2b17086.png',
-                          color: selectedPaymentIndex == 4 ? true : false,
-                          onTap: () {
-                            selectedPaymentIndex = 4;
-                            setState(() {});
-                          },
-                          paymentName: 'Stripe',
-                        ),
-
-                        // PaymentCard(
-                        //   image:
-                        //       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
-                        //   color: selectedPaymentIndex == 5 ? true : false,
-                        //   onTap: () {
-                        //     selectedPaymentIndex = 5;
-                        //     setState(() {});
-                        //   },
-                        //   paymentName: 'Paypal',
-                        // ),
-
-                        // Column(
-                        //   children: [
-                        //     const Text('G-Pay'),
-                        //     const GooglePlayButtonCard(),
-                        //   ],
-                        // )
-
-                        // PaymentCard(
-                        //   image:
-                        //       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
-                        //   color: selectedPaymentIndex == 5 ? true : false,
-                        //   onTap: () {
-                        //     selectedPaymentIndex = 5;
-                        //     setState(() {});
-                        //   },
-                        //   paymentName: 'Paypal',
-                        // ),
-                      ],
-                    ),
-                  ),
-                ),
-              //! cash on delivery
-              if (selectedPaymentIndex == 1) cashPaymentDesign(),
-
-              //! cheque payment
-              if (selectedPaymentIndex == 2) chequePaymentDesign(),
-
-              //! cashapp payment payment
-
-              if (selectedPaymentIndex == 3) cashAppPaymentDesign(),
-              //! stripe payment payment
-
-              if (selectedPaymentIndex == 4) stripePaymentMethod(),
-              //! paypal payment payment
-
-              // if (selectedPaymentIndex == 5) payPalPaymentMethod(),
-            ],
-          ),
-        ),
-        bottomNavigationBar: model.isNotEmpty &&
-                Provider.of<AccountBalanceProvider>(context, listen: true)
-                        .accountBalanceModel !=
-                    null
-            ? Consumer<AccountBalanceProvider>(builder: (context, data, _) {
-                // if (data.accountBalanceModel!.data!.creditLimit != null) {
-                //   log("Here Error");
-                //   // creditLimit = data.accountBalanceModel!.data!.creditLimit!;
-                // }
-
-                ///Creating Issue
-                previousBalance =
-                    data.accountBalanceModel!.data!.accountBalance!;
-                log("Previous Balance $previousBalance");
-
-                // if (data.accountBalanceModel!.data!.accountBalance! < 0) {
-                //   totalPayable =
-                //       (data.accountBalanceModel!.data!.accountBalance!).abs();
-                // } else {
-                //   previousBalance =
-                //       data.accountBalanceModel!.data!.accountBalance!;
-                // }
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: getProportionateScreenWidth(15),
-                    horizontal: getProportionateScreenWidth(30),
-                  ),
-                  // height: 174,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, -15),
-                        blurRadius: 20,
-                        color: const Color(0xFFDADADA).withOpacity(0.15),
-                      )
-                    ],
-                  ),
-                  child: SafeArea(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      openInvoice();
-                                    },
+                                SizedBox(
+                                  width: 88,
+                                  child: AspectRatio(
+                                    aspectRatio: 0.88,
                                     child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      height: getProportionateScreenWidth(40),
-                                      width: getProportionateScreenWidth(40),
+                                      padding: EdgeInsets.all(
+                                          getProportionateScreenWidth(10)),
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFF5F6F9),
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(15),
                                       ),
-                                      child: SvgPicture.asset(
-                                          "assets/icons/receipt.svg"),
+                                      // child: Image.network(cart.product.images[0]),
+                                      child: Image.network(model[index]
+                                                      .productImage ==
+                                                  "" ||
+                                              // ignore: unnecessary_null_comparison
+                                              model[index].productImage == null
+                                          ? dummyImageUrl
+                                          : model[index].productImage),
                                     ),
                                   ),
-                                  const Text("Invoice")
-                                ],
-                              ),
-                              const Spacer(),
-                              if (data.accountBalanceModel != null)
+                                ),
+                                const SizedBox(width: 20),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    // if (totalPayable > 0)
-                                    //   Text(
-                                    //     "Previous Payable : \$ ${totalPayable.toStringAsFixed(2)}",
-                                    //     style: TextStyle(
-                                    //         fontWeight: FontWeight.bold),
-                                    //   ),di
-
-                                    if (repDiscountModel != null &&
-                                        getIsDiscountApplicable())
-                                      Text(
-                                        "Today's Order Amount : \$ " +
-                                            totalPrice.toStringAsFixed(2),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.8,
+                                      child: Text(
+                                        model[index].productName,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
                                         style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold),
+                                        maxLines: 2,
                                       ),
-                                    if (repDiscountModel != null &&
-                                        getIsDiscountApplicable() &&
-                                        repDiscountModel!.data.discount != 0)
-                                      isDiscountInPercent
-                                          ? Text(
-                                              "Discount on Order :  ${repDiscountModel!.data.discount} %",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold))
-                                          : Text(
-                                              "Discount on Order : \$ ${repDiscountModel!.data.discount}",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-
-                                    if (repDiscountModel != null &&
-                                        getIsDiscountApplicable() &&
-                                        repDiscountModel!.data.discount != 0)
-                                      Text(
-                                        "Order Payable Amount : \$ " +
-                                            getOrderAmount(),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "\$${model[index].price}",
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.w500,
+                                            color: kPrimaryColor),
+                                        children: [
+                                          TextSpan(
+                                              // text: " x${cart.numOfItem}",
+                                              text:
+                                                  " x ${model[index].quantity}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1),
+                                          TextSpan(
+                                              // text: " x${cart.numOfItem}",
+                                              text: " = \$" +
+                                                  (model[index].price *
+                                                          model[index].quantity)
+                                                      .toStringAsFixed(2),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1),
+                                        ],
                                       ),
-                                    Text(
-                                      "Total Balance: \$ " + getTotalBalance(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
-                                      "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "Remaining Balance : \$ " +
-                                          getRemainigBalance(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    //! Total Paid
-//(totalPrice - totalPaid)
-                                    //! credit limit is working fine but it is removed due to client requirement
-                                    //! changes
-                                    // Text(
-                                    //     "Credit Limit : \$ ${creditLimit.toStringAsFixed(2)}"),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        RoundedIconBtn(
+                                          icon: Icons.remove,
+                                          showShadow: true,
+                                          press: () {
+                                            totalPrice = totalPrice -
+                                                model[index].price *
+                                                    model[index].quantity;
 
-                                    // if (totalPayable > 0)
-                                    //   Text(
-                                    //       "\$${totalPrice.toStringAsFixed(2)} + ${totalPayable.toStringAsFixed(2)} = " +
-                                    //           getTotalPrice()),
-                                  ],
-                                )
-
-                              // const SizedBox(width: 10),
-                              // Icon(
-                              //   Icons.arrow_forward_ios,
-                              //   size: 12,
-                              //   color: kTextColor,
-                              // )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(20)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Text.rich(
-                            //   TextSpan(
-                            //     text: "Total:\n", //! total price
-                            //     children: [
-                            //       TextSpan(
-                            //         // text: getTotalPrice(),
-                            //         text: totalPrice.toStringAsFixed(2),
-
-                            //         style: TextStyle(
-                            //             fontSize: 16, color: Colors.black),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-
-                            DefaultButton(
-                                text: "Check Out",
-                                width: getProportionateScreenWidth(300),
-                                press: () async {
-                                  var res = customer.customerProfileModel;
-
-                                  res!.data!.saleRep?.id == 0 ||
-                                          res.data!.saleRep?.id == null
-                                      ? showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              "Approval for creation of your account is in process. We will let you know as soon as it is completed.",
-                                          okBtnText: 'Ok',
-                                          cancelBtnText: 'Cancel',
-                                          onCancelPress: () {
-                                            customerGetDataHandler();
-                                          },
-                                          onOkPress: () {
-                                            customerGetDataHandler();
-                                          })
-                                      :
-
-                                      // var box = Hive.box("salesrep_cart_box");
-                                      // try {
-                                      //   if (box.containsKey(
-                                      //       widget.customerId.toString() +
-                                      //           "salesrep_cart_list")) {
-                                      //     log("yes it  has key");
-                                      //   }
-                                      // } catch (e) {
-                                      //   log("message");
-                                      // }
-
-                                      // return;
-
-                                      showAwesomeAlert(
-                                          context: context,
-                                          msg:
-                                              'Do you want to place the order ?',
-                                          animType: AnimType.topSlide,
-                                          dialogType: DialogType.info,
-                                          onOkPress: () async {
-                                            log("payment list = ${json.encode(paymentsList)}");
-
-                                            if (isOrderPlaced) {
-                                              showToast(
-                                                  "This order is already placed");
-                                              Navigator.of(context).pop();
-                                              return;
-                                            }
-
-                                            // num price = totalPrice +
-                                            //     totalPayable -
-                                            //     (totalPaid + previousBalance);
-
-                                            // !following logic is commented because changed scenario of previous balance
-                                            // if (totalPaid == 0 &&
-                                            //     previousBalance > totalPrice) {
-                                            //   totalPaid = totalPrice;
-                                            //   log("totalPaid after conditions = $totalPaid");
-                                            // }
-
-                                            // if (price < 0 || price ) {
-                                            //   canPlaceOrder = true;
-                                            // }
-
-                                            // log("creditLimit = $creditLimit");
-                                            // log("price = $price");
-                                            log("previousBalance = $previousBalance");
-                                            // if (creditLimit < price) {
-                                            //   showToast(
-                                            //       "You can Order upto \$${creditLimit + previousBalance}");
-                                            //   //! add awesome dialogue for this msg
-                                            //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
-                                            // } else {
-                                            // num paid = 0;
-                                            // num prevBlnc = previousBalance;
-                                            // if (totalPaid >= totalPrice) {
-                                            //   paid = totalPaid;
-                                            //   prevBlnc =
-                                            //       prevBlnc + (totalPaid - totalPrice);
-                                            // } else {
-                                            //   prevBlnc - totalPrice + totalPaid;
-                                            // }
-                                            // totalPaid =
-                                            //     totalPaid + previousBalance - totalPrice;
-
-                                            CartModel cartModel = CartModel(
-                                              netTotal: double.parse(
-                                                  getOrderAmount()),
-                                              orderPayment: paymentsList,
-                                              customerId:
-                                                  loginStorage.getUserId(),
-                                              dateTime: DateTime.now(),
-                                              orderBy: 1,
-                                              orderId: 0,
-                                              orderProducts: model,
-                                              discount:
-                                                  getIsDiscountApplicable()
-                                                      ? repDiscountModel!
-                                                          .data.discount
-                                                      : 0,
-                                              grandTotal: totalPrice,
-                                              status: 'Pending',
-                                              totalPrice: totalPrice,
-                                              orderPaidAmount: totalPaid,
-                                              //! + previousBalance is removed in current scenario
-                                              //! becasue totalbalance param is added in api
-                                              orderPendingAmount: double.parse(
-                                                  getRemainigBalance()),
-                                              remainingBalance: double.parse(
-                                                  getRemainigBalance()),
-                                              totalBalance: double.parse(
-                                                  getTotalBalance()),
-                                              previousBalance: previousBalance,
-                                              discountType:
-                                                  getIsDiscountApplicable() &&
-                                                          isDiscountInPercent
-                                                      ? "By Percentage"
-                                                      : "By Value",
-                                            );
-
-                                            String jsonnn =
-                                                cartModelToJson(cartModel);
-                                            await addToCartHandler(jsonnn);
-                                            log("jsonnn  /// = $jsonnn");
-                                            if (isOrderPlaced) {
-                                              await updateCustomerBalanceHandler(
-                                                loginStorage.getUserId(),
-                                                getPreviousBalance(), //! setting it to 0 because previous balance was added into
-                                                //! totalPaid and if total paid is more than total price then
-                                                //! murtaza will again add this extra to customer's wallet
-                                              );
-                                              openInvoice();
-
-                                              //! clearing full sales rep box
-                                              //! because delete is not working for a particular key
-
-                                              Hive.box("customer_cart_box")
-                                                  .clear();
-
+                                            model[index].quantity--;
+                                            //! if quantity is less than 1 then remove item from cart
+                                            if (model[index].quantity < 1) {
+                                              cartStorage.deleteCartItem(
+                                                  index: index);
+                                              model.removeAt(index);
                                               Provider.of<CartCounterProvider>(
                                                       context,
                                                       listen: false)
-                                                  .setCount(0);
-                                            }
+                                                  .decrementCount();
+                                            } else {
+                                              totalPrice = totalPrice +
+                                                  model[index].price *
+                                                      model[index].quantity;
 
-                                            if (isOrderPlaced) {
-                                              showModalBottomSheet(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10.0)),
-                                                        child: ListView(
-                                                          physics:
-                                                              const NeverScrollableScrollPhysics(),
-                                                          children: [
-                                                            const SizedBox(
-                                                                height: 15),
-                                                            SvgPicture.asset(
-                                                              'assets/icons/checkout.svg',
-                                                              color: appColor,
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 10),
-                                                            const Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0),
-                                                              child: Text(
-                                                                '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              height: 45,
-                                                              width: double
-                                                                  .infinity,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                onPressed: () {
-                                                                  // close bottom sheet and also navigate
-                                                                  // to previous page.
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child: const Text(
-                                                                    'Continue Shopping'),
-                                                                style: ElevatedButton.styleFrom(
-                                                                    elevation:
-                                                                        0,
-                                                                    backgroundColor:
-                                                                        appColor,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(10.0))),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 30),
-                                                          ],
-                                                        ),
-
-                                                        // color: Colors.black,
-                                                      ),
-                                                    );
-                                                  });
+                                              cartStorage.updateCartItem(
+                                                  item: model[index]);
                                             }
+                                            // updateIsDiscountApplicable();
+                                            cartItemsCount--;
+
+                                            setState(() {});
                                           },
-                                        );
-                                }),
+                                        ),
+                                        SizedBox(
+                                            width: getProportionateScreenWidth(
+                                                20)),
+                                        RoundedIconBtn(
+                                          icon: Icons.add,
+                                          showShadow: true,
+                                          press: () {
+                                            totalPrice = totalPrice -
+                                                model[index].price *
+                                                    model[index].quantity;
+
+                                            model[index].quantity++;
+                                            cartStorage.updateCartItem(
+                                                item: model[index]);
+
+                                            totalPrice = totalPrice +
+                                                model[index].price *
+                                                    model[index].quantity;
+                                            // updatePrices();
+                                            // updateIsDiscountApplicable();
+                                            cartItemsCount++;
+                                            setState(() {});
+
+                                            log("quantity = ${model[index].quantity}");
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            )),
+                      );
+                    },
+                  ),
+                ),
+
+                ListView.builder(
+                  itemCount: paymentStringList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 4.0, bottom: 4),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Image.asset(
+                              'assets/images/payment_done.png',
+                              height: 30,
+                              width: 30,
+                            ),
+                          ),
+                          Expanded(
+                              flex: 3,
+                              child: Text(paymentStringList[index],
+                                  style: nameStyle)),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+                if (model.isEmpty)
+                  const Center(
+                    child: Text(
+                      "Your Cart is empty yet",
+                      style: nameStyle,
+                    ),
+                  ),
+                if (model.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 100,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          //! payment by cash
+                          PaymentCard(
+                            image:
+                                'https://st.depositphotos.com/1477399/1844/i/600/depositphotos_18442353-stock-photo-human-hands-exchanging-money.jpg',
+                            color: selectedPaymentIndex == 1 ? true : false,
+                            onTap: () {
+                              selectedPaymentIndex = 1;
+                              setState(() {});
+                            },
+                            paymentName: 'Cash',
+                          ),
+
+                          //! payment with cheque
+                          PaymentCard(
+                            image:
+                                'https://img.freepik.com/premium-vector/man-holds-bank-check-with-signature-businessman-with-cheque-book-hand-payments-financial-operations_458444-434.jpg?w=360',
+                            color: selectedPaymentIndex == 2 ? true : false,
+                            onTap: () {
+                              selectedPaymentIndex = 2;
+                              setState(() {});
+                            },
+                            paymentName: 'Cheque',
+                          ),
+
+                          //! payment with cash app
+                          PaymentCard(
+                            image:
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png',
+                            color: selectedPaymentIndex == 3 ? true : false,
+                            onTap: () {
+                              selectedPaymentIndex = 3;
+                              setState(() {});
+                            },
+                            paymentName: 'Cash App',
+                          ),
+
+                          PaymentCard(
+                            image:
+                                'http://assets.stickpng.com/thumbs/62a382de6209494ec2b17086.png',
+                            color: selectedPaymentIndex == 4 ? true : false,
+                            onTap: () {
+                              selectedPaymentIndex = 4;
+                              setState(() {});
+                            },
+                            paymentName: 'Stripe',
+                          ),
+
+                          // PaymentCard(
+                          //   image:
+                          //       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
+                          //   color: selectedPaymentIndex == 5 ? true : false,
+                          //   onTap: () {
+                          //     selectedPaymentIndex = 5;
+                          //     setState(() {});
+                          //   },
+                          //   paymentName: 'Paypal',
+                          // ),
+
+                          // Column(
+                          //   children: [
+                          //     const Text('G-Pay'),
+                          //     const GooglePlayButtonCard(),
+                          //   ],
+                          // )
+
+                          // PaymentCard(
+                          //   image:
+                          //       'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png',
+                          //   color: selectedPaymentIndex == 5 ? true : false,
+                          //   onTap: () {
+                          //     selectedPaymentIndex = 5;
+                          //     setState(() {});
+                          //   },
+                          //   paymentName: 'Paypal',
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                //! cash on delivery
+                if (selectedPaymentIndex == 1) cashPaymentDesign(),
+
+                //! cheque payment
+                if (selectedPaymentIndex == 2) chequePaymentDesign(),
+
+                //! cashapp payment payment
+
+                if (selectedPaymentIndex == 3) cashAppPaymentDesign(),
+                //! stripe payment payment
+
+                if (selectedPaymentIndex == 4) stripePaymentMethod(),
+                //! paypal payment payment
+
+                Container(
+                  height: 250,
+                  width: double.infinity,
+                  child: GoogleMap(
+                    initialCameraPosition: const CameraPosition(
+                      target: LatLng(24.774265, 46.738586),
+                      zoom: 15,
+                    ),
+                    markers: _markers,
+                    onMapCreated: (GoogleMapController controller) {
+                      _mapController = controller;
+                    },
+                  ),
+                )
+
+                // if (selectedPaymentIndex == 5) payPalPaymentMethod(),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenWidth(15),
+              horizontal: getProportionateScreenWidth(30),
+            ),
+            // height: 174,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  offset: const Offset(0, -15),
+                  blurRadius: 20,
+                  color: const Color(0xFFDADADA).withOpacity(0.15),
+                )
+              ],
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                openInvoice();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                height: getProportionateScreenWidth(40),
+                                width: getProportionateScreenWidth(40),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF5F6F9),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SvgPicture.asset(
+                                    "assets/icons/receipt.svg"),
+                              ),
+                            ),
+                            const Text("Invoice")
                           ],
                         ),
+                        const Spacer(),
+                        // if (data.accountBalanceModel != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Text(
+                            //   "Previous Balance : \$ ${previousBalance.toStringAsFixed(2)}",
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            // if (totalPayable > 0)
+                            //   Text(
+                            //     "Previous Payable : \$ ${totalPayable.toStringAsFixed(2)}",
+                            //     style: TextStyle(
+                            //         fontWeight: FontWeight.bold),
+                            //   ),di
+
+                            // if (repDiscountModel != null &&
+                            //     getIsDiscountApplicable())
+                            Text(
+                              "Today's Order Amount " +
+                                  "${totalPrice.toStringAsFixed(2)} SAR",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            // if (repDiscountModel != null &&
+                            //     getIsDiscountApplicable() &&f
+                            //     repDiscountModel!.data.discount != 0)
+                            //   isDiscountInPercent
+                            //       ? Text(
+                            //           "Discount on Order :  ${repDiscountModel!.data.discount} %",
+                            //           style: const TextStyle(
+                            //               fontWeight: FontWeight.bold))
+                            //       : Text(
+                            //           "Discount on Order : \$ ${repDiscountModel!.data.discount}",
+                            //           style: const TextStyle(
+                            //               fontWeight: FontWeight.bold)),
+                            //
+                            // if (repDiscountModel != null &&
+                            //     getIsDiscountApplicable() &&
+                            //     repDiscountModel!.data.discount != 0)
+                            //   Text(
+                            //     "Order Payable Amount : \$ " +
+                            //         getOrderAmount(),
+                            //     style: const TextStyle(
+                            //         fontWeight: FontWeight.bold),
+                            //   ),
+                            // Text(
+                            //   "Total Balance: \$ " + getTotalBalance(),
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            // Text(
+                            //   "Today's Payment : \$ ${totalPaid.toStringAsFixed(2)}",
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            // Text(
+                            //   "Remaining Balance : \$ " +
+                            //       getRemainigBalance(),
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            //! Total Paid
+//(totalPrice - totalPaid)
+                            //! credit limit is working fine but it is removed due to client requirement
+                            //! changes
+                            // Text(
+                            //     "Credit Limit : \$ ${creditLimit.toStringAsFixed(2)}"),
+
+                            // if (totalPayable > 0)
+                            //   Text(
+                            //       "\$${totalPrice.toStringAsFixed(2)} + ${totalPayable.toStringAsFixed(2)} = " +
+                            //           getTotalPrice()),
+                          ],
+                        )
+
+                        // const SizedBox(width: 10),
+                        // Icon(
+                        //   Icons.arrow_forward_ios,
+                        //   size: 12,
+                        //   color: kTextColor,
+                        // )
                       ],
                     ),
                   ),
-                );
-              })
-            : const SizedBox(),
-      );
+                  SizedBox(height: getProportionateScreenHeight(20)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Text.rich(
+                      //   TextSpan(
+                      //     text: "Total:\n", //! total price
+                      //     children: [
+                      //       TextSpan(
+                      //         // text: getTotalPrice(),
+                      //         text: totalPrice.toStringAsFixed(2),
+
+                      //         style: TextStyle(
+                      //             fontSize: 16, color: Colors.black),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      DefaultButton(
+                          text: "Check Out",
+                          width: getProportionateScreenWidth(300),
+                          press: () async {
+                            // var res = customer.customerProfileModel;
+                            //
+                            // res!.data!.saleRep?.id == 0 ||
+                            //         res.data!.saleRep?.id == null
+                            //     ? showAwesomeAlert(
+                            //         context: context,
+                            //         msg:
+                            //             "Approval for creation of your account is in process. We will let you know as soon as it is completed.",
+                            //         okBtnText: 'Ok',
+                            //         cancelBtnText: 'Cancel',
+                            //         onCancelPress: () {
+                            //           customerGetDataHandler();
+                            //         },
+                            //         onOkPress: () {
+                            //           customerGetDataHandler();
+                            //         })
+                            //     :
+
+                            // var box = Hive.box("salesrep_cart_box");
+                            // try {
+                            //   if (box.containsKey(
+                            //       widget.customerId.toString() +
+                            //           "salesrep_cart_list")) {
+                            //     log("yes it  has key");
+                            //   }
+                            // } catch (e) {
+                            //   log("message");
+                            // }
+
+                            // return;
+
+                            showAwesomeAlert(
+                              context: context,
+                              msg: 'Do you want to place the order ?',
+                              animType: AnimType.topSlide,
+                              dialogType: DialogType.info,
+                              onOkPress: () async {
+                                log("payment list = ${json.encode(paymentsList)}");
+
+                                if (isOrderPlaced) {
+                                  showToast("This order is already placed");
+                                  Navigator.of(context).pop();
+                                  return;
+                                }
+
+                                // num price = totalPrice +
+                                //     totalPayable -
+                                //     (totalPaid + previousBalance);
+
+                                // !following logic is commented because changed scenario of previous balance
+                                // if (totalPaid == 0 &&
+                                //     previousBalance > totalPrice) {
+                                //   totalPaid = totalPrice;
+                                //   log("totalPaid after conditions = $totalPaid");
+                                // }
+
+                                // if (price < 0 || price ) {
+                                //   canPlaceOrder = true;
+                                // }
+
+                                // log("creditLimit = $creditLimit");
+                                // log("price = $price");
+                                log("previousBalance = $previousBalance");
+                                // if (creditLimit < price) {
+                                //   showToast(
+                                //       "You can Order upto \$${creditLimit + previousBalance}");
+                                //   //! add awesome dialogue for this msg
+                                //   //! YOU CAN ONLY ORDER UPTO YOUR CREDIT LIMIT
+                                // } else {
+                                // num paid = 0;
+                                // num prevBlnc = previousBalance;
+                                // if (totalPaid >= totalPrice) {
+                                //   paid = totalPaid;
+                                //   prevBlnc =
+                                //       prevBlnc + (totalPaid - totalPrice);
+                                // } else {
+                                //   prevBlnc - totalPrice + totalPaid;
+                                // }
+                                // totalPaid =
+                                //     totalPaid + previousBalance - totalPrice;
+
+                                CartModel cartModel = CartModel(
+                                    netTotal: double.parse(getOrderAmount()),
+                                    orderPayment: paymentsList,
+                                    customerId: loginStorage.getUserId(),
+                                    dateTime: DateTime.now(),
+                                    orderBy: 1,
+                                    orderId: 0,
+                                    orderProducts: model,
+                                    discount: 0,
+                                    grandTotal: totalPrice,
+                                    status: 'Pending',
+                                    totalPrice: totalPrice,
+                                    orderPaidAmount: totalPaid,
+                                    //! + previousBalance is removed in current scenario
+                                    //! becasue totalbalance param is added in api
+                                    orderPendingAmount: 0,
+                                    remainingBalance: 0,
+                                    totalBalance:
+                                        double.parse(getTotalBalance()),
+                                    previousBalance: 1,
+                                    discountType: '1');
+
+                                String jsonnn = cartModelToJson(cartModel);
+                                await addToCartHandler(jsonnn);
+                                log("jsonnn  /// = $jsonnn");
+                                if (isOrderPlaced) {
+                                  await updateCustomerBalanceHandler(
+                                    loginStorage.getUserId(),
+                                    getPreviousBalance(), //! setting it to 0 because previous balance was added into
+                                    //! totalPaid and if total paid is more than total price then
+                                    //! murtaza will again add this extra to customer's wallet
+                                  );
+                                  openInvoice();
+
+                                  //! clearing full sales rep box
+                                  //! because delete is not working for a particular key
+
+                                  Hive.box("customer_cart_box").clear();
+
+                                  Provider.of<CartCounterProvider>(context,
+                                          listen: false)
+                                      .setCount(0);
+                                }
+
+                                if (isOrderPlaced) {
+                                  showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.0)),
+                                            child: ListView(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              children: [
+                                                const SizedBox(height: 15),
+                                                SvgPicture.asset(
+                                                  'assets/icons/checkout.svg',
+                                                  color: appColor,
+                                                ),
+                                                const SizedBox(height: 10),
+                                                const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    '"Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order"',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  height: 45,
+                                                  width: double.infinity,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      // close bottom sheet and also navigate
+                                                      // to previous page.
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const Text(
+                                                        'Continue Shopping'),
+                                                    style: ElevatedButton.styleFrom(
+                                                        elevation: 0,
+                                                        backgroundColor:
+                                                            appColor,
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0))),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 30),
+                                              ],
+                                            ),
+
+                                            // color: Colors.black,
+                                          ),
+                                        );
+                                      });
+                                }
+                              },
+                            );
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ));
     });
   }
 
@@ -943,6 +915,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
     CustomLoader.showLoader(context: context);
     isOrderPlaced =
         await AddToCartService().addToCart(context: context, cart: cart);
+    print('orderPleaced--->${isOrderPlaced}');
     CustomLoader.hideLoader(context);
     return isOrderPlaced;
   }

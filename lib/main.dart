@@ -25,6 +25,7 @@ import 'package:shop_app/providers/salesrep_all_customer_payment_provider.dart';
 import 'package:shop_app/providers/salesrep_customer_payment_aging_provider.dart';
 import 'package:shop_app/providers/salesrep_profile_provider.dart';
 import 'package:shop_app/providers/states_provider.dart';
+import 'package:shop_app/providers/sub_category_provider.dart';
 import 'package:shop_app/providers/timelines_provider.dart';
 import 'package:shop_app/providers/top_category_provider.dart';
 import 'package:shop_app/providers/top_five_customers_provider.dart';
@@ -33,6 +34,7 @@ import 'package:shop_app/providers/user_data_provider.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/theme.dart';
 import 'customer/provider/categories_provider.dart';
+import 'providers/categories_provider.dart';
 import 'providers/cost_of_good_sale_provider.dart';
 import 'providers/customer_profile_provider.dart';
 import 'providers/salesrep_discount_provider.dart';
@@ -167,6 +169,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => PaymentGetProvider()),
         ChangeNotifierProvider(create: (context) => StatesProvider()),
         ChangeNotifierProvider(create: (context) => AllCitiesProvider()),
+        ChangeNotifierProvider(create: (context) => NewCategoriesProvider()),
+        ChangeNotifierProvider(create: (context) => SubCategoryProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

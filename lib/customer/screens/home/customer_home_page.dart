@@ -1,17 +1,22 @@
 // ignore_for_file: empty_catches
 
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/components/common_widgets.dart';
 import 'package:shop_app/components/customer_custom_bottom_nav_bar.dart';
+import 'package:shop_app/customer/screens/sub_category_screen.dart';
 import 'package:shop_app/enums.dart';
 import 'package:shop_app/components/customer_products_widget.dart';
 import 'package:shop_app/helper/custom_get_request_service.dart';
 import 'package:shop_app/helper/custom_snackbar.dart';
+import 'package:shop_app/models/categoriies_model.dart';
+import 'package:shop_app/providers/categories_provider.dart';
 import 'package:shop_app/providers/payment_get_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/services/categories_service.dart';
 import 'package:shop_app/services/customer_favourtes_products_service.dart';
 import 'package:shop_app/services/customer_get_profile_service.dart';
 import 'package:shop_app/services/get_payment_service.dart';
@@ -19,10 +24,12 @@ import 'package:shop_app/size_config.dart';
 import 'package:shop_app/storages/customer_cart_storage.dart';
 import 'package:shop_app/storages/login_storage.dart';
 import 'package:shop_app/widgets/custom_textfield.dart';
+import '../../../components/categories_screen.dart';
 import '../../../constants.dart';
 import '../../../helper/custom_loader.dart';
 import '../../../models/products_model.dart';
 import '../../../providers/counter_provider.dart';
+import '../../services/categories_service.dart';
 import '../cart/customer_cart_page.dart';
 import 'components/icon_btn_with_counter.dart';
 
@@ -79,6 +86,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      categoriesHandler();
       _getCustFavProdHandler();
       initializeStripe();
       // customerGetDataHandler();
@@ -169,6 +177,19 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     }
   }
 
+  List<CategoriesData> catModel = [];
+
+  categoriesHandler() async {
+    CustomLoader.showLoader(context: context);
+    await NewCategoriesService().categoriesService(context: context);
+
+    catModel =
+        Provider.of<NewCategoriesProvider>(context, listen: false).model!;
+
+    print('categoriesData--->${catModel}');
+    CustomLoader.hideLoader(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -256,43 +277,97 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       ],
                     ),
 
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    const Padding(
+                      padding: EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        "Categories",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         children: [
-                          SizedBox(height: getProportionateScreenWidth(10)),
-                          // const DiscountBanner(),
-                          // const Categories(),
-                          // SpecialOffers(),
-                          // SizedBox(height: getProportionateScreenWidth(10)),
+                          for (int i = 0; i < catModel.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 10),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              SubCategoryScreen(
+                                                categoryName:
+                                                    catModel[i].categoryName!,
+                                                productId:
+                                                    catModel[i].categoryId!,
+                                              )));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.blue.shade100),
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0, vertical: 10),
+                                    child: Text(catModel[i].categoryName!),
+                                  ),
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
 
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 18.0),
-                            child: Text(
-                              'All Products',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ]),
-
-                    callProducts.isNotEmpty
-                        ? Wrap(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              for (var product in callProducts)
-                                CustomerProductsWidget(
-                                  isReseller: false,
-                                  productData: product,
-                                )
-                            ],
-                          )
-                        : const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              'Product not found',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
+                              SizedBox(height: getProportionateScreenWidth(10)),
+                              // const DiscountBanner(),
+                              // const Categories(),
+                              // SpecialOffers(),
+                              // SizedBox(height: getProportionateScreenWidth(10)),
+
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 18.0),
+                                child: Text(
+                                  'All Products',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ]),
+                        callProducts.isNotEmpty
+                            ? Wrap(
+                                children: [
+                                  for (var product in callProducts)
+                                    CustomerProductsWidget(
+                                      isReseller: false,
+                                      productData: product,
+                                    )
+                                ],
+                              )
+                            : const Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text(
+                                  'Product not found',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )
+                      ],
+                    )
 
                     // Column(children: [
                     //        Padding(

@@ -77,10 +77,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     SizedBox(
                       height: getProportionateScreenHeight(30),
                     ),
+                    // Image.asset(
+                    //   "assets/images/Influance-logo.png",
+                    //   height: getProportionateScreenHeight(150),
+                    //   width: getProportionateScreenWidth(300),
+                    // ),
+                    // SizedBox(height: 30),
+
                     Image.asset(
-                      "assets/images/Influance-logo.png",
-                      height: getProportionateScreenHeight(150),
-                      width: getProportionateScreenWidth(300),
+                      "assets/images/biryani.png",
+                      height: 200,
+                      width: 499,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(15),
