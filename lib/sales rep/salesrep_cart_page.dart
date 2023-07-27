@@ -341,7 +341,8 @@ class _CustomerCartPageState extends State<SalesRepCartPage> {
                         child: Dismissible(
                             key: isDeleteProductAllowed
                                 ? Key(model[index].productId.toString())
-                                : UniqueKey(), //! it resolved the problem i.e.
+                                : UniqueKey(),
+                            //! it resolved the problem i.e.
                             direction: DismissDirection.endToStart,
                             confirmDismiss: (direction) async {
                               return deleteProductFromCart(index);
