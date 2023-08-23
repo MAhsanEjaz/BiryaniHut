@@ -268,7 +268,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                     const SizedBox(height: 10),
                                     Text.rich(
                                       TextSpan(
-                                        text: "\$${model[index].price}",
+                                        text: "\SAR ${model[index].price}",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             color: kPrimaryColor),
@@ -282,7 +282,7 @@ class _CustomerCartPageState extends State<CustomerCartPage> {
                                                   .bodyText1),
                                           TextSpan(
                                               // text: " x${cart.numOfItem}",
-                                              text: " = \$" +
+                                              text: " = \ SAR" +
                                                   (model[index].price *
                                                           model[index].quantity)
                                                       .toStringAsFixed(2),

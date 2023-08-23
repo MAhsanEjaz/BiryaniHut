@@ -37,7 +37,7 @@ dependencies:
   material_design_icons_flutter: ^6.0.7096
   flutter_stripe: ^9.0.0+1
   flutter_paypal: ^0.0.8
-  pay: ^1.0.1
+#  pay: ^1.0.1
   provider: ^6.0.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0

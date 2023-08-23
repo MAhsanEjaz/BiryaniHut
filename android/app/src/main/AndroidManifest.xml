@@ -22,7 +22,7 @@
     </queries>
 
    <application
-        android:label="Influance Hair Care"
+        android:label="Biryani Hut"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
