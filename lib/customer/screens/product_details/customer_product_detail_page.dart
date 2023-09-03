@@ -83,7 +83,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                               Text.rich(
                                 TextSpan(
                                   text:
-                                      "\$ ${widget.data.salePrice.toString()}",
+                                      "SAR ${widget.data.salePrice.toString()}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
@@ -262,7 +262,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                       if (model.isNotEmpty)
                                                         Center(
                                                           child: Text(
-                                                            "Total Price = \$${totalPrice.toStringAsFixed(2)}",
+                                                            "Total Price =SAR ${totalPrice.toStringAsFixed(2)}",
                                                             style: titleStyle,
                                                           ),
                                                         ),
@@ -395,7 +395,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                       const SizedBox(height: 10),
                                                                                       Text.rich(
                                                                                         TextSpan(
-                                                                                          text: "\$${model[index].price}",
+                                                                                          text: "SAR${model[index].price}",
                                                                                           style: const TextStyle(fontWeight: FontWeight.w400, color: kPrimaryColor),
                                                                                           children: [
                                                                                             TextSpan(
@@ -404,7 +404,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                                 style: Theme.of(context).textTheme.bodyText1),
                                                                                             TextSpan(
                                                                                                 // text: " x${cart.numOfItem}",
-                                                                                                text: " = \$" + (model[index].price * model[index].quantity).toStringAsFixed(2),
+                                                                                                text: " = SAR" + (model[index].price * model[index].quantity).toStringAsFixed(2),
                                                                                                 style: Theme.of(context).textTheme.bodyText1),
                                                                                           ],
                                                                                         ),
@@ -534,7 +534,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                     children: [
                                                                       SizedBox(
                                                                         width: SizeConfig.screenWidth *
-                                                                            .5,
+                                                                            .4,
                                                                         child:
                                                                             Text(
                                                                           model[index]
@@ -558,7 +558,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                       Text.rich(
                                                                         TextSpan(
                                                                           text:
-                                                                              "\$${model[index].price}",
+                                                                              "SAR${model[index].price}",
                                                                           style: const TextStyle(
                                                                               fontWeight: FontWeight.w400,
                                                                               color: kPrimaryColor),
@@ -569,7 +569,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                                                 style: Theme.of(context).textTheme.bodyText1),
                                                                             TextSpan(
                                                                                 // text: " x${cart.numOfItem}",
-                                                                                text: " = \$" + (model[index].price * model[index].quantity).toStringAsFixed(2),
+                                                                                text: " = SAR" + (model[index].price * model[index].quantity).toStringAsFixed(2),
                                                                                 style: Theme.of(context).textTheme.bodyText1),
                                                                           ],
                                                                         ),
@@ -660,7 +660,7 @@ class _ProductDetailsPageState extends State<CustomerProductDetailsPage> {
                                                               .productName),
                                                       const SizedBox(height: 5),
                                                       Text(
-                                                          '\$${widget.data.salePrice.toString()}'),
+                                                          'SAR${widget.data.salePrice.toString()}'),
                                                       const SizedBox(
                                                           height: 10),
                                                       CupertinoTextField(
