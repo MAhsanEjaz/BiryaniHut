@@ -80,7 +80,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                           null
                                   ? dummyImageUrl
                                   : widget.productData.productImagePath!),
-                          fit: BoxFit.cover),
+                          fit: BoxFit.fill),
                     ),
                     child: Container(
                       decoration: const BoxDecoration(
@@ -280,7 +280,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                           if (model.isNotEmpty)
                                                             Center(
                                                               child: Text(
-                                                                "Total Price = \$${totalPrice.toStringAsFixed(2)}",
+                                                                "Total Price = SAR${totalPrice.toStringAsFixed(2)}",
                                                                 style:
                                                                     titleStyle,
                                                               ),
@@ -401,21 +401,24 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                                                         children: [
                                                                                           SizedBox(
-                                                                                            width: SizeConfig.screenWidth * .5,
-                                                                                            child: Text(
-                                                                                              model[index].productName,
-                                                                                              // overflow:
-                                                                                              //     TextOverflow
-                                                                                              //         .ellipsis,
-                                                                                              softWrap: true,
-                                                                                              style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
-                                                                                              maxLines: 2,
+                                                                                            width: SizeConfig.screenWidth * .46,
+                                                                                            child: Align(
+                                                                                              alignment: Alignment.centerLeft,
+                                                                                              child: Text(
+                                                                                                model[index].productName,
+                                                                                                // overflow:
+                                                                                                //     TextOverflow
+                                                                                                //         .ellipsis,
+                                                                                                softWrap: true,
+                                                                                                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+                                                                                                maxLines: 2,
+                                                                                              ),
                                                                                             ),
                                                                                           ),
                                                                                           const SizedBox(height: 10),
                                                                                           Text.rich(
                                                                                             TextSpan(
-                                                                                              text: "\$${model[index].price}",
+                                                                                              text: "SAR${model[index].price}",
                                                                                               style: const TextStyle(fontWeight: FontWeight.w400, color: kPrimaryColor),
                                                                                               children: [
                                                                                                 TextSpan(
@@ -424,7 +427,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                                                     style: Theme.of(context).textTheme.bodyText1),
                                                                                                 TextSpan(
                                                                                                     // text: " x${cart.numOfItem}",
-                                                                                                    text: " = \$" + (model[index].price * model[index].quantity).toStringAsFixed(2),
+                                                                                                    text: " = SAR" + (model[index].price * model[index].quantity).toStringAsFixed(2),
                                                                                                     style: Theme.of(context).textTheme.bodyText1),
                                                                                               ],
                                                                                             ),
@@ -551,23 +554,26 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                         children: [
                                                                           SizedBox(
                                                                             width:
-                                                                                SizeConfig.screenWidth * .5,
+                                                                                SizeConfig.screenWidth * .46,
                                                                             child:
-                                                                                Text(
-                                                                              model[index].productName,
-                                                                              // overflow:
-                                                                              //     TextOverflow
-                                                                              //         .ellipsis,
-                                                                              softWrap: true,
-                                                                              style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
-                                                                              maxLines: 2,
+                                                                                Align(
+                                                                              alignment: Alignment.centerLeft,
+                                                                              child: Text(
+                                                                                model[index].productName,
+                                                                                // overflow:
+                                                                                //     TextOverflow
+                                                                                //         .ellipsis,
+                                                                                softWrap: true,
+                                                                                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+                                                                                maxLines: 2,
+                                                                              ),
                                                                             ),
                                                                           ),
                                                                           const SizedBox(
                                                                               height: 10),
                                                                           Text.rich(
                                                                             TextSpan(
-                                                                              text: "\$${model[index].price}",
+                                                                              text: "SAR ${model[index].price}",
                                                                               style: const TextStyle(fontWeight: FontWeight.w400, color: kPrimaryColor),
                                                                               children: [
                                                                                 TextSpan(
@@ -576,7 +582,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                                                     style: Theme.of(context).textTheme.bodyText1),
                                                                                 TextSpan(
                                                                                     // text: " x${cart.numOfItem}",
-                                                                                    text: " = \$" + (model[index].price * model[index].quantity).toStringAsFixed(2),
+                                                                                    text: " = SAR" + (model[index].price * model[index].quantity).toStringAsFixed(2),
                                                                                     style: Theme.of(context).textTheme.bodyText1),
                                                                               ],
                                                                             ),
@@ -672,7 +678,7 @@ class _CustomerProductsWidgetState extends State<CustomerProductsWidget> {
                                                           const SizedBox(
                                                               height: 5),
                                                           Text(
-                                                              '\$${widget.productData.salePrice.toString()}'),
+                                                              'SAR ${widget.productData.salePrice.toString()}'),
                                                           const SizedBox(
                                                               height: 10),
                                                           CupertinoTextField(
